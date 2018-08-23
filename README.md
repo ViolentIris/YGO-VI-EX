@@ -1,1 +1,2 @@
-# YGO-VI-R
+## KoishiPro
+The client of YGOProES original version.
