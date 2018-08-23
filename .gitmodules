@@ -1,0 +1,12 @@
+[submodule "ocgcore"]
+	path = ocgcore
+	url = https://github.com/Fluorohydride/ygopro-core.git
+[submodule "script"]
+	path = script
+	url = https://github.com/Fluorohydride/ygopro-scripts.git
+[submodule "field"]
+	path = field
+	url = https://github.com/moecube/ygopro-images-field.git
+[submodule "pics"]
+	path = pics
+	url = https://github.com/zh99998/ygopro-images.git
