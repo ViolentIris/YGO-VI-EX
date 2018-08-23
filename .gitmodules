@@ -10,3 +10,6 @@
 [submodule "pics"]
 	path = pics
 	url = https://github.com/zh99998/ygopro-images.git
+[submodule "ESpics"]
+	path = ESpics
+	url = https://github.com/Khriskh/YGOPROES-PICS.git

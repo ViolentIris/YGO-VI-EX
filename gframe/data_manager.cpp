@@ -222,7 +222,7 @@ const wchar_t* DataManager::FormatAttribute(int attribute) {
 	int i = 1010;
 	for(; filter != 0x80; filter <<= 1, ++i) {
 		if(attribute & filter) {
-			BufferIO::CopyWStrRef(GetSysString(i), p, 22);
+			BufferIO::CopyWStrRef(GetSysString(i), p, 16);
 			*p = L'|';
 			*++p = 0;
 		}
@@ -239,7 +239,7 @@ const wchar_t* DataManager::FormatRace(int race) {
 	int i = 1020;
 	for(; filter != 0x2000000; filter <<= 1, ++i) {
 		if(race & filter) {
-			BufferIO::CopyWStrRef(GetSysString(i), p, 22);
+			BufferIO::CopyWStrRef(GetSysString(i), p, 16);
 			*p = L'|';
 			*++p = 0;
 		}
@@ -256,7 +256,7 @@ const wchar_t* DataManager::FormatType(int type) {
 	int i = 1050;
 	for(; filter != 0x8000000; filter <<= 1, ++i) {
 		if(type & filter) {
-			BufferIO::CopyWStrRef(GetSysString(i), p, 22);
+			BufferIO::CopyWStrRef(GetSysString(i), p, 16);
 			*p = L'|';
 			*++p = 0;
 		}
