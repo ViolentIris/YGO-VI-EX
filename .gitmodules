@@ -13,3 +13,6 @@
 [submodule "ESpics"]
 	path = ESpics
 	url = https://github.com/Khriskh/YGOPROES-PICS.git
+[submodule "ESTCGpics"]
+	path = ESTCGpics
+	url = https://github.com/Khriskh/YGOTCGOCGHQPics.git
