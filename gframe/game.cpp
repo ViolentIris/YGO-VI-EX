@@ -1862,7 +1862,7 @@ void Game::OnResize() {
 	//sound / music volume bar
 	scrSoundVolume->setRelativePosition(recti(20 + 126, 230 + 4, 20 + (300 * xScale) - 40, 230 + 21));
 	scrMusicVolume->setRelativePosition(recti(20 + 126, 260 + 4, 20 + (300 * xScale) - 40, 260 + 21));
-	cbLocale->setRelativePosition(recti(20 + 160, 350 + 4, 20 + (300 * xScale) - 40, 350 + 21));
+	cbLocale->setRelativePosition(recti(20 + 160, 200 + 4, 20 + (300 * xScale) - 40, 200 + 21));
 
 	if(gameConf.resize_popup_menu) {
 		int width = 100 * mainGame->xScale;
