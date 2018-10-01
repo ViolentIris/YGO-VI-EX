@@ -44,6 +44,7 @@ struct Config {
 	int chkIgnoreDeckChanges;
 	int defaultOT;
 	int enable_bot_mode;
+	int quick_animation;
 	bool window_maximized;
 	int window_width;
 	int window_height;
@@ -89,6 +90,7 @@ struct DuelInfo {
 	wchar_t str_card_count[2][16];
 	video::SColor card_count_color[2];
 	bool isReplaySwapped;
+	std::vector<unsigned int> announce_cache;
 };
 
 struct BotInfo {
@@ -130,6 +132,7 @@ public:
 	void DrawSelectionLine(irr::gui::IGUIElement* element, int width, irr::video::SColor color);
 	void DrawBackGround();
 	void DrawLinkedZones(ClientCard* pcard);
+	void DrawSpellLinkedZones(ClientCard* pcard);
 	void CheckMutual(ClientCard* pcard, int mark);
 	void DrawCards();
 	void DrawCard(ClientCard* pcard);
@@ -148,6 +151,7 @@ public:
 	void LoadConfig();
 	void SaveConfig();
 	void ShowCardInfo(int code, bool resize = false);
+	void ShowCardNoInfo(int player = 0);
 	void AddChatMsg(wchar_t* msg, int player);
 	void ClearChatMsg();
 	void AddDebugMsg(char* msgbuf);
@@ -282,6 +286,7 @@ public:
 	irr::gui::IGUICheckBox* chkRandomPos;
 	irr::gui::IGUICheckBox* chkAutoChain;
 	irr::gui::IGUICheckBox* chkWaitChain;
+	irr::gui::IGUICheckBox* chkQuickAnimation;
 	irr::gui::IGUICheckBox* chkHideSetname;
 	irr::gui::IGUICheckBox* chkHideHintButton;
 	irr::gui::IGUICheckBox* chkIgnoreDeckChanges;
@@ -354,6 +359,7 @@ public:
 	irr::gui::IGUIButton* btnDeleteReplay;
 	irr::gui::IGUIButton* btnRenameReplay;
 	irr::gui::IGUIButton* btnReplayCancel;
+	irr::gui::IGUIButton* btnExportDeck;
 	irr::gui::IGUIEditBox* ebRepStartTurn;
 	//single play
 	irr::gui::IGUIWindow* wSinglePlay;
@@ -587,6 +593,7 @@ extern Game* mainGame;
 #define BUTTON_CANCEL_REPLAY		132
 #define BUTTON_DELETE_REPLAY		133
 #define BUTTON_RENAME_REPLAY		134
+#define BUTTON_EXPORT_DECK			135
 #define EDITBOX_CHAT				140
 #define BUTTON_MSG_OK				200
 #define BUTTON_YES					201
@@ -693,10 +700,11 @@ extern Game* mainGame;
 #define BUTTON_WINDOW_RESIZE_M		366
 #define BUTTON_WINDOW_RESIZE_L		367
 #define BUTTON_WINDOW_RESIZE_XL		368
-#define COMBOBOX_LOCALE				369
+#define CHECKBOX_QUICK_ANIMATION	369
 
 #define COMBOBOX_SORTTYPE			370
 #define COMBOBOX_LIMIT				371
+#define COMBOBOX_LOCALE				372
 
 #define BUTTON_MARKS_FILTER			380
 #define BUTTON_MARKERS_OK			381

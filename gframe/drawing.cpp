@@ -195,7 +195,13 @@ void Game::DrawBackGround() {
 				DrawLinkedZones(pcard);
 			}
 		} else if (dField.hovered_location == LOCATION_SZONE)
+		{
 			vertex = matManager.vFieldSzone[dField.hovered_controler][dField.hovered_sequence][rule];
+			ClientCard* pcard = dField.szone[dField.hovered_controler][dField.hovered_sequence];
+			if(pcard && pcard->link_marker) {
+				DrawSpellLinkedZones(pcard);
+			}
+		}
 		else if (dField.hovered_location == LOCATION_GRAVE)
 			vertex = matManager.vFieldGrave[dField.hovered_controler][rule];
 		else if (dField.hovered_location == LOCATION_REMOVED)
@@ -211,10 +217,10 @@ void Game::DrawBackGround() {
 			selFieldAlpha = 205;
 			selFieldDAlpha = -10;
 		}
-		//matManager.mSelField.AmbientColor = 0xffffffff;
-		//matManager.mSelField.DiffuseColor = selFieldAlpha << 24;
-		//driver->setMaterial(matManager.mSelField);
-		//driver->drawVertexPrimitiveList(vertex, 4, matManager.iRectangle, 2);
+		matManager.mSelField.AmbientColor = 0xffffffff;
+		matManager.mSelField.DiffuseColor = selFieldAlpha << 24;
+		driver->setMaterial(matManager.mSelField);
+		driver->drawVertexPrimitiveList(vertex, 4, matManager.iRectangle, 2);
 	}
 }
 void Game::DrawLinkedZones(ClientCard* pcard) {
@@ -224,12 +230,12 @@ void Game::DrawLinkedZones(ClientCard* pcard) {
 		if (mark & LINK_MARKER_LEFT && dField.hovered_sequence > 0) {
 			pcard2 = dField.mzone[dField.hovered_controler][dField.hovered_sequence - 1];
 			CheckMutual(pcard2, LINK_MARKER_RIGHT);
-			//driver->drawVertexPrimitiveList(&matManager.vFieldMzone[dField.hovered_controler][dField.hovered_sequence - 1], 4, matManager.iRectangle, 2);
+			driver->drawVertexPrimitiveList(&matManager.vFieldMzone[dField.hovered_controler][dField.hovered_sequence - 1], 4, matManager.iRectangle, 2);
 		}
 		if (mark & LINK_MARKER_RIGHT && dField.hovered_sequence < 4) {
 			pcard2 = dField.mzone[dField.hovered_controler][dField.hovered_sequence + 1];
 			CheckMutual(pcard2, LINK_MARKER_LEFT);
-			//driver->drawVertexPrimitiveList(&matManager.vFieldMzone[dField.hovered_controler][dField.hovered_sequence + 1], 4, matManager.iRectangle, 2);
+			driver->drawVertexPrimitiveList(&matManager.vFieldMzone[dField.hovered_controler][dField.hovered_sequence + 1], 4, matManager.iRectangle, 2);
 		}
 		if (dInfo.duel_rule >= 4) {
 			if ((mark & LINK_MARKER_TOP_LEFT && dField.hovered_sequence == 2)
@@ -242,7 +248,7 @@ void Game::DrawLinkedZones(ClientCard* pcard) {
 					mark = (dField.hovered_sequence == 2) ? LINK_MARKER_TOP_LEFT : (dField.hovered_sequence == 1) ? LINK_MARKER_TOP : LINK_MARKER_TOP_RIGHT;
 				}
 				CheckMutual(pcard2, mark);
-				//driver->drawVertexPrimitiveList(&matManager.vFieldMzone[dField.hovered_controler][5], 4, matManager.iRectangle, 2);
+				driver->drawVertexPrimitiveList(&matManager.vFieldMzone[dField.hovered_controler][5], 4, matManager.iRectangle, 2);
 			}
 			if ((mark & LINK_MARKER_TOP_LEFT && dField.hovered_sequence == 4)
 				|| (mark & LINK_MARKER_TOP && dField.hovered_sequence == 3)
@@ -254,7 +260,7 @@ void Game::DrawLinkedZones(ClientCard* pcard) {
 					mark = (dField.hovered_sequence == 4) ? LINK_MARKER_TOP_LEFT : (dField.hovered_sequence == 3) ? LINK_MARKER_TOP : LINK_MARKER_TOP_RIGHT;
 				}
 				CheckMutual(pcard2, mark);
-				//driver->drawVertexPrimitiveList(&matManager.vFieldMzone[dField.hovered_controler][6], 4, matManager.iRectangle, 2);
+				driver->drawVertexPrimitiveList(&matManager.vFieldMzone[dField.hovered_controler][6], 4, matManager.iRectangle, 2);
 			}
 		}
 	} else {
@@ -262,32 +268,49 @@ void Game::DrawLinkedZones(ClientCard* pcard) {
 		if (mark & LINK_MARKER_BOTTOM_LEFT) {
 			pcard2 = dField.mzone[dField.hovered_controler][0 + swap];
 			CheckMutual(pcard2, LINK_MARKER_TOP_RIGHT);
-			//driver->drawVertexPrimitiveList(&matManager.vFieldMzone[dField.hovered_controler][0 + swap], 4, matManager.iRectangle, 2);
+			driver->drawVertexPrimitiveList(&matManager.vFieldMzone[dField.hovered_controler][0 + swap], 4, matManager.iRectangle, 2);
 		}
 		if (mark & LINK_MARKER_BOTTOM) {
 			pcard2 = dField.mzone[dField.hovered_controler][1 + swap];
 			CheckMutual(pcard2, LINK_MARKER_TOP);
-			//driver->drawVertexPrimitiveList(&matManager.vFieldMzone[dField.hovered_controler][1 + swap], 4, matManager.iRectangle, 2);
+			driver->drawVertexPrimitiveList(&matManager.vFieldMzone[dField.hovered_controler][1 + swap], 4, matManager.iRectangle, 2);
 		}
 		if (mark & LINK_MARKER_BOTTOM_RIGHT) {
 			pcard2 = dField.mzone[dField.hovered_controler][2 + swap];
 			CheckMutual(pcard2, LINK_MARKER_TOP_LEFT);
-			//driver->drawVertexPrimitiveList(&matManager.vFieldMzone[dField.hovered_controler][2 + swap], 4, matManager.iRectangle, 2);
+			driver->drawVertexPrimitiveList(&matManager.vFieldMzone[dField.hovered_controler][2 + swap], 4, matManager.iRectangle, 2);
 		}
 		if (mark & LINK_MARKER_TOP_LEFT) {
 			pcard2 = dField.mzone[1 - dField.hovered_controler][4 - swap];
 			CheckMutual(pcard2, LINK_MARKER_TOP_LEFT);
-			//driver->drawVertexPrimitiveList(&matManager.vFieldMzone[1 - dField.hovered_controler][4 - swap], 4, matManager.iRectangle, 2);
+			driver->drawVertexPrimitiveList(&matManager.vFieldMzone[1 - dField.hovered_controler][4 - swap], 4, matManager.iRectangle, 2);
 		}
 		if (mark & LINK_MARKER_TOP) {
 			pcard2 = dField.mzone[1 - dField.hovered_controler][3 - swap];
 			CheckMutual(pcard2, LINK_MARKER_TOP);
-			//driver->drawVertexPrimitiveList(&matManager.vFieldMzone[1 - dField.hovered_controler][3 - swap], 4, matManager.iRectangle, 2);
+			driver->drawVertexPrimitiveList(&matManager.vFieldMzone[1 - dField.hovered_controler][3 - swap], 4, matManager.iRectangle, 2);
 		}
 		if (mark & LINK_MARKER_TOP_RIGHT) {
 			pcard2 = dField.mzone[1 - dField.hovered_controler][2 - swap];
 			CheckMutual(pcard2, LINK_MARKER_TOP_RIGHT);
-			//driver->drawVertexPrimitiveList(&matManager.vFieldMzone[1 - dField.hovered_controler][2 - swap], 4, matManager.iRectangle, 2);
+			driver->drawVertexPrimitiveList(&matManager.vFieldMzone[1 - dField.hovered_controler][2 - swap], 4, matManager.iRectangle, 2);
+		}
+	}
+}
+void Game::DrawSpellLinkedZones(ClientCard* pcard) {
+	int mark = pcard->link_marker;
+	if (dField.hovered_sequence < 5) {
+		if ((mark & LINK_MARKER_TOP_LEFT) && dField.hovered_sequence > 0) {
+			CheckMutual(0, 0);
+			driver->drawVertexPrimitiveList(&matManager.vFieldMzone[dField.hovered_controler][dField.hovered_sequence - 1], 4, matManager.iRectangle, 2);
+		}
+		if (mark & LINK_MARKER_TOP) {
+			CheckMutual(0, 0);
+			driver->drawVertexPrimitiveList(&matManager.vFieldMzone[dField.hovered_controler][dField.hovered_sequence], 4, matManager.iRectangle, 2);
+		}
+		if ((mark & LINK_MARKER_TOP_RIGHT) && dField.hovered_sequence < 4) {
+			CheckMutual(0, 0);
+			driver->drawVertexPrimitiveList(&matManager.vFieldMzone[dField.hovered_controler][dField.hovered_sequence + 1], 4, matManager.iRectangle, 2);
 		}
 	}
 }
@@ -1009,7 +1032,7 @@ void Game::ShowElement(irr::gui::IGUIElement * win, int autoframe) {
 	FadingUnit fu;
 	fu.fadingSize = win->getRelativePosition();
 	for(auto fit = fadingList.begin(); fit != fadingList.end(); ++fit)
-		if(win == fit->guiFading)
+		if(win == fit->guiFading && win != wOptions) // the size of wOptions is always setted by ClientField::ShowSelectOption before showing it
 			fu.fadingSize = fit->fadingSize;
 	irr::core::position2di center = fu.fadingSize.getCenter();
 	fu.fadingDiff.X = fu.fadingSize.getWidth() / 10;
@@ -1084,7 +1107,7 @@ void Game::PopupElement(irr::gui::IGUIElement * element, int hideframe) {
 }
 void Game::WaitFrameSignal(int frame) {
 	frameSignal.Reset();
-	signalFrame = frame;
+	signalFrame = (gameConf.quick_animation && frame >= 12) ? 12 : frame;
 	frameSignal.Wait();
 }
 void Game::DrawThumb(code_pointer cp, position2di pos, std::unordered_map<int, int>* lflist, bool drag) {
@@ -1277,7 +1300,7 @@ void Game::DrawDeckBd() {
 			myswprintf(textBuffer, L"%ls", dataManager.GetName(ptr->first));
 			DrawShadowText(textFont, textBuffer, Resize(860, 165 + i * 66, 955, 185 + i * 66), Resize(1, 1, 0, 0));
 			if(!(ptr->second.type & TYPE_LINK)) {
-				wchar_t* form = L"\u2605";
+				const wchar_t* form = L"\u2605";
 				if(ptr->second.type & TYPE_XYZ) form = L"\u2606";
 				myswprintf(textBuffer, L"%ls/%ls %ls%d", dataManager.FormatAttribute(ptr->second.attribute), dataManager.FormatRace(ptr->second.race), form, ptr->second.level);
 				DrawShadowText(textFont, textBuffer, Resize(860, 187 + i * 66, 955, 207 + i * 66), Resize(1, 1, 0, 0));

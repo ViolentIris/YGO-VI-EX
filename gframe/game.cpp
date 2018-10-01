@@ -296,6 +296,9 @@ bool Game::Initialize() {
 	posY += 30;
 	env->addStaticText(dataManager.GetSysString(1288), rect<s32>(posX + 23, posY + 3, posX + 160, posY + 28), false, false, tabHelper);
 	cbLocale = env->addComboBox(rect<s32>(posX + 160, posY + 4, posX + 260, posY + 21), tabHelper, COMBOBOX_LOCALE);
+	posY += 30;
+	chkQuickAnimation = env->addCheckBox(false, rect<s32>(posX, posY, posX + 260, posY + 25), tabHelper, CHECKBOX_QUICK_ANIMATION, dataManager.GetSysString(1299));
+	chkQuickAnimation->setChecked(gameConf.quick_animation != 0);
 	RefreshLocales();
 	//system
 	irr::gui::IGUITab* tabSystem = wInfos->addTab(dataManager.GetSysString(1273));
@@ -627,8 +630,9 @@ bool Game::Initialize() {
 	btnDeleteReplay = env->addButton(rect<s32>(360, 355, 460, 380), wReplay, BUTTON_DELETE_REPLAY, dataManager.GetSysString(1361));
 	btnRenameReplay = env->addButton(rect<s32>(360, 385, 460, 410), wReplay, BUTTON_RENAME_REPLAY, dataManager.GetSysString(1362));
 	btnReplayCancel = env->addButton(rect<s32>(470, 385, 570, 410), wReplay, BUTTON_CANCEL_REPLAY, dataManager.GetSysString(1347));
+	btnExportDeck = env->addButton(rect<s32>(470, 325, 570, 350), wReplay, BUTTON_EXPORT_DECK, dataManager.GetSysString(1369));
 	env->addStaticText(dataManager.GetSysString(1349), rect<s32>(360, 30, 570, 50), false, true, wReplay);
-	stReplayInfo = env->addStaticText(L"", rect<s32>(360, 60, 570, 350), false, true, wReplay);
+	stReplayInfo = env->addStaticText(L"", rect<s32>(360, 60, 570, 320), false, true, wReplay);
 	env->addStaticText(dataManager.GetSysString(1353), rect<s32>(360, 275, 570, 295), false, true, wReplay);
 	ebRepStartTurn = env->addEditBox(L"", rect<s32>(360, 300, 460, 320), true, wReplay, -1);
 	ebRepStartTurn->setTextAlignment(irr::gui::EGUIA_CENTER, irr::gui::EGUIA_CENTER);
@@ -1171,6 +1175,7 @@ void Game::LoadConfig() {
 	gameConf.chkIgnoreDeckChanges = 0;
 	gameConf.defaultOT = 1;
 	gameConf.enable_bot_mode = 1;
+	gameConf.quick_animation = 0;
 	gameConf.enable_sound = true;
 	gameConf.sound_volume = 0.5;
 	gameConf.enable_music = true;
@@ -1247,6 +1252,8 @@ void Game::LoadConfig() {
 				gameConf.defaultOT = atoi(valbuf);
 			} else if(!strcmp(strbuf, "enable_bot_mode")) {
 				gameConf.enable_bot_mode = atoi(valbuf);
+			} else if(!strcmp(strbuf, "quick_animation")) {
+				gameConf.quick_animation = atoi(valbuf);
 			} else if(!strcmp(strbuf, "window_maximized")) {
 				gameConf.window_maximized = atoi(valbuf) > 0;
 			} else if(!strcmp(strbuf, "window_width")) {
@@ -1357,6 +1364,8 @@ void Game::LoadConfig() {
 				gameConf.defaultOT = atoi(valbuf);
 			} else if(!strcmp(strbuf, "enable_bot_mode")) {
 				gameConf.enable_bot_mode = atoi(valbuf);
+			} else if(!strcmp(strbuf, "quick_animation")) {
+				gameConf.quick_animation = atoi(valbuf);
 			} else if(!strcmp(strbuf, "window_maximized")) {
 				gameConf.window_maximized = atoi(valbuf) > 0;
 			} else if(!strcmp(strbuf, "window_width")) {
@@ -1453,6 +1462,7 @@ void Game::SaveConfig() {
 	fprintf(fp, "ignore_deck_changes = %d\n", (chkIgnoreDeckChanges->isChecked() ? 1 : 0));
 	fprintf(fp, "default_ot = %d\n", gameConf.defaultOT);
 	fprintf(fp, "enable_bot_mode = %d\n", gameConf.enable_bot_mode);
+	fprintf(fp, "quick_animation = %d\n", gameConf.quick_animation);
 	fprintf(fp, "window_maximized = %d\n", (gameConf.window_maximized ? 1 : 0));
 	fprintf(fp, "window_width = %d\n", gameConf.window_width);
 	fprintf(fp, "window_height = %d\n", gameConf.window_height);
@@ -1509,7 +1519,7 @@ void Game::ShowCardInfo(int code, bool resize) {
 		myswprintf(formatBuffer, L"[%ls] %ls/%ls", dataManager.FormatType(cd.type), dataManager.FormatRace(cd.race), dataManager.FormatAttribute(cd.attribute));
 		stInfo->setText(formatBuffer);
 		if(!(cd.type & TYPE_LINK)) {
-			wchar_t* form = L"\u2605";
+			const wchar_t* form = L"\u2605";
 			if(cd.type & TYPE_XYZ) form = L"\u2606";
 			myswprintf(formatBuffer, L"[%ls%d] ", form, cd.level);
 			wchar_t adBuffer[16];
@@ -1559,6 +1569,16 @@ void Game::ShowCardInfo(int code, bool resize) {
 	const auto& tsize = stText->getRelativePosition();
 	InitStaticText(stText, tsize.getWidth(), tsize.getHeight(), guiFont, showingtext);
 }
+void Game::ShowCardNoInfo(int player) {
+	imgCard->setImage(imageManager.tCover[player]);
+	showingcode = 0;
+	stName->setText(L"");
+	stInfo->setText(L"");
+	stDataInfo->setText(L"");
+	stSetName->setText(L"");
+	stText->setText(L"");
+	scrCardText->setVisible(false);
+}
 void Game::AddChatMsg(wchar_t* msg, int player) {
 	for(int i = 7; i > 0; --i) {
 		chatMsg[i] = chatMsg[i - 1];
@@ -1607,6 +1627,7 @@ void Game::AddChatMsg(wchar_t* msg, int player) {
 	wchar_t msg_front[256];
 	myswprintf(msg_front, L"[Chat]%ls", chatMsg[0].c_str());
 	lstLog->addItem(msg_front);
+	logParam.push_back(0);
 }
 void Game::ClearChatMsg() {
 	for(int i = 7; i >= 0; --i) {
