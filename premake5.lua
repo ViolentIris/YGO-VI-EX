@@ -20,7 +20,7 @@ solution "ygo"
         libdirs { "/usr/local/lib" }
 
     configuration "macosx"
-        defines { "LUA_USE_MACOSX" }
+        defines { "LUA_USE_MACOSX", "DBL_MAX_10_EXP=+308", "DBL_MANT_DIG=53" }
         includedirs { "/usr/local/include", "/usr/local/include/*" }
         libdirs { "/usr/local/lib", "/usr/X11/lib" }
         buildoptions { "-stdlib=libc++" }
@@ -57,18 +57,20 @@ solution "ygo"
         defines { "_CRT_SECURE_NO_WARNINGS" }
     
     configuration "not vs*"
-        buildoptions { "-fno-strict-aliasing", "-Wno-multichar" }
+        buildoptions { "-fno-strict-aliasing", "-Wno-format-security" }
 
     configuration {"not vs*", "windows"}
         buildoptions { "-static-libgcc" }
 
+    include "lua"
     include "ocgcore"
     include "gframe"
-    if os.ishost("windows") then
-    include "event"
-    include "freetype"
-    include "irrlicht"
-    include "lua"
-    include "sqlite3"
-    include "ikpmp3"
-    end
+	if os.ishost("windows") then
+		include "event"
+		include "freetype"
+		include "irrlicht"
+		include "sqlite3"
+	end
+	if USE_IRRKLANG then
+		include "ikpmp3"
+	end
