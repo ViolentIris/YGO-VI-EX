@@ -13,8 +13,14 @@ bool ImageManager::Initial() {
 
 	tCover[0] = NULL;
 	tCover[1] = NULL;
-	tCover[2] = NULL;
-	tCover[3] = NULL;
+	tCover[2] = GetRandomImage(TEXTURE_COVER_S, CARD_IMG_WIDTH, CARD_IMG_HEIGHT);
+	if(!tCover[2])
+		tCover[2] = GetTextureFromFile("textures/cover.jpg", CARD_IMG_WIDTH, CARD_IMG_HEIGHT);
+	tCover[3] = GetRandomImage(TEXTURE_COVER_O, CARD_IMG_WIDTH, CARD_IMG_HEIGHT);
+	if(!tCover[3])
+		tCover[3] = GetTextureFromFile("textures/cover2.jpg", CARD_IMG_WIDTH, CARD_IMG_HEIGHT);
+	if(!tCover[3])
+		tCover[3] = tCover[2];
 	//tUnknown = NULL;
 	tUnknown[0] = NULL;
 	tUnknown[1] = NULL;
@@ -43,8 +49,8 @@ bool ImageManager::Initial() {
 	tBackGround_menu = NULL;
 	tBackGround_deck = NULL;
 	tCardType = driver->getTexture("textures/cardtype.png");
-	tAvatar[0] = driver->getTexture("textures/me.jpg");
-	tAvatar[1] = driver->getTexture("textures/opponent.jpg");
+	tAvatar[0] = driver->getTexture("textures/head.jpg");
+	tAvatar[1] = GetRandomImage(TEXTURE_AVATAR_S);
 	tLPBarFrame = driver->getTexture("textures/lpbarf.png");
 	tField[0] = driver->getTexture("textures/field2.png");
 	tFieldTransparent[0] = driver->getTexture("textures/field-transparent2.png");
@@ -100,6 +106,7 @@ void ImageManager::RefreshRandomImageList() {
 	RefreshImageDir(L"cover2/", TEXTURE_COVER_O);
 	RefreshImageDir(L"attack/", TEXTURE_ATTACK);
 	RefreshImageDir(L"act/", TEXTURE_ACTIVATE);
+	RefreshImageDir(L"head/", TEXTURE_AVATAR_S);
 
 	for(int i = 0; i < 7; ++ i) {
 		saved_image_id[i] = -1;
@@ -199,18 +206,6 @@ void ImageManager::ResizeTexture() {
 		tCover[1] = GetRandomImage(TEXTURE_COVER_S, imgWidth, imgHeight);
 	if(!tCover[1])
 		tCover[1] = tCover[0];
-	if(!tCover[2])
-		tCover[2] = GetRandomImage(TEXTURE_COVER_S, CARD_IMG_WIDTH, CARD_IMG_HEIGHT);
-	if(!tCover[2])
-		tCover[2] = GetTextureFromFile("textures/cover.jpg", CARD_IMG_WIDTH, CARD_IMG_HEIGHT);
-	if(!tCover[2])
-		tCover[2] = tCover[0];
-	if(!tCover[3])
-		tCover[3] = GetRandomImage(TEXTURE_COVER_O, CARD_IMG_WIDTH, CARD_IMG_HEIGHT);
-	if(!tCover[3])
-		tCover[3] = GetTextureFromFile("textures/cover2.jpg", CARD_IMG_WIDTH, CARD_IMG_HEIGHT);
-	if(!tCover[3])
-		tCover[3] = tCover[2];
 	//driver->removeTexture(tUnknown);
 	//tUnknown = GetTextureFromFile("textures/unknown.jpg", imgWidth, imgHeight);
 	driver->removeTexture(tBackGround);

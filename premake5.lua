@@ -5,11 +5,11 @@ solution "ygo"
     if os.ishost("windows") or os.getenv("USE_IRRKLANG") then
         USE_IRRKLANG = true
         if os.getenv("irrklang_pro") then
-            IRRKLANG_PRO = false
+            IRRKLANG_PRO = true
         end
     end
 
-    configurations { "Debug", "Release" }
+    configurations { "Release", "Debug" }
     defines { "LUA_COMPAT_5_2" }
     configuration "windows"
         defines { "WIN32", "_WIN32", "WINVER=0x0501" }
@@ -24,7 +24,7 @@ solution "ygo"
         libdirs { "/usr/local/lib" }
 
     configuration "macosx"
-        defines { "LUA_USE_MACOSX" }
+        defines { "LUA_USE_MACOSX", "DBL_MAX_10_EXP=+308", "DBL_MANT_DIG=53" }
         includedirs { "/usr/local/include", "/usr/local/include/*" }
         libdirs { "/usr/local/lib", "/usr/X11/lib" }
         buildoptions { "-stdlib=libc++" }
@@ -32,6 +32,7 @@ solution "ygo"
 
     configuration "linux"
         defines { "LUA_USE_LINUX" }
+        buildoptions { "-U_FORTIFY_SOURCE" }
 
     configuration "Release"
         optimize "Speed"
@@ -44,7 +45,7 @@ solution "ygo"
 
     configuration { "Release", "vs*" }
         flags { "StaticRuntime", "LinkTimeOptimization" }
-        disablewarnings { "4244", "4267", "4838", "4577", "4819", "4018", "4996", "4477", "4091" }
+        disablewarnings { "4244", "4267", "4838", "4577", "4819", "4018", "4996", "4477", "4091", "4305" }
 
     configuration { "Release", "not vs*" }
         symbols "On"
@@ -60,18 +61,18 @@ solution "ygo"
         defines { "_CRT_SECURE_NO_WARNINGS" }
     
     configuration "not vs*"
-        buildoptions { "-fno-strict-aliasing", "-Wno-multichar" }
+        buildoptions { "-fno-strict-aliasing", "-Wno-format-security" }
 
     configuration {"not vs*", "windows"}
         buildoptions { "-static-libgcc" }
 
+    include "lua"
     include "ocgcore"
     include "gframe"
 	if os.ishost("windows") then
 		include "event"
 		include "freetype"
 		include "irrlicht"
-		include "lua"
 		include "sqlite3"
 	end
 	if USE_IRRKLANG then
