@@ -14,7 +14,6 @@ public:
 	bool Initial();
 	//random image
 	irr::video::ITexture* GetRandomImage(int image_type);
-	irr::video::ITexture* GetRandomImage(int image_type, s32 width, s32 height);
 	void RefreshRandomImageList();
 	void RefreshImageDir(std::wstring path, int image_type);
 	void SetDevice(irr::IrrlichtDevice* dev);
@@ -33,6 +32,7 @@ public:
 	irr::IrrlichtDevice* device;
 	irr::video::IVideoDriver* driver;
 	irr::video::ITexture* tCover[4];
+	irr::video::ITexture* tAvatar[2];
 	irr::video::ITexture* tUnknown[3];
 	irr::video::ITexture* tAct;
 	irr::video::ITexture* tAttack;
@@ -57,7 +57,6 @@ public:
 	irr::video::ITexture* tRScale[14];
 	irr::video::ITexture* tLScale[14];
 	irr::video::ITexture* tClock;
-	irr::video::ITexture* tAvatar[2];
 	irr::video::ITexture* tLPBarFrame;
 	std::list<std::string> support_types;
 };
