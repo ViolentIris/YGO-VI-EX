@@ -9,4 +9,4 @@
 	url = https://github.com/zh99998/ygopro-images.git
 [submodule "ocgcore"]
 	path = ocgcore
-	url = https://github.com/purerosefallen/ygopro-core.git
+	url = https://github.com/Fluorohydride/ygopro-core.git
