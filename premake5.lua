@@ -2,12 +2,8 @@ solution "ygo"
     location "build"
     language "C++"
     objdir "obj"
-    if os.ishost("windows") or os.getenv("USE_IRRKLANG") then
-        USE_IRRKLANG = true
-        if os.getenv("irrklang_pro") then
-            IRRKLANG_PRO = true
-        end
-    end
+
+    USE_IRRKLANG = true
 
     configurations { "Release", "Debug" }
     defines { "LUA_COMPAT_5_2" }
@@ -24,7 +20,7 @@ solution "ygo"
         libdirs { "/usr/local/lib" }
 
     configuration "macosx"
-        defines { "LUA_USE_MACOSX", "DBL_MAX_10_EXP=+308", "DBL_MANT_DIG=53" }
+        defines { "LUA_USE_MACOSX" }
         includedirs { "/usr/local/include", "/usr/local/include/*" }
         libdirs { "/usr/local/lib", "/usr/X11/lib" }
         buildoptions { "-stdlib=libc++" }
@@ -61,20 +57,18 @@ solution "ygo"
         defines { "_CRT_SECURE_NO_WARNINGS" }
     
     configuration "not vs*"
-        buildoptions { "-fno-strict-aliasing", "-Wno-format-security" }
+        buildoptions { "-fno-strict-aliasing", "-Wno-multichar" }
 
     configuration {"not vs*", "windows"}
         buildoptions { "-static-libgcc" }
 
-    include "lua"
     include "ocgcore"
     include "gframe"
-	if os.ishost("windows") then
-		include "event"
-		include "freetype"
-		include "irrlicht"
-		include "sqlite3"
-	end
-	if USE_IRRKLANG then
-		include "ikpmp3"
-	end
+    if os.ishost("windows") then
+    include "event"
+    include "freetype"
+    include "irrlicht"
+    include "lua"
+    include "sqlite3"
+    include "ikpmp3"
+    end

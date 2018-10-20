@@ -9,7 +9,7 @@ project "ygopro"
     links { "ocgcore", "clzma", "Irrlicht", "freetype", "sqlite3", "lua" , "event" }
     if USE_IRRKLANG then
         defines { "YGOPRO_USE_IRRKLANG" }
-        links { "ikpmp3" }
+        links { "irrKlang", "ikpmp3" }
         includedirs { "../irrklang/include" }
         if IRRKLANG_PRO then
             defines { "IRRKLANG_STATIC" }
@@ -24,7 +24,6 @@ project "ygopro"
         excludes "CGUIButton.cpp"
         includedirs { "../irrlicht/include", "../freetype/include", "../event/include", "../sqlite3" }
         if USE_IRRKLANG then
-            links { "irrKlang" }
             libdirs { "../irrklang/lib/Win32-visualStudio" }
         end
         links { "opengl32", "ws2_32", "winmm", "gdi32", "kernel32", "user32", "imm32" }
@@ -38,12 +37,6 @@ project "ygopro"
         links { "event_pthreads", "GL", "dl", "pthread" }
     configuration "linux"
         if USE_IRRKLANG then
-            links { "IrrKlang" }
             linkoptions{ "-Wl,-rpath=./" }
             libdirs { "../irrklang/bin/linux-gcc-64" }
-        end
-    configuration "macosx"
-        if USE_IRRKLANG then
-            links { "irrklang" }
-            libdirs { "../irrklang/bin/macosx-gcc" }
         end
