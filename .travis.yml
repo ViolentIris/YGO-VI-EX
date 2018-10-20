@@ -103,19 +103,19 @@ before_deploy:
 - mv -f ygopro-database/locales .
 
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-    7z a -mx9 -xr!.git* KoishiPro-$TRAVIS_OS_NAME-full-$TRAVIS_TAG.zip ygopro libIrrKlang.so LICENSE README.md lflist.conf strings.conf system.conf cards.cdb script textures fonts skin deck single pics sound windbot locales bot.conf bot > /dev/null;
+    7z a -mx9 -xr!.git* YGO-VI-$TRAVIS_OS_NAME-full-$TRAVIS_TAG.zip ygopro libIrrKlang.so LICENSE README.md lflist.conf strings.conf system.conf cards.cdb script textures fonts skin deck single pics sound windbot locales bot.conf bot > /dev/null;
   fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-    7z a -mx9 -xr!.git* KoishiPro-$TRAVIS_OS_NAME-full-$TRAVIS_TAG.zip ygopro.app LICENSE README.md lflist.conf strings.conf system.conf cards.cdb script textures fonts skin deck single pics sound windbot locales bot.conf bot > /dev/null;
+    7z a -mx9 -xr!.git* YGO-VI-$TRAVIS_OS_NAME-full-$TRAVIS_TAG.zip ygopro.app LICENSE README.md lflist.conf strings.conf system.conf cards.cdb script textures fonts skin deck single pics sound windbot locales bot.conf bot > /dev/null;
   fi
 
-deploy:
-  provider: releases
+#deploy:
+#  provider: releases
   file:
-  - KoishiPro-$TRAVIS_OS_NAME-$TRAVIS_TAG.zip
-  - KoishiPro-$TRAVIS_OS_NAME-full-$TRAVIS_TAG.zip
-  skip_cleanup: true
-  overwrite: true
-  on:
-    tags: true
-  api-key: $NANAHIRA
+  - YGO-VI-ES-$TRAVIS_OS_NAME-$TRAVIS_TAG.zip
+  - YGO-VI-ES-$TRAVIS_OS_NAME-full-$TRAVIS_TAG.zip
+#  skip_cleanup: true
+#  overwrite: true
+#  on:
+#    tags: true
+#  api-key: $NANAHIRA

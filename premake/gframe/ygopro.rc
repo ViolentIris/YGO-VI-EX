@@ -14,7 +14,7 @@ BEGIN
 VALUE "FileDescription", "YGO-VI-ES"
 VALUE "InternalName", "YGO-VI-ES"
 VALUE "LegalCopyright", "Copyright (C) 2018 Fluorohydride"
-VALUE "OriginalFilename", "ygopro.exe"
+VALUE "OriginalFilename", "YGO-VI-ES"
 VALUE "ProductName", "YGO-VI-ES"
 VALUE "FileVersion", "1.034.5"
 VALUE "ProductVersion", "1.034.5"
