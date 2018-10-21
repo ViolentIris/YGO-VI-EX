@@ -107,7 +107,7 @@ void ImageManager::RefreshRandomImageList() {
 	RefreshImageDir(L"attack/", TEXTURE_ATTACK);
 	RefreshImageDir(L"act/", TEXTURE_ACTIVATE);
 	RefreshImageDir(L"head/", TEXTURE_AVATAR_S);
-	for(int i = 0; i < 7; ++ i) {
+	for(int i = 0; i < 8; ++ i) {
 		saved_image_id[i] = -1;
 	}
 }
