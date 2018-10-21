@@ -410,6 +410,13 @@ void Game::DrawCard(ClientCard* pcard) {
 		driver->setMaterial(matManager.mTexture);
 		driver->drawVertexPrimitiveList(matManager.vNegate, 4, matManager.iRectangle, 2);
 	}
+	if(!dInfo.isReplay && dInfo.player_type < 7) {
+	    	driver->draw2DImage(imageManager.tAvatar[0], Resize(335, 15, 390, 70), recti(0, 0, 80, 80), 0, 0, true);
+			driver->draw2DImage(imageManager.tAvatar[1], Resize(930, 15, 985, 70), recti(0, 0, 80, 80), 0, 0, true);
+	} else {
+	    	driver->draw2DImage(imageManager.tAvatar[0], Resize(335, 15, 390, 70), recti(0, 0, 80, 80), 0, 0, true);
+			driver->draw2DImage(imageManager.tAvatar[1], Resize(930, 15, 985, 70), recti(0, 0, 80, 80), 0, 0, true);
+	}
 	if(pcard->cmdFlag & COMMAND_ATTACK) {
 		matManager.mTexture.setTexture(0, imageManager.tAttack);
 		driver->setMaterial(matManager.mTexture);
@@ -554,8 +561,6 @@ void Game::DrawMisc() {
 		}
 	}
 	//avatar image
-	driver->draw2DImage(imageManager.tAvatar[0], Resize(335, 15, 390, 70), recti(0, 0, 80, 80), 0, 0, true);
-	driver->draw2DImage(imageManager.tAvatar[1], Resize(930, 15, 985, 70), recti(0, 0, 80, 80), 0, 0, true);
 	if((dInfo.turn % 2 && dInfo.isFirst) || (!(dInfo.turn % 2) && !dInfo.isFirst)) {
 		driver->draw2DImage(imageManager.tLPBarFrame, Resize(327, 8, 630, 78), recti(0, 0, 305, 70), 0, 0, true);
 		driver->draw2DImage(imageManager.tLPBarFrame, Resize(689, 8, 991, 78), recti(0, 210, 305, 280), 0, 0, true);		

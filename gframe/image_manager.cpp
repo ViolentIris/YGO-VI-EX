@@ -107,7 +107,6 @@ void ImageManager::RefreshRandomImageList() {
 	RefreshImageDir(L"attack/", TEXTURE_ATTACK);
 	RefreshImageDir(L"act/", TEXTURE_ACTIVATE);
 	RefreshImageDir(L"head/", TEXTURE_AVATAR_S);
-
 	for(int i = 0; i < 7; ++ i) {
 		saved_image_id[i] = -1;
 	}
@@ -230,6 +229,8 @@ void ImageManager::ResizeTexture() {
 		tBackGround_deck = GetRandomImage(TEXTURE_DUEL, bgWidth, bgHeight);
 	if(!tBackGround_deck)
 		tBackGround_deck = tBackGround;
+	driver->removeTexture(tAvatar[1]);
+	tAvatar[1] = GetRandomImage(TEXTURE_AVATAR_S, 80, 80);
 }
 // function by Warr1024, from https://github.com/minetest/minetest/issues/2419 , modified
 void imageScaleNNAA(irr::video::IImage *src, irr::video::IImage *dest) {
