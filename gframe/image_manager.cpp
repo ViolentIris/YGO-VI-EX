@@ -22,7 +22,7 @@ bool ImageManager::Initial()  {
 	if(!tCover[3])
 		tCover[3] = tCover[2];
 	tAvatar[0] = driver->getTexture("textures/head.jpg");
-	tAvatar[1] = GetRandomImage(TEXTURE_AVATAR_S);
+	tAvatar[1] = GetRandomImage(TEXTURE_AVATAR_S, 80, 80);
 	//tUnknown = NULL;
 	tUnknown[0] = NULL;
 	tUnknown[1] = NULL;
