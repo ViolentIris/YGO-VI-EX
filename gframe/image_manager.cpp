@@ -21,6 +21,8 @@ bool ImageManager::Initial() {
 		tCover[3] = GetTextureFromFile("textures/cover2.jpg", CARD_IMG_WIDTH, CARD_IMG_HEIGHT);
 	if(!tCover[3])
 		tCover[3] = tCover[2];
+	tAvatar[0] = driver->getTexture("textures/head.jpg");
+	tAvatar[1] = GetRandomImage(TEXTURE_AVATAR_S);
 	//tUnknown = NULL;
 	tUnknown[0] = NULL;
 	tUnknown[1] = NULL;
@@ -49,8 +51,6 @@ bool ImageManager::Initial() {
 	tBackGround_menu = NULL;
 	tBackGround_deck = NULL;
 	tCardType = driver->getTexture("textures/cardtype.png");
-	tAvatar[0] = driver->getTexture("textures/head.jpg");
-	tAvatar[1] = GetRandomImage(TEXTURE_AVATAR_S);
 	tLPBarFrame = driver->getTexture("textures/lpbarf.png");
 	tField[0] = driver->getTexture("textures/field2.png");
 	tFieldTransparent[0] = driver->getTexture("textures/field-transparent2.png");

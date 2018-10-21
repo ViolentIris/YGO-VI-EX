@@ -1717,14 +1717,10 @@ bool Game::MakeDirectory(const std::string folder) {
 void Game::initUtils() {
 	//user files
 	MakeDirectory("replay");
-	MakeDirectory("screenshots");
-	//cards from extra pack
-	MakeDirectory("expansions");
 	//files in ygopro-starter-pack
 	MakeDirectory("deck");
 	MakeDirectory("single");
 	//original files
-	MakeDirectory("script");
 	MakeDirectory("skin");
 	MakeDirectory("textures");
 	//subdirs in textures
@@ -1845,13 +1841,11 @@ void Game::OnResize() {
 	old_numFont->drop();
 	old_adFont->drop();
 	old_lpcFont->drop();
-	old_textFont->drop();
+	//guiFont = irr::gui::CGUITTFont::createTTFont(env, gameConf.textfont, gameConf.textfontsize * yScale);
+	//env->getSkin()->setFont(guiFont);
 
-	imageManager.ClearTexture();
-	imageManager.ResizeTexture();
-
-	wMainMenu->setRelativePosition(ResizeWin(370, 200, 650, 415));
-	wDeckEdit->setRelativePosition(Resize(309, 5, 605, 130));
+	wMainMenu->setRelativePosition(ResizeWin(370, 200, 650, 446));
+	wDeckEdit->setRelativePosition(Resize(309, 8, 605, 130));
 	cbDBLFList->setRelativePosition(Resize(80, 5, 220, 30));
 	cbDBDecks->setRelativePosition(Resize(80, 35, 220, 60));
 	btnClearDeck->setRelativePosition(Resize(115, 99, 165, 120));
@@ -1947,6 +1941,7 @@ void Game::OnResize() {
 
 	wCardImg->setRelativePosition(ResizeCard(1, 1, 20, 18));
 	imgCard->setRelativePosition(ResizeCard(10, 9, 0, 0));
+	imgCard->setScaleImage(true);
 	wInfos->setRelativePosition(Resize(1, 275, 301, 639));
 	stName->setRelativePosition(recti(10, 10, 300 * xScale - 13, 10 + 22));
 	lstLog->setRelativePosition(Resize(10, 10, 290, 290));
@@ -1978,6 +1973,8 @@ void Game::OnResize() {
 	btnChainWhenAvail->setRelativePosition(Resize(205, 180, 295, 215));
 	btnShuffle->setRelativePosition(Resize(205, 230, 295, 265));
 	btnCancelOrFinish->setRelativePosition(Resize(205, 230, 295, 265));
+
+	imageManager.ClearTexture();
 }
 recti Game::Resize(s32 x, s32 y, s32 x2, s32 y2) {
 	x = x * xScale;
