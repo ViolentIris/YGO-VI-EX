@@ -72,14 +72,30 @@ bool ImageManager::Initial()  {
 irr::video::ITexture* ImageManager::GetRandomImage(int image_type) {
 	int count = ImageList[image_type].size();
 	if(count <= 0)
-		return 0;
+		return NULL;
 	char ImageName[1024];
 	wchar_t fname[1024];
-	int image_id = rand() % count;
+	if(saved_image_id[image_type] == -1)
+		saved_image_id[image_type] = rand() % count;
+	int image_id = saved_image_id[image_type];
 	auto name = ImageList[image_type][image_id].c_str();
 	myswprintf(fname, L"./textures/%ls", name);
 	BufferIO::EncodeUTF8(fname, ImageName);
 	return driver->getTexture(ImageName);
+}
+irr::video::ITexture* ImageManager::GetRandomImage(int image_type, s32 width, s32 height) {
+	int count = ImageList[image_type].size();
+	if(count <= 0)
+		return NULL;
+	char ImageName[1024];
+	wchar_t fname[1024];
+	if(saved_image_id[image_type] == -1)
+		saved_image_id[image_type] = rand() % count;
+	int image_id = saved_image_id[image_type];
+	auto name = ImageList[image_type][image_id].c_str();
+	myswprintf(fname, L"./textures/%ls", name);
+	BufferIO::EncodeUTF8(fname, ImageName);
+	return GetTextureFromFile(ImageName, width, height);
 }
 void ImageManager::RefreshRandomImageList() {
 	RefreshImageDir(L"bg/", TEXTURE_DUEL);
@@ -90,7 +106,10 @@ void ImageManager::RefreshRandomImageList() {
 	RefreshImageDir(L"cover2/", TEXTURE_COVER_O);
 	RefreshImageDir(L"attack/", TEXTURE_ATTACK);
 	RefreshImageDir(L"act/", TEXTURE_ACTIVATE);
-	RefreshImageDir(L"head/", TEXTURE_AVATAR_S);
+
+	for(int i = 0; i < 7; ++ i) {
+		saved_image_id[i] = -1;
+	}
 }
 void ImageManager::RefreshImageDir(std::wstring path, int image_type) {
 #ifdef _WIN32
@@ -211,6 +230,9 @@ void ImageManager::ResizeTexture() {
 	if(!tBackGround_deck)
 		tBackGround_deck = tBackGround;
 	driver->removeTexture(tAvatar[1]);
+	tAvatar[1] = GetRandomImage(TEXTURE_AVATAR_S, 80, 80);
+	if(!tAvatar[1])
+		tAvatar[1] = tAvatar[0];
 }
 // function by Warr1024, from https://github.com/minetest/minetest/issues/2419 , modified
 void imageScaleNNAA(irr::video::IImage *src, irr::video::IImage *dest) {
