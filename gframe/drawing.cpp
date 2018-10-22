@@ -566,8 +566,8 @@ void Game::DrawMisc() {
 	//Time Display
 	if(!dInfo.isReplay && dInfo.player_type < 7 && dInfo.time_limit) {
 		if(imageManager.tClock) {
-			driver->draw2DImage(imageManager.tClock, Resize(577, 50, 595, 68), recti(0, 0, 128, 128), 0, 0, true);
-			driver->draw2DImage(imageManager.tClock, Resize(695, 50, 713, 68), recti(0, 0, 128, 128), 0, 0, true);
+			driver->draw2DImage(imageManager.tClock, Resize(577, 50, 595, 68), recti(0, 0, 34, 34), 0, 0, true);
+			driver->draw2DImage(imageManager.tClock, Resize(695, 50, 713, 68), recti(0, 0, 34, 34), 0, 0, true);
 		}
 		DrawShadowText(numFont, dInfo.str_time_left[0], Resize(595, 49, 625, 68), Resize(0, 1, 2, 0), dInfo.time_color[0], 0xff000000, true, false, 0);
 		DrawShadowText(numFont, dInfo.str_time_left[1], Resize(713, 49, 743, 68), Resize(0, 1, 2, 0), dInfo.time_color[1], 0xff000000, true, false, 0);
