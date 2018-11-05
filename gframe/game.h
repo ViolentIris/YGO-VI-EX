@@ -728,11 +728,16 @@ extern Game* mainGame;
 #define TEXTURE_MENU				2
 #define TEXTURE_COVER_S				3
 #define TEXTURE_COVER_O				4
-#define TEXTURE_ATTACK				5
-#define TEXTURE_ACTIVATE			6
-#define TEXTURE_AVATAR_S			7
+#define TEXTURE_COVER_S2			5
+#define TEXTURE_COVER_O2			6
+#define TEXTURE_ATTACK				7
+#define TEXTURE_ACTIVATE			8
+#define TEXTURE_AVATAR_S			9
 
 #define DEFAULT_DUEL_RULE			4
 
 #define CARD_ARTWORK_VERSIONS_OFFSET	10
+
+extern bool delay_swap;
+extern int swap_player;
 #endif // GAME_H

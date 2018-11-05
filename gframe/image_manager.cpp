@@ -13,14 +13,20 @@ bool ImageManager::Initial()  {
 
 	tCover[0] = NULL;
 	tCover[1] = NULL;
-	tCover[2] = GetRandomImage(TEXTURE_COVER_S, CARD_IMG_WIDTH, CARD_IMG_HEIGHT);
+	tCover[2] = GetRandomImage(TEXTURE_COVER_S2, CARD_IMG_WIDTH, CARD_IMG_HEIGHT);
 	if(!tCover[2])
-		tCover[2] = GetTextureFromFile("textures/cover.jpg", CARD_IMG_WIDTH, CARD_IMG_HEIGHT);
-	tCover[3] = GetRandomImage(TEXTURE_COVER_O, CARD_IMG_WIDTH, CARD_IMG_HEIGHT);
+		tCover[2] = GetTextureFromFile("textures/cover3.jpg", CARD_IMG_WIDTH, CARD_IMG_HEIGHT);
+	if(!tCover[2])
+		tCover[2] = tCover[1];
+	tCover[3] = GetRandomImage(TEXTURE_COVER_O2, CARD_IMG_WIDTH, CARD_IMG_HEIGHT);
 	if(!tCover[3])
-		tCover[3] = GetTextureFromFile("textures/cover2.jpg", CARD_IMG_WIDTH, CARD_IMG_HEIGHT);
+		tCover[3] = GetTextureFromFile("textures/cover4.jpg", CARD_IMG_WIDTH, CARD_IMG_HEIGHT);
 	if(!tCover[3])
 		tCover[3] = tCover[2];
+	tCover[4] = tCover[0];
+	tCover[5] = tCover[1];
+	tCover[6] = tCover[2];
+	tCover[7] = tCover[3];
 	tAvatar[0] = driver->getTexture("textures/head.jpg");
 	tAvatar[1] = GetRandomImage(TEXTURE_AVATAR_S, 80, 80);
 	//tUnknown = NULL;
@@ -104,6 +110,8 @@ void ImageManager::RefreshRandomImageList() {
 	RefreshImageDir(L"bg_menu/", TEXTURE_MENU);
 	RefreshImageDir(L"cover/", TEXTURE_COVER_S);
 	RefreshImageDir(L"cover2/", TEXTURE_COVER_O);
+	RefreshImageDir(L"cover3/", TEXTURE_COVER_S2);
+	RefreshImageDir(L"cover4/", TEXTURE_COVER_O2);
 	RefreshImageDir(L"attack/", TEXTURE_ATTACK);
 	RefreshImageDir(L"act/", TEXTURE_ACTIVATE);
 	RefreshImageDir(L"head/", TEXTURE_AVATAR_S);
@@ -205,6 +213,24 @@ void ImageManager::ResizeTexture() {
 		tCover[1] = GetRandomImage(TEXTURE_COVER_S, imgWidth, imgHeight);
 	if(!tCover[1])
 		tCover[1] = tCover[0];
+	tCover[2] = GetRandomImage(TEXTURE_COVER_S2, imgWidth, imgHeight);
+	if(!tCover[2])
+		tCover[2] = driver->getTexture("textures/cover3.jpg");
+	if(!tCover[2])
+		tCover[2] = GetRandomImage(TEXTURE_COVER_S, imgWidth, imgHeight);
+	if(!tCover[2])
+		tCover[2] = tCover[1];
+	tCover[3] = GetRandomImage(TEXTURE_COVER_O2, imgWidth, imgHeight);
+	if(!tCover[3])
+		tCover[3] = driver->getTexture("textures/cover4.jpg");
+	if(!tCover[3])
+		tCover[3] = GetRandomImage(TEXTURE_COVER_O, imgWidth, imgHeight);
+	if(!tCover[3])
+		tCover[3] = tCover[2];
+	tCover[4] = tCover[0];
+	tCover[5] = tCover[1];
+	tCover[6] = tCover[2];
+	tCover[7] = tCover[3];
 	//driver->removeTexture(tUnknown);
 	//tUnknown = GetTextureFromFile("textures/unknown.jpg", imgWidth, imgHeight);
 	driver->removeTexture(tBackGround);

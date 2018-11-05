@@ -9,8 +9,8 @@ namespace ygo {
 
 class ImageManager {
 public:
-	std::vector<std::wstring> ImageList[8];
-	int saved_image_id[8];
+	std::vector<std::wstring> ImageList[10];
+	int saved_image_id[10];
 	bool Initial();
 	//random image
 	irr::video::ITexture* GetRandomImage(int image_type);
@@ -32,7 +32,7 @@ public:
 	std::unordered_map<int, irr::video::ITexture*> tFields;
 	irr::IrrlichtDevice* device;
 	irr::video::IVideoDriver* driver;
-	irr::video::ITexture* tCover[4];
+	irr::video::ITexture* tCover[8];
 	irr::video::ITexture* tAvatar[2];
 	irr::video::ITexture* tUnknown[3];
 	irr::video::ITexture* tAct;
