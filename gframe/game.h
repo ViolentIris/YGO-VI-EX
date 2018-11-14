@@ -311,7 +311,13 @@ public:
 	irr::gui::IGUIButton* btnTestMode;
 	irr::gui::IGUIButton* btnDeckEdit;
 	irr::gui::IGUIButton* btnModeExit;
+	irr::gui::IGUIButton* btnOther;
+	//other
 	irr::gui::IGUIButton* btnXPG;
+	irr::gui::IGUIButton* btnTakeout1;
+	irr::gui::IGUIButton* btnTakeout2;
+	irr::gui::IGUIButton* btnOtherExit;
+	irr::gui::IGUIButton* btnLantern;
 	//lan
 	irr::gui::IGUIWindow* wLanWindow;
 	irr::gui::IGUIEditBox* ebNickName;
@@ -718,10 +724,16 @@ extern Game* mainGame;
 #define BUTTON_MARKS_FILTER			380
 #define BUTTON_MARKERS_OK			381
 
-#define BUTTON_XPG			        385
-#define BUTTON_RENAME_DECK			386
+#define BUTTON_OTHER			        385
+#define BUTTON_RENAME_DECK				386
 #define BUTTON_RENAME_DECK_SAVE			387
 #define BUTTON_RENAME_DECK_CANCEL		388
+
+#define BUTTON_XPG						389
+#define BUTTON_TAKEOUT1					390
+#define BUTTON_TAKEOUT2					391
+#define BUTTON_LANTERN					392
+#define BUTTON_OTHER_EXIT				393
 
 #define TEXTURE_DUEL				0
 #define TEXTURE_DECK				1

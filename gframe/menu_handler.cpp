@@ -52,9 +52,41 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				mainGame->device->closeDevice();
 				break;
 			}
+			case BUTTON_OTHER: {
+				mainGame->btnXPG->setEnabled(true);
+				mainGame->btnTakeout1->setEnabled(true);
+				mainGame->btnTakeout2->setEnabled(true);
+				mainGame->btnLantern->setEnabled(true);
+				mainGame->btnTakeout2->setEnabled(true);
+				mainGame->HideElement(mainGame->wMainMenu);
+				mainGame->ShowElement(mainGame->wOther);
+				break;
+			}
 			case BUTTON_XPG: {
-                                system("start https://ocg.xpg.jp/deck/deck.fcgi");
+                system("start https://ocg.xpg.jp/deck/deck.fcgi");
 				return true;
+				break;
+			}
+			case BUTTON_TAKEOUT1: {
+                system("start https://www.ele.me/home/");
+				return true;
+				break;
+			}
+			case BUTTON_TAKEOUT2: {
+                system("start https://waimai.meituan.com/new/waimaiIndex");
+				return true;
+				break;
+			}
+			case BUTTON_LANTERN: {
+                system("start https://github.com/getlantern/download");
+				return true;
+				break;
+			}
+			case BUTTON_OTHER_EXIT: {
+				mainGame->HideElement(mainGame->wOther);
+				mainGame->ShowElement(mainGame->wMainMenu);
+				if(exit_on_return)
+					mainGame->device->closeDevice();
 				break;
 			}
 			case BUTTON_LAN_MODE: {
