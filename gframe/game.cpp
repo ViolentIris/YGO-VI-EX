@@ -128,8 +128,9 @@ bool Game::Initialize() {
 	btnOther = env->addButton(rect<s32>(10, 170, 270, 200), wMainMenu, BUTTON_OTHER, dataManager.GetSysString(1375));
 
 	//other
-	wOther = env->addWindow(rect<s32>(370, 200, 650, 415), false, strbuf);
+	wOther = env->addWindow(rect<s32>(370, 200, 650, 415), false, dataManager.GetSysString(1375));
 	wOther->getCloseButton()->setVisible(false);
+	wOther->setVisible(false);
 	btnXPG = env->addButton(rect<s32>(10, 30, 270, 60), wOther, BUTTON_XPG, dataManager.GetSysString(1376));
 	btnTakeout1 = env->addButton(rect<s32>(10, 65, 270, 95), wOther, BUTTON_TAKEOUT1, dataManager.GetSysString(1377));
 	btnTakeout2 = env->addButton(rect<s32>(10, 100, 270, 130), wOther, BUTTON_TAKEOUT2, dataManager.GetSysString(1378));
