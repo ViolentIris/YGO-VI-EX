@@ -313,6 +313,7 @@ public:
 	irr::gui::IGUIButton* btnModeExit;
 	irr::gui::IGUIButton* btnOther;
 	//other
+	irr::gui::IGUIWindow* wOther;
 	irr::gui::IGUIButton* btnXPG;
 	irr::gui::IGUIButton* btnTakeout1;
 	irr::gui::IGUIButton* btnTakeout2;
