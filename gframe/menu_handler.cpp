@@ -57,7 +57,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				mainGame->btnTakeout1->setEnabled(true);
 				mainGame->btnTakeout2->setEnabled(true);
 				mainGame->btnLantern->setEnabled(true);
-				mainGame->btnTakeout2->setEnabled(true);
+				mainGame->btnOtherExit->setEnabled(true);
 				mainGame->HideElement(mainGame->wMainMenu);
 				mainGame->ShowElement(mainGame->wOther);
 				break;
