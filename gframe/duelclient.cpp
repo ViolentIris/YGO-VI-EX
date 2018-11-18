@@ -719,11 +719,22 @@ void DuelClient::HandleSTOCPacketLan(char* data, unsigned int len) {
 		wchar_t timetext[80];
 		mbstowcs(timetext, timebuf, size);
 		mainGame->ebRSName->setText(timetext);
-		mainGame->wReplaySave->setText(dataManager.GetSysString(1340));
-		mainGame->PopupElement(mainGame->wReplaySave);
-		mainGame->gMutex.Unlock();
-		mainGame->replaySignal.Reset();
-		mainGame->replaySignal.Wait();
+		if(!mainGame->chkAutoSaveReplay->isChecked()) {
+			mainGame->wReplaySave->setText(dataManager.GetSysString(1340));
+			mainGame->PopupElement(mainGame->wReplaySave);
+			mainGame->gMutex.Unlock();
+			mainGame->replaySignal.Reset();
+			mainGame->replaySignal.Wait();
+		}
+		else {
+			mainGame->actionParam = 1;
+			wchar_t msgbuf[256];
+			myswprintf(msgbuf, dataManager.GetSysString(1367), timetext);
+			mainGame->SetStaticText(mainGame->stACMessage, 310, mainGame->guiFont, msgbuf);
+			mainGame->PopupElement(mainGame->wACMessage, 20);
+			mainGame->gMutex.Unlock();
+			mainGame->WaitFrameSignal(30);
+		}
 		if(mainGame->actionParam || !is_host) {
 			char* prep = pdata;
 			Replay new_replay;
@@ -1376,6 +1387,10 @@ int DuelClient::ClientAnalyze(char * msg, unsigned int len) {
 			wchar_t ynbuf[256];
 			myswprintf(ynbuf, dataManager.GetSysString(200), dataManager.FormatLocation(l, s), dataManager.GetName(code));
 			myswprintf(textBuffer, L"%ls\n%ls", event_string, ynbuf);
+		} else if(desc == 221) {
+			wchar_t ynbuf[256];
+			myswprintf(ynbuf, dataManager.GetSysString(221), dataManager.FormatLocation(l, s), dataManager.GetName(code));
+			myswprintf(textBuffer, L"%ls\n%ls\n%ls", event_string, ynbuf, dataManager.GetSysString(223));
 		} else if(desc < 2048) {
 			myswprintf(textBuffer, dataManager.GetSysString(desc), dataManager.GetName(code));
 		} else {
@@ -1642,6 +1657,8 @@ int DuelClient::ClientAnalyze(char * msg, unsigned int len) {
 			if(!forced) {
 				if(count == 0)
 					myswprintf(textBuffer, L"%ls\n%ls", dataManager.GetSysString(201), dataManager.GetSysString(202));
+				else if(select_trigger)
+					myswprintf(textBuffer, L"%ls\n%ls\n%ls", event_string, dataManager.GetSysString(222), dataManager.GetSysString(223));
 				else
 					myswprintf(textBuffer, L"%ls\n%ls", event_string, dataManager.GetSysString(203));
 				mainGame->SetStaticText(mainGame->stQMessage, 310, mainGame->guiFont, (wchar_t*)textBuffer);
