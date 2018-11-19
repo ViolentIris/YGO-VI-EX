@@ -328,12 +328,13 @@ bool Game::Initialize() {
 	posY += 30;
 	chkAutoSaveReplay = env->addCheckBox(false, rect<s32>(posX, posY, posX + 260, posY + 25), tabHelper, -1, dataManager.GetSysString(1366));
 	chkAutoSaveReplay->setChecked(gameConf.auto_save_replay != 0);
+	posY += 30;
 	chkMultiKeywords = env->addCheckBox(false, rect<s32>(posX, posY, posX + 260, posY + 25), tabHelper, CHECKBOX_MULTI_KEYWORDS, dataManager.GetSysString(1378));
 	chkMultiKeywords->setChecked(gameConf.search_multiple_keywords > 0);
 	posY += 30;
 	chkRegex = env->addCheckBox(false, rect<s32>(posX, posY, posX + 260, posY + 25), tabHelper, CHECKBOX_REGEX, dataManager.GetSysString(1379));
 	chkRegex->setChecked(gameConf.search_regex > 0);
-	posY += 30;
+	RefreshLocales();
 	elmTabHelperLast = chkRegex;
 	//system
 	irr::gui::IGUITab* _tabSystem = wInfos->addTab(dataManager.GetSysString(1273));
@@ -367,10 +368,10 @@ bool Game::Initialize() {
 	chkAutoSearch->setChecked(gameConf.auto_search_limit >= 0);
 	posY += 30;
 	env->addStaticText(dataManager.GetSysString(1282), rect<s32>(posX + 23, posY + 3, posX + 120, posY + 28), false, false, tabSystem);
-	btnWinResizeS = env->addButton(rect<s32>(posX + 125, posY, posX + 155, posY + 25), tabSystem, BUTTON_WINDOW_RESIZE_S, dataManager.GetSysString(1283));
-	btnWinResizeM = env->addButton(rect<s32>(posX + 160, posY, posX + 190, posY + 25), tabSystem, BUTTON_WINDOW_RESIZE_M, dataManager.GetSysString(1284));
-	btnWinResizeL = env->addButton(rect<s32>(posX + 195, posY, posX + 225, posY + 25), tabSystem, BUTTON_WINDOW_RESIZE_L, dataManager.GetSysString(1285));
-	btnWinResizeXL = env->addButton(rect<s32>(posX + 230, posY, posX + 260, posY + 25), tabSystem, BUTTON_WINDOW_RESIZE_XL, dataManager.GetSysString(1286));
+	btnWinResizeS = env->addButton(rect<s32>(posX + 115, posY, posX + 145, posY + 25), tabSystem, BUTTON_WINDOW_RESIZE_S, dataManager.GetSysString(1283));
+	btnWinResizeM = env->addButton(rect<s32>(posX + 150, posY, posX + 180, posY + 25), tabSystem, BUTTON_WINDOW_RESIZE_M, dataManager.GetSysString(1284));
+	btnWinResizeL = env->addButton(rect<s32>(posX + 185, posY, posX + 215, posY + 25), tabSystem, BUTTON_WINDOW_RESIZE_L, dataManager.GetSysString(1285));
+	btnWinResizeXL = env->addButton(rect<s32>(posX + 220, posY, posX + 250, posY + 25), tabSystem, BUTTON_WINDOW_RESIZE_XL, dataManager.GetSysString(1286));
 	posY += 30;
 	chkEnableSound = env->addCheckBox(gameConf.enable_sound, rect<s32>(posX, posY, posX + 120, posY + 25), tabSystem, CHECKBOX_ENABLE_SOUND, dataManager.GetSysString(1279));
 	chkEnableSound->setChecked(gameConf.enable_sound);
@@ -392,7 +393,6 @@ bool Game::Initialize() {
 	posY += 30;
 	chkMusicMode = env->addCheckBox(false, rect<s32>(posX, posY, posX + 260, posY + 25), tabSystem, -1, dataManager.GetSysString(1281));
 	chkMusicMode->setChecked(gameConf.music_mode != 0);
-	posY += 30;
 	elmTabSystemLast = chkMusicMode;
 	//
 	wHand = env->addWindow(rect<s32>(500, 450, 825, 605), false, L"");
