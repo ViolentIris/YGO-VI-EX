@@ -100,7 +100,6 @@ bool ImageManager::Initial()  {
 	support_types.push_back(std::string("jpg"));
 	support_types.push_back(std::string("png"));
 	support_types.push_back(std::string("bpg"));
-	ResizeTexture();
 	return true;
 }
 irr::video::ITexture* ImageManager::GetRandomImage(int image_type) {

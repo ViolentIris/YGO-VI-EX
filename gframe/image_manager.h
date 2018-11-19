@@ -18,7 +18,6 @@ public:
 	void SetDevice(irr::IrrlichtDevice* dev);
 	void ClearTexture();
 	void RemoveTexture(int code);
-	void ResizeTexture();
 	irr::video::ITexture* GetTextureFromFile(char* file, s32 width, s32 height);
 	irr::video::ITexture* GetTextureExpansions(char* file, s32 width, s32 height);
 	irr::video::ITexture* GetTextureExpansionsDirectry(const char* path, char* file, s32 width, s32 height);
