@@ -911,8 +911,8 @@ void Game::DrawSpec() {
 		}
 		case 100: {
 			if(showcardp < 60) {
-				driver->draw2DImage(imageManager.tHand[(showcardcode >> 16) & 0x3], Resize(615, showcarddif));
-				driver->draw2DImage(imageManager.tHand[showcardcode & 0x3], Resize(615, 540 - showcarddif));
+				driver->draw2DImage(imageManager.tHand[(showcardcode >> 16) & 0x3], position2di((615 + 44.5) * xScale - 44.5, (showcarddif + 64) * yScale - 64));
+				driver->draw2DImage(imageManager.tHand[showcardcode & 0x3], position2di((615 + 44.5) * xScale - 44.5, (540 - showcarddif + 64) * yScale - 64));
 				float dy = -0.333333f * showcardp + 10;
 				showcardp++;
 				if(showcardp < 30)

@@ -41,6 +41,8 @@ struct Config {
 	int draw_field_spell;
 	int separate_clear_button;
 	int auto_search_limit;
+	int search_multiple_keywords;
+	int search_regex;
 	int chkIgnoreDeckChanges;
 	int defaultOT;
 	int enable_bot_mode;
@@ -49,6 +51,7 @@ struct Config {
 	int window_width;
 	int window_height;
 	bool resize_popup_menu;
+	int auto_save_replay;
 	bool enable_sound;
 	bool enable_music;
 	double sound_volume;
@@ -123,6 +126,8 @@ public:
 	void InitStaticText(irr::gui::IGUIStaticText* pControl, u32 cWidth, u32 cHeight, irr::gui::CGUITTFont* font, const wchar_t* text);
 	void SetStaticText(irr::gui::IGUIStaticText* pControl, u32 cWidth, irr::gui::CGUITTFont* font, const wchar_t* text, u32 pos = 0);
 	void LoadExpansionDB();
+	void LoadExpansionDBDirectry(const char* path);
+	void LoadExpansionStrings();
 	void RefreshDeck(irr::gui::IGUIComboBox* cbDeck);
 	void RefreshReplay();
 	void RefreshSingleplay();
@@ -152,10 +157,10 @@ public:
 	void SaveConfig();
 	void ShowCardInfo(int code, bool resize = false);
 	void ClearCardInfo(int player = 0);
-	void AddChatMsg(wchar_t* msg, int player);
+	void AddChatMsg(const wchar_t* msg, int player);
 	void ClearChatMsg();
-	void AddDebugMsg(char* msgbuf);
-	bool MakeDirectory(const std::string folder);
+	void AddDebugMsg(const char* msgbuf);
+	void ErrorLog(const char* msgbuf);
 	void initUtils();
 	void ClearTextures();
 	void CloseDuelWindow();
@@ -163,6 +168,8 @@ public:
 	int LocalPlayer(int player);
 	const wchar_t* LocalName(int local_player);
 	const char* GetLocaleDir(const char* dir);
+	bool CheckRegEx(const wchar_t* text, const wchar_t* exp, bool exact = false);
+	bool CheckRegEx(std::wstring text, const wchar_t* exp, bool exact = false);
 
 	bool HasFocus(EGUI_ELEMENT_TYPE type) const {
 		irr::gui::IGUIElement* focus = env->getFocus();
@@ -174,7 +181,7 @@ public:
 	recti Resize(s32 x, s32 y, s32 x2, s32 y2, s32 dx, s32 dy, s32 dx2, s32 dy2);
 	position2di Resize(s32 x, s32 y);
 	position2di ResizeReverse(s32 x, s32 y);
-	recti ResizeElem(s32 x, s32 y, s32 x2, s32 y2);
+	recti ResizePhaseHint(s32 x, s32 y, s32 x2, s32 y2, s32 width);
 	recti ResizeWin(s32 x, s32 y, s32 x2, s32 y2, bool chat = false);
 	recti ResizeCard(s32 x, s32 y, s32 x2, s32 y2);
 	recti ResizeCardHint(s32 x, s32 y, s32 x2, s32 y2);
@@ -282,6 +289,9 @@ public:
 	irr::gui::IGUIListBox* lstLog;
 	irr::gui::IGUIButton* btnClearLog;
 	irr::gui::IGUIButton* btnSaveLog;
+	irr::gui::IGUIWindow* tabHelper;
+	irr::gui::IGUIElement* elmTabHelperLast;
+	irr::gui::IGUIScrollBar* scrTabHelper;
 	irr::gui::IGUICheckBox* chkMAutoPos;
 	irr::gui::IGUICheckBox* chkSTAutoPos;
 	irr::gui::IGUICheckBox* chkRandomPos;
@@ -289,10 +299,15 @@ public:
 	irr::gui::IGUICheckBox* chkWaitChain;
 	irr::gui::IGUICheckBox* chkQuickAnimation;
 	irr::gui::IGUICheckBox* chkAutoSaveReplay;
+	irr::gui::IGUIWindow* tabSystem;
+	irr::gui::IGUIElement* elmTabSystemLast;
+	irr::gui::IGUIScrollBar* scrTabSystem;
 	irr::gui::IGUICheckBox* chkHideSetname;
 	irr::gui::IGUICheckBox* chkHideHintButton;
 	irr::gui::IGUICheckBox* chkIgnoreDeckChanges;
 	irr::gui::IGUICheckBox* chkAutoSearch;
+	irr::gui::IGUICheckBox* chkMultiKeywords;
+	irr::gui::IGUICheckBox* chkRegex;
 	irr::gui::IGUICheckBox* chkEnableSound;
 	irr::gui::IGUICheckBox* chkEnableMusic;
 	irr::gui::IGUIScrollBar* scrSoundVolume;
@@ -637,6 +652,7 @@ extern Game* mainGame;
 #define BUTTON_CARD_4				234
 #define SCROLL_CARD_SELECT			235
 #define BUTTON_CARD_SEL_OK			236
+#define TEXT_CARD_LIST_TIP			237
 #define BUTTON_CMD_ACTIVATE			240
 #define BUTTON_CMD_SUMMON			241
 #define BUTTON_CMD_SPSUMMON			242
@@ -705,10 +721,15 @@ extern Game* mainGame;
 #define BUTTON_BOT_START			340
 #define LISTBOX_BOT_LIST			341
 #define CHECKBOX_BOT_OLD_RULE		342
-#define LISTBOX_SINGLEPLAY_LIST		350
-#define BUTTON_LOAD_SINGLEPLAY		351
-#define BUTTON_CANCEL_SINGLEPLAY	352
+#define LISTBOX_SINGLEPLAY_LIST		343
+#define BUTTON_LOAD_SINGLEPLAY		344
+#define BUTTON_CANCEL_SINGLEPLAY	345
+#define SCROLL_TAB_HELPER			350
+#define SCROLL_TAB_SYSTEM			351
+#define CHECKBOX_MULTI_KEYWORDS		352
+#define CHECKBOX_REGEX				353
 #define CHECKBOX_AUTO_SEARCH		360
+
 #define CHECKBOX_ENABLE_SOUND		361
 #define CHECKBOX_ENABLE_MUSIC		362
 #define SCROLL_VOLUME				363

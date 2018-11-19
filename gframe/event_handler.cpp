@@ -290,7 +290,7 @@ bool ClientField::OnEvent(const irr::SEvent& event) {
 				mainGame->btnOptionn->setVisible(true);
 				if(selected_option == 0)
 					mainGame->btnOptionp->setVisible(false);
-				mainGame->SetStaticText(mainGame->stOptions, 310, mainGame->guiFont, (wchar_t*)dataManager.GetDesc(select_options[selected_option]));
+				mainGame->SetStaticText(mainGame->stOptions, 310, mainGame->guiFont, dataManager.GetDesc(select_options[selected_option]));
 				break;
 			}
 			case BUTTON_OPTION_NEXT: {
@@ -299,7 +299,7 @@ bool ClientField::OnEvent(const irr::SEvent& event) {
 				mainGame->btnOptionp->setVisible(true);
 				if(selected_option == select_options.size() - 1)
 					mainGame->btnOptionn->setVisible(false);
-				mainGame->SetStaticText(mainGame->stOptions, 310, mainGame->guiFont, (wchar_t*)dataManager.GetDesc(select_options[selected_option]));
+				mainGame->SetStaticText(mainGame->stOptions, 310, mainGame->guiFont, dataManager.GetDesc(select_options[selected_option]));
 				break;
 			}
 			case BUTTON_OPTION_0: {
@@ -1015,6 +1015,9 @@ bool ClientField::OnEvent(const irr::SEvent& event) {
 					mainGame->ClearCardInfo(mcard->controler);
 				}
 			}
+			if(id == TEXT_CARD_LIST_TIP) {
+				mainGame->stCardListTip->setVisible(true);
+			}
 			break;
 		}
 		case irr::gui::EGET_ELEMENT_LEFT: {
@@ -1028,6 +1031,9 @@ bool ClientField::OnEvent(const irr::SEvent& event) {
 				int pos = mainGame->scrDisplayList->getPos() / 10;
 				ClientCard* mcard = display_cards[id - BUTTON_DISPLAY_0 + pos];
 				SetShowMark(mcard, false);
+				mainGame->stCardListTip->setVisible(false);
+			}
+			if(id == TEXT_CARD_LIST_TIP) {
 				mainGame->stCardListTip->setVisible(false);
 			}
 			break;
@@ -1631,7 +1637,7 @@ bool ClientField::OnEvent(const irr::SEvent& event) {
 						str.append(formatBuffer);
 					}
 					should_show_tip = true;
-					irr::core::dimension2d<unsigned int> dtip = mainGame->textFont->getDimension(str.c_str()) + irr::core::dimension2d<unsigned int>(10, 10);
+					irr::core::dimension2d<unsigned int> dtip = mainGame->guiFont->getDimension(str.c_str()) + irr::core::dimension2d<unsigned int>(10, 10);
 					mainGame->stTip->setRelativePosition(recti(mousepos.X - 10 - dtip.Width, mousepos.Y + 10, mousepos.X - 10, mousepos.Y + 10 + dtip.Height));
 					mainGame->stTip->setText(str.c_str());
 				}
@@ -1844,6 +1850,22 @@ bool ClientField::OnCommonEvent(const irr::SEvent& event) {
 			switch(id) {
 			case CHECKBOX_AUTO_SEARCH: {
 				mainGame->gameConf.auto_search_limit = mainGame->chkAutoSearch->isChecked() ? 0 : -1;
+				if(mainGame->is_building && !mainGame->is_siding)
+					mainGame->deckBuilder.InstantSearch();
+				return true;
+				break;
+			}
+			case CHECKBOX_MULTI_KEYWORDS: {
+				mainGame->gameConf.search_multiple_keywords = mainGame->chkMultiKeywords->isChecked() ? 1 : 0;
+				if(mainGame->is_building && !mainGame->is_siding)
+					mainGame->deckBuilder.InstantSearch();
+				return true;
+				break;
+			}
+			case CHECKBOX_REGEX: {
+				mainGame->gameConf.search_regex = mainGame->chkRegex->isChecked() ? 1 : 0;
+				if(mainGame->is_building && !mainGame->is_siding)
+					mainGame->deckBuilder.InstantSearch();
 				return true;
 				break;
 			}
@@ -1927,6 +1949,18 @@ bool ClientField::OnCommonEvent(const irr::SEvent& event) {
 				break;
 			}
 #endif
+			case SCROLL_TAB_HELPER: {
+				rect<s32> pos = mainGame->tabHelper->getRelativePosition();
+				mainGame->tabHelper->setRelativePosition(recti(0, mainGame->scrTabHelper->getPos() * -1, pos.LowerRightCorner.X, pos.LowerRightCorner.Y));
+				return true;
+				break;
+			}
+			case SCROLL_TAB_SYSTEM: {
+				rect<s32> pos = mainGame->tabSystem->getRelativePosition();
+				mainGame->tabSystem->setRelativePosition(recti(0, mainGame->scrTabSystem->getPos() * -1, pos.LowerRightCorner.X, pos.LowerRightCorner.Y));
+				return true;
+				break;
+			}
 			}
 			break;
 		}
@@ -1935,7 +1969,6 @@ bool ClientField::OnCommonEvent(const irr::SEvent& event) {
 			case COMBOBOX_LOCALE: {
 				myswprintf(mainGame->gameConf.locale, L"%ls",  mainGame->cbLocale->getItem(mainGame->cbLocale->getSelected()));
 				mainGame->SaveConfig();
-				return true;
 				break;
 			}
 			}
@@ -1967,15 +2000,19 @@ bool ClientField::OnCommonEvent(const irr::SEvent& event) {
 		switch(event.KeyInput.Key) {
 		case irr::KEY_KEY_R: {
 			if(mainGame->gameConf.control_mode == 0
-				&& !event.KeyInput.PressedDown && !mainGame->HasFocus(EGUIET_EDIT_BOX))
+				&& !event.KeyInput.PressedDown && !mainGame->HasFocus(EGUIET_EDIT_BOX)) {
 				mainGame->textFont->setTransparency(true);
+				mainGame->guiFont->setTransparency(true);
+			}
 			return true;
 			break;
 		}
 		case irr::KEY_F9: {
 			if(mainGame->gameConf.control_mode == 1
-				&& !event.KeyInput.PressedDown && !mainGame->HasFocus(EGUIET_EDIT_BOX))
+				&& !event.KeyInput.PressedDown && !mainGame->HasFocus(EGUIET_EDIT_BOX)) {
 				mainGame->textFont->setTransparency(true);
+				mainGame->guiFont->setTransparency(true);
+			}
 			return true;
 			break;
 		}
@@ -2331,12 +2368,17 @@ void ClientField::ShowCardInfoInList(ClientCard* pcard, irr::gui::IGUIElement* e
 	}
 	if(str.length() > 0) {
 		parent->addChild(mainGame->stCardListTip);
-		irr::core::rect<s32> epos = element->getRelativePosition();
-		s32 x = (epos.UpperLeftCorner.X + epos.LowerRightCorner.X) / 2;
-		s32 y = epos.LowerRightCorner.Y;
-		irr::core::dimension2d<unsigned int> dtip = mainGame->textFont->getDimension(str.c_str()) + irr::core::dimension2d<unsigned int>(10, 10);
-		mainGame->stCardListTip->setRelativePosition(recti(x - dtip.Width / 2, y - 10, x + dtip.Width / 2, y - 10 + dtip.Height));
-		mainGame->stCardListTip->setText(str.c_str());
+		irr::core::rect<s32> ePos = element->getRelativePosition();
+		s32 x = (ePos.UpperLeftCorner.X + ePos.LowerRightCorner.X) / 2;
+		s32 y = ePos.LowerRightCorner.Y;
+		mainGame->SetStaticText(mainGame->stCardListTip, 320, mainGame->guiFont, str.c_str());
+		irr::core::dimension2d<unsigned int> dTip = mainGame->guiFont->getDimension(mainGame->stCardListTip->getText()) + irr::core::dimension2d<unsigned int>(10, 10);
+		s32 w = dTip.Width / 2;
+		if(x - w < 10)
+			x = w + 10;
+		if(x + w > 670)
+			x = 670 - w;
+		mainGame->stCardListTip->setRelativePosition(recti(x - w, y - 10, x + w, y - 10 + dTip.Height));
 		mainGame->stCardListTip->setVisible(true);
 	}
 }
