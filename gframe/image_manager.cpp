@@ -126,7 +126,7 @@ void ImageManager::RefreshRandomImageList() {
 	RefreshImageDir(L"cover4", TEXTURE_COVER_O2);
 	RefreshImageDir(L"attack", TEXTURE_ATTACK);
 	RefreshImageDir(L"act", TEXTURE_ACTIVATE);
-	RefreshImageDir(L"head", TEXTURE_HEAD_S);
+	RefreshImageDir(L"head", TEXTURE_AVATAR_S);
 }
 void ImageManager::RefreshImageDir(std::wstring path, int image_type) {
 	std::wstring search = L"./textures/" + path;
