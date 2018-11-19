@@ -104,7 +104,7 @@ bool Game::Initialize() {
 		return false;
 	}
 	smgr = device->getSceneManager();
-	device->setWindowCaption(L"YGO-VI-ES");
+	device->setWindowCaption(L"YGO Dark-Soul ES");
 	device->setResizable(true);
 	if(gameConf.window_maximized)
 		device->maximizeWindow();
@@ -887,7 +887,7 @@ void Game::MainLoop() {
 			usleep(20000);
 #endif
 		if(cur_time >= 1000) {
-			myswprintf(cap, L"YGO-VI-ES FPS: %d", fps);
+			myswprintf(cap, L"YGO Dark-Soul ES FPS: %d", fps);
 			device->setWindowCaption(cap);
 			fps = 0;
 			cur_time -= 1000;
