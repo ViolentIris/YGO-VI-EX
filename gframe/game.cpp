@@ -136,8 +136,8 @@ bool Game::Initialize() {
 	btnTakeout1 = env->addButton(rect<s32>(10, 65, 270, 95), wOther, BUTTON_TAKEOUT1, dataManager.GetSysString(1424));
 	btnTakeout2 = env->addButton(rect<s32>(10, 100, 270, 130), wOther, BUTTON_TAKEOUT2, dataManager.GetSysString(1425));
 	btnLantern = env->addButton(rect<s32>(10, 135, 270, 165), wOther, BUTTON_LANTERN, dataManager.GetSysString(1426));
-	btnOtherExit = env->addButton(rect<s32>(10, 170, 270, 235), wOther, BUTTON_OTHER_EXIT, dataManager.GetSysString(1210));
-	btnAFD = env->addButton(rect<s32>(10, 135, 270, 200), wOther, BUTTON_AFD, dataManager.GetSysString(1427));
+	btnOtherExit = env->addButton(rect<s32>(10, 205, 270, 235), wOther, BUTTON_OTHER_EXIT, dataManager.GetSysString(1210));
+	btnAFD = env->addButton(rect<s32>(10, 170, 270, 200), wOther, BUTTON_AFD, dataManager.GetSysString(1427));
 	
 	//lan mode
 	wLanWindow = env->addWindow(rect<s32>(220, 100, 800, 520), false, dataManager.GetSysString(1200));
