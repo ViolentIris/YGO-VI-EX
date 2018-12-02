@@ -129,15 +129,14 @@ bool Game::Initialize() {
 	btnOther = env->addButton(rect<s32>(10, 170, 270, 200), wMainMenu, BUTTON_OTHER, dataManager.GetSysString(1422));
 
 	//other
-	wOther = env->addWindow(rect<s32>(370, 200, 650, 446), false, dataManager.GetSysString(1422));
+	wOther = env->addWindow(rect<s32>(370, 200, 650, 415), false, dataManager.GetSysString(1422));
 	wOther->getCloseButton()->setVisible(false);
 	wOther->setVisible(false);
 	btnXPG = env->addButton(rect<s32>(10, 30, 270, 60), wOther, BUTTON_XPG, dataManager.GetSysString(1423));
 	btnTakeout1 = env->addButton(rect<s32>(10, 65, 270, 95), wOther, BUTTON_TAKEOUT1, dataManager.GetSysString(1424));
 	btnTakeout2 = env->addButton(rect<s32>(10, 100, 270, 130), wOther, BUTTON_TAKEOUT2, dataManager.GetSysString(1425));
 	btnLantern = env->addButton(rect<s32>(10, 135, 270, 165), wOther, BUTTON_LANTERN, dataManager.GetSysString(1426));
-	btnOtherExit = env->addButton(rect<s32>(10, 205, 270, 235), wOther, BUTTON_OTHER_EXIT, dataManager.GetSysString(1210));
-	btnAFD = env->addButton(rect<s32>(10, 170, 270, 200), wOther, BUTTON_AFD, dataManager.GetSysString(1427));
+	btnOtherExit = env->addButton(rect<s32>(10, 170, 270, 200), wOther, BUTTON_OTHER_EXIT, dataManager.GetSysString(1210));
 	
 	//lan mode
 	wLanWindow = env->addWindow(rect<s32>(220, 100, 800, 520), false, dataManager.GetSysString(1200));

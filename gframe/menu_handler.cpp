@@ -82,11 +82,6 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				return true;
 				break;
 			}
-			case BUTTON_AFD: {
-                system("start https://afdian.net/@YGO-VI");
-				return true;
-				break;
-			}
 			case BUTTON_OTHER_EXIT: {
 				mainGame->HideElement(mainGame->wOther);
 				mainGame->ShowElement(mainGame->wMainMenu);

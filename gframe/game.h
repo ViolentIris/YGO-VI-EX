@@ -335,7 +335,6 @@ public:
 	irr::gui::IGUIButton* btnTakeout2;
 	irr::gui::IGUIButton* btnOtherExit;
 	irr::gui::IGUIButton* btnLantern;
-	irr::gui::IGUIButton* btnAFD;
 	//lan
 	irr::gui::IGUIWindow* wLanWindow;
 	irr::gui::IGUIEditBox* ebNickName;
@@ -758,7 +757,6 @@ extern Game* mainGame;
 #define BUTTON_TAKEOUT2					391
 #define BUTTON_LANTERN					392
 #define BUTTON_OTHER_EXIT				393
-#define BUTTON_AFD						394
 
 #define TEXTURE_DUEL				0
 #define TEXTURE_DECK				1
