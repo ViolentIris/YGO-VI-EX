@@ -53,7 +53,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_OTHER: {
-				mainGame->btnXPG->setEnabled(true);
+				mainGame->btnSEM->setEnabled(true);
 				mainGame->btnTakeout1->setEnabled(true);
 				mainGame->btnTakeout2->setEnabled(true);
 				mainGame->btnLantern->setEnabled(true);
@@ -62,8 +62,8 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				mainGame->ShowElement(mainGame->wOther);
 				break;
 			}
-			case BUTTON_XPG: {
-                system("start https://ocg.xpg.jp/deck/deck.fcgi");
+			case BUTTON_SEM: {
+                system("start https://www.ygo-sem.cn/");
 				return true;
 				break;
 			}
