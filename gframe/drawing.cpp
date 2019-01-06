@@ -559,8 +559,8 @@ void Game::DrawMisc() {
 		}
 	}
 	//avatar image
-	driver->draw2DImage(imageManager.tAvatar[0], Resize(335, 15, 390, 70), recti(0, 0, 80, 80), 0, 0, true);
-	driver->draw2DImage(imageManager.tAvatar[1], Resize(930, 15, 985, 70), recti(0, 0, 80, 80), 0, 0, true);
+	driver->draw2DImage(imageManager.tAvatar[0], Resize(335, 15, 391, 71), recti(0, 0, 80, 80), 0, 0, true);
+	driver->draw2DImage(imageManager.tAvatar[1], Resize(929, 15, 985, 71), recti(0, 0, 80, 80), 0, 0, true);
 	if((dInfo.turn % 2 && dInfo.isFirst) || (!(dInfo.turn % 2) && !dInfo.isFirst)) {
 		driver->draw2DImage(imageManager.tLPBarFrame, Resize(327, 8, 630, 78), recti(0, 0, 305, 70), 0, 0, true);
 		driver->draw2DImage(imageManager.tLPBarFrame, Resize(689, 8, 991, 78), recti(0, 210, 305, 280), 0, 0, true);		
