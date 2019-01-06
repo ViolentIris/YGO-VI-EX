@@ -1721,6 +1721,8 @@ void Game::initUtils() {
 void Game::ClearTextures() {
 	matManager.mCard.setTexture(0, 0);
 	imageManager.tAvatar[1] = imageManager.GetRandomImage(TEXTURE_AVATAR_S);
+	imageManager.tBackGround_deck = imageManager.GetRandomImage(TEXTURE_DECK);
+	imageManager.tBackGround = imageManager.GetRandomImage(TEXTURE_DUEL);
 	imgCard->setImage(imageManager.tCover[0]);
 	scrCardText->setVisible(false);
 	imgCard->setScaleImage(true);
