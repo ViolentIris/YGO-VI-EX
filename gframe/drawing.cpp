@@ -599,7 +599,7 @@ void Game::DrawMisc() {
 	DrawShadowText(numFont, dInfo.strLP[1], Resize(711, 49, 1010, 68), Resize(0, 1, 2, 0), 0xffffff00, 0xff000000, true, false, 0);
 
 	recti p1size = Resize(430, 16, 629, 37);
-	recti p2size = Resize(737, 16, 936, 37);
+	recti p2size = Resize(890, 16, 960, 37);
 	if(!dInfo.isTag || !dInfo.tag_player[0])
 		textFont->draw(dInfo.hostname, p1size, 0xffffffff, false, false, 0);
 	else
