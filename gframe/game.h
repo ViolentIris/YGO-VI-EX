@@ -341,6 +341,7 @@ public:
 	irr::gui::IGUIButton* btnOtherExit;
 	irr::gui::IGUIButton* btnLantern;
 	irr::gui::IGUIButton* btnVI;
+	irr::gui::IGUIButton* btnFOX;
 	//lan
 	irr::gui::IGUIWindow* wLanWindow;
 	irr::gui::IGUIEditBox* ebNickName;
@@ -753,7 +754,7 @@ extern Game* mainGame;
 #define BUTTON_MARKS_FILTER			380
 #define BUTTON_MARKERS_OK			381
 
-#define BUTTON_TB			382
+#define BUTTON_TB				382
 #define BUTTON_TB_AGREE			383
 #define BUTTON_TB_CANCEL		384
 #define BUTTON_OTHER			        385
@@ -767,6 +768,7 @@ extern Game* mainGame;
 #define BUTTON_LANTERN					392
 #define BUTTON_OTHER_EXIT				393
 #define BUTTON_VI						394
+#define BUTTON_FOX						395
 
 #define TEXTURE_DUEL				0
 #define TEXTURE_DECK				1

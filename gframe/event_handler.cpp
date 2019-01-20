@@ -1823,6 +1823,28 @@ bool ClientField::OnCommonEvent(const irr::SEvent& event) {
 				return true;
 				break;
 			}
+			case BUTTON_TB: {
+				mainGame->btnTBAgree->setEnabled(true);
+				mainGame->btnTBCancel->setEnabled(true);
+				mainGame->ShowElement(mainGame->wTBWindow);
+				break;
+			}
+			case BUTTON_TB_AGREE: {
+				char buf[256];
+				const wchar_t* pstr = mainGame->ebTBName->getText();
+				BufferIO::CopyWStr(pstr, mainGame->gameConf.TBname, 256);
+				int nLength = WideCharToMultiByte(CP_ACP, 0, pstr, -1, NULL, 0, NULL,NULL);
+				WideCharToMultiByte(CP_ACP, 0, pstr, -1, buf, nLength, NULL, NULL);
+				char buffer[300];
+				sprintf(buffer, "start \"\" \"https://s.taobao.com/search?q=%s\"", buf);
+				system(buffer);
+				mainGame->HideElement(mainGame->wTBWindow);
+				break;
+			}
+			case BUTTON_TB_CANCEL: {
+				mainGame->HideElement(mainGame->wTBWindow);
+				break;
+			}
 			case BUTTON_WINDOW_RESIZE_S: {
 				mainGame->SetWindowsScale(0.8f);
 				return true;
