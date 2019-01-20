@@ -27,6 +27,7 @@ struct Config {
 	wchar_t numfont[256];
 	wchar_t roompass[20];
 	wchar_t locale[64];
+	wchar_t TBname[256];
 	//settings
 	int chkMAutoPos;
 	int chkSTAutoPos;
@@ -318,6 +319,11 @@ public:
 	irr::gui::IGUIButton* btnWinResizeXL;
 	irr::gui::IGUICheckBox* chkEnablePScale;
 	irr::gui::IGUIComboBox* cbLocale;
+	irr::gui::IGUIWindow* wTBWindow;
+	irr::gui::IGUIButton* btnTB;
+	irr::gui::IGUIButton* btnTBAgree;
+	irr::gui::IGUIButton* btnTBCancel;
+	irr::gui::IGUIEditBox* ebTBName;
 	//main menu
 	irr::gui::IGUIWindow* wMainMenu;
 	irr::gui::IGUIButton* btnLanMode;
@@ -334,6 +340,7 @@ public:
 	irr::gui::IGUIButton* btnTakeout2;
 	irr::gui::IGUIButton* btnOtherExit;
 	irr::gui::IGUIButton* btnLantern;
+	irr::gui::IGUIButton* btnVI;
 	//lan
 	irr::gui::IGUIWindow* wLanWindow;
 	irr::gui::IGUIEditBox* ebNickName;
@@ -746,6 +753,9 @@ extern Game* mainGame;
 #define BUTTON_MARKS_FILTER			380
 #define BUTTON_MARKERS_OK			381
 
+#define BUTTON_TB			382
+#define BUTTON_TB_AGREE			383
+#define BUTTON_TB_CANCEL		384
 #define BUTTON_OTHER			        385
 #define BUTTON_RENAME_DECK				386
 #define BUTTON_RENAME_DECK_SAVE			387
@@ -756,6 +766,7 @@ extern Game* mainGame;
 #define BUTTON_TAKEOUT2					391
 #define BUTTON_LANTERN					392
 #define BUTTON_OTHER_EXIT				393
+#define BUTTON_VI						394
 
 #define TEXTURE_DUEL				0
 #define TEXTURE_DECK				1
