@@ -117,28 +117,76 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_233: {
-				mainGame->gameConf.lasthost = L's1.ygo233.com';
-				mainGame->gameConf.lastport = L'233';
+			    char sBuf1[256]={0};
+    			strcpy(sBuf1, "s1.ygo233.com");
+    			DWORD dBufSize1 = MultiByteToWideChar(CP_ACP, 0, sBuf1, sBufSize1, NULL, 0);
+    			wchar_t * dBuf1 = new wchar_t[dBufSize1];
+    			int nRet1=MultiByteToWideChar(CP_ACP, 0, sBuf1, sBufSize1, dBuf1, dBufSize1);
+				MultiByteToWideChar(CP_ACP, 0, sBuf1, sBufSize1, dBuf1, dBufSize1);
+				mainGame->gameConf.lasthost = dBuf1;
+				char sBuff1[256]={0};
+    			strcpy(sBuff1, "233");
+    			DWORD dBuffSize1 = MultiByteToWideChar(CP_ACP, 0, sBuff1, sBuffSize1, NULL, 0);
+    			wchar_t * dBuff1 = new wchar_t[dBuffSize1];
+    			int nRett1=MultiByteToWideChar(CP_ACP, 0, sBuff1, sBuffSize1, dBuff1, dBuffSize1);
+				MultiByteToWideChar(CP_ACP, 0, sBuff1, sBuffSize1, dBuff1, dBuffSize1);
+				mainGame->gameConf.lasthost = dBuff1;
 				mainGame->stACMessage->setText(dataManager.GetSysString(1440));
 				mainGame->PopupElement(mainGame->wACMessage, 20);
 				break;
 			}
 			case BUTTON_23333: {
-				mainGame->gameConf.lasthost = L's1.ygo233.com';
-				mainGame->gameConf.lastport = L'23333';
+			    char sBuf2[256]={0};
+    			strcpy(sBuf2, "s1.ygo233.com");
+    			DWORD dBufSize2 = MultiByteToWideChar(CP_ACP, 0, sBuf2, sBufSize2, NULL, 0);
+    			wchar_t * dBuf2 = new wchar_t[dBufSize2];
+    			int nRet2 = MultiByteToWideChar(CP_ACP, 0, sBuf2, sBufSize2, dBuf2, dBufSize2);
+				MultiByteToWideChar(CP_ACP, 0, sBuf2, sBufSize2, dBuf2, dBufSize2);
+				mainGame->gameConf.lasthost = dBuf2;
+				char sBuff2[256]={0};
+    			strcpy(sBuff2, "23333");
+    			DWORD dBuffSize2 = MultiByteToWideChar(CP_ACP, 0, sBuff2, sBuffSize2, NULL, 0);
+    			wchar_t * dBuff2 = new wchar_t[dBuffSize2];
+    			int nRett2 = MultiByteToWideChar(CP_ACP, 0, sBuff2, sBuffSize2, dBuff2, dBuffSize2);
+				MultiByteToWideChar(CP_ACP, 0, sBuff2, sBuffSize2, dBuff2, dBuffSize2);
+				mainGame->gameConf.lasthost = dBuff2;
 				mainGame->stACMessage->setText(dataManager.GetSysString(1440));
 				mainGame->PopupElement(mainGame->wACMessage, 20);
 				break;
 			}
 			case BUTTON_7210: {
-				mainGame->gameConf.lasthost = L'koishi.ygopro.cn';
-				mainGame->gameConf.lastport = L'7210';
+			    char sBuf3[256]={0};
+    			strcpy(sBuf3, "koishi.ygopro.cn");
+    			DWORD dBufSize3 = MultiByteToWideChar(CP_ACP, 0, sBuf3, sBufSize3, NULL, 0);
+    			wchar_t * dBuf3 = new wchar_t[dBufSize3];
+    			int nRet3 = MultiByteToWideChar(CP_ACP, 0, sBuf3, sBufSize3, dBuf3, dBufSize3);
+				MultiByteToWideChar(CP_ACP, 0, sBuf3, sBufSize3, dBuf3, dBufSize3);
+				mainGame->gameConf.lasthost = dBuf3;
+				char sBuff3[256]={0};
+    			strcpy(sBuff3, "7210");
+    			DWORD dBuffSize3 = MultiByteToWideChar(CP_ACP, 0, sBuff3, sBuffSize3, NULL, 0);
+    			wchar_t * dBuff3 = new wchar_t[dBuffSize3];
+    			int nRett3 = MultiByteToWideChar(CP_ACP, 0, sBuff3, sBuffSize3, dBuff3, dBuffSize3);
+				MultiByteToWideChar(CP_ACP, 0, sBuff3, sBuffSize3, dBuff3, dBuffSize3);
+				mainGame->gameConf.lasthost = dBuff3;
 				mainGame->stACMessage->setText(dataManager.GetSysString(1440));
 				mainGame->PopupElement(mainGame->wACMessage, 20);
 			}
 			case BUTTON_222: {
-				mainGame->gameConf.lasthost = L'koishi.ygopro.cn';
-				mainGame->gameConf.lastport = L'222';
+			    char sBuf4[256]={0};
+    			strcpy(sBuf4, "koishi.ygopro.cn");
+    			DWORD dBufSize4 = MultiByteToWideChar(CP_ACP, 0, sBuf4, sBufSize4, NULL, 0);
+    			wchar_t * dBuf4 = new wchar_t[dBufSize4];
+    			int nRet2 = MultiByteToWideChar(CP_ACP, 0, sBuf4, sBufSize4, dBuf4, dBufSize4);
+				MultiByteToWideChar(CP_ACP, 0, sBuf4, sBufSize4, dBuf4, dBufSize4);
+				mainGame->gameConf.lasthost = dBuf4;
+				char sBuff4[256]={0};
+    			strcpy(sBuff4, "222");
+    			DWORD dBuffSize4 = MultiByteToWideChar(CP_ACP, 0, sBuff4, sBuffSize4, NULL, 0);
+    			wchar_t * dBuff4 = new wchar_t[dBuffSize4];
+    			int nRett2 = MultiByteToWideChar(CP_ACP, 0, sBuff4, sBuffSize4, dBuff4, dBuffSize4);
+				MultiByteToWideChar(CP_ACP, 0, sBuff2, sBuffSize2, dBuff2, dBuffSize2);
+				mainGame->gameConf.lasthost = dBuff4;
 				mainGame->stACMessage->setText(dataManager.GetSysString(1440));
 				mainGame->PopupElement(mainGame->wACMessage, 20);
 			}
