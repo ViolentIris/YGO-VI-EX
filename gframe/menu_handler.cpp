@@ -107,6 +107,45 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				mainGame->ShowElement(mainGame->wLanWindow);
 				break;
 			}
+			case BUTTON_SERVER_CHOOSE: {
+				mainGame->btn233->setEnabled(true);
+				mainGame->btn23333->setEnabled(true);
+				mainGame->btn7210->setEnabled(true);
+				mainGame->btn222->setEnabled(true);
+				mainGame->btnSCExit->setEnabled(true);
+				mainGame->ShowElement(mainGame->wSC);
+				break;
+			}
+			case BUTTON_233: {
+				mainGame->gameConf.lasthost = "s1.ygo233.com";
+				mainGame->gameConf.lastport = "233";
+				mainGame->stACMessage->setText(dataManager.GetSysString(1440));
+				mainGame->PopupElement(mainGame->wACMessage, 20);
+				break;
+			}
+			case BUTTON_23333: {
+				mainGame->gameConf.lasthost = "s1.ygo233.com";
+				mainGame->gameConf.lastport = "23333";
+				mainGame->stACMessage->setText(dataManager.GetSysString(1440));
+				mainGame->PopupElement(mainGame->wACMessage, 20);
+				break;
+			}
+			case BUTTON_7210: {
+				mainGame->gameConf.lasthost = "koishi.ygopro.cn";
+				mainGame->gameConf.lastport = "7210";
+				mainGame->stACMessage->setText(dataManager.GetSysString(1440));
+				mainGame->PopupElement(mainGame->wACMessage, 20);
+			}
+			case BUTTON_222: {
+				mainGame->gameConf.lasthost = "koishi.ygopro.cn";
+				mainGame->gameConf.lastport = "222";
+				mainGame->stACMessage->setText(dataManager.GetSysString(1440));
+				mainGame->PopupElement(mainGame->wACMessage, 20);
+			}
+			case BUTTON_SC_EXIT: {
+				mainGame->HideElement(mainGame->wSC);
+				break;
+			}
 			case BUTTON_JOIN_HOST: {
 				bot_mode = false;
 				char ip[20];
