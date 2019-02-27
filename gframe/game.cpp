@@ -163,7 +163,7 @@ bool Game::Initialize() {
 	btnJoinCancel = env->addButton(rect<s32>(460, 385, 570, 410), wLanWindow, BUTTON_JOIN_CANCEL, dataManager.GetSysString(1212));
 	btnCreateHost = env->addButton(rect<s32>(460, 25, 570, 50), wLanWindow, BUTTON_CREATE_HOST, dataManager.GetSysString(1224));
 	//server choose
-	wSC = env->addWindow(rect<s32>(380, 100, 660, 420), false, dataManager.GetSysString(1441));
+	wSC = env->addWindow(rect<s32>(380, 143, 660, 420), false, dataManager.GetSysString(1441));
 	wSC->getCloseButton()->setVisible(false);
 	wSC->setVisible(false);
 	btn233 = env->addButton(rect<s32>(10, 30, 270, 60), wSC, BUTTON_233, dataManager.GetSysString(1435));
