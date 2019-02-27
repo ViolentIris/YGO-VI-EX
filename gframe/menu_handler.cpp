@@ -114,6 +114,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				mainGame->btn222->setEnabled(true);
 				mainGame->btnSCExit->setEnabled(true);
 				mainGame->ShowElement(mainGame->wSC);
+				mainGame->PopupElement(mainGame->wSC)
 				break;
 			}
 			case BUTTON_233: {
@@ -121,8 +122,6 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				wcscpy(mainGame->gameConf.lastport, L"233");
 				mainGame->stACMessage->setText(dataManager.GetSysString(1440));
 				mainGame->PopupElement(mainGame->wACMessage, 20);
-					if(exit_on_return)
-				mainGame->device->closeDevice();
 				break;
 			}
 			case BUTTON_23333: {
@@ -130,8 +129,6 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				wcscpy(mainGame->gameConf.lastport, L"23333");
 				mainGame->stACMessage->setText(dataManager.GetSysString(1440));
 				mainGame->PopupElement(mainGame->wACMessage, 20);
-					if(exit_on_return)
-				mainGame->device->closeDevice();
 				break;
 			}
 			case BUTTON_7210: {
@@ -139,16 +136,14 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				wcscpy(mainGame->gameConf.lastport, L"7210");
 				mainGame->stACMessage->setText(dataManager.GetSysString(1440));
 				mainGame->PopupElement(mainGame->wACMessage, 20);
-					if(exit_on_return)
-				mainGame->device->closeDevice();
+				break;
 			}
 			case BUTTON_222: {
 				wcscpy(mainGame->gameConf.lasthost, L"koishi.ygopro.cn");
 				wcscpy(mainGame->gameConf.lastport, L"222");
 				mainGame->stACMessage->setText(dataManager.GetSysString(1440));
 				mainGame->PopupElement(mainGame->wACMessage, 20);
-					if(exit_on_return)
-				mainGame->device->closeDevice();
+				break;
 			}
 			case BUTTON_SC_EXIT: {
 				mainGame->HideElement(mainGame->wSC);

@@ -171,7 +171,6 @@ bool Game::Initialize() {
 	btn7210 = env->addButton(rect<s32>(10, 100, 270, 130), wSC, BUTTON_7210, dataManager.GetSysString(1437));
 	btn222 = env->addButton(rect<s32>(10, 135, 270, 165), wSC, BUTTON_222, dataManager.GetSysString(1438));
 	btnSCExit = env->addButton(rect<s32>(10, 170, 270, 200), wSC, BUTTON_SC_EXIT, dataManager.GetSysString(1439));
-	
 	//create host
 	wCreateHost = env->addWindow(rect<s32>(320, 100, 700, 520), false, dataManager.GetSysString(1224));
 	wCreateHost->getCloseButton()->setVisible(false);
