@@ -114,7 +114,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				mainGame->btn222->setEnabled(true);
 				mainGame->btnSCExit->setEnabled(true);
 				mainGame->ShowElement(mainGame->wSC);
-				mainGame->PopupElement(mainGame->wSC)
+				mainGame->PopupElement(mainGame->wSC);
 				break;
 			}
 			case BUTTON_233: {
