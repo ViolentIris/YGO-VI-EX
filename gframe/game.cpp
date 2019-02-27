@@ -163,7 +163,7 @@ bool Game::Initialize() {
 	btnJoinCancel = env->addButton(rect<s32>(460, 385, 570, 410), wLanWindow, BUTTON_JOIN_CANCEL, dataManager.GetSysString(1212));
 	btnCreateHost = env->addButton(rect<s32>(460, 25, 570, 50), wLanWindow, BUTTON_CREATE_HOST, dataManager.GetSysString(1224));
 	//server choose
-	wSC = env->addWindow(rect<s32>(380, 143, 660, 420), false, dataManager.GetSysString(1441));
+	wSC = env->addWindow(rect<s32>(380, 103, 660, 420), false, dataManager.GetSysString(1441));
 	wSC->getCloseButton()->setVisible(false);
 	wSC->setVisible(false);
 	btn233 = env->addButton(rect<s32>(10, 30, 270, 60), wSC, BUTTON_233, dataManager.GetSysString(1435));
@@ -172,7 +172,8 @@ bool Game::Initialize() {
 	btn222 = env->addButton(rect<s32>(10, 135, 270, 165), wSC, BUTTON_222, dataManager.GetSysString(1438));
 	btn765 = env->addButton(rect<s32>(10, 170, 270, 200), wSC, BUTTON_765, dataManager.GetSysString(1442));
 	btnJP = env->addButton(rect<s32>(10, 205, 270, 235), wSC, BUTTON_JP, dataManager.GetSysString(1443));
-	btnSCExit = env->addButton(rect<s32>(10, 240, 270, 270), wSC, BUTTON_SC_EXIT, dataManager.GetSysString(1439));
+	btnNK = env->addButton(rect<s32>(10, 240, 270, 270), wSC, BUTTON_NK, dataManager.GetSysString(1444));
+	btnSCExit = env->addButton(rect<s32>(10, 275, 270, 305), wSC, BUTTON_SC_EXIT, dataManager.GetSysString(1439));
 	//create host
 	wCreateHost = env->addWindow(rect<s32>(320, 100, 700, 520), false, dataManager.GetSysString(1224));
 	wCreateHost->getCloseButton()->setVisible(false);
@@ -441,7 +442,7 @@ bool Game::Initialize() {
 	stMessage->setTextAlignment(irr::gui::EGUIA_UPPERLEFT, irr::gui::EGUIA_CENTER);
 	btnMsgOK = env->addButton(rect<s32>(130, 105, 220, 130), wMessage, BUTTON_MSG_OK, dataManager.GetSysString(1211));
 	//auto fade message (310)
-	wACMessage = env->addWindow(rect<s32>(460, 240, 810, 300), false, L"");
+	wACMessage = env->addWindow(rect<s32>(440, 240, 790, 300), false, L"");
 	wACMessage->getCloseButton()->setVisible(false);
 	wACMessage->setVisible(false);
 	wACMessage->setDrawBackground(false);
@@ -1887,7 +1888,7 @@ void Game::OnResize() {
 	btnRenameDeck->setRelativePosition(Resize(170, 99, 220, 120));
 
 	wLanWindow->setRelativePosition(ResizeWin(220, 100, 800, 520));
-	wSC->setRelativePosition(ResizeWin(380, 143, 660, 420));
+	wSC->setRelativePosition(ResizeWin(380, 103, 660, 420));
 	wCreateHost->setRelativePosition(ResizeWin(320, 100, 700, 520));
 	wHostPrepare->setRelativePosition(ResizeWin(270, 120, 750, 440));
 	wReplay->setRelativePosition(ResizeWin(220, 100, 800, 520));
@@ -1896,7 +1897,7 @@ void Game::OnResize() {
 	wHand->setRelativePosition(ResizeWin(500, 450, 825, 605));
 	wFTSelect->setRelativePosition(ResizeWin(550, 240, 780, 340));
 	wMessage->setRelativePosition(ResizeWin(490, 200, 840, 340));
-	wACMessage->setRelativePosition(ResizeWin(460, 240, 810, 300));
+	wACMessage->setRelativePosition(ResizeWin(440, 240, 790, 300));
 	wQuery->setRelativePosition(ResizeWin(490, 200, 840, 340));
 	wSurrender->setRelativePosition(ResizeWin(490, 200, 840, 340));
 	wOptions->setRelativePosition(ResizeWin(490, 200, 840, 340));

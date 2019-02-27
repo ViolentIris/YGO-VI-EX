@@ -362,6 +362,7 @@ public:
 	irr::gui::IGUIButton* btn222;
 	irr::gui::IGUIButton* btn765;
 	irr::gui::IGUIButton* btnJP;
+	irr::gui::IGUIButton* btnNK;
 	irr::gui::IGUIButton* btnSCExit;
 	//create host
 	irr::gui::IGUIWindow* wCreateHost;
@@ -788,6 +789,7 @@ extern Game* mainGame;
 #define BUTTON_765						401
 #define BUTTON_JP						402
 #define BUTTON_SC_EXIT					403
+#define BUTTON_NK						404
 
 #define TEXTURE_DUEL				0
 #define TEXTURE_DECK				1

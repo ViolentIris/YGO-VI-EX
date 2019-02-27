@@ -201,6 +201,20 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				mainGame->HideElement(mainGame->wSC);
 				break;
 			}
+			case BUTTON_NK: {
+				wcscpy(mainGame->gameConf.lasthost, L"nekoparaserver.com");
+				wcscpy(mainGame->gameConf.lastport, L"2333");
+				wchar_t buf[256];
+				wchar_t buff[256];
+				myswprintf(buf, L"%s", mainGame->gameConf.lasthost);
+				mainGame->ebJoinHost->setText(buf);
+				myswprintf(buff, L"%s", mainGame->gameConf.lastport);
+				mainGame->ebJoinPort->setText(buff);
+				mainGame->stACMessage->setText(dataManager.GetSysString(1440));
+				mainGame->PopupElement(mainGame->wACMessage, 20);
+				mainGame->HideElement(mainGame->wSC);
+				break;
+			}
 			case BUTTON_SC_EXIT: {
 				mainGame->HideElement(mainGame->wSC);
 					if(exit_on_return)
