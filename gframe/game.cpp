@@ -441,7 +441,7 @@ bool Game::Initialize() {
 	stMessage->setTextAlignment(irr::gui::EGUIA_UPPERLEFT, irr::gui::EGUIA_CENTER);
 	btnMsgOK = env->addButton(rect<s32>(130, 105, 220, 130), wMessage, BUTTON_MSG_OK, dataManager.GetSysString(1211));
 	//auto fade message (310)
-	wACMessage = env->addWindow(rect<s32>(490, 240, 840, 300), false, L"");
+	wACMessage = env->addWindow(rect<s32>(460, 260, 810, 320), false, L"");
 	wACMessage->getCloseButton()->setVisible(false);
 	wACMessage->setVisible(false);
 	wACMessage->setDrawBackground(false);
