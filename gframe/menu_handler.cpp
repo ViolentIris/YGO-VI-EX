@@ -120,9 +120,12 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 			case BUTTON_233: {
 				wcscpy(mainGame->gameConf.lasthost, L"s1.ygo233.com");
 				wcscpy(mainGame->gameConf.lastport, L"233");
-				const wchar_t* pstr = mainGame->ebJoinHost->getText();
-				BufferIO::CopyWStr(pstr, mainGame->gameConf.lasthost, 100);
-				BufferIO::CopyWStr(mainGame->ebJoinPort->getText(), mainGame->gameConf.lastport, 20);
+				wchar_t buf[256];
+				wchar_t buff[256];
+				myswprintf(buf, L"%s", mainGame->gameConf.lasthost);
+				mainGame->ebJoinHost->setText(buf);
+				myswprintf(buff, L"%s", gameConf.lastport);
+				mainGame->ebJoinPort->setText(buff);
 				mainGame->stACMessage->setText(dataManager.GetSysString(1440));
 				mainGame->PopupElement(mainGame->wACMessage, 20);
 				mainGame->HideElement(mainGame->wSC);
@@ -131,9 +134,12 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 			case BUTTON_23333: {
 				wcscpy(mainGame->gameConf.lasthost, L"s1.ygo233.com");
 				wcscpy(mainGame->gameConf.lastport, L"23333");
-				const wchar_t* pstr = mainGame->ebJoinHost->getText();
-				BufferIO::CopyWStr(pstr, mainGame->gameConf.lasthost, 100);
-				BufferIO::CopyWStr(mainGame->ebJoinPort->getText(), mainGame->gameConf.lastport, 20);
+				wchar_t buf[256];
+				wchar_t buff[256];
+				myswprintf(buf, L"%s", mainGame->gameConf.lasthost);
+				mainGame->ebJoinHost->setText(buf);
+				myswprintf(buff, L"%s", gameConf.lastport);
+				mainGame->ebJoinPort->setText(buff);
 				mainGame->stACMessage->setText(dataManager.GetSysString(1440));
 				mainGame->PopupElement(mainGame->wACMessage, 20);
 				mainGame->HideElement(mainGame->wSC);
@@ -142,9 +148,12 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 			case BUTTON_7210: {
 				wcscpy(mainGame->gameConf.lasthost, L"koishi.ygopro.cn");
 				wcscpy(mainGame->gameConf.lastport, L"7210");
-				const wchar_t* pstr = mainGame->ebJoinHost->getText();
-				BufferIO::CopyWStr(pstr, mainGame->gameConf.lasthost, 100);
-				BufferIO::CopyWStr(mainGame->ebJoinPort->getText(), mainGame->gameConf.lastport, 20);
+				wchar_t buf[256];
+				wchar_t buff[256];
+				myswprintf(buf, L"%s", mainGame->gameConf.lasthost);
+				mainGame->ebJoinHost->setText(buf);
+				myswprintf(buff, L"%s", gameConf.lastport);
+				mainGame->ebJoinPort->setText(buff);
 				mainGame->stACMessage->setText(dataManager.GetSysString(1440));
 				mainGame->PopupElement(mainGame->wACMessage, 20);
 				mainGame->HideElement(mainGame->wSC);
@@ -153,9 +162,12 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 			case BUTTON_222: {
 				wcscpy(mainGame->gameConf.lasthost, L"koishi.ygopro.cn");
 				wcscpy(mainGame->gameConf.lastport, L"222");
-				const wchar_t* pstr = mainGame->ebJoinHost->getText();
-				BufferIO::CopyWStr(pstr, mainGame->gameConf.lasthost, 100);
-				BufferIO::CopyWStr(mainGame->ebJoinPort->getText(), mainGame->gameConf.lastport, 20);
+				wchar_t buf[256];
+				wchar_t buff[256];
+				myswprintf(buf, L"%s", mainGame->gameConf.lasthost);
+				mainGame->ebJoinHost->setText(buf);
+				myswprintf(buff, L"%s", gameConf.lastport);
+				mainGame->ebJoinPort->setText(buff);
 				mainGame->stACMessage->setText(dataManager.GetSysString(1440));
 				mainGame->PopupElement(mainGame->wACMessage, 20);
 				mainGame->HideElement(mainGame->wSC);
