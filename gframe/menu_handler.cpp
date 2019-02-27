@@ -124,7 +124,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				wchar_t buff[256];
 				myswprintf(buf, L"%s", mainGame->gameConf.lasthost);
 				mainGame->ebJoinHost->setText(buf);
-				myswprintf(buff, L"%s", gameConf.lastport);
+				myswprintf(buff, L"%s", mainGame->gameConf.lastport);
 				mainGame->ebJoinPort->setText(buff);
 				mainGame->stACMessage->setText(dataManager.GetSysString(1440));
 				mainGame->PopupElement(mainGame->wACMessage, 20);
@@ -138,7 +138,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				wchar_t buff[256];
 				myswprintf(buf, L"%s", mainGame->gameConf.lasthost);
 				mainGame->ebJoinHost->setText(buf);
-				myswprintf(buff, L"%s", gameConf.lastport);
+				myswprintf(buff, L"%s", mainGame->gameConf.lastport);
 				mainGame->ebJoinPort->setText(buff);
 				mainGame->stACMessage->setText(dataManager.GetSysString(1440));
 				mainGame->PopupElement(mainGame->wACMessage, 20);
@@ -152,7 +152,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				wchar_t buff[256];
 				myswprintf(buf, L"%s", mainGame->gameConf.lasthost);
 				mainGame->ebJoinHost->setText(buf);
-				myswprintf(buff, L"%s", gameConf.lastport);
+				myswprintf(buff, L"%s", mainGame->gameConf.lastport);
 				mainGame->ebJoinPort->setText(buff);
 				mainGame->stACMessage->setText(dataManager.GetSysString(1440));
 				mainGame->PopupElement(mainGame->wACMessage, 20);
@@ -166,7 +166,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				wchar_t buff[256];
 				myswprintf(buf, L"%s", mainGame->gameConf.lasthost);
 				mainGame->ebJoinHost->setText(buf);
-				myswprintf(buff, L"%s", gameConf.lastport);
+				myswprintf(buff, L"%s", mainGame->gameConf.lastport);
 				mainGame->ebJoinPort->setText(buff);
 				mainGame->stACMessage->setText(dataManager.GetSysString(1440));
 				mainGame->PopupElement(mainGame->wACMessage, 20);
