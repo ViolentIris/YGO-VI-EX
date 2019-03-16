@@ -129,7 +129,7 @@ bool Game::Initialize() {
 	btnOther = env->addButton(rect<s32>(10, 170, 270, 200), wMainMenu, BUTTON_OTHER, dataManager.GetSysString(1422));
 
 	//other
-	wOther = env->addWindow(rect<s32>(370, 200, 650, 498), false, dataManager.GetSysString(1422));
+	wOther = env->addWindow(rect<s32>(370, 200, 650, 518), false, dataManager.GetSysString(1422));
 	wOther->getCloseButton()->setVisible(false);
 	wOther->setVisible(false);
 	btnSEM = env->addButton(rect<s32>(10, 30, 270, 60), wOther, BUTTON_SEM, dataManager.GetSysString(1423));
