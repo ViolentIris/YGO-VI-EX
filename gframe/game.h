@@ -342,6 +342,7 @@ public:
 	irr::gui::IGUIButton* btnLantern;
 	irr::gui::IGUIButton* btnVI;
 	irr::gui::IGUIButton* btnFOX;
+	irr::gui::IGUIButton* btnWBO;
 	//lan
 	irr::gui::IGUIWindow* wLanWindow;
 	irr::gui::IGUIEditBox* ebNickName;
@@ -780,6 +781,7 @@ extern Game* mainGame;
 #define BUTTON_OTHER_EXIT				393
 #define BUTTON_VI						394
 #define BUTTON_FOX						395
+#define BUTTON_WBO						405
 
 #define BUTTON_SERVER_CHOOSE			396
 #define BUTTON_233						397
