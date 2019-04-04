@@ -139,7 +139,7 @@ bool Game::Initialize() {
 	btnLantern = env->addButton(rect<s32>(10, 135, 270, 165), wOther, BUTTON_LANTERN, dataManager.GetSysString(1426));
 	btnVI = env->addButton(rect<s32>(10, 170, 270, 200), wOther, BUTTON_VI, dataManager.GetSysString(1427));
 	btnFOX = env->addButton(rect<s32>(10, 205, 270, 235), wOther, BUTTON_FOX, dataManager.GetSysString(1433));
-	btnWBO = env->addButton(rect<s32>(10, 240, 270, 270), wOther, BUTTON_WBO, dataManager.GetSysString(1445));
+	btnWBO = env->addButton(rect<s32>(10, 240, 270, 270), wOther, BUTTON_WBO, dataManager.GetSysString(1440));
 	btnOtherExit = env->addButton(rect<s32>(10, 275, 270, 305), wOther, BUTTON_OTHER_EXIT, dataManager.GetSysString(1210));
 	
 	//lan mode
@@ -444,7 +444,7 @@ bool Game::Initialize() {
 	stMessage->setTextAlignment(irr::gui::EGUIA_UPPERLEFT, irr::gui::EGUIA_CENTER);
 	btnMsgOK = env->addButton(rect<s32>(130, 105, 220, 130), wMessage, BUTTON_MSG_OK, dataManager.GetSysString(1211));
 	//auto fade message (310)
-	wACMessage = env->addWindow(rect<s32>(440, 240, 790, 300), false, L"");
+	wACMessage = env->addWindow(rect<s32>(490, 240, 840, 300), false, L"");
 	wACMessage->getCloseButton()->setVisible(false);
 	wACMessage->setVisible(false);
 	wACMessage->setDrawBackground(false);
@@ -1956,7 +1956,7 @@ void Game::OnResize() {
 	wHand->setRelativePosition(ResizeWin(500, 450, 825, 605));
 	wFTSelect->setRelativePosition(ResizeWin(550, 240, 780, 340));
 	wMessage->setRelativePosition(ResizeWin(490, 200, 840, 340));
-	wACMessage->setRelativePosition(ResizeWin(440, 240, 790, 300));
+	wACMessage->setRelativePosition(ResizeWin(490, 240, 840, 300));
 	wQuery->setRelativePosition(ResizeWin(490, 200, 840, 340));
 	wSurrender->setRelativePosition(ResizeWin(490, 200, 840, 340));
 	wOptions->setRelativePosition(ResizeWin(490, 200, 840, 340));

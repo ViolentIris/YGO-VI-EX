@@ -584,8 +584,8 @@ void Game::DrawMisc() {
 		}
 	}
 	//avatar image
-	driver->draw2DImage(imageManager.tAvatar[0], Resize(335, 15, 391, 71), recti(0, 0, 80, 80), 0, 0, true);
-	driver->draw2DImage(imageManager.tAvatar[1], Resize(928, 15, 984, 71), recti(0, 0, 80, 80), 0, 0, true);
+	driver->draw2DImage(imageManager.tAvatar[0], Resize(335, 15, 391, 71), recti(0, 0, 160, 160), 0, 0, true);
+	driver->draw2DImage(imageManager.tAvatar[1], Resize(928, 15, 984, 71), recti(0, 0, 160, 160), 0, 0, true);
 	if((dInfo.turn % 2 && dInfo.isFirst) || (!(dInfo.turn % 2) && !dInfo.isFirst)) {
 		driver->draw2DImage(imageManager.tLPBarFrame, Resize(327, 8, 630, 78), recti(0, 0, 305, 70), 0, 0, true);
 		driver->draw2DImage(imageManager.tLPBarFrame, Resize(689, 8, 991, 78), recti(0, 210, 305, 280), 0, 0, true);		
@@ -602,8 +602,8 @@ void Game::DrawMisc() {
 		DrawShadowText(numFont, dInfo.str_time_left[0], Resize(595, 49, 625, 68), Resize(0, 1, 2, 0), dInfo.time_color[0], 0xff000000, true, false, 0);
 		DrawShadowText(numFont, dInfo.str_time_left[1], Resize(713, 49, 743, 68), Resize(0, 1, 2, 0), dInfo.time_color[1], 0xff000000, true, false, 0);
 
-		driver->draw2DImage(imageManager.tAvatar[0], ResizeCardMid(537, 49, 555, 68, 555, 62), rect<s32>(0, 0, 80, 80), 0, 0, true);
-		driver->draw2DImage(imageManager.tAvatar[1], ResizeCardMid(745, 49, 763, 68, 763, 62), rect<s32>(0, 0, 80, 80), 0, 0, true);
+		driver->draw2DImage(imageManager.tAvatar[0], ResizeCardMid(537, 49, 555, 68, 555, 62), rect<s32>(0, 0, 160, 160), 0, 0, true);
+		driver->draw2DImage(imageManager.tAvatar[1], ResizeCardMid(745, 49, 763, 68, 763, 62), rect<s32>(0, 0, 160, 160), 0, 0, true);
 
 		DrawShadowText(numFont, dInfo.str_card_count[0], Resize(556, 49, 575, 68), Resize(0, 1, 2, 0), dInfo.card_count_color[0], 0xff000000, true, false, 0);
 		DrawShadowText(numFont, dInfo.str_card_count[1], Resize(764, 49, 782, 68), Resize(0, 1, 2, 0), dInfo.card_count_color[1], 0xff000000, true, false, 0);
@@ -614,8 +614,8 @@ void Game::DrawMisc() {
 		//driver->draw2DRectangleOutline(Resize(695, 34, 795, 44), 0xffffffff);
 	}
 	else {
-		driver->draw2DImage(imageManager.tAvatar[0], ResizeCardMid(588, 49, 606, 68, 606, 62), rect<s32>(0, 0, 80, 80), 0, 0, true);
-		driver->draw2DImage(imageManager.tAvatar[1], ResizeCardMid(697, 49, 715, 68, 715, 62), rect<s32>(0, 0, 80, 80), 0, 0, true);
+		driver->draw2DImage(imageManager.tAvatar[0], ResizeCardMid(588, 49, 606, 68, 606, 62), rect<s32>(0, 0, 160, 160), 0, 0, true);
+		driver->draw2DImage(imageManager.tAvatar[1], ResizeCardMid(697, 49, 715, 68, 715, 62), rect<s32>(0, 0, 160, 160), 0, 0, true);
 
 		DrawShadowText(numFont, dInfo.str_card_count[0], Resize(607, 51, 625, 70), Resize(0, 1, 2, 0), dInfo.card_count_color[0], 0xff000000, true, false, 0);
 		DrawShadowText(numFont, dInfo.str_card_count[1], Resize(716, 51, 735, 70), Resize(0, 1, 2, 0), dInfo.card_count_color[1], 0xff000000, true, false, 0);
@@ -875,7 +875,7 @@ void Game::DrawSpec() {
 		}
 		case 3: {
 			driver->draw2DImage(imageManager.GetTexture(showcardcode, true), ResizeCardHint(574, 150));
-			driver->draw2DImage(imageManager.tNegated, ResizeCardMid(536 + showcarddif, 141 + showcarddif, 792 - showcarddif, 397 - showcarddif, midx, midy), recti(0, 0, 128, 128), 0, 0, true);
+			driver->draw2DImage(imageManager.tNegated, ResizeCardMid(536 + showcarddif, 141 + showcarddif, 792 - showcarddif, 397 - showcarddif, midx, midy), recti(0, 0, 256, 256), 0, 0, true);
 			if(showcarddif < 64)
 				showcarddif += 4;
 			break;
