@@ -587,11 +587,11 @@ void Game::DrawMisc() {
 	driver->draw2DImage(imageManager.tAvatar[0], Resize(335, 15, 391, 71), recti(0, 0, 160, 160), 0, 0, true);
 	driver->draw2DImage(imageManager.tAvatar[1], Resize(928, 15, 984, 71), recti(0, 0, 160, 160), 0, 0, true);
 	if((dInfo.turn % 2 && dInfo.isFirst) || (!(dInfo.turn % 2) && !dInfo.isFirst)) {
-		driver->draw2DImage(imageManager.tLPBarFrame, Resize(327, 8, 630, 78), recti(0, 0, 305, 70), 0, 0, true);
-		driver->draw2DImage(imageManager.tLPBarFrame, Resize(689, 8, 991, 78), recti(0, 210, 305, 280), 0, 0, true);		
+		driver->draw2DImage(imageManager.tLPBarFrame, Resize(327, 8, 630, 78), recti(0, 0, 610, 140), 0, 0, true);
+		driver->draw2DImage(imageManager.tLPBarFrame, Resize(689, 8, 991, 78), recti(0, 420, 610, 560), 0, 0, true);		
 	} else {
-		driver->draw2DImage(imageManager.tLPBarFrame, Resize(327, 8, 630, 78), recti(0, 70, 305, 140), 0, 0, true);
-		driver->draw2DImage(imageManager.tLPBarFrame, Resize(689, 8, 991, 78), recti(0, 140, 305, 210), 0, 0, true);
+		driver->draw2DImage(imageManager.tLPBarFrame, Resize(327, 8, 630, 78), recti(0, 140, 610, 280), 0, 0, true);
+		driver->draw2DImage(imageManager.tLPBarFrame, Resize(689, 8, 991, 78), recti(0, 280, 610, 420), 0, 0, true);
 	}
 	//Time Display
 	if(!dInfo.isReplay && dInfo.player_type < 7 && dInfo.time_limit) {
