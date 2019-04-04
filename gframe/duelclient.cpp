@@ -3726,7 +3726,6 @@ int DuelClient::ClientAnalyze(char * msg, unsigned int len) {
 			}
 			mainGame->WaitFrameSignal(5);
 		}
-		delay_swap = false;
 		//
 		if(!mainGame->dInfo.isReplaySkiping)
 			mainGame->gMutex.Lock();
