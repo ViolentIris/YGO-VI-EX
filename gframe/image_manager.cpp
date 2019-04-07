@@ -11,9 +11,9 @@ ImageManager imageManager;
 bool ImageManager::Initial()  {
 	RefreshRandomImageList();
 	tCover[0] = NULL;
-	tCover[0] = NULL;
-	tCover[0] = NULL;
-	tCover[0] = NULL;
+	tCover[1] = NULL;
+	tCover[2] = NULL;
+	tCover[3] = NULL;
 	if(mainGame->chkMRandom->isChecked())
 		tCover[0] = GetRandomImage(TEXTURE_COVER_S);
 	if(!tCover[0])
