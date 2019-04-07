@@ -76,9 +76,9 @@ bool ImageManager::Initial()  {
 	tHand[0] = driver->getTexture("textures/f1.jpg");
 	tHand[1] = driver->getTexture("textures/f2.jpg");
 	tHand[2] = driver->getTexture("textures/f3.jpg");
-	tBackGround = NULL
-	tBackGround_menu = NULL
-	tBackGround_deck = NULL
+	tBackGround = NULL;
+	tBackGround_menu = NULL;
+	tBackGround_deck = NULL;
 	if(mainGame->chkMRandom->isChecked())
 		tBackGround = GetRandomImage(TEXTURE_DUEL);
 	if(!tBackGround)
