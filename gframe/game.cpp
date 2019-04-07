@@ -1588,7 +1588,7 @@ void Game::SaveConfig() {
 	fprintf(fp, "music_volume = %d\n", vol);
 	fprintf(fp, "music_mode = %d\n", (chkMusicMode->isChecked() ? 1 : 0));
 #endif
-	fprintf(fp, "enable_pendulum_scale = %d\n", (chkEnablePScale->isChecked() ? 1 : 0));
+	fprintf(fp, "enable_pendulum_scale = %d\n", (mainGame->chkEnablePScale->isChecked() ? 1 : 0));
 	fprintf(fp, "random_drawing = %d\n", gameConf.random);
 	fprintf(fp, "skin_index = %d\n", gameConf.skin_index);
 	BufferIO::EncodeUTF8(gameConf.locale, linebuf);
