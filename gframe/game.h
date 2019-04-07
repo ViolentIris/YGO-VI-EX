@@ -34,6 +34,9 @@ struct Config {
 	int chkRandomPos;
 	int chkAutoChain;
 	int chkWaitChain;
+	int chkMRandom;
+	int chkBot;
+	int chkSkin;
 	int chkIgnore1;
 	int chkIgnore2;
 	int chkHideSetname;
@@ -58,6 +61,7 @@ struct Config {
 	double sound_volume;
 	double music_volume;
 	int music_mode;
+	int random
 	int chkEnablePScale;
 	int skin_index;
 };
@@ -347,6 +351,11 @@ public:
 	irr::gui::IGUIButton* btnVI;
 	irr::gui::IGUIButton* btnFOX;
 	irr::gui::IGUIButton* btnWBO;
+	//system setting
+	irr::gui::IGUIWindow* wSystem;
+	irr::gui::IGUICheckBox* chkMRandom;
+	irr::gui::IGUICheckBox* chkBot;
+	irr::gui::IGUICheckBox* chkSkin;
 	//lan
 	irr::gui::IGUIWindow* wLanWindow;
 	irr::gui::IGUIEditBox* ebNickName;
@@ -796,6 +805,9 @@ extern Game* mainGame;
 #define BUTTON_JP						402
 #define BUTTON_SC_EXIT					403
 #define BUTTON_NK						404
+
+#define CHECKBOX_BOT		405
+#define CHECKBOX_SKIN		406
 
 #define TEXTURE_DUEL				0
 #define TEXTURE_DECK				1
