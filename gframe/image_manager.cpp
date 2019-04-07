@@ -10,6 +10,10 @@ ImageManager imageManager;
 
 bool ImageManager::Initial()  {
 	RefreshRandomImageList();
+	tCover[0] = NULL;
+	tCover[0] = NULL;
+	tCover[0] = NULL;
+	tCover[0] = NULL;
 	if(mainGame->chkMRandom->isChecked())
 		tCover[0] = GetRandomImage(TEXTURE_COVER_S);
 	if(!tCover[0])
@@ -45,6 +49,8 @@ bool ImageManager::Initial()  {
 	tUnknown = driver->getTexture("textures/unknown.jpg");
 	tAvatar[0] = driver->getTexture("textures/head.jpg");
 	tAvatar[1] = GetRandomImage(TEXTURE_AVATAR_S);
+	tAct = NULL;
+	tAttack = NULL;
 	if(mainGame->chkMRandom->isChecked())
 		tAct = GetRandomImage(TEXTURE_ACTIVATE);
 	if(mainGame->chkMRandom->isChecked())
@@ -70,6 +76,9 @@ bool ImageManager::Initial()  {
 	tHand[0] = driver->getTexture("textures/f1.jpg");
 	tHand[1] = driver->getTexture("textures/f2.jpg");
 	tHand[2] = driver->getTexture("textures/f3.jpg");
+	tBackGround = NULL
+	tBackGround_menu = NULL
+	tBackGround_deck = NULL
 	if(mainGame->chkMRandom->isChecked())
 		tBackGround = GetRandomImage(TEXTURE_DUEL);
 	if(!tBackGround)

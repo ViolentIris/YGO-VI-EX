@@ -147,11 +147,11 @@ bool Game::Initialize() {
 	wSystem = env->addWindow(rect<s32>(250, 200, 700, 415), false, dataManager.GetSysString(1445));
 	wSystem->getCloseButton()->setVisible(false);
 	wSystem->setVisible(false);
-	chkMRandom = env->addCheckBox(false, rect<s32>(15, 20, 15 + 260, 20 + 25), wSystem, CHECKBOX_RDM, dataManager.GetSysString(1446));
+	chkMRandom = env->addCheckBox(false, rect<s32>(15, 20, 275, 45), wSystem, CHECKBOX_RDM, dataManager.GetSysString(1446));
 	chkMRandom->setChecked(gameConf.random != 0);
-	chkBot = env->addCheckBox(false, rect<s32>(15, 50, 15 + 260, 50 + 25), wSystem, CHECKBOX_BOT, dataManager.GetSysString(1447));
+	chkBot = env->addCheckBox(false, rect<s32>(15, 50, 275, 75), wSystem, CHECKBOX_BOT, dataManager.GetSysString(1447));
 	chkBot->setChecked(gameConf.enable_bot_mode != 0);
-	chkSkin = env->addCheckBox(false, rect<s32>(15, 80, 15 + 260, 80 + 25), wSystem, CHECKBOX_SKIN, dataManager.GetSysString(1448));
+	chkSkin = env->addCheckBox(false, rect<s32>(15, 80, 275, 105), wSystem, CHECKBOX_SKIN, dataManager.GetSysString(1448));
 	chkSkin->setChecked(gameConf.skin_index != 0);
 	btnSYSExit = env->addButton(rect<s32>(10, 310, 270, 340), wSystem, BUTTON_SYS_EXIT, dataManager.GetSysString(1210));
 	
