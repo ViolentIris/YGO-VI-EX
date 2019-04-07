@@ -808,7 +808,7 @@ extern Game* mainGame;
 #define BUTTON_SC_EXIT					403
 #define BUTTON_NK						404
 
-#define BUTTON_SYS			405
+#define BUTTON_SYS			410
 #define BUTTON_SYS_EXIT		406
 #define CHECKBOX_RDM		407
 #define CHECKBOX_BOT		408

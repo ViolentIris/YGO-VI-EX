@@ -110,7 +110,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				mainGame->chkSkin->setEnabled(true);
 				mainGame->btnSYSExit->setEnabled(true);
 				mainGame->HideElement(mainGame->wOther);
-				mainGame->ShowElement(mainGame->wSyetem);
+				mainGame->ShowElement(mainGame->wSystem);
 				break;
 			}
 			case BUTTON_SYS_EXIT: {
