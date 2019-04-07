@@ -149,7 +149,7 @@ bool Game::Initialize() {
 	wSystem->setVisible(false);
 	int posX = 15;
 	int posY = 20;
-	chkMRandom = env->addCheckBox(false, rect<s32>(posX, posY, posX + 260, posY + 25), wSystem, -1, dataManager.GetSysString(1446));
+	chkMRandom = env->addCheckBox(false, rect<s32>(posX, posY, posX + 260, posY + 25), wSystem, CHECKBOX_RDM, dataManager.GetSysString(1446));
 	chkMRandom->setChecked(gameConf.random != 0);
 	posY += 30;
 	chkBot = env->addCheckBox(false, rect<s32>(posX, posY, posX + 260, posY + 25), wSystem, CHECKBOX_BOT, dataManager.GetSysString(1447));
@@ -157,6 +157,7 @@ bool Game::Initialize() {
 	posY += 30;
 	chkSkin = env->addCheckBox(false, rect<s32>(posX, posY, posX + 260, posY + 25), wSystem, CHECKBOX_SKIN, dataManager.GetSysString(1448));
 	chkSkin->setChecked(gameConf.skin_index != 0);
+	btnSYSExit = env->addButton(rect<s32>(10, 310, 270, 340), wSystem, BUTTON_SYS_EXIT, dataManager.GetSysString(1210));
 	
 	//lan mode
 	wLanWindow = env->addWindow(rect<s32>(220, 100, 800, 520), false, dataManager.GetSysString(1200));
@@ -1224,7 +1225,7 @@ void Game::LoadConfig() {
 	gameConf.window_height = 640;
 	gameConf.resize_popup_menu = false;
 	gameConf.chkEnablePScale = 1;
-	gameConf.random = 1
+	gameConf.random = 1;
 	gameConf.skin_index = 0;
 	if(fp) {
 		while(fgets(linebuf, 256, fp)) {
@@ -1592,7 +1593,7 @@ void Game::SaveConfig() {
 	fprintf(fp, "music_mode = %d\n", (chkMusicMode->isChecked() ? 1 : 0));
 #endif
 	fprintf(fp, "enable_pendulum_scale = %d\n", (chkEnablePScale->isChecked() ? 1 : 0));
-	fprintf(fp, "random_drawing = %d\n", (chkMRandom->isChecked() ? 1 : 0));
+	fprintf(fp, "random_drawing = %d\n", game.random);
 	fprintf(fp, "skin_index = %d\n", gameConf.skin_index);
 	BufferIO::EncodeUTF8(gameConf.locale, linebuf);
 	fprintf(fp, "locale = %s\n", linebuf);
@@ -1821,9 +1822,9 @@ void Game::initUtils() {
 void Game::ClearTextures() {
 	matManager.mCard.setTexture(0, 0);
 	imageManager.tAvatar[1] = imageManager.GetRandomImage(TEXTURE_AVATAR_S);
-	if(gameConf.random = 0)
+	if(mainGame->chkMRandom->isChecked())
 		imageManager.tBackGround_deck = imageManager.GetRandomImage(TEXTURE_DECK);
-	if(gameConf.random = 0)
+	if(mainGame->chkMRandom->isChecked())
 		imageManager.tBackGround = imageManager.GetRandomImage(TEXTURE_DUEL);
 	imgCard->setImage(imageManager.tCover[0]);
 	scrCardText->setVisible(false);

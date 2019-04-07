@@ -104,6 +104,22 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 					mainGame->device->closeDevice();
 				break;
 			}
+			case BUTTON_SYS: {
+				mainGame->chkMRandom->setEnabled(true);
+				mainGame->chkBot->setEnabled(true);
+				mainGame->chkSkin->setEnabled(true);
+				mainGame->btnSYSExit->setEnabled(true);
+				mainGame->HideElement(mainGame->wOther);
+				mainGame->ShowElement(mainGame->wSyetem);
+				break;
+			}
+			case BUTTON_SYS_EXIT: {
+				mainGame->HideElement(mainGame->wSystem);
+				mainGame->ShowElement(mainGame->wOther);
+				if(exit_on_return)
+					mainGame->device->closeDevice();
+				break;
+			}
 			case BUTTON_LAN_MODE: {
 				mainGame->btnCreateHost->setEnabled(true);
 				mainGame->btnJoinHost->setEnabled(true);
