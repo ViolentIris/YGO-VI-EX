@@ -14,11 +14,11 @@ bool ImageManager::Initial()  {
 	tCover[1] = NULL;
 	tCover[2] = NULL;
 	tCover[3] = NULL;
-	if(mainGame->chkMRandom->isChecked())
+	if(mainGame->gameConf.random)
 		tCover[0] = GetRandomImage(TEXTURE_COVER_S);
 	if(!tCover[0])
 		tCover[0] = driver->getTexture("textures/cover.jpg");
-	if(mainGame->chkMRandom->isChecked())
+	if(mainGame->gameConf.random)
 		tCover[1] = GetRandomImage(TEXTURE_COVER_O);
 	if(!tCover[1])
 		tCover[1] = driver->getTexture("textures/cover2.jpg");
@@ -26,7 +26,7 @@ bool ImageManager::Initial()  {
 		tCover[1] = GetRandomImage(TEXTURE_COVER_S);
 	if(!tCover[1])
 		tCover[1] = tCover[0];
-	if(mainGame->chkMRandom->isChecked())
+	if(mainGame->gameConf.random)
 		tCover[2] = GetRandomImage(TEXTURE_COVER_S2);
 	if(!tCover[2])
 		tCover[2] = driver->getTexture("textures/cover3.jpg");
@@ -34,7 +34,7 @@ bool ImageManager::Initial()  {
 		tCover[2] = GetRandomImage(TEXTURE_COVER_S);
 	if(!tCover[2])
 		tCover[2] = tCover[1];
-	if(mainGame->chkMRandom->isChecked())
+	if(mainGame->gameConf.random)
 		tCover[3] = GetRandomImage(TEXTURE_COVER_O2);
 	if(!tCover[3])
 		tCover[3] = driver->getTexture("textures/cover4.jpg");
@@ -51,9 +51,9 @@ bool ImageManager::Initial()  {
 	tAvatar[1] = GetRandomImage(TEXTURE_AVATAR_S);
 	tAct = NULL;
 	tAttack = NULL;
-	if(mainGame->chkMRandom->isChecked())
+	if(mainGame->gameConf.random)
 		tAct = GetRandomImage(TEXTURE_ACTIVATE);
-	if(mainGame->chkMRandom->isChecked())
+	if(mainGame->gameConf.random)
 		tAttack = GetRandomImage(TEXTURE_ATTACK);
 	if(!tAct)
 		tAct = driver->getTexture("textures/act.png");
@@ -79,13 +79,13 @@ bool ImageManager::Initial()  {
 	tBackGround = NULL;
 	tBackGround_menu = NULL;
 	tBackGround_deck = NULL;
-	if(mainGame->chkMRandom->isChecked())
+	if(mainGame->gameConf.random)
 		tBackGround = GetRandomImage(TEXTURE_DUEL);
 	if(!tBackGround)
 		tBackGround = driver->getTexture("textures/bg.jpg");
 	if(!tBackGround)
 		tBackGround = driver->getTexture("textures/bg_duel.jpg");
-	if(mainGame->chkMRandom->isChecked())
+	if(mainGame->gameConf.random)
 		tBackGround_menu = GetRandomImage(TEXTURE_MENU);
 	if(!tBackGround_menu)
 		tBackGround_menu = driver->getTexture("textures/bg_menu.jpg");
@@ -93,7 +93,7 @@ bool ImageManager::Initial()  {
 		tBackGround_menu = GetRandomImage(TEXTURE_DUEL);
 	if(!tBackGround_menu)
 		tBackGround_menu = tBackGround;
-	if(mainGame->chkMRandom->isChecked())
+	if(mainGame->gameConf.random)
 		tBackGround_deck = GetRandomImage(TEXTURE_DECK);
 	if(!tBackGround_deck)
 		tBackGround_deck = driver->getTexture("textures/bg_deck.jpg");

@@ -1222,7 +1222,7 @@ void Game::LoadConfig() {
 	gameConf.resize_popup_menu = false;
 	gameConf.chkEnablePScale = 1;
 	gameConf.random = 1;
-	gameConf.skin_index = 0;
+	gameConf.skin_index = -1;
 	if(fp) {
 		while(fgets(linebuf, 256, fp)) {
 			sscanf(linebuf, "%s = %s", strbuf, valbuf);
@@ -1818,9 +1818,9 @@ void Game::initUtils() {
 void Game::ClearTextures() {
 	matManager.mCard.setTexture(0, 0);
 	imageManager.tAvatar[1] = imageManager.GetRandomImage(TEXTURE_AVATAR_S);
-	if(mainGame->chkMRandom->isChecked())
+	if(mainGame->gameConf.random)
 		imageManager.tBackGround_deck = imageManager.GetRandomImage(TEXTURE_DECK);
-	if(mainGame->chkMRandom->isChecked())
+	if(mainGame->gameConf.random)
 		imageManager.tBackGround = imageManager.GetRandomImage(TEXTURE_DUEL);
 	imgCard->setImage(imageManager.tCover[0]);
 	scrCardText->setVisible(false);
