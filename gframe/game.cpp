@@ -141,7 +141,7 @@ bool Game::Initialize() {
 	btnFOX = env->addButton(rect<s32>(10, 205, 270, 235), wOther, BUTTON_FOX, dataManager.GetSysString(1433));
 	btnWBO = env->addButton(rect<s32>(10, 240, 270, 270), wOther, BUTTON_WBO, dataManager.GetSysString(1440));
 	btnSYS = env->addButton(rect<s32>(10, 275, 270, 305), wOther, BUTTON_SYS, dataManager.GetSysString(1445));
-	btnOtherExit = env->addButton(rect<s32>(200, 190, 250, 210), wOther, BUTTON_OTHER_EXIT, dataManager.GetSysString(1210));
+	btnOtherExit = env->addButton(rect<s32>(10, 310, 270, 340), wOther, BUTTON_OTHER_EXIT, dataManager.GetSysString(1210));
 	
 	//system setting
 	wSystem = env->addWindow(rect<s32>(250, 200, 700, 415), false, dataManager.GetSysString(1445));
@@ -153,7 +153,7 @@ bool Game::Initialize() {
 	chkBot->setChecked(gameConf.enable_bot_mode != 0);
 	chkSkin = env->addCheckBox(false, rect<s32>(15, 80, 275, 105), wSystem, CHECKBOX_SKIN, dataManager.GetSysString(1448));
 	chkSkin->setChecked(gameConf.skin_index != 0);
-	btnSYSExit = env->addButton(rect<s32>(10, 310, 270, 340), wSystem, BUTTON_SYS_EXIT, dataManager.GetSysString(1210));
+	btnSYSExit = env->addButton(rect<s32>(200, 190, 250, 210), wSystem, BUTTON_SYS_EXIT, dataManager.GetSysString(1210));
 	
 	//lan mode
 	wLanWindow = env->addWindow(rect<s32>(220, 100, 800, 520), false, dataManager.GetSysString(1200));
