@@ -117,7 +117,6 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				mainGame->SaveConfig();
 				mainGame->LoadConfig();
 				mainGame->RefreshBot();
-				mainGame->ClearTextures();
 				mainGame->HideElement(mainGame->wSystem);
 				mainGame->ShowElement(mainGame->wOther);
 				if(exit_on_return)
