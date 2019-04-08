@@ -113,21 +113,6 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				mainGame->ShowElement(mainGame->wSystem);
 				break;
 			}
-			case CHECKBOX_RDM: {
-				mainGame->gameConf.random = mainGame->chkMRandom->isChecked() ? 1 : 0;
-				return true;
-				break;
-			}
-			case CHECKBOX_BOT: {
-				mainGame->gameConf.enable_bot_mode = mainGame->chkBot->isChecked() ? 1 : 0;
-				return true;
-				break;
-			}
-			case CHECKBOX_SKIN: {
-				mainGame->gameConf.skin_index = mainGame->chkSkin->isChecked() ? 1 : 0;
-				return true;
-				break;
-			}
 			case BUTTON_SYS_EXIT: {
 				mainGame->HideElement(mainGame->wSystem);
 				mainGame->ShowElement(mainGame->wOther);
