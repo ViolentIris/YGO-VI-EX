@@ -116,6 +116,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 			case BUTTON_SYS_EXIT: {
 				mainGame->SaveConfig();
 				mainGame->LoadConfig();
+				mainGame->device->closeDevice();
 				mainGame->Initialize();
 				mainGame->HideElement(mainGame->wSystem);
 				mainGame->ShowElement(mainGame->wOther);
