@@ -1927,7 +1927,6 @@ bool ClientField::OnCommonEvent(const irr::SEvent& event) {
 			}
 			case CHECKBOX_BOT: {
 				mainGame->gameConf.enable_bot_mode = mainGame->chkBot->isChecked() ? 1 : 0;
-				mainGame->RefreshBot();
 				return true;
 				break;
 			}

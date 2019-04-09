@@ -117,8 +117,6 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				mainGame->device->closeDevice();
 				mainGame->SaveConfig();
 				mainGame->Initialize();
-				if(exit_on_return)
-					mainGame->device->closeDevice();
 				break;
 			}
 			case BUTTON_LAN_MODE: {
