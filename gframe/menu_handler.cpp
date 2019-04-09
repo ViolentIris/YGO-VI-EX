@@ -116,7 +116,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 			case BUTTON_SYS_EXIT: {
 				mainGame->device->closeDevice();
 				mainGame->Initialize();
-				mainGame->MainLoop();
+				return true;
 				break;
 			}
 			case BUTTON_LAN_MODE: {
