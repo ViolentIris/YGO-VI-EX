@@ -153,7 +153,18 @@ bool Game::Initialize() {
 	chkBot->setChecked(gameConf.enable_bot_mode != 0);
 	chkSkin = env->addCheckBox(false, rect<s32>(15, 80, 275, 105), wSystem, CHECKBOX_SKIN, dataManager.GetSysString(1448));
 	chkSkin->setChecked(gameConf.skin_index != 0);
-	btnSYSExit = env->addButton(rect<s32>(200, 190, 250, 210), wSystem, BUTTON_SYS_EXIT, dataManager.GetSysString(1210));
+	btnHeadEdit = env->addButton(rect<s32>(15, 110, 275, 150), wSystem, BUTTON_HEAD_EDIT, dataManager.GetSysString(1450));
+	btnSYSReturn = env->addButton(rect<s32>(120, 180, 240, 210), wSystem, BUTTON_SYS_RETURN, dataManager.GetSysString(1210));
+	btnSYSExit = env->addButton(rect<s32>(260, 180, 320, 210), wSystem, BUTTON_SYS_EXIT, dataManager.GetSysString(1449));
+	
+	//head edit
+	wHD = env->addWindow(rect<s32>(220, 100, 800, 520), false, dataManager.GetSysString(1450));
+	wHD->getCloseButton()->setVisible(false);
+	wHD->setVisible(false);
+	lstHDList = env->addListBox(rect<s32>(10, 30, 350, 400), wHD, LISTBOX_HD_LIST, true);
+	lstHDList->setItemHeight(18);
+	btnHDSet = env->addButton(rect<s32>(360, 385, 460, 410), wReplay, BUTTON_HD_SET, dataManager.GetSysString(1451));
+	btnHDCancel = env->addButton(rect<s32>(470, 385, 570, 410), wReplay, BUTTON_HD_CANCEL, dataManager.GetSysString(1452));
 	
 	//lan mode
 	wLanWindow = env->addWindow(rect<s32>(220, 100, 800, 520), false, dataManager.GetSysString(1200));
