@@ -559,7 +559,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				const wchar_t* name1 = mainGame->lstHDList->getListItem(sel);
 				wchar_t phname1[256];
 				myswprintf(phname1, L"textures/head/%ls", name1);
-				imageManager.tAvatar[0] = driver->imageManager.getTexture("phname1");
+				imageManager.tAvatar[0] = imageManager.GetTextureFromFile(phname1, 160, 160);
 				break;
 			}
 			case BUTTON_HD_CANCEL: {
@@ -709,7 +709,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				char hdfile[256];
 				sprintf(hdfile, "./head/%d", name);
 				irr::video::ITexture* hdimg = imageManager.GetTextureFromFile(hdfile, 160, 160);
-				driver->draw2DImage(hdimg, Resize(370, 30, 450, 110), recti(0, 0, 160, 160), 0, 0, true);
+				imgCard->setImage(hdimg, Resize(370, 30, 450, 110), recti(0, 0, 160, 160), 0, 0, true);
 				break;
 			}
 			case LISTBOX_SINGLEPLAY_LIST: {
