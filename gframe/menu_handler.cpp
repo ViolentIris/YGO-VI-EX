@@ -557,8 +557,8 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				if(sel == -1)
 					break;
 				const wchar_t* name1 = mainGame->lstHDList->getListItem(sel);
-				char* phname1[256];
-				myswprintf(phname1, L"textures/head/%ls", name1);
+				char phname1[256];
+				sprintf(phname1, L"textures/head/%ls", name1);
 				imageManager.tAvatar[0] = imageManager.GetTextureFromFile(phname1, 160, 160);
 				break;
 			}
@@ -709,7 +709,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				char hdfile[256];
 				sprintf(hdfile, "./head/%d", name);
 				irr::video::ITexture* hdimg = imageManager.GetTextureFromFile(hdfile, 160, 160);
-				mainGame->imgCard->setImage(hdimg, mainGame->Resize(370, 30, 450, 110), recti(0, 0, 160, 160), 0, 0, true);
+				mainGame->imgCard->setImage(hdimg);
 				break;
 			}
 			case LISTBOX_SINGLEPLAY_LIST: {
