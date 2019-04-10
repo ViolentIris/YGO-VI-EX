@@ -118,7 +118,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				mainGame->SaveConfig();
 				mainGame->device->closeDevice();
 				system("YGO-VI-EX.exe");
-				system("exit")
+				system("exit");
 				return true;
 				break;
 			}
