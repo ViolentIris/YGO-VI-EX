@@ -556,7 +556,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				int sel = mainGame->lstHDList->getSelected();
 				if(sel == -1)
 					break;
-				const wchar_t* name1 = mainGame->lstHDList->getListItem(sel);
+				const char* name1 = mainGame->lstHDList->getListItem(sel);
 				char phname1[256];
 				sprintf(phname1, L"textures/head/%ls", name1);
 				imageManager.tAvatar[0] = imageManager.GetTextureFromFile(phname1, 160, 160);
