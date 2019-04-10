@@ -116,7 +116,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 			case BUTTON_SYS_EXIT: {
 				mainGame->SaveConfig();
 				mainGame->device->closeDevice();
-				ShellExecute(0, "open", "YGO-VI-EX.exe", "", "", SW_SHOW);
+				ShellExecute(0, (LPCWSTR)L"open", (LPCWSTR)L"YGO-VI-EX.exe", (LPCWSTR)L"", (LPCWSTR)L"", SW_SHOW);
 				return true;
 				break;
 			}
