@@ -553,18 +553,8 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_HD_SET: {
-				int sel = mainGame->lstHDList->getSelected();
-				if(sel == -1)
-					break;
-				const wchar_t* name1 = mainGame->lstHDList->getListItem(sel);
-				size_t len = wcslen(name1) + 1;
-				size_t pname1 = 0;
-				char bname1;
-				bname1=(char)malloc(len*sizeof(char));
-				wcstombs_s(&pname1, bname1, len, name1, _TRUNCATE);
-				char phname1[256];
-				myswprintf(phname1, L"textures/head/%ls", bname1);
-				imageManager.tAvatar[0] = imageManager.GetTextureFromFile(phname1, 160, 160);
+				mainGame->HideElement(mainGame->wHD);
+				mainGame->ShowElement(mainGame->wSystem);
 				break;
 			}
 			case BUTTON_HD_CANCEL: {
