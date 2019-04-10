@@ -8,6 +8,7 @@
 #include "image_manager.h"
 #include "sound_manager.h"
 #include "game.h"
+#include <shellapi.h>
 
 namespace ygo {
 
@@ -116,7 +117,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 			case BUTTON_SYS_EXIT: {
 				mainGame->SaveConfig();
 				mainGame->device->closeDevice();
-				ShellExecute(0, (LPCWSTR)L"open", (LPCWSTR)L"YGO-VI-EX.exe", (LPCWSTR)L"", (LPCWSTR)L"", SW_SHOW);
+				ShellExecute(0, (LPCWSTR)L"open", (LPCWSTR)L"YGO-VI-EX.EXE", (LPCWSTR)L"", (LPCWSTR)L"", SW_SHOWNOACTIVATE);
 				return true;
 				break;
 			}
