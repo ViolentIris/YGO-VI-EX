@@ -563,7 +563,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				bname1=(char)malloc(len*sizeof(char));
 				wcstombs_s(&pname1, bname1, len, name1, _TRUNCATE);
 				char phname1[256];
-				sprintf(phname1, L"textures/head/%ls", bname1);
+				myswprintf(phname1, L"textures/head/%ls", bname1);
 				imageManager.tAvatar[0] = imageManager.GetTextureFromFile(phname1, 160, 160);
 				break;
 			}
