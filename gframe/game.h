@@ -359,12 +359,12 @@ public:
 	irr::gui::IGUICheckBox* chkSkin;
 	irr::gui::IGUIButton* btnSYSExit;
 	irr::gui::IGUIButton* btnSYSReturn;
-	irr::gui::IGUIButton* btnHeadEdit
+	irr::gui::IGUIButton* btnHeadEdit;
 	//head edit
 	irr::gui::IGUIWindow* wHD;
-	irr::gui::IGUIListBox* lstHDList
-	irr::gui::IGUIButton* btnHDSet
-	irr::gui::IGUIButton* btnHDCancel
+	irr::gui::IGUIListBox* lstHDList;
+	irr::gui::IGUIButton* btnHDSet;
+	irr::gui::IGUIButton* btnHDCancel;
 	//lan
 	irr::gui::IGUIWindow* wLanWindow;
 	irr::gui::IGUIEditBox* ebNickName;
