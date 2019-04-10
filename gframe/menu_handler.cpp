@@ -558,8 +558,8 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 					break;
 				const wchar_t* name1 = mainGame->lstHDList->getListItem(sel);
 				wchar_t phname1[256];
-				myswprintf(phame1, L"textures/head/%ls", name1);
-				imageManager.tAvatar[0] = driver->imageManager.getTexture("phame1");
+				myswprintf(phname1, L"textures/head/%ls", name1);
+				imageManager.tAvatar[0] = driver->imageManager.getTexture("phname1");
 				break;
 			}
 			case BUTTON_HD_CANCEL: {

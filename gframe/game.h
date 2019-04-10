@@ -821,9 +821,11 @@ extern Game* mainGame;
 #define CHECKBOX_SKIN		409
 #define BUTTON_SYS			410
 #define BUTTON_HEAD_EDIT	412
+#define BUTTON_SYS_RETURN	416
 
 #define BUTTON_HD_SET		413
 #define BUTTON_HD_CANCEL	414
+#define LISTBOX_HD_LIST		415
 
 #define TEXTURE_DUEL				0
 #define TEXTURE_DECK				1
