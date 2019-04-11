@@ -313,6 +313,8 @@ public:
 	irr::gui::IGUICheckBox* chkHideSetname;
 	irr::gui::IGUICheckBox* chkHideHintButton;
 	irr::gui::IGUICheckBox* chkIgnoreDeckChanges;
+	irr::gui::IGUICheckBox* chkMRandom;
+	irr::gui::IGUICheckBox* chkSkin;
 	irr::gui::IGUICheckBox* chkAutoSearch;
 	irr::gui::IGUICheckBox* chkMultiKeywords;
 	irr::gui::IGUICheckBox* chkRegex;
@@ -351,20 +353,6 @@ public:
 	irr::gui::IGUIButton* btnVI;
 	irr::gui::IGUIButton* btnFOX;
 	irr::gui::IGUIButton* btnWBO;
-	irr::gui::IGUIButton* btnSYS;
-	//system setting
-	irr::gui::IGUIWindow* wSystem;
-	irr::gui::IGUICheckBox* chkMRandom;
-	irr::gui::IGUICheckBox* chkBot;
-	irr::gui::IGUICheckBox* chkSkin;
-	irr::gui::IGUIButton* btnSYSExit;
-	irr::gui::IGUIButton* btnSYSReturn;
-	irr::gui::IGUIButton* btnHeadEdit;
-	//head edit
-	irr::gui::IGUIWindow* wHD;
-	irr::gui::IGUIListBox* lstHDList;
-	irr::gui::IGUIButton* btnHDSet;
-	irr::gui::IGUIButton* btnHDCancel;
 	//lan
 	irr::gui::IGUIWindow* wLanWindow;
 	irr::gui::IGUIEditBox* ebNickName;
@@ -815,17 +803,9 @@ extern Game* mainGame;
 #define BUTTON_SC_EXIT					403
 #define BUTTON_NK						404
 
-#define BUTTON_SYS_EXIT		406
-#define CHECKBOX_RDM		407
-#define CHECKBOX_BOT		408
-#define CHECKBOX_SKIN		409
-#define BUTTON_SYS			410
-#define BUTTON_HEAD_EDIT	412
-#define BUTTON_SYS_RETURN	416
+#define CHECKBOX_RDM		406
+#define CHECKBOX_SKIN		407
 
-#define BUTTON_HD_SET		413
-#define BUTTON_HD_CANCEL	414
-#define LISTBOX_HD_LIST		415
 
 #define TEXTURE_DUEL				0
 #define TEXTURE_DECK				1

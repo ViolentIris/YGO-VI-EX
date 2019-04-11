@@ -140,31 +140,7 @@ bool Game::Initialize() {
 	btnVI = env->addButton(rect<s32>(10, 170, 270, 200), wOther, BUTTON_VI, dataManager.GetSysString(1427));
 	btnFOX = env->addButton(rect<s32>(10, 205, 270, 235), wOther, BUTTON_FOX, dataManager.GetSysString(1433));
 	btnWBO = env->addButton(rect<s32>(10, 240, 270, 270), wOther, BUTTON_WBO, dataManager.GetSysString(1440));
-	btnSYS = env->addButton(rect<s32>(10, 275, 270, 305), wOther, BUTTON_SYS, dataManager.GetSysString(1445));
-	btnOtherExit = env->addButton(rect<s32>(10, 310, 270, 340), wOther, BUTTON_OTHER_EXIT, dataManager.GetSysString(1210));
-	
-	//system setting
-	wSystem = env->addWindow(rect<s32>(250, 200, 700, 415), false, dataManager.GetSysString(1445));
-	wSystem->getCloseButton()->setVisible(false);
-	wSystem->setVisible(false);
-	chkMRandom = env->addCheckBox(false, rect<s32>(15, 20, 275, 45), wSystem, CHECKBOX_RDM, dataManager.GetSysString(1446));
-	chkMRandom->setChecked(gameConf.random != 0);
-	chkBot = env->addCheckBox(false, rect<s32>(15, 50, 275, 75), wSystem, CHECKBOX_BOT, dataManager.GetSysString(1447));
-	chkBot->setChecked(gameConf.enable_bot_mode != 0);
-	chkSkin = env->addCheckBox(false, rect<s32>(15, 80, 275, 105), wSystem, CHECKBOX_SKIN, dataManager.GetSysString(1448));
-	chkSkin->setChecked(gameConf.skin_index != 0);
-	btnHeadEdit = env->addButton(rect<s32>(15, 110, 275, 150), wSystem, BUTTON_HEAD_EDIT, dataManager.GetSysString(1450));
-	btnSYSReturn = env->addButton(rect<s32>(120, 180, 240, 210), wSystem, BUTTON_SYS_RETURN, dataManager.GetSysString(1210));
-	btnSYSExit = env->addButton(rect<s32>(260, 180, 320, 210), wSystem, BUTTON_SYS_EXIT, dataManager.GetSysString(1449));
-	
-	//head edit
-	wHD = env->addWindow(rect<s32>(220, 100, 800, 520), false, dataManager.GetSysString(1450));
-	wHD->getCloseButton()->setVisible(false);
-	wHD->setVisible(false);
-	lstHDList = env->addListBox(rect<s32>(10, 30, 350, 400), wHD, LISTBOX_HD_LIST, true);
-	lstHDList->setItemHeight(18);
-	btnHDSet = env->addButton(rect<s32>(360, 385, 460, 410), wHD, BUTTON_HD_SET, dataManager.GetSysString(1451));
-	btnHDCancel = env->addButton(rect<s32>(470, 385, 570, 410), wHD, BUTTON_HD_CANCEL, dataManager.GetSysString(1452));
+	btnOtherExit = env->addButton(rect<s32>(10, 275, 270, 305), wOther, BUTTON_OTHER_EXIT, dataManager.GetSysString(1210));
 	
 	//lan mode
 	wLanWindow = env->addWindow(rect<s32>(220, 100, 800, 520), false, dataManager.GetSysString(1200));
@@ -404,6 +380,12 @@ bool Game::Initialize() {
 	posY += 30;
 	chkIgnoreDeckChanges = env->addCheckBox(false, rect<s32>(posX, posY, posX + 260, posY + 25), tabSystem, -1, dataManager.GetSysString(1357));
 	chkIgnoreDeckChanges->setChecked(gameConf.chkIgnoreDeckChanges != 0);
+	posY += 30;
+	chkMRandom = env->addCheckBox(false, rect<s32>(posX, posY, posX + 260, posY + 25), tabSystem, CHECKBOX_RDM, dataManager.GetSysString(1445));
+	chkMRandom->setChecked(gameConf.random != 0);
+	posY += 30;
+	chkSkin = env->addCheckBox(false, rect<s32>(posX, posY, posX + 260, posY + 25), tabSystem, CHECKBOX_SKIN, dataManager.GetSysString(1446));
+	chkMRandom->setChecked(gameConf.skin_index != 0);
 	posY += 30;
 	chkAutoSearch = env->addCheckBox(false, rect<s32>(posX, posY, posX + 260, posY + 25), tabSystem, CHECKBOX_AUTO_SEARCH, dataManager.GetSysString(1358));
 	chkAutoSearch->setChecked(gameConf.auto_search_limit >= 0);

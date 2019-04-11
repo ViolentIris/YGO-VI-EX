@@ -104,28 +104,6 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 					mainGame->device->closeDevice();
 				break;
 			}
-			case BUTTON_SYS: {
-				mainGame->chkMRandom->setEnabled(true);
-				mainGame->chkBot->setEnabled(true);
-				mainGame->chkSkin->setEnabled(true);
-				mainGame->btnSYSExit->setEnabled(true);
-				mainGame->HideElement(mainGame->wOther);
-				mainGame->ShowElement(mainGame->wSystem);
-				break;
-			}
-			case BUTTON_SYS_EXIT: {
-				mainGame->SaveConfig();
-				mainGame->device->closeDevice();
-				system("start YGO-VI-EX.exe");
-				return true;
-				break;
-			}
-			case BUTTON_SYS_RETURN: {
-				mainGame->HideElement(mainGame->wSystem);
-				mainGame->ShowElement(mainGame->wOther);
-				if(exit_on_return)
-					mainGame->device->closeDevice();
-			}
 			case BUTTON_LAN_MODE: {
 				mainGame->btnCreateHost->setEnabled(true);
 				mainGame->btnJoinHost->setEnabled(true);
@@ -386,11 +364,6 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				mainGame->RefreshBot();
 				break;
 			}
-			case BUTTON_HEAD_EDIT: {
-				mainGame->HideElement(mainGame->wSystem);
-				mainGame->ShowElement(mainGame->wHD);
-				break;
-			}
 			case BUTTON_LOAD_REPLAY: {
 				if(open_file) {
 					ReplayMode::cur_replay.OpenReplay(open_file_name);
@@ -552,16 +525,6 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				mainGame->ShowElement(mainGame->wMainMenu);
 				break;
 			}
-			case BUTTON_HD_SET: {
-				mainGame->HideElement(mainGame->wHD);
-				mainGame->ShowElement(mainGame->wSystem);
-				break;
-			}
-			case BUTTON_HD_CANCEL: {
-				mainGame->HideElement(mainGame->wHD);
-				mainGame->ShowElement(mainGame->wSystem);
-				break;
-			}
 			case BUTTON_DECK_EDIT: {
 				mainGame->RefreshDeck(mainGame->cbDBDecks);
 				if(open_file && deckManager.LoadDeck(open_file_name)) {
@@ -685,22 +648,6 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				mainGame->ebRepStartTurn->setText(L"1");
 				mainGame->SetStaticText(mainGame->stReplayInfo, 180, mainGame->guiFont, repinfo.c_str());
 				break;
-			}
-			case LISTBOX_HD_LIST: {
-				int sel = mainGame->lstHDList->getSelected();
-				if(sel == -1)
-					break;
-				const wchar_t* name = mainGame->lstHDList->getListItem(sel);
-				wchar_t fname[256];
-				myswprintf(fname, L"./textures/head/%ls", name);
-				FILE *fp;
-				fp = _wfopen(fname, L"rb");
-				char filename[256];
-				BufferIO::EncodeUTF8(fname, filename);
-				fp = fopen(filename, "rb");
-				if(!fp) {
-					break;
-				}
 			}
 			case LISTBOX_SINGLEPLAY_LIST: {
 				int sel = mainGame->lstSinglePlayList->getSelected();
