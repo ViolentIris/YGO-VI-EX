@@ -163,8 +163,8 @@ bool Game::Initialize() {
 	wHD->setVisible(false);
 	lstHDList = env->addListBox(rect<s32>(10, 30, 350, 400), wHD, LISTBOX_HD_LIST, true);
 	lstHDList->setItemHeight(18);
-	btnHDSet = env->addButton(rect<s32>(360, 385, 460, 410), wReplay, BUTTON_HD_SET, dataManager.GetSysString(1451));
-	btnHDCancel = env->addButton(rect<s32>(470, 385, 570, 410), wReplay, BUTTON_HD_CANCEL, dataManager.GetSysString(1452));
+	btnHDSet = env->addButton(rect<s32>(360, 385, 460, 410), wHD, BUTTON_HD_SET, dataManager.GetSysString(1451));
+	btnHDCancel = env->addButton(rect<s32>(470, 385, 570, 410), wHD, BUTTON_HD_CANCEL, dataManager.GetSysString(1452));
 	
 	//lan mode
 	wLanWindow = env->addWindow(rect<s32>(220, 100, 800, 520), false, dataManager.GetSysString(1200));

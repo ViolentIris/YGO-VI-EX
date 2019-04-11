@@ -701,11 +701,6 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				if(!fp) {
 					break;
 				}
-				char hdfile[256];
-				sprintf(hdfile, "./head/%d", name);
-				irr::video::ITexture* hdimg = imageManager.GetTextureFromFile(hdfile, 160, 160);
-				mainGame->imgCard->setImage(hdimg);
-				break;
 			}
 			case LISTBOX_SINGLEPLAY_LIST: {
 				int sel = mainGame->lstSinglePlayList->getSelected();
