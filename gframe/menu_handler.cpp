@@ -692,7 +692,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 					break;
 				const wchar_t* name = mainGame->lstHDList->getListItem(sel);
 				wchar_t fname[256];
-				myswprintf(fname, L"./head/%ls", name);
+				myswprintf(fname, L"./textures/head/%ls", name);
 				FILE *fp;
 				fp = _wfopen(fname, L"rb");
 				char filename[256];
