@@ -623,21 +623,6 @@ void Game::DrawMisc() {
 	DrawShadowText(numFont, dInfo.strLP[0], Resize(545, 15, 610, 24), Resize(0, 1, 2, 0), 0xffffff00, 0xff000000, true, false, 0);
 	DrawShadowText(numFont, dInfo.strLP[1], Resize(709, 15, 774, 24), Resize(0, 1, 2, 0), 0xffffff00, 0xff000000, true, false, 0);
 
-	//recti p1size = Resize(430, 16, 629, 37);
-	//recti p2size = Resize(890, 16, 960, 37);
-	//if(!dInfo.isTag || !dInfo.tag_player[0])
-		//textFont->draw(dInfo.hostname, p1size, 0xffffffff, false, false, 0);
-	//else
-		//textFont->draw(dInfo.hostname_tag, p1size, 0xffffffff, false, false, 0);
-	//if(!dInfo.isTag || !dInfo.tag_player[1]) {
-		//auto cld = textFont->getDimension(dInfo.clientname);
-		//p2size.UpperLeftCorner.X -= cld.Width;
-		//textFont->draw(dInfo.clientname, p2size, 0xffffffff, false, false, 0);
-	//} else {
-		//auto cld = textFont->getDimension(dInfo.clientname_tag);
-		//p2size.UpperLeftCorner.X -= cld.Width;
-		//textFont->draw(dInfo.clientname_tag, p2size, 0xffffffff, false, false, 0);
-	}
 	driver->draw2DRectangle(Resize(632, 10, 688, 30), 0x00000000, 0x00000000, 0xffffffff, 0xffffffff);
 	driver->draw2DRectangle(Resize(632, 30, 688, 50), 0xffffffff, 0xffffffff, 0x00000000, 0x00000000);
 	DrawShadowText(lpcFont, dataManager.GetNumString(dInfo.turn), Resize(635, 5, 687, 40), Resize(0, 0, 2, 0), 0x8000ffff, 0x80000000, true, false, 0);
