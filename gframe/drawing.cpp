@@ -593,6 +593,10 @@ void Game::DrawMisc() {
 		driver->draw2DImage(imageManager.tLPBarFrame, Resize(325, 8, 630, 78), recti(0, 140, 610, 280), 0, 0, true);
 		driver->draw2DImage(imageManager.tLPBarFrame, Resize(689, 8, 991, 78), recti(0, 280, 610, 420), 0, 0, true);
 	}
+	//Dolls stage
+	if((dInfo.start_lp[0]) || (dInfo.lp[0] == dInfo.lp[1])) 
+		driver->draw2DImage(imageManager.tDoll_start[0], Resize(330, 4, 410, 84), recti(0, 0, 125, 125), 0, 0, true);
+		driver->draw2DImage(imageManager.tDoll_start[1], Resize(906, 4, 986, 84), recti(0, 0, 125, 125), 0, 0, true);
 	//Time Display
 	if(!dInfo.isReplay && dInfo.player_type < 7 && dInfo.time_limit) {
 		if(imageManager.tClock) {
