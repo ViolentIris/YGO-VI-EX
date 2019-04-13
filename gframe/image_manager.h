@@ -60,7 +60,7 @@ public:
 	irr::video::ITexture* tLScale[14];
 	irr::video::ITexture* tClock;
 	irr::video::ITexture* tLPBarFrame;
-	irr::video::ITexture* imageManager.tDoll_start[2];
+	irr::video::ITexture* tDoll_start[2];
 	std::list<std::string> support_types;
 };
 

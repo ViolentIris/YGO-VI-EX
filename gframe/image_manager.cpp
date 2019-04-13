@@ -105,8 +105,8 @@ bool ImageManager::Initial()  {
 	tFieldTransparent[0] = driver->getTexture("textures/field-transparent2.png");
 	tField[1] = driver->getTexture("textures/field3.png");
 	tFieldTransparent[1] = driver->getTexture("textures/field-transparent3.png");
-	imageManager.tDoll_start[0] = driver->getTexture("textures/Dolls1/Doll_Start.png");
-	imageManager.tDoll_start[1] = driver->getTexture("textures/Dolls2/Doll_Start.png");
+	tDoll_start[0] = driver->getTexture("textures/Dolls1/Doll_Start.png");
+	tDoll_start[1] = driver->getTexture("textures/Dolls2/Doll_Start.png");
 	tClock = driver->getTexture("textures/clock.png");
 	int i = 0;
 	char buff[100];
