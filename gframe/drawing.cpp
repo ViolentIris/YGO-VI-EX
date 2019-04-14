@@ -594,13 +594,13 @@ void Game::DrawMisc() {
 		driver->draw2DImage(imageManager.tLPBarFrame, Resize(689, 8, 991, 78), recti(0, 280, 610, 420), 0, 0, true);
 	}
 	//Dolls stage
-	if((dInfo.start_lp[0]) || (dInfo.lp[0] == dInfo.lp[1]) || (!(dInfo.lp[0] - dInfo.lp[1] < 3000)) || (!(dInfo.lp[1] - dInfo.lp[0] < 3000))) 
+	if((dInfo.start_lp[0]) || (dInfo.lp[0] == dInfo.lp[1]) || (dInfo.lp[0] - dInfo.lp[1] < 3000) || (dInfo.lp[1] - dInfo.lp[0] < 3000)) 
 		driver->draw2DImage(imageManager.tDoll_start[0], Resize(330, 4, 410, 84), recti(0, 0, 125, 125), 0, 0, true);
 		driver->draw2DImage(imageManager.tDoll_start[1], Resize(906, 4, 986, 84), recti(0, 0, 125, 125), 0, 0, true);
-	if((dInfo.lp[0] - dInfo.lp[1] >= 3000))
+	if(dInfo.lp[0] - dInfo.lp[1] >= 3000)
 		driver->draw2DImage(imageManager.tDoll_3000M[0], Resize(330, 4, 410, 84), recti(0, 0, 125, 125), 0, 0, true);
 		driver->draw2DImage(imageManager.tDoll_3000L[1], Resize(906, 4, 986, 84), recti(0, 0, 125, 125), 0, 0, true);
-	if((dInfo.lp[1] - dInfo.lp[0] >= 3000))
+	if(dInfo.lp[1] - dInfo.lp[0] >= 3000)
 		driver->draw2DImage(imageManager.tDoll_3000L[0], Resize(330, 4, 410, 84), recti(0, 0, 125, 125), 0, 0, true);
 		driver->draw2DImage(imageManager.tDoll_3000M[1], Resize(906, 4, 986, 84), recti(0, 0, 125, 125), 0, 0, true);
 	if((mainGame->dInfo.curMsg == MSG_DAMAGE) && (lpplayer == 0))
