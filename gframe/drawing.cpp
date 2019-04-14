@@ -608,7 +608,7 @@ void Game::DrawMisc() {
 	}
 	if(mainGame->dInfo.curMsg == MSG_DAMAGE && lpplayer == 0)
 		driver->draw2DImage(imageManager.tDoll_LPL[0], Resize(330, 4, 410, 84), recti(0, 0, 125, 125), 0, 0, true);
-	if(mainGame->dInfo.curMsg == MSG_DAMAGE && (lpplayer == 1)
+	if(mainGame->dInfo.curMsg == MSG_DAMAGE && lpplayer == 1)
 		driver->draw2DImage(imageManager.tDoll_LPL[1], Resize(906, 4, 986, 84), recti(0, 0, 125, 125), 0, 0, true);
 	if(mainGame->dInfo.curMsg == MSG_RECOVER && lpplayer == 0)
 		driver->draw2DImage(imageManager.tDoll_LPA[0], Resize(330, 4, 410, 84), recti(0, 0, 125, 125), 0, 0, true);
