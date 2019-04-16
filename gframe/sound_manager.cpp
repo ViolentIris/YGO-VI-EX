@@ -38,7 +38,6 @@ void SoundManager::RefreshBGMList() {
 	RefershBGMDir(L"disadvantage", BGM_DISADVANTAGE);
 	RefershBGMDir(L"win", BGM_WIN);
 	RefershBGMDir(L"lose", BGM_LOSE);
-	RefershBGMDir(L"custom", BGM_CUSTOM);
 #endif
 }
 void SoundManager::RefershBGMDir(std::wstring path, int scene) {

@@ -557,7 +557,7 @@ bool Game::Initialize() {
 		chkRace[i] = env->addCheckBox(false, rect<s32>(10 + (i % 4) * 90, 25 + (i / 4) * 25, 100 + (i % 4) * 90, 50 + (i / 4) * 25),
 		                              wANRace, CHECK_RACE, dataManager.FormatRace(filter));
 	//selection hint
-	stHintMsg = env->addStaticText(L"", rect<s32>(500, 80, 820, 110), true, false, 0, -1, false);
+	stHintMsg = env->addStaticText(L"", rect<s32>(500, 81, 820, 111), true, false, 0, -1, false);
 	stHintMsg->setBackgroundColor(0xc0ffffff);
 	stHintMsg->setTextAlignment(irr::gui::EGUIA_CENTER, irr::gui::EGUIA_CENTER);
 	stHintMsg->setVisible(false);
@@ -604,7 +604,6 @@ bool Game::Initialize() {
 	btnSideReload = env->addButton(rect<s32>(440, 100, 500, 130), 0, BUTTON_SIDE_RELOAD, dataManager.GetSysString(1309));
 	btnSideReload->setVisible(false);
 	btnRenameDeck = env->addButton(rect<s32>(170, 99, 220, 120), wDeckEdit, BUTTON_RENAME_DECK, dataManager.GetSysString(1362));
-	btnDeckCode = env->addButton(rect<s32>(5, 65, 75, 90), wDeckEdit, BUTTON_DECK_CODE, dataManager.GetSysString(1387));
 	//
 	scrFilter = env->addScrollBar(false, recti(999, 161, 1019, 629), 0, SCROLL_FILTER);
 	scrFilter->setLargeStep(10);
@@ -619,15 +618,6 @@ bool Game::Initialize() {
 	ebREName->setTextAlignment(irr::gui::EGUIA_CENTER, irr::gui::EGUIA_CENTER);
 	btnREYes = env->addButton(rect<s32>(70, 80, 140, 105), wRenameDeck, BUTTON_RENAME_DECK_SAVE, dataManager.GetSysString(1341));
 	btnRENo = env->addButton(rect<s32>(170, 80, 240, 105), wRenameDeck, BUTTON_RENAME_DECK_CANCEL, dataManager.GetSysString(1212));
-	//deck code
-	wDeckCode = env->addWindow(rect<s32>(510, 200, 820, 320), false, dataManager.GetSysString(1387));
-	wDeckCode->getCloseButton()->setVisible(false);
-	wDeckCode->setVisible(false);
-	env->addStaticText(dataManager.GetSysString(1388), rect<s32>(20, 25, 290, 45), false, false, wDeckCode);
-	ebDeckCode =  env->addEditBox(L"", rect<s32>(20, 50, 290, 70), true, wDeckCode, -1);
-	ebREName->setTextAlignment(irr::gui::EGUIA_CENTER, irr::gui::EGUIA_CENTER);
-	btnDeckCodeYes = env->addButton(rect<s32>(70, 80, 140, 105), wDeckCode, BUTTON_DECK_CODE_SAVE, dataManager.GetSysString(1341));
-	btnDeckCodeNo = env->addButton(rect<s32>(170, 80, 240, 105), wDeckCode, BUTTON_DECK_CODE_CANCEL, dataManager.GetSysString(1212));
 	//sort type
 	wSort = env->addStaticText(L"", rect<s32>(930, 132, 1020, 156), true, false, 0, -1, true);
 	cbSortType = env->addComboBox(rect<s32>(10, 2, 85, 22), wSort, COMBOBOX_SORTTYPE);
@@ -1808,9 +1798,6 @@ void Game::initUtils() {
 	FileSystem::MakeDir("sound/BGM/lose");
 	FileSystem::MakeDir("sound/BGM/menu");
 	FileSystem::MakeDir("sound/BGM/win");
-	//custom sound
-	FileSystem::MakeDir("sound/custom");
-	FileSystem::MakeDir("sound/BGM/custom");
 #endif
 	//locales
 	FileSystem::MakeDir("locales");
@@ -1970,7 +1957,6 @@ void Game::OnResize() {
 	btnSideReload->setRelativePosition(Resize(440, 100, 500, 130));
 	btnDeleteDeck->setRelativePosition(Resize(225, 95, 290, 120));
 	btnRenameDeck->setRelativePosition(Resize(170, 99, 220, 120));
-	btnDeckCode->setRelativePosition(Resize(5, 65, 75, 90));
 
 	wLanWindow->setRelativePosition(ResizeWin(220, 100, 800, 520));
 	wSC->setRelativePosition(ResizeWin(380, 103, 660, 420));
@@ -1994,7 +1980,7 @@ void Game::OnResize() {
 	wANRace->setRelativePosition(ResizeWin(480, 200, 850, 410));
 	wReplaySave->setRelativePosition(ResizeWin(510, 200, 820, 320));
 	wRenameDeck->setRelativePosition(ResizeWin(510, 200, 820, 320));
-	stHintMsg->setRelativePosition(ResizeWin(500, 80, 820, 110));
+	stHintMsg->setRelativePosition(ResizeWin(500, 81, 820, 111));
 
 	//sound / music volume bar
 	scrSoundVolume->setRelativePosition(recti(scrSoundVolume->getRelativePosition().UpperLeftCorner.X, scrSoundVolume->getRelativePosition().UpperLeftCorner.Y, 20 + (300 * xScale) - 70, scrSoundVolume->getRelativePosition().LowerRightCorner.Y));

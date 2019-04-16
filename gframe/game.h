@@ -533,7 +533,6 @@ public:
 	irr::gui::IGUIButton* btnSideSort;
 	irr::gui::IGUIButton* btnSideReload;
 	irr::gui::IGUIEditBox* ebDeckname;
-	irr::gui::IGUIButton* btnDeckCode;
 	irr::gui::IGUIStaticText* stBanlist;
 	irr::gui::IGUIStaticText* stDeck;
 	irr::gui::IGUIStaticText* stCategory;
@@ -551,11 +550,6 @@ public:
 	irr::gui::IGUIEditBox* ebREName;
 	irr::gui::IGUIButton* btnREYes;
 	irr::gui::IGUIButton* btnRENo;
-	//deck code
-	irr::gui::IGUIWindow* wDeckCode;
-	irr::gui::IGUIEditBox* ebDeckCode;
-	irr::gui::IGUIButton* btnDeckCodeYes;
-	irr::gui::IGUIButton* btnDeckCodeNo;
 	//filter
 	irr::gui::IGUIStaticText* wFilter;
 	irr::gui::IGUIScrollBar* scrFilter;
@@ -811,11 +805,6 @@ extern Game* mainGame;
 
 #define CHECKBOX_RDM		406
 #define CHECKBOX_SKIN		407
-
-#define BUTTON_DECK_CODE			408
-#define BUTTON_DECK_CODE_SAVE		409
-#define BUTTON_DECK_CODE_CANCEL		410
-
 
 #define TEXTURE_DUEL				0
 #define TEXTURE_DECK				1
