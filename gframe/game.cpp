@@ -485,10 +485,6 @@ bool Game::Initialize() {
 	for(int i = 0; i < 5; ++i) {
 		btnOption[i] = env->addButton(rect<s32>(10, 30 + 40 * i, 340, 60 + 40 * i), wOptions, BUTTON_OPTION_0 + i, L"");
 	}
-	scrOption = env->addScrollBar(false, rect<s32>(350, 30, 365, 220), wOptions, SCROLL_OPTION_SELECT);
-	scrOption->setLargeStep(1);
-	scrOption->setSmallStep(1);
-	scrOption->setMin(0);
 	//pos select
 	wPosSelect = env->addWindow(rect<s32>(340, 200, 935, 410), false, dataManager.GetSysString(561));
 	wPosSelect->getCloseButton()->setVisible(false);
@@ -593,7 +589,7 @@ bool Game::Initialize() {
 		cbDBLFList->addItem(deckManager._lfList[i].listName);
 	btnSaveDeck = env->addButton(rect<s32>(225, 35, 290, 60), wDeckEdit, BUTTON_SAVE_DECK, dataManager.GetSysString(1302));
 	ebDeckname = env->addEditBox(L"", rect<s32>(80, 65, 220, 90), true, wDeckEdit, -1);
-	ebREName->setTextAlignment(irr::gui::EGUIA_CENTER, irr::gui::EGUIA_CENTER);
+	ebDeckname->setTextAlignment(irr::gui::EGUIA_CENTER, irr::gui::EGUIA_CENTER);
 	btnSaveDeckAs = env->addButton(rect<s32>(225, 65, 290, 90), wDeckEdit, BUTTON_SAVE_DECK_AS, dataManager.GetSysString(1303));
 	btnDeleteDeck = env->addButton(rect<s32>(225, 95, 290, 120), wDeckEdit, BUTTON_DELETE_DECK, dataManager.GetSysString(1308));
 	btnShuffleDeck = env->addButton(rect<s32>(5, 99, 55, 120), wDeckEdit, BUTTON_SHUFFLE_DECK, dataManager.GetSysString(1307));
@@ -608,7 +604,7 @@ bool Game::Initialize() {
 	btnSideReload = env->addButton(rect<s32>(440, 100, 500, 130), 0, BUTTON_SIDE_RELOAD, dataManager.GetSysString(1309));
 	btnSideReload->setVisible(false);
 	btnRenameDeck = env->addButton(rect<s32>(170, 99, 220, 120), wDeckEdit, BUTTON_RENAME_DECK, dataManager.GetSysString(1362));
-	btnDeckCode = env->addButton(rect<s32>(5, 65, 75, 90), wDeckEdit, BUTTON_DECK_CODE, dataManager.GetSysString(1387));
+	btnDeckCode = env->addButton(rect<s32>(225, 5, 290, 30), wDeckEdit, BUTTON_DECK_CODE, dataManager.GetSysString(1387));
 	//
 	scrFilter = env->addScrollBar(false, recti(999, 161, 1019, 629), 0, SCROLL_FILTER);
 	scrFilter->setLargeStep(10);
@@ -629,7 +625,7 @@ bool Game::Initialize() {
 	wDeckCode->setVisible(false);
 	env->addStaticText(dataManager.GetSysString(1388), rect<s32>(20, 25, 290, 45), false, false, wDeckCode);
 	ebDeckCode =  env->addEditBox(L"", rect<s32>(20, 50, 290, 70), true, wDeckCode, -1);
-	ebDeckCode->setTextAlignment(irr::gui::EGUIA_CENTER, irr::gui::EGUIA_CENTER);
+	ebREName->setTextAlignment(irr::gui::EGUIA_CENTER, irr::gui::EGUIA_CENTER);
 	btnDeckCodeYes = env->addButton(rect<s32>(70, 80, 140, 105), wDeckCode, BUTTON_DECK_CODE_SAVE, dataManager.GetSysString(1341));
 	btnDeckCodeNo = env->addButton(rect<s32>(170, 80, 240, 105), wDeckCode, BUTTON_DECK_CODE_CANCEL, dataManager.GetSysString(1212));
 	//sort type
@@ -2052,8 +2048,6 @@ void Game::OnResize() {
 	lstLog->setRelativePosition(Resize(10, 10, 290, 290));
 	if(showingcode)
 		ShowCardInfo(showingcode, true);
-	else
-		ClearCardInfo();
 	btnClearLog->setRelativePosition(Resize(160, 300, 260, 325));
 	btnTB->setRelativePosition(Resize(135, 40, 245, 95));
 

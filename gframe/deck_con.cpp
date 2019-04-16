@@ -417,12 +417,6 @@ bool DeckBuilder::OnEvent(const irr::SEvent& event) {
 			break;
 		}
 		case irr::gui::EGET_SCROLL_BAR_CHANGED: {
-			switch(id) {
-			case SCROLL_FILTER: {
-				GetHoveredCard();
-				break;
-			}
-			}
 			break;
 		}
 		case irr::gui::EGET_EDITBOX_ENTER: {
