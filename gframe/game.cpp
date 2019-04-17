@@ -1334,9 +1334,7 @@ void Game::LoadConfig() {
 		}
 		fclose(fp);
 	} else
-#else // YGOPRO_COMPAT_MYCARD
 	if(!gameConf.locale || wcslen(gameConf.locale) <= 0)
-#endif
 	{
 		unsigned int lcid = 0;
 #ifdef _WIN32
