@@ -1333,7 +1333,6 @@ void Game::LoadConfig() {
 			}
 		}
 		fclose(fp);
-	}
 	} else
 #else // YGOPRO_COMPAT_MYCARD
 	if(!gameConf.locale || wcslen(gameConf.locale) <= 0)
