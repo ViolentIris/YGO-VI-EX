@@ -323,10 +323,6 @@ public:
 	irr::gui::IGUIScrollBar* scrSoundVolume;
 	irr::gui::IGUIScrollBar* scrMusicVolume;
 	irr::gui::IGUICheckBox* chkMusicMode;
-	irr::gui::IGUIButton* btnWinResizeS;
-	irr::gui::IGUIButton* btnWinResizeM;
-	irr::gui::IGUIButton* btnWinResizeL;
-	irr::gui::IGUIButton* btnWinResizeXL;
 	irr::gui::IGUICheckBox* chkEnablePScale;
 	irr::gui::IGUIComboBox* cbLocale;
 	irr::gui::IGUIWindow* wTBWindow;
@@ -763,11 +759,9 @@ extern Game* mainGame;
 #define CHECKBOX_ENABLE_MUSIC		362
 #define SCROLL_VOLUME				363
 #define CHECKBOX_DISABLE_CHAT		364
-#define BUTTON_WINDOW_RESIZE_S		365
-#define BUTTON_WINDOW_RESIZE_M		366
-#define BUTTON_WINDOW_RESIZE_L		367
-#define BUTTON_WINDOW_RESIZE_XL		368
-#define CHECKBOX_QUICK_ANIMATION	369
+#define CHECKBOX_QUICK_ANIMATION	365
+#define CHECKBOX_RDM				365
+#define CHECKBOX_SKIN				367
 
 #define COMBOBOX_SORTTYPE			370
 #define COMBOBOX_LIMIT				371
@@ -789,22 +783,19 @@ extern Game* mainGame;
 #define BUTTON_TAKEOUT2					391
 #define BUTTON_LANTERN					392
 #define BUTTON_OTHER_EXIT				393
-#define BUTTON_VI						394
-#define BUTTON_FOX						395
+#define BUTTON_VI						403
+#define BUTTON_FOX						404
 #define BUTTON_WBO						405
 
-#define BUTTON_SERVER_CHOOSE			396
-#define BUTTON_233						397
-#define BUTTON_23333					398
-#define BUTTON_7210						399
-#define BUTTON_222						400
-#define BUTTON_765						401
-#define BUTTON_JP						402
-#define BUTTON_SC_EXIT					403
-#define BUTTON_NK						404
-
-#define CHECKBOX_RDM		406
-#define CHECKBOX_SKIN		407
+#define BUTTON_SERVER_CHOOSE			394
+#define BUTTON_233						395
+#define BUTTON_23333					396
+#define BUTTON_7210						397
+#define BUTTON_222						398
+#define BUTTON_765						399
+#define BUTTON_JP						400
+#define BUTTON_NK						401
+#define BUTTON_SC_EXIT					402
 
 #define TEXTURE_DUEL				0
 #define TEXTURE_DECK				1

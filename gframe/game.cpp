@@ -137,9 +137,9 @@ bool Game::Initialize() {
 	btnTakeout1 = env->addButton(rect<s32>(10, 65, 270, 95), wOther, BUTTON_TAKEOUT1, dataManager.GetSysString(1424));
 	btnTakeout2 = env->addButton(rect<s32>(10, 100, 270, 130), wOther, BUTTON_TAKEOUT2, dataManager.GetSysString(1425));
 	btnLantern = env->addButton(rect<s32>(10, 135, 270, 165), wOther, BUTTON_LANTERN, dataManager.GetSysString(1426));
-	btnVI = env->addButton(rect<s32>(10, 170, 270, 200), wOther, BUTTON_VI, dataManager.GetSysString(1427));
-	btnFOX = env->addButton(rect<s32>(10, 205, 270, 235), wOther, BUTTON_FOX, dataManager.GetSysString(1433));
-	btnWBO = env->addButton(rect<s32>(10, 240, 270, 270), wOther, BUTTON_WBO, dataManager.GetSysString(1440));
+	btnVI = env->addButton(rect<s32>(10, 170, 270, 200), wOther, BUTTON_VI, dataManager.GetSysString(1440));
+	btnFOX = env->addButton(rect<s32>(10, 205, 270, 235), wOther, BUTTON_FOX, dataManager.GetSysString(1441));
+	btnWBO = env->addButton(rect<s32>(10, 240, 270, 270), wOther, BUTTON_WBO, dataManager.GetSysString(1439));
 	btnOtherExit = env->addButton(rect<s32>(10, 275, 270, 305), wOther, BUTTON_OTHER_EXIT, dataManager.GetSysString(1210));
 	
 	//lan mode
@@ -165,17 +165,17 @@ bool Game::Initialize() {
 	btnJoinCancel = env->addButton(rect<s32>(460, 385, 570, 410), wLanWindow, BUTTON_JOIN_CANCEL, dataManager.GetSysString(1212));
 	btnCreateHost = env->addButton(rect<s32>(460, 25, 570, 50), wLanWindow, BUTTON_CREATE_HOST, dataManager.GetSysString(1224));
 	//server choose
-	wSC = env->addWindow(rect<s32>(380, 103, 660, 420), false, dataManager.GetSysString(1441));
+	wSC = env->addWindow(rect<s32>(380, 103, 660, 420), false, dataManager.GetSysString(1428));
 	wSC->getCloseButton()->setVisible(false);
 	wSC->setVisible(false);
-	btn233 = env->addButton(rect<s32>(10, 30, 270, 60), wSC, BUTTON_233, dataManager.GetSysString(1435));
-	btn23333 = env->addButton(rect<s32>(10, 65, 270, 95), wSC, BUTTON_23333, dataManager.GetSysString(1436));
-	btn7210 = env->addButton(rect<s32>(10, 100, 270, 130), wSC, BUTTON_7210, dataManager.GetSysString(1437));
-	btn222 = env->addButton(rect<s32>(10, 135, 270, 165), wSC, BUTTON_222, dataManager.GetSysString(1438));
-	btn765 = env->addButton(rect<s32>(10, 170, 270, 200), wSC, BUTTON_765, dataManager.GetSysString(1442));
-	btnJP = env->addButton(rect<s32>(10, 205, 270, 235), wSC, BUTTON_JP, dataManager.GetSysString(1443));
-	btnNK = env->addButton(rect<s32>(10, 240, 270, 270), wSC, BUTTON_NK, dataManager.GetSysString(1444));
-	btnSCExit = env->addButton(rect<s32>(10, 275, 270, 305), wSC, BUTTON_SC_EXIT, dataManager.GetSysString(1439));
+	btn233 = env->addButton(rect<s32>(10, 30, 270, 60), wSC, BUTTON_233, dataManager.GetSysString(1429));
+	btn23333 = env->addButton(rect<s32>(10, 65, 270, 95), wSC, BUTTON_23333, dataManager.GetSysString(1430));
+	btn7210 = env->addButton(rect<s32>(10, 100, 270, 130), wSC, BUTTON_7210, dataManager.GetSysString(1431));
+	btn222 = env->addButton(rect<s32>(10, 135, 270, 165), wSC, BUTTON_222, dataManager.GetSysString(1432));
+	btn765 = env->addButton(rect<s32>(10, 170, 270, 200), wSC, BUTTON_765, dataManager.GetSysString(1433));
+	btnJP = env->addButton(rect<s32>(10, 205, 270, 235), wSC, BUTTON_JP, dataManager.GetSysString(1434));
+	btnNK = env->addButton(rect<s32>(10, 240, 270, 270), wSC, BUTTON_NK, dataManager.GetSysString(1435));
+	btnSCExit = env->addButton(rect<s32>(10, 275, 270, 305), wSC, BUTTON_SC_EXIT, dataManager.GetSysString(1436));
 	//create host
 	wCreateHost = env->addWindow(rect<s32>(320, 100, 700, 520), false, dataManager.GetSysString(1224));
 	wCreateHost->getCloseButton()->setVisible(false);
@@ -390,12 +390,6 @@ bool Game::Initialize() {
 	chkAutoSearch = env->addCheckBox(false, rect<s32>(posX, posY, posX + 260, posY + 25), tabSystem, CHECKBOX_AUTO_SEARCH, dataManager.GetSysString(1358));
 	chkAutoSearch->setChecked(gameConf.auto_search_limit >= 0);
 	posY += 30;
-	env->addStaticText(dataManager.GetSysString(1282), rect<s32>(posX + 23, posY + 3, posX + 120, posY + 28), false, false, tabSystem);
-	btnWinResizeS = env->addButton(rect<s32>(posX + 115, posY, posX + 145, posY + 25), tabSystem, BUTTON_WINDOW_RESIZE_S, dataManager.GetSysString(1283));
-	btnWinResizeM = env->addButton(rect<s32>(posX + 150, posY, posX + 180, posY + 25), tabSystem, BUTTON_WINDOW_RESIZE_M, dataManager.GetSysString(1284));
-	btnWinResizeL = env->addButton(rect<s32>(posX + 185, posY, posX + 215, posY + 25), tabSystem, BUTTON_WINDOW_RESIZE_L, dataManager.GetSysString(1285));
-	btnWinResizeXL = env->addButton(rect<s32>(posX + 220, posY, posX + 250, posY + 25), tabSystem, BUTTON_WINDOW_RESIZE_XL, dataManager.GetSysString(1286));
-	posY += 30;
 	chkEnableSound = env->addCheckBox(gameConf.enable_sound, rect<s32>(posX, posY, posX + 120, posY + 25), tabSystem, CHECKBOX_ENABLE_SOUND, dataManager.GetSysString(1279));
 	chkEnableSound->setChecked(gameConf.enable_sound);
 	scrSoundVolume = env->addScrollBar(true, rect<s32>(posX + 116, posY + 4, posX + 250, posY + 21), tabSystem, SCROLL_VOLUME);
@@ -416,15 +410,15 @@ bool Game::Initialize() {
 	posY += 30;
 	chkMusicMode = env->addCheckBox(false, rect<s32>(posX, posY, posX + 260, posY + 25), tabSystem, -1, dataManager.GetSysString(1281));
 	chkMusicMode->setChecked(gameConf.music_mode != 0);
-	btnTB = env->addButton(rect<s32>(135, 45, 245, 95), tabSystem, BUTTON_TB, dataManager.GetSysString(1428));
-	wTBWindow = env->addWindow(rect<s32>(510, 200, 820, 320), false, dataManager.GetSysString(1429));
+	btnTB = env->addButton(rect<s32>(135, 45, 245, 95), tabSystem, BUTTON_TB, dataManager.GetSysString(1283));
+	wTBWindow = env->addWindow(rect<s32>(510, 200, 820, 320), false, dataManager.GetSysString(1284));
 	wTBWindow->getCloseButton()->setVisible(false);
 	wTBWindow->setVisible(false);
-	env->addStaticText(dataManager.GetSysString(1430), rect<s32>(20, 27, 130, 47), false, false, wTBWindow);
+	env->addStaticText(dataManager.GetSysString(1285), rect<s32>(20, 27, 130, 47), false, false, wTBWindow);
 	ebTBName = env->addEditBox(gameConf.TBname, rect<s32>(20, 50, 290, 70), true, wTBWindow);
 	ebTBName->setTextAlignment(irr::gui::EGUIA_UPPERLEFT, irr::gui::EGUIA_CENTER);
-	btnTBAgree = env->addButton(rect<s32>(70, 80, 140, 105), wTBWindow, BUTTON_TB_AGREE, dataManager.GetSysString(1431));
-	btnTBCancel = env->addButton(rect<s32>(170, 80, 240, 105), wTBWindow, BUTTON_TB_CANCEL, dataManager.GetSysString(1432));
+	btnTBAgree = env->addButton(rect<s32>(70, 80, 140, 105), wTBWindow, BUTTON_TB_AGREE, dataManager.GetSysString(1286));
+	btnTBCancel = env->addButton(rect<s32>(170, 80, 240, 105), wTBWindow, BUTTON_TB_CANCEL, dataManager.GetSysString(1287));
 	elmTabSystemLast = chkMusicMode;
 	//
 	wHand = env->addWindow(rect<s32>(500, 450, 825, 605), false, L"");
@@ -557,7 +551,7 @@ bool Game::Initialize() {
 		chkRace[i] = env->addCheckBox(false, rect<s32>(10 + (i % 4) * 90, 25 + (i / 4) * 25, 100 + (i % 4) * 90, 50 + (i / 4) * 25),
 		                              wANRace, CHECK_RACE, dataManager.FormatRace(filter));
 	//selection hint
-	stHintMsg = env->addStaticText(L"", rect<s32>(500, 81, 820, 111), true, false, 0, -1, false);
+	stHintMsg = env->addStaticText(L"", rect<s32>(500, 82, 820, 112), true, false, 0, -1, false);
 	stHintMsg->setBackgroundColor(0xc0ffffff);
 	stHintMsg->setTextAlignment(irr::gui::EGUIA_CENTER, irr::gui::EGUIA_CENTER);
 	stHintMsg->setVisible(false);
@@ -1853,7 +1847,7 @@ void Game::OnResize() {
 	wANRace->setRelativePosition(ResizeWin(480, 200, 850, 410));
 	wReplaySave->setRelativePosition(ResizeWin(510, 200, 820, 320));
 	wRenameDeck->setRelativePosition(ResizeWin(510, 200, 820, 320));
-	stHintMsg->setRelativePosition(ResizeWin(500, 81, 820, 111));
+	stHintMsg->setRelativePosition(ResizeWin(500, 82, 820, 112));
 
 	//sound / music volume bar
 	scrSoundVolume->setRelativePosition(recti(scrSoundVolume->getRelativePosition().UpperLeftCorner.X, scrSoundVolume->getRelativePosition().UpperLeftCorner.Y, 20 + (300 * xScale) - 70, scrSoundVolume->getRelativePosition().LowerRightCorner.Y));

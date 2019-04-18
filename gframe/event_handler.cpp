@@ -1845,26 +1845,6 @@ bool ClientField::OnCommonEvent(const irr::SEvent& event) {
 				mainGame->HideElement(mainGame->wTBWindow);
 				break;
 			}
-			case BUTTON_WINDOW_RESIZE_S: {
-				mainGame->SetWindowsScale(0.8f);
-				return true;
-				break;
-			}
-			case BUTTON_WINDOW_RESIZE_M: {
-				mainGame->SetWindowsScale(1.0f);
-				return true;
-				break;
-			}
-			case BUTTON_WINDOW_RESIZE_L: {
-				mainGame->SetWindowsScale(1.25f);
-				return true;
-				break;
-			}
-			case BUTTON_WINDOW_RESIZE_XL: {
-				mainGame->SetWindowsScale(1.5f);
-				return true;
-				break;
-			}
 			}
 			break;
 		}
