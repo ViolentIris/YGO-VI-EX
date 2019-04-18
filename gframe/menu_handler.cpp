@@ -73,7 +73,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_TAKEOUT2: {
-                system("start https://waimai.meituan.com/new/waimaiIndex");
+                system("start https://www.4008823823.com.cn/kfcios/Html/index.html");
 				return true;
 				break;
 			}
