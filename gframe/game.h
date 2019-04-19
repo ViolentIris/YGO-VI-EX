@@ -315,6 +315,7 @@ public:
 	irr::gui::IGUICheckBox* chkIgnoreDeckChanges;
 	irr::gui::IGUICheckBox* chkMRandom;
 	irr::gui::IGUICheckBox* chkSkin;
+	irr::gui::IGUICheckBox* chkD3D;
 	irr::gui::IGUICheckBox* chkAutoSearch;
 	irr::gui::IGUICheckBox* chkMultiKeywords;
 	irr::gui::IGUICheckBox* chkRegex;
@@ -761,11 +762,13 @@ extern Game* mainGame;
 #define CHECKBOX_QUICK_ANIMATION	364
 #define CHECKBOX_RDM				365
 #define CHECKBOX_SKIN				366
-#define CHECKBOX_DISABLE_CHAT		367
+#define CHECKBOX_D3D				367
+#define CHECKBOX_DISABLE_CHAT		368
 
 #define COMBOBOX_SORTTYPE			370
 #define COMBOBOX_LIMIT				371
-#define COMBOBOX_LOCALE				372
+#define COMBOBOX_FONT				372
+#define COMBOBOX_LOCALE				373
 
 #define BUTTON_MARKS_FILTER			380
 #define BUTTON_MARKERS_OK			381

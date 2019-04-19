@@ -1910,6 +1910,11 @@ bool ClientField::OnCommonEvent(const irr::SEvent& event) {
 				return true;
 				break;
 			}
+			case CHECKBOX_D3D: {
+				mainGame->gameConf.gameConf.use_d3d = mainGame->chkD3D->isChecked() ? 1 : 0;
+				return true;
+				break;
+			}
 			}
 			break;
 		}
@@ -1980,6 +1985,11 @@ bool ClientField::OnCommonEvent(const irr::SEvent& event) {
 			switch(id) {
 			case COMBOBOX_LOCALE: {
 				myswprintf(mainGame->gameConf.locale, L"%ls",  mainGame->cbLocale->getItem(mainGame->cbLocale->getSelected()));
+				mainGame->SaveConfig();
+				break;
+			}
+			case COMBOBOX_FONT: {
+				myswprintf(mainGame->gameConf.textfont, L"font/%ls",  mainGame->cbFont->getItem(mainGame->cbFont->getSelected()));
 				mainGame->SaveConfig();
 				break;
 			}

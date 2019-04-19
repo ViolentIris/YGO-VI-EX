@@ -387,8 +387,14 @@ bool Game::Initialize() {
 	chkSkin = env->addCheckBox(false, rect<s32>(posX, posY, posX + 260, posY + 25), tabSystem, CHECKBOX_SKIN, dataManager.GetSysString(1438));
 	chkSkin->setChecked(gameConf.skin_index != 0);
 	posY += 30;
+	chkD3D = env->addCheckBox(false, rect<s32>(posX, posY, posX + 260, posY + 25), tabSystem, CHECKBOX_D3D, dataManager.GetSysString(1205));
+	chkD3D->setChecked(gameConf.use_d3d != 0);
+	posY += 30;
 	chkAutoSearch = env->addCheckBox(false, rect<s32>(posX, posY, posX + 260, posY + 25), tabSystem, CHECKBOX_AUTO_SEARCH, dataManager.GetSysString(1358));
 	chkAutoSearch->setChecked(gameConf.auto_search_limit >= 0);
+	posY += 30;
+	env->addStaticText(dataManager.GetSysString(1206), rect<s32>(posX + 23, posY + 3, posX + 160, posY + 28), false, false, tabSystem);
+	cbFont = env->addComboBox(rect<s32>(posX + 160, posY + 4, posX + 260, posY + 21), tabSystem, COMBOBOX_FONT);
 	posY += 30;
 	chkEnableSound = env->addCheckBox(gameConf.enable_sound, rect<s32>(posX, posY, posX + 120, posY + 25), tabSystem, CHECKBOX_ENABLE_SOUND, dataManager.GetSysString(1279));
 	chkEnableSound->setChecked(gameConf.enable_sound);
@@ -419,6 +425,7 @@ bool Game::Initialize() {
 	ebTBName->setTextAlignment(irr::gui::EGUIA_UPPERLEFT, irr::gui::EGUIA_CENTER);
 	btnTBAgree = env->addButton(rect<s32>(70, 80, 140, 105), wTBWindow, BUTTON_TB_AGREE, dataManager.GetSysString(1286));
 	btnTBCancel = env->addButton(rect<s32>(170, 80, 240, 105), wTBWindow, BUTTON_TB_CANCEL, dataManager.GetSysString(1287));
+	RefreshFont();
 	elmTabSystemLast = chkMusicMode;
 	//
 	wHand = env->addWindow(rect<s32>(500, 450, 825, 605), false, L"");
@@ -1108,6 +1115,19 @@ void Game::RefreshLocales() {
 	for(size_t i = 0; i < cbLocale->getItemCount(); ++i) {
 		if(!wcscmp(cbLocale->getItem(i), gameConf.locale)) {
 			cbLocale->setSelected(i);
+			break;
+		}
+	}
+}
+void Game::RefreshFont() {
+	cbLocale->clear();
+	FileSystem::TraversalDir(L"./font", [this](const wchar_t* name, bool isdir) {
+		if(isdir && wcscmp(name, L".") && wcscmp(name, L".."))
+			cbFont->addItem(name);
+	});
+	for(size_t i = 0; i < cbFont->getItemCount(); ++i) {
+		if(!wcscmp(cbFont->getItem(i), gameConf.textfont)) {
+			cbFont->setSelected(i);
 			break;
 		}
 	}
