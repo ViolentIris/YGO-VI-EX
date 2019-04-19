@@ -1911,7 +1911,7 @@ bool ClientField::OnCommonEvent(const irr::SEvent& event) {
 				break;
 			}
 			case CHECKBOX_D3D: {
-				mainGame->gameConf.gameConf.use_d3d = mainGame->chkD3D->isChecked() ? 1 : 0;
+				mainGame->gameConf.use_d3d = mainGame->chkD3D->isChecked() ? 1 : 0;
 				return true;
 				break;
 			}
