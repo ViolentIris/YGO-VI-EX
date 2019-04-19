@@ -1120,7 +1120,7 @@ void Game::RefreshLocales() {
 	}
 }
 void Game::RefreshFont() {
-	cbLocale->clear();
+	cbFont->clear();
 	FileSystem::TraversalDir(L"./font", [this](const wchar_t* name, bool isdir) {
 		if(isdir && wcscmp(name, L".") && wcscmp(name, L".."))
 			cbFont->addItem(name);
