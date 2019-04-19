@@ -1119,9 +1119,9 @@ void Game::RefreshLocales() {
 		}
 	}
 }
-void Game::RefreshFont(irr::gui::IGUIComboBox* cbFont) {
+void Game::RefreshFont() {
 	cbFont->clear();
-	FileSystem::TraversalDir(L"./font", [cbFont](const wchar_t* name, bool isdir) {
+	FileSystem::TraversalDir(L"./font", [this](const wchar_t* name, bool isdir) {
 		if((isdir && wcscmp(name, L".") && !mywcsncasecmp(wcsrchr(name, '.'), L".ttc", 4)) || (isdir && wcscmp(name, L".") && !mywcsncasecmp(wcsrchr(name, '.'), L".ttf", 4)))
 			cbFont->addItem(name);
 	});
