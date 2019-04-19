@@ -1122,7 +1122,7 @@ void Game::RefreshLocales() {
 void Game::RefreshFont() {
 	cbFont->clear();
 	FileSystem::TraversalDir(L"./font", [this](const wchar_t* name, bool isdir) {
-		if((isdir && wcscmp(name, L".") && !mywcsncasecmp(wcsrchr(name, '.'), L".ttc", 4)) || (isdir && wcscmp(name, L".") && !mywcsncasecmp(wcsrchr(name, '.'), L".ttf", 4)))
+		if((isdir && wcsrchr(name, '.') && !mywcsncasecmp(wcsrchr(name, '.'), L".ttc", 4)) || (isdir && wcsrchr(name, '.') && !mywcsncasecmp(wcsrchr(name, '.'), L".ttf", 4)))
 			cbFont->addItem(name);
 	});
 	for(size_t i = 0; i < cbFont->getItemCount(); ++i) {
