@@ -139,6 +139,7 @@ public:
 	void RefreshSingleplay();
 	void RefreshBot();
 	void RefreshLocales();
+	void RefreshFont();
 	void DrawSelectionLine(irr::video::S3DVertex* vec, bool strip, int width, float* cv);
 	void DrawSelectionLine(irr::gui::IGUIElement* element, int width, irr::video::SColor color);
 	void DrawBackGround();
@@ -326,6 +327,7 @@ public:
 	irr::gui::IGUICheckBox* chkMusicMode;
 	irr::gui::IGUICheckBox* chkEnablePScale;
 	irr::gui::IGUIComboBox* cbLocale;
+	irr::gui::IGUIComboBox* cbFont;
 	irr::gui::IGUIWindow* wTBWindow;
 	irr::gui::IGUIButton* btnTB;
 	irr::gui::IGUIButton* btnTBAgree;
