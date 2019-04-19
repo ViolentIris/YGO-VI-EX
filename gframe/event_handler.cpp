@@ -1989,7 +1989,7 @@ bool ClientField::OnCommonEvent(const irr::SEvent& event) {
 				break;
 			}
 			case COMBOBOX_FONT: {
-				myswprintf(mainGame->gameConf.textfont, L"%ls",  mainGame->cbFont->getItem(mainGame->cbFont->getSelected()));
+				myswprintf(mainGame->gameConf.textfont, L"%s",  mainGame->cbFont->getItem(mainGame->cbFont->getSelected()));
 				mainGame->SaveConfig();
 				break;
 			}
