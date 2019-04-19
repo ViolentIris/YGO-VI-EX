@@ -1121,14 +1121,9 @@ void Game::RefreshLocales() {
 }
 void Game::RefreshFont() {
 	cbFont->clear();
-	FileSystem::TraversalDir(L"./font", [cbFont](const wchar_t* fname, bool isdir) {
-		if(!isdir && wcsrchr(fname, '.') && !mywcsncasecmp(wcsrchr(fname, '.'), (L".ttc" || L".ttf" || L".TTC" || L".TTF") , 4)) {
-			size_t flen = wcslen(fname);
-			wchar_t fontname[256];
-			wcsncpy(fontname, fname, flen);
-			fontname[flen] = 0;
-			cbFont->addItem(fontname);
-		}
+	FileSystem::TraversalDir(L"./font", [this](const wchar_t* name, bool isdir) {
+		if((isdir && wcscmp(name, L".") && !mywcsncasecmp(wcsrchr(name, '.'), L".ttc", 4)) || (isdir && wcscmp(name, L".") && !mywcsncasecmp(wcsrchr(name, '.'), L".ttf", 4)))
+			cbFont->addItem(name);
 	});
 	for(size_t i = 0; i < cbFont->getItemCount(); ++i) {
 		if(!wcscmp(cbFont->getItem(i), gameConf.textfont)) {
