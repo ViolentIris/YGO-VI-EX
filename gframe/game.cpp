@@ -1119,11 +1119,16 @@ void Game::RefreshLocales() {
 		}
 	}
 }
-void Game::RefreshFont() {
+void Game::RefreshFont(irr::gui::IGUIComboBox* cbFont) {
 	cbFont->clear();
-	FileSystem::TraversalDir(L"./font", [this](const wchar_t* name, bool isdir) {
-		if(isdir && wcscmp(name, L".") && wcscmp(name, L".."))
-			cbFont->addItem(name);
+	FileSystem::TraversalDir(L"./font", [cbFont](const wchar_t* name, bool isdir) {
+		if(!isdir && wcsrchr(name, '.') && !mywcsncasecmp(wcsrchr(name, '.'), (L".ttc" || L".ttf" || L".TTC" || L".TTF") , 4)) {
+			size_t flen = wcslen(fname);
+			wchar_t fontname[256];
+			wcsncpy(fontname, fname, flen);
+			fontname[flen] = 0;
+			cbFont->addItem(fontname);
+		}
 	});
 	for(size_t i = 0; i < cbFont->getItemCount(); ++i) {
 		if(!wcscmp(cbFont->getItem(i), gameConf.textfont)) {
