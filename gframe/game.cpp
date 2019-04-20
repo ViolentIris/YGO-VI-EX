@@ -1126,7 +1126,11 @@ void Game::RefreshFont() {
 			cbFont->addItem(name);
 	});
 	for(size_t i = 0; i < cbFont->getItemCount(); ++i) {
-		if(!wcscmp(cbFont->getItem(i), gameConf.textfont)) {
+			size_t flen = wcslen(gameConf.textfont);
+			wchar_t fname[256];
+			wcsncpy(fname, gameConf.textfont + 5, flen - 5);
+			fname[len - 5] = 0;
+		if(!wcscmp(cbFont->getItem(i), fname)) {
 			cbFont->setSelected(i);
 			break;
 		}
