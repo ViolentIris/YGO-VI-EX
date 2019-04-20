@@ -120,7 +120,7 @@ bool Game::Initialize() {
 	//main menu
 	wchar_t strbuf[256];
 	myswprintf(strbuf, L"YGO-VI-EX Version:%X.0%X.%X", PRO_VERSION >> 12, (PRO_VERSION >> 4) & 0xff, PRO_VERSION & 0xf);
-	wMainMenu = env->addWindow(rect<s32>(370, 200, 650, 446), false, strbuf);
+	wMainMenu = env->addWindow(rect<s32>(370, 200, 650, 500), false, strbuf);
 	wMainMenu->getCloseButton()->setVisible(false);
 	btnLanMode = env->addButton(rect<s32>(10, 30, 270, 60), wMainMenu, BUTTON_LAN_MODE, dataManager.GetSysString(1200));
 	btnSingleMode = env->addButton(rect<s32>(10, 65, 270, 95), wMainMenu, BUTTON_SINGLE_MODE, dataManager.GetSysString(1201));
@@ -144,26 +144,26 @@ bool Game::Initialize() {
 	btnOtherExit = env->addButton(rect<s32>(10, 275, 270, 305), wOther, BUTTON_OTHER_EXIT, dataManager.GetSysString(1210));
 	
 	//system setting
-	wSystem = env->addWindow(rect<s32>(312, 150, 712, 630), false, dataManager.GetSysString(1207));
+	wSystem = env->addWindow(rect<s32>(212, 150, 812, 350), false, dataManager.GetSysString(1207));
 	wSystem->getCloseButton()->setVisible(false);
 	wSystem->setVisible(false);
-	chkMRandom = env->addCheckBox(false, rect<s32>(30, 50, 200, 75), wSystem, CHECKBOX_RDM, dataManager.GetSysString(1437));
+	chkMRandom = env->addCheckBox(false, rect<s32>(30, 20, 260, 45), wSystem, CHECKBOX_RDM, dataManager.GetSysString(1437));
 	chkMRandom->setChecked(gameConf.random != 0);
-	chkSkin = env->addCheckBox(false, rect<s32>(30, 80, 200, 105), wSystem, CHECKBOX_SKIN, dataManager.GetSysString(1438));
+	chkSkin = env->addCheckBox(false, rect<s32>(30, 50, 260, 75), wSystem, CHECKBOX_SKIN, dataManager.GetSysString(1438));
 	chkSkin->setChecked(gameConf.skin_index != 0);
-	chkD3D = env->addCheckBox(false, rect<s32>(30, 110, 200, 135), wSystem, CHECKBOX_D3D, dataManager.GetSysString(1205));
+	chkD3D = env->addCheckBox(false, rect<s32>(30, 80, 260, 105), wSystem, CHECKBOX_D3D, dataManager.GetSysString(1205));
 	chkD3D->setChecked(gameConf.use_d3d != 0);
-	chkAutoSearch = env->addCheckBox(false, rect<s32>(30, 140, 200, 165), wSystem, CHECKBOX_AUTO_SEARCH, dataManager.GetSysString(1358));
+	chkAutoSearch = env->addCheckBox(false, rect<s32>(30, 110, 260, 135), wSystem, CHECKBOX_AUTO_SEARCH, dataManager.GetSysString(1358));
 	chkAutoSearch->setChecked(gameConf.auto_search_limit >= 0);
-	chkMultiKeywords = env->addCheckBox(false, rect<s32>(210, 50, 380, 75), wSystem, CHECKBOX_MULTI_KEYWORDS, dataManager.GetSysString(1378));
+	chkMultiKeywords = env->addCheckBox(false, rect<s32>(270, 20, 430, 45), wSystem, CHECKBOX_MULTI_KEYWORDS, dataManager.GetSysString(1378));
 	chkMultiKeywords->setChecked(gameConf.search_multiple_keywords > 0);
-	chkRegex = env->addCheckBox(false, rect<s32>(210, 80, 390, 105), wSystem, CHECKBOX_REGEX, dataManager.GetSysString(1379));
+	chkRegex = env->addCheckBox(false, rect<s32>(270, 50, 430, 75), wSystem, CHECKBOX_REGEX, dataManager.GetSysString(1379));
 	chkRegex->setChecked(gameConf.search_regex > 0);
-	env->addStaticText(dataManager.GetSysString(1206), rect<s32>(210, 113, 300, 138), false, false, wSystem);
-	cbFont = env->addComboBox(rect<s32>(300, 114, 390, 131), wSystem, COMBOBOX_FONT);
-	env->addStaticText(dataManager.GetSysString(1288), rect<s32>(210, 143, 300, 168), false, false, wSystem);
-	cbLocale = env->addComboBox(rect<s32>(300, 144, 390, 166), wSystem, COMBOBOX_LOCALE);
-	btnSystemExit = env->addButton(rect<s32>(110, 175, 310, 215), wSystem, BUTTON_SYS_EXIT, dataManager.GetSysString(1210));
+	env->addStaticText(dataManager.GetSysString(1206), rect<s32>(270, 83, 430, 108), false, false, wSystem);
+	cbFont = env->addComboBox(rect<s32>(430, 84, 590, 107), wSystem, COMBOBOX_FONT);
+	env->addStaticText(dataManager.GetSysString(1288), rect<s32>(270, 113, 430, 138), false, false, wSystem);
+	cbLocale = env->addComboBox(rect<s32>(430, 115, 590, 137), wSystem, COMBOBOX_LOCALE);
+	btnSystemExit = env->addButton(rect<s32>(200, 140, 400, 190), wSystem, BUTTON_SYS_EXIT, dataManager.GetSysString(1210));
 	RefreshFont();
 	RefreshLocales();
 	
