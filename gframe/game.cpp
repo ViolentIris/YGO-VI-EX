@@ -1876,8 +1876,8 @@ void Game::OnResize() {
 	//sound / music volume bar
 	scrSoundVolume->setRelativePosition(recti(scrSoundVolume->getRelativePosition().UpperLeftCorner.X, scrSoundVolume->getRelativePosition().UpperLeftCorner.Y, 20 + (300 * xScale) - 70, scrSoundVolume->getRelativePosition().LowerRightCorner.Y));
 	scrMusicVolume->setRelativePosition(recti(scrMusicVolume->getRelativePosition().UpperLeftCorner.X, scrMusicVolume->getRelativePosition().UpperLeftCorner.Y, 20 + (300 * xScale) - 70, scrMusicVolume->getRelativePosition().LowerRightCorner.Y));
-	cbLocale->setRelativePosition(ResizeWin(427, 82, 587, 107));
-	cbFont->setRelativePosition(ResizeWin(427, 112, 587, 137));
+	cbLocale->setRelativePosition(ResizeWin(427, 112, 587, 137));
+	cbFont->setRelativePosition(ResizeWin(427, 82, 587, 107));
 
 	recti tabHelperPos = recti(0, 0, 300 * xScale - 50, 365 * yScale - 65);
 	tabHelper->setRelativePosition(tabHelperPos);
