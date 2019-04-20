@@ -159,11 +159,11 @@ bool Game::Initialize() {
 	chkMultiKeywords->setChecked(gameConf.search_multiple_keywords > 0);
 	chkRegex = env->addCheckBox(false, rect<s32>(270, 50, 430, 75), wSystem, CHECKBOX_REGEX, dataManager.GetSysString(1379));
 	chkRegex->setChecked(gameConf.search_regex > 0);
-	env->addStaticText(dataManager.GetSysString(1206), rect<s32>(270, 83, 427, 108), false, false, wSystem);
-	cbFont = env->addComboBox(rect<s32>(427, 82, 590, 107), wSystem, COMBOBOX_FONT);
-	env->addStaticText(dataManager.GetSysString(1288), rect<s32>(270, 113, 427, 138), false, false, wSystem);
-	cbLocale = env->addComboBox(rect<s32>(427, 112, 590, 137), wSystem, COMBOBOX_LOCALE);
-	btnSystemExit = env->addButton(rect<s32>(200, 140, 400, 190), wSystem, BUTTON_SYS_EXIT, dataManager.GetSysString(1210));
+	env->addStaticText(dataManager.GetSysString(1206), rect<s32>(270, 83, 426, 108), false, false, wSystem);
+	cbFont = env->addComboBox(rect<s32>(427, 80, 590, 105), wSystem, COMBOBOX_FONT);
+	env->addStaticText(dataManager.GetSysString(1288), rect<s32>(270, 113, 426, 138), false, false, wSystem);
+	cbLocale = env->addComboBox(rect<s32>(427, 110, 590, 135), wSystem, COMBOBOX_LOCALE);
+	btnSystemExit = env->addButton(rect<s32>(200, 145, 400, 190), wSystem, BUTTON_SYS_EXIT, dataManager.GetSysString(1210));
 	RefreshFont();
 	RefreshLocales();
 	
@@ -1876,8 +1876,8 @@ void Game::OnResize() {
 	//sound / music volume bar
 	scrSoundVolume->setRelativePosition(recti(scrSoundVolume->getRelativePosition().UpperLeftCorner.X, scrSoundVolume->getRelativePosition().UpperLeftCorner.Y, 20 + (300 * xScale) - 70, scrSoundVolume->getRelativePosition().LowerRightCorner.Y));
 	scrMusicVolume->setRelativePosition(recti(scrMusicVolume->getRelativePosition().UpperLeftCorner.X, scrMusicVolume->getRelativePosition().UpperLeftCorner.Y, 20 + (300 * xScale) - 70, scrMusicVolume->getRelativePosition().LowerRightCorner.Y));
-	cbLocale->setRelativePosition(ResizeWin(427, 112, 587, 137));
-	cbFont->setRelativePosition(ResizeWin(427, 82, 587, 107));
+	cbLocale->setRelativePosition(recti(427, 110, 587, 135));
+	cbFont->setRelativePosition(recti(427, 80, 587, 105));
 
 	recti tabHelperPos = recti(0, 0, 300 * xScale - 50, 365 * yScale - 65);
 	tabHelper->setRelativePosition(tabHelperPos);
