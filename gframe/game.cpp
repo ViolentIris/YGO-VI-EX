@@ -126,8 +126,9 @@ bool Game::Initialize() {
 	btnSingleMode = env->addButton(rect<s32>(10, 65, 270, 95), wMainMenu, BUTTON_SINGLE_MODE, dataManager.GetSysString(1201));
 	btnReplayMode = env->addButton(rect<s32>(10, 100, 270, 130), wMainMenu, BUTTON_REPLAY_MODE, dataManager.GetSysString(1202));
 	btnDeckEdit = env->addButton(rect<s32>(10, 135, 270, 165), wMainMenu, BUTTON_DECK_EDIT, dataManager.GetSysString(1204));
-	btnModeExit = env->addButton(rect<s32>(10, 205, 270, 235), wMainMenu, BUTTON_MODE_EXIT, dataManager.GetSysString(1210));
+	btnModeExit = env->addButton(rect<s32>(10, 240, 270, 270), wMainMenu, BUTTON_MODE_EXIT, dataManager.GetSysString(1210));
 	btnOther = env->addButton(rect<s32>(10, 170, 270, 200), wMainMenu, BUTTON_OTHER, dataManager.GetSysString(1422));
+	btnSYS = env->addButton(rect<s32>(10, 205, 270, 235), wMainMenu, BUTTON_SYS, dataManager.GetSysString(1207));
 
 	//other
 	wOther = env->addWindow(rect<s32>(370, 200, 650, 515), false, dataManager.GetSysString(1422));
@@ -141,6 +142,30 @@ bool Game::Initialize() {
 	btnFOX = env->addButton(rect<s32>(10, 205, 270, 235), wOther, BUTTON_FOX, dataManager.GetSysString(1441));
 	btnWBO = env->addButton(rect<s32>(10, 240, 270, 270), wOther, BUTTON_WBO, dataManager.GetSysString(1439));
 	btnOtherExit = env->addButton(rect<s32>(10, 275, 270, 305), wOther, BUTTON_OTHER_EXIT, dataManager.GetSysString(1210));
+	
+	//system setting
+	wSystem = env->addWindow(rect<s32>(312, 150, 712, 630), false, dataManager.GetSysString(1207));
+	wSystem->getCloseButton()->setVisible(false);
+	wSystem->setVisible(false);
+	chkMRandom = env->addCheckBox(false, rect<s32>(30, 50, 200, 75), wSystem, CHECKBOX_RDM, dataManager.GetSysString(1437));
+	chkMRandom->setChecked(gameConf.random != 0);
+	chkSkin = env->addCheckBox(false, rect<s32>(30, 80, 200, 105), wSystem, CHECKBOX_SKIN, dataManager.GetSysString(1438));
+	chkSkin->setChecked(gameConf.skin_index != 0);
+	chkD3D = env->addCheckBox(false, rect<s32>(30, 110, 200, 135), wSystem, CHECKBOX_D3D, dataManager.GetSysString(1205));
+	chkD3D->setChecked(gameConf.use_d3d != 0);
+	chkAutoSearch = env->addCheckBox(false, rect<s32>(30, 140, 200, 165), wSystem, CHECKBOX_AUTO_SEARCH, dataManager.GetSysString(1358));
+	chkAutoSearch->setChecked(gameConf.auto_search_limit >= 0);
+	chkMultiKeywords = env->addCheckBox(false, rect<s32>(210, 50, 380, 75), wSystem, CHECKBOX_MULTI_KEYWORDS, dataManager.GetSysString(1378));
+	chkMultiKeywords->setChecked(gameConf.search_multiple_keywords > 0);
+	chkRegex = env->addCheckBox(false, rect<s32>(210, 80, 390, 105), wSystem, CHECKBOX_REGEX, dataManager.GetSysString(1379));
+	chkRegex->setChecked(gameConf.search_regex > 0);
+	env->addStaticText(dataManager.GetSysString(1206), rect<s32>(210, 113, 300, 138), false, false, wSystem);
+	cbFont = env->addComboBox(rect<s32>(300, 114, 390, 131), wSystem, COMBOBOX_FONT);
+	env->addStaticText(dataManager.GetSysString(1288), rect<s32>(210, 143, 300, 168), false, false, wSystem);
+	cbLocale = env->addComboBox(rect<s32>(300, 144, 390, 166), wSystem, COMBOBOX_LOCALE);
+	btnSystemExit = env->addButton(rect<s32>(110, 175, 310, 215), wSystem, BUTTON_SYS_EXIT, dataManager.GetSysString(1210));
+	RefreshFont();
+	RefreshLocales();
 	
 	//lan mode
 	wLanWindow = env->addWindow(rect<s32>(220, 100, 800, 520), false, dataManager.GetSysString(1200));
@@ -337,21 +362,11 @@ bool Game::Initialize() {
 	chkEnablePScale = env->addCheckBox(false, rect<s32>(posX, posY, posX + 260, posY + 25), tabHelper, -1, dataManager.GetSysString(1282));
 	chkEnablePScale->setChecked(gameConf.chkEnablePScale != 0);
 	posY += 30;
-	env->addStaticText(dataManager.GetSysString(1288), rect<s32>(posX + 23, posY + 3, posX + 160, posY + 28), false, false, tabHelper);
-	cbLocale = env->addComboBox(rect<s32>(posX + 160, posY + 4, posX + 260, posY + 21), tabHelper, COMBOBOX_LOCALE);
-	posY += 30;
 	chkQuickAnimation = env->addCheckBox(false, rect<s32>(posX, posY, posX + 260, posY + 25), tabHelper, CHECKBOX_QUICK_ANIMATION, dataManager.GetSysString(1299));
 	chkQuickAnimation->setChecked(gameConf.quick_animation != 0);
 	posY += 30;
 	chkAutoSaveReplay = env->addCheckBox(false, rect<s32>(posX, posY, posX + 260, posY + 25), tabHelper, -1, dataManager.GetSysString(1366));
 	chkAutoSaveReplay->setChecked(gameConf.auto_save_replay != 0);
-	posY += 30;
-	chkMultiKeywords = env->addCheckBox(false, rect<s32>(posX, posY, posX + 260, posY + 25), tabHelper, CHECKBOX_MULTI_KEYWORDS, dataManager.GetSysString(1378));
-	chkMultiKeywords->setChecked(gameConf.search_multiple_keywords > 0);
-	posY += 30;
-	chkRegex = env->addCheckBox(false, rect<s32>(posX, posY, posX + 260, posY + 25), tabHelper, CHECKBOX_REGEX, dataManager.GetSysString(1379));
-	chkRegex->setChecked(gameConf.search_regex > 0);
-	RefreshLocales();
 	elmTabHelperLast = chkRegex;
 	//system
 	irr::gui::IGUITab* _tabSystem = wInfos->addTab(dataManager.GetSysString(1273));
@@ -380,21 +395,6 @@ bool Game::Initialize() {
 	posY += 30;
 	chkIgnoreDeckChanges = env->addCheckBox(false, rect<s32>(posX, posY, posX + 260, posY + 25), tabSystem, -1, dataManager.GetSysString(1357));
 	chkIgnoreDeckChanges->setChecked(gameConf.chkIgnoreDeckChanges != 0);
-	posY += 30;
-	chkMRandom = env->addCheckBox(false, rect<s32>(posX, posY, posX + 260, posY + 25), tabSystem, CHECKBOX_RDM, dataManager.GetSysString(1437));
-	chkMRandom->setChecked(gameConf.random != 0);
-	posY += 30;
-	chkSkin = env->addCheckBox(false, rect<s32>(posX, posY, posX + 260, posY + 25), tabSystem, CHECKBOX_SKIN, dataManager.GetSysString(1438));
-	chkSkin->setChecked(gameConf.skin_index != 0);
-	posY += 30;
-	chkD3D = env->addCheckBox(false, rect<s32>(posX, posY, posX + 260, posY + 25), tabSystem, CHECKBOX_D3D, dataManager.GetSysString(1205));
-	chkD3D->setChecked(gameConf.use_d3d != 0);
-	posY += 30;
-	chkAutoSearch = env->addCheckBox(false, rect<s32>(posX, posY, posX + 260, posY + 25), tabSystem, CHECKBOX_AUTO_SEARCH, dataManager.GetSysString(1358));
-	chkAutoSearch->setChecked(gameConf.auto_search_limit >= 0);
-	posY += 30;
-	env->addStaticText(dataManager.GetSysString(1206), rect<s32>(posX + 23, posY + 3, posX + 160, posY + 28), false, false, tabSystem);
-	cbFont = env->addComboBox(rect<s32>(posX + 160, posY + 4, posX + 260, posY + 21), tabSystem, COMBOBOX_FONT);
 	posY += 30;
 	chkEnableSound = env->addCheckBox(gameConf.enable_sound, rect<s32>(posX, posY, posX + 120, posY + 25), tabSystem, CHECKBOX_ENABLE_SOUND, dataManager.GetSysString(1279));
 	chkEnableSound->setChecked(gameConf.enable_sound);
@@ -425,7 +425,6 @@ bool Game::Initialize() {
 	ebTBName->setTextAlignment(irr::gui::EGUIA_UPPERLEFT, irr::gui::EGUIA_CENTER);
 	btnTBAgree = env->addButton(rect<s32>(70, 80, 140, 105), wTBWindow, BUTTON_TB_AGREE, dataManager.GetSysString(1286));
 	btnTBCancel = env->addButton(rect<s32>(170, 80, 240, 105), wTBWindow, BUTTON_TB_CANCEL, dataManager.GetSysString(1287));
-	RefreshFont();
 	elmTabSystemLast = chkMusicMode;
 	//
 	wHand = env->addWindow(rect<s32>(500, 450, 825, 605), false, L"");

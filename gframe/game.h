@@ -314,20 +314,12 @@ public:
 	irr::gui::IGUICheckBox* chkHideSetname;
 	irr::gui::IGUICheckBox* chkHideHintButton;
 	irr::gui::IGUICheckBox* chkIgnoreDeckChanges;
-	irr::gui::IGUICheckBox* chkMRandom;
-	irr::gui::IGUICheckBox* chkSkin;
-	irr::gui::IGUICheckBox* chkD3D;
-	irr::gui::IGUICheckBox* chkAutoSearch;
-	irr::gui::IGUICheckBox* chkMultiKeywords;
-	irr::gui::IGUICheckBox* chkRegex;
 	irr::gui::IGUICheckBox* chkEnableSound;
 	irr::gui::IGUICheckBox* chkEnableMusic;
 	irr::gui::IGUIScrollBar* scrSoundVolume;
 	irr::gui::IGUIScrollBar* scrMusicVolume;
 	irr::gui::IGUICheckBox* chkMusicMode;
 	irr::gui::IGUICheckBox* chkEnablePScale;
-	irr::gui::IGUIComboBox* cbLocale;
-	irr::gui::IGUIComboBox* cbFont;
 	irr::gui::IGUIWindow* wTBWindow;
 	irr::gui::IGUIButton* btnTB;
 	irr::gui::IGUIButton* btnTBAgree;
@@ -342,6 +334,7 @@ public:
 	irr::gui::IGUIButton* btnDeckEdit;
 	irr::gui::IGUIButton* btnModeExit;
 	irr::gui::IGUIButton* btnOther;
+	irr::gui::IGUIButton* btnSYS;
 	//other
 	irr::gui::IGUIWindow* wOther;
 	irr::gui::IGUIButton* btnSEM;
@@ -352,6 +345,16 @@ public:
 	irr::gui::IGUIButton* btnVI;
 	irr::gui::IGUIButton* btnFOX;
 	irr::gui::IGUIButton* btnWBO;
+	//system setting
+	irr::gui::IGUICheckBox* chkMRandom;
+	irr::gui::IGUICheckBox* chkSkin;
+	irr::gui::IGUICheckBox* chkD3D;
+	irr::gui::IGUICheckBox* chkAutoSearch;
+	irr::gui::IGUICheckBox* chkMultiKeywords;
+	irr::gui::IGUICheckBox* chkRegex;
+	irr::gui::IGUIComboBox* cbLocale;
+	irr::gui::IGUIComboBox* cbFont;
+	irr::gui::IGUIButton* btnSystemExit;
 	//lan
 	irr::gui::IGUIWindow* wLanWindow;
 	irr::gui::IGUIEditBox* ebNickName;
@@ -801,6 +804,8 @@ extern Game* mainGame;
 #define BUTTON_JP						400
 #define BUTTON_NK						401
 #define BUTTON_SC_EXIT					402
+#define BUTTON_SYS						403
+#define BUTTON_SYS_EXIT					404
 
 #define TEXTURE_DUEL				0
 #define TEXTURE_DECK				1
