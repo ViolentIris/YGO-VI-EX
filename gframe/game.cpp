@@ -159,10 +159,10 @@ bool Game::Initialize() {
 	chkMultiKeywords->setChecked(gameConf.search_multiple_keywords > 0);
 	chkRegex = env->addCheckBox(false, rect<s32>(270, 50, 430, 75), wSystem, CHECKBOX_REGEX, dataManager.GetSysString(1379));
 	chkRegex->setChecked(gameConf.search_regex > 0);
-	env->addStaticText(dataManager.GetSysString(1206), rect<s32>(270, 83, 430, 108), false, false, wSystem);
-	cbFont = env->addComboBox(rect<s32>(430, 84, 590, 107), wSystem, COMBOBOX_FONT);
-	env->addStaticText(dataManager.GetSysString(1288), rect<s32>(270, 113, 430, 138), false, false, wSystem);
-	cbLocale = env->addComboBox(rect<s32>(430, 115, 590, 137), wSystem, COMBOBOX_LOCALE);
+	env->addStaticText(dataManager.GetSysString(1206), rect<s32>(270, 83, 427, 108), false, false, wSystem);
+	cbFont = env->addComboBox(rect<s32>(427, 82, 590, 107), wSystem, COMBOBOX_FONT);
+	env->addStaticText(dataManager.GetSysString(1288), rect<s32>(270, 113, 427, 138), false, false, wSystem);
+	cbLocale = env->addComboBox(rect<s32>(427, 112, 590, 137), wSystem, COMBOBOX_LOCALE);
 	btnSystemExit = env->addButton(rect<s32>(200, 140, 400, 190), wSystem, BUTTON_SYS_EXIT, dataManager.GetSysString(1210));
 	RefreshFont();
 	RefreshLocales();
@@ -1790,7 +1790,7 @@ void Game::OnResize() {
 	//guiFont = irr::gui::CGUITTFont::createTTFont(env, gameConf.textfont, gameConf.textfontsize * yScale);
 	//env->getSkin()->setFont(guiFont);
 
-	wMainMenu->setRelativePosition(ResizeWin(370, 200, 650, 500));
+	wMainMenu->setRelativePosition(ResizeWin(370, 200, 650, 485));
 	wOther->setRelativePosition(ResizeWin(370, 200, 650, 515));
 	wSystem->setRelativePosition(ResizeWin(212, 150, 812, 350));
 	wDeckEdit->setRelativePosition(Resize(309, 8, 605, 130));
@@ -1876,8 +1876,8 @@ void Game::OnResize() {
 	//sound / music volume bar
 	scrSoundVolume->setRelativePosition(recti(scrSoundVolume->getRelativePosition().UpperLeftCorner.X, scrSoundVolume->getRelativePosition().UpperLeftCorner.Y, 20 + (300 * xScale) - 70, scrSoundVolume->getRelativePosition().LowerRightCorner.Y));
 	scrMusicVolume->setRelativePosition(recti(scrMusicVolume->getRelativePosition().UpperLeftCorner.X, scrMusicVolume->getRelativePosition().UpperLeftCorner.Y, 20 + (300 * xScale) - 70, scrMusicVolume->getRelativePosition().LowerRightCorner.Y));
-	cbLocale->setRelativePosition(Resize(430, 84, 590, 107));
-	cbFont->setRelativePosition(Resize(430, 115, 590, 137));
+	cbLocale->setRelativePosition(ResizeWin(427, 82, 587, 107));
+	cbFont->setRelativePosition(ResizeWin(427, 112, 587, 137));
 
 	recti tabHelperPos = recti(0, 0, 300 * xScale - 50, 365 * yScale - 65);
 	tabHelper->setRelativePosition(tabHelperPos);
