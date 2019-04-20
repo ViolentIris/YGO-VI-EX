@@ -1122,7 +1122,7 @@ void Game::RefreshLocales() {
 void Game::RefreshFont() {
 	cbFont->clear();
 	FileSystem::TraversalDir(L"./font", [this](const wchar_t* name, bool isdir) {
-		if((isdir && wcsrchr(name, '.') && !mywcsncasecmp(wcsrchr(name, '.'), L".ttc", 4)) || (isdir && wcsrchr(name, '.') && !mywcsncasecmp(wcsrchr(name, '.'), L".ttf", 4)))
+		if((!isdir && wcsrchr(name, '.') && !mywcsncasecmp(wcsrchr(name, '.'), L".ttc", 4)) || (!isdir && wcsrchr(name, '.') && !mywcsncasecmp(wcsrchr(name, '.'), L".ttf", 4)))
 			cbFont->addItem(name);
 	});
 	for(size_t i = 0; i < cbFont->getItemCount(); ++i) {
@@ -1873,6 +1873,7 @@ void Game::OnResize() {
 	scrSoundVolume->setRelativePosition(recti(scrSoundVolume->getRelativePosition().UpperLeftCorner.X, scrSoundVolume->getRelativePosition().UpperLeftCorner.Y, 20 + (300 * xScale) - 70, scrSoundVolume->getRelativePosition().LowerRightCorner.Y));
 	scrMusicVolume->setRelativePosition(recti(scrMusicVolume->getRelativePosition().UpperLeftCorner.X, scrMusicVolume->getRelativePosition().UpperLeftCorner.Y, 20 + (300 * xScale) - 70, scrMusicVolume->getRelativePosition().LowerRightCorner.Y));
 	cbLocale->setRelativePosition(recti(cbLocale->getRelativePosition().UpperLeftCorner.X, cbLocale->getRelativePosition().UpperLeftCorner.Y, 20 + (300 * xScale) - 70, cbLocale->getRelativePosition().LowerRightCorner.Y));
+	cbFont->setRelativePosition(recti(cbFont->getRelativePosition().UpperLeftCorner.X, cbFont->getRelativePosition().UpperLeftCorner.Y, 20 + (300 * xScale) - 70, cbFont->getRelativePosition().LowerRightCorner.Y));
 
 	recti tabHelperPos = recti(0, 0, 300 * xScale - 50, 365 * yScale - 65);
 	tabHelper->setRelativePosition(tabHelperPos);
