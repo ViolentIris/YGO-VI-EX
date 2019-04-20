@@ -34,9 +34,6 @@ struct Config {
 	int chkRandomPos;
 	int chkAutoChain;
 	int chkWaitChain;
-	int chkMRandom;
-	int chkBot;
-	int chkSkin;
 	int chkIgnore1;
 	int chkIgnore2;
 	int chkHideSetname;
