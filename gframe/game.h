@@ -346,6 +346,7 @@ public:
 	irr::gui::IGUIButton* btnFOX;
 	irr::gui::IGUIButton* btnWBO;
 	//system setting
+	irr::gui::IGUIWindow* wSystem;
 	irr::gui::IGUICheckBox* chkMRandom;
 	irr::gui::IGUICheckBox* chkSkin;
 	irr::gui::IGUICheckBox* chkD3D;
@@ -804,8 +805,9 @@ extern Game* mainGame;
 #define BUTTON_JP						400
 #define BUTTON_NK						401
 #define BUTTON_SC_EXIT					402
-#define BUTTON_SYS						403
-#define BUTTON_SYS_EXIT					404
+
+#define BUTTON_SYS						406
+#define BUTTON_SYS_EXIT					407
 
 #define TEXTURE_DUEL				0
 #define TEXTURE_DECK				1

@@ -112,8 +112,8 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				mainGame->chkMultiKeywords->setEnabled(true);
 				mainGame->chkRegex->setEnabled(true);
 				mainGame->cbFont->setEnabled(true);
-				mainGame-cbLocale->setEnabled(true);
-				mainGame-btnSystemExit->setEnabled(true);
+				mainGame->cbLocale->setEnabled(true);
+				mainGame->btnSystemExit->setEnabled(true);
 				mainGame->HideElement(mainGame->wMainMenu);
 				mainGame->ShowElement(mainGame->wSystem);
 				break;
