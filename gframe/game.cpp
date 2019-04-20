@@ -1790,9 +1790,9 @@ void Game::OnResize() {
 	//guiFont = irr::gui::CGUITTFont::createTTFont(env, gameConf.textfont, gameConf.textfontsize * yScale);
 	//env->getSkin()->setFont(guiFont);
 
-	wMainMenu->setRelativePosition(ResizeWin(370, 200, 650, 446));
+	wMainMenu->setRelativePosition(ResizeWin(370, 200, 650, 500));
 	wOther->setRelativePosition(ResizeWin(370, 200, 650, 515));
-	wSystem->setRelativePosition(ResizeWin(312, 150, 712, 630));
+	wSystem->setRelativePosition(ResizeWin(212, 150, 812, 350));
 	wDeckEdit->setRelativePosition(Resize(309, 8, 605, 130));
 	cbDBLFList->setRelativePosition(Resize(80, 5, 220, 30));
 	cbDBDecks->setRelativePosition(Resize(80, 35, 220, 60));
