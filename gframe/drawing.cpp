@@ -584,8 +584,8 @@ void Game::DrawMisc() {
 		}
 	}
 	//avatar image
-	driver->draw2DImage(imageManager.tAvatar[0], Resize(442.5, 8, 512.5, 78), recti(0, 0, 160, 160), 0, 0, true);
-	driver->draw2DImage(imageManager.tAvatar[1], Resize(806.5, 8, 876.5, 78), recti(0, 0, 160, 160), 0, 0, true);
+	driver->draw2DImage(imageManager.tAvatar[0], Resize(443, 8, 508, 73), recti(0, 0, 160, 160), 0, 0, true);
+	driver->draw2DImage(imageManager.tAvatar[1], Resize(807, 8, 872, 73), recti(0, 0, 160, 160), 0, 0, true);
 	if((dInfo.turn % 2 && dInfo.isFirst) || (!(dInfo.turn % 2) && !dInfo.isFirst)) {
 		driver->draw2DImage(imageManager.tLPBarFrame, Resize(325, 8, 630, 78), recti(0, 0, 610, 140), 0, 0, true);
 		driver->draw2DImage(imageManager.tLPBarFrame, Resize(689, 8, 991, 78), recti(0, 420, 610, 560), 0, 0, true);		
@@ -595,59 +595,59 @@ void Game::DrawMisc() {
 	}
 	//Dolls stage
 	if(((dInfo.start_lp[0]) || (dInfo.lp[0] == dInfo.lp[1]) || (dInfo.lp[0] - dInfo.lp[1] < 3000) || (dInfo.lp[1] - dInfo.lp[0] < 3000)) && !(mainGame->dInfo.isFinished) && !(mainGame->dInfo.curMsg == MSG_RECOVER) && !(mainGame->dInfo.curMsg == MSG_DAMAGE) && !(dInfo.lp[1] - dInfo.lp[0] >= 3000) && !(dInfo.lp[0] - dInfo.lp[1] >= 3000)) {
-		driver->draw2DImage(imageManager.tDoll_start[0], Resize(330, 4, 410, 84), recti(0, 0, 125, 125), 0, 0, true);
-		driver->draw2DImage(imageManager.tDoll_start[1], Resize(906, 4, 986, 84), recti(0, 0, 125, 125), 0, 0, true);
+		driver->draw2DImage(imageManager.tDoll_start[0], Resize(330, 84, 410, 164), recti(0, 0, 125, 125), 0, 0, true);
+		driver->draw2DImage(imageManager.tDoll_start[1], Resize(906, 84, 986, 164), recti(0, 0, 125, 125), 0, 0, true);
 	}
 	if(dInfo.lp[0] - dInfo.lp[1] >= 3000 && !(mainGame->dInfo.isFinished) && !(mainGame->dInfo.curMsg == MSG_RECOVER) && !(mainGame->dInfo.curMsg == MSG_DAMAGE)) {
-		driver->draw2DImage(imageManager.tDoll_3000M[0], Resize(330, 4, 410, 84), recti(0, 0, 125, 125), 0, 0, true);
-		driver->draw2DImage(imageManager.tDoll_3000L[1], Resize(906, 4, 986, 84), recti(0, 0, 125, 125), 0, 0, true);
+		driver->draw2DImage(imageManager.tDoll_3000M[0], Resize(330, 84, 410, 164), recti(0, 0, 125, 125), 0, 0, true);
+		driver->draw2DImage(imageManager.tDoll_3000L[1], Resize(906, 84, 986, 164), recti(0, 0, 125, 125), 0, 0, true);
 	}
 	if(dInfo.lp[1] - dInfo.lp[0] >= 3000 && !(mainGame->dInfo.isFinished) && !(mainGame->dInfo.curMsg == MSG_RECOVER) && !(mainGame->dInfo.curMsg == MSG_DAMAGE)) {
-		driver->draw2DImage(imageManager.tDoll_3000L[0], Resize(330, 4, 410, 84), recti(0, 0, 125, 125), 0, 0, true);
-		driver->draw2DImage(imageManager.tDoll_3000M[1], Resize(906, 4, 986, 84), recti(0, 0, 125, 125), 0, 0, true);
+		driver->draw2DImage(imageManager.tDoll_3000L[0], Resize(330, 84, 410, 164), recti(0, 0, 125, 125), 0, 0, true);
+		driver->draw2DImage(imageManager.tDoll_3000M[1], Resize(906, 84, 986, 164), recti(0, 0, 125, 125), 0, 0, true);
 	}
 	if(mainGame->dInfo.curMsg == MSG_DAMAGE && lpplayer == 0 && !(mainGame->dInfo.isFinished)) {
-		driver->draw2DImage(imageManager.tDoll_LPL[0], Resize(330, 4, 410, 84), recti(0, 0, 125, 125), 0, 0, true);
-		driver->draw2DImage(imageManager.tDoll_3000M[1], Resize(906, 4, 986, 84), recti(0, 0, 125, 125), 0, 0, true);
+		driver->draw2DImage(imageManager.tDoll_LPL[0], Resize(330, 84, 410, 164), recti(0, 0, 125, 125), 0, 0, true);
+		driver->draw2DImage(imageManager.tDoll_3000M[1], Resize(906, 84, 986, 164), recti(0, 0, 125, 125), 0, 0, true);
 	}
 	if(mainGame->dInfo.curMsg == MSG_DAMAGE && lpplayer == 1 && !(mainGame->dInfo.isFinished)) {
-		driver->draw2DImage(imageManager.tDoll_3000M[0], Resize(330, 4, 410, 84), recti(0, 0, 125, 125), 0, 0, true);
-		driver->draw2DImage(imageManager.tDoll_LPL[1], Resize(906, 4, 986, 84), recti(0, 0, 125, 125), 0, 0, true);
+		driver->draw2DImage(imageManager.tDoll_3000M[0], Resize(330, 84, 410, 164), recti(0, 0, 125, 125), 0, 0, true);
+		driver->draw2DImage(imageManager.tDoll_LPL[1], Resize(906, 84, 986, 164), recti(0, 0, 125, 125), 0, 0, true);
 	}
 	if(mainGame->dInfo.curMsg == MSG_RECOVER && lpplayer == 0 && !(mainGame->dInfo.isFinished)) {
-		driver->draw2DImage(imageManager.tDoll_LPA[0], Resize(330, 4, 410, 84), recti(0, 0, 125, 125), 0, 0, true);
-		driver->draw2DImage(imageManager.tDoll_3000L[1], Resize(906, 4, 986, 84), recti(0, 0, 125, 125), 0, 0, true);
+		driver->draw2DImage(imageManager.tDoll_LPA[0], Resize(330, 84, 410, 164), recti(0, 0, 125, 125), 0, 0, true);
+		driver->draw2DImage(imageManager.tDoll_3000L[1], Resize(906, 84, 986, 164), recti(0, 0, 125, 125), 0, 0, true);
 	}
 	if(mainGame->dInfo.curMsg == MSG_RECOVER && lpplayer == 1 && !(mainGame->dInfo.isFinished)) {
-		driver->draw2DImage(imageManager.tDoll_3000L[0], Resize(330, 4, 410, 84), recti(0, 0, 125, 125), 0, 0, true);
-		driver->draw2DImage(imageManager.tDoll_LPA[1], Resize(906, 4, 986, 84), recti(0, 0, 125, 125), 0, 0, true);
+		driver->draw2DImage(imageManager.tDoll_3000L[0], Resize(330, 84, 410, 164), recti(0, 0, 125, 125), 0, 0, true);
+		driver->draw2DImage(imageManager.tDoll_LPA[1], Resize(906, 84, 986, 164), recti(0, 0, 125, 125), 0, 0, true);
 	}
 	if(mainGame->dInfo.isFinished && mainGame->showcardcode == 1) {
-		driver->draw2DImage(imageManager.tDoll_Win[0], Resize(330, 4, 410, 84), recti(0, 0, 125, 125), 0, 0, true);
-		driver->draw2DImage(imageManager.tDoll_Lose[1], Resize(906, 4, 986, 84), recti(0, 0, 125, 125), 0, 0, true);
+		driver->draw2DImage(imageManager.tDoll_Win[0], Resize(330, 84, 410, 164), recti(0, 0, 125, 125), 0, 0, true);
+		driver->draw2DImage(imageManager.tDoll_Lose[1], Resize(906, 84, 986, 164), recti(0, 0, 125, 125), 0, 0, true);
 	}
 	if(mainGame->dInfo.isFinished && mainGame->showcardcode == 2) {
-		driver->draw2DImage(imageManager.tDoll_Lose[0], Resize(330, 4, 410, 84), recti(0, 0, 125, 125), 0, 0, true);
-		driver->draw2DImage(imageManager.tDoll_Win[1], Resize(906, 4, 986, 84), recti(0, 0, 125, 125), 0, 0, true);
+		driver->draw2DImage(imageManager.tDoll_Lose[0], Resize(330, 84, 410, 164), recti(0, 0, 125, 125), 0, 0, true);
+		driver->draw2DImage(imageManager.tDoll_Win[1], Resize(906, 84, 986, 164), recti(0, 0, 125, 125), 0, 0, true);
 	}
 	if(mainGame->dInfo.isFinished && mainGame->showcardcode == 3) {
-		driver->draw2DImage(imageManager.tDoll_Draw[0], Resize(330, 4, 410, 84), recti(0, 0, 125, 125), 0, 0, true);
-		driver->draw2DImage(imageManager.tDoll_Draw[1], Resize(906, 4, 986, 84), recti(0, 0, 125, 125), 0, 0, true);
+		driver->draw2DImage(imageManager.tDoll_Draw[0], Resize(330, 84, 410, 164), recti(0, 0, 125, 125), 0, 0, true);
+		driver->draw2DImage(imageManager.tDoll_Draw[1], Resize(906, 84, 986, 164), recti(0, 0, 125, 125), 0, 0, true);
 	}
 	//Time Display
 	if(!dInfo.isReplay && dInfo.player_type < 7 && dInfo.time_limit) {
 		if(imageManager.tClock) {
-			driver->draw2DImage(imageManager.tClock, Resize(577, 50, 595, 68), recti(0, 0, 34, 34), 0, 0, true);
-			driver->draw2DImage(imageManager.tClock, Resize(695, 50, 713, 68), recti(0, 0, 34, 34), 0, 0, true);
+			driver->draw2DImage(imageManager.tClock, Resize(427, 8, 445, 26), recti(0, 0, 34, 34), 0, 0, true);
+			driver->draw2DImage(imageManager.tClock, Resize(845, 8, 863, 26), recti(0, 0, 34, 34), 0, 0, true);
 		}
-		DrawShadowText(numFont, dInfo.str_time_left[0], Resize(595, 49, 625, 68), Resize(0, 1, 2, 0), dInfo.time_color[0], 0xff000000, true, false, 0);
-		DrawShadowText(numFont, dInfo.str_time_left[1], Resize(713, 49, 743, 68), Resize(0, 1, 2, 0), dInfo.time_color[1], 0xff000000, true, false, 0);
+		DrawShadowText(numFont, dInfo.str_time_left[0], Resize(445, 8, 525, 27), Resize(0, 1, 2, 0), dInfo.time_color[0], 0xff000000, true, false, 0);
+		DrawShadowText(numFont, dInfo.str_time_left[1], Resize(863, 8, 893, 27), Resize(0, 1, 2, 0), dInfo.time_color[1], 0xff000000, true, false, 0);
 
-		driver->draw2DImage(imageManager.tAvatar[0], ResizeCardMid(537, 49, 555, 68, 555, 62), rect<s32>(0, 0, 160, 160), 0, 0, true);
-		driver->draw2DImage(imageManager.tAvatar[1], ResizeCardMid(745, 49, 763, 68, 763, 62), rect<s32>(0, 0, 160, 160), 0, 0, true);
+		driver->draw2DImage(imageManager.tAvatar[0], ResizeCardMid(437, 8, 455, 26, 455, 17), rect<s32>(0, 0, 160, 160), 0, 0, true);
+		driver->draw2DImage(imageManager.tAvatar[1], ResizeCardMid(896, 8, 914, 26, 914, 17), rect<s32>(0, 0, 160, 160), 0, 0, true);
 
-		DrawShadowText(numFont, dInfo.str_card_count[0], Resize(556, 49, 575, 68), Resize(0, 1, 2, 0), dInfo.card_count_color[0], 0xff000000, true, false, 0);
-		DrawShadowText(numFont, dInfo.str_card_count[1], Resize(764, 49, 782, 68), Resize(0, 1, 2, 0), dInfo.card_count_color[1], 0xff000000, true, false, 0);
+		DrawShadowText(numFont, dInfo.str_card_count[0], Resize(456, 8, 475, 27), Resize(0, 1, 2, 0), dInfo.card_count_color[0], 0xff000000, true, false, 0);
+		DrawShadowText(numFont, dInfo.str_card_count[1], Resize(915, 8, 931, 27), Resize(0, 1, 2, 0), dInfo.card_count_color[1], 0xff000000, true, false, 0);
 
 		//driver->draw2DRectangle(Resize(525, 34, 525 + dInfo.time_left[0] * 100 / dInfo.time_limit, 44), 0xa0e0e0e0, 0xa0e0e0e0, 0xa0c0c0c0, 0xa0c0c0c0);
 		//driver->draw2DRectangleOutline(Resize(525, 34, 625, 44), 0xffffffff);
@@ -661,9 +661,24 @@ void Game::DrawMisc() {
 		DrawShadowText(numFont, dInfo.str_card_count[0], Resize(607, 51, 625, 70), Resize(0, 1, 2, 0), dInfo.card_count_color[0], 0xff000000, true, false, 0);
 		DrawShadowText(numFont, dInfo.str_card_count[1], Resize(716, 51, 735, 70), Resize(0, 1, 2, 0), dInfo.card_count_color[1], 0xff000000, true, false, 0);
 	}
-	DrawShadowText(numFont, dInfo.strLP[0], Resize(545, 17, 610, 26), Resize(0, 1, 2, 0), 0xffffff00, 0xff000000, true, false, 0);
-	DrawShadowText(numFont, dInfo.strLP[1], Resize(709, 17, 774, 26), Resize(0, 1, 2, 0), 0xffffff00, 0xff000000, true, false, 0);
+	DrawShadowText(numFont, dInfo.strLP[0], Resize(545, 8, 610, 24), Resize(0, 1, 2, 0), 0xffffff00, 0xff000000, true, false, 0);
+	DrawShadowText(numFont, dInfo.strLP[1], Resize(709, 8, 774, 24), Resize(0, 1, 2, 0), 0xffffff00, 0xff000000, true, false, 0);
 
+	recti p1size = Resize(335, 31, 629, 50);
+	recti p2size = Resize(986, 31, 986, 50);
+	if(!dInfo.isTag || !dInfo.tag_player[0])
+		textFont->draw(dInfo.hostname, p1size, 0xffffffff, false, false, 0);
+	else
+		textFont->draw(dInfo.hostname_tag, p1size, 0xffffffff, false, false, 0);
+	if(!dInfo.isTag || !dInfo.tag_player[1]) {
+		auto cld = textFont->getDimension(dInfo.clientname);
+		p2size.UpperLeftCorner.X -= cld.Width;
+		textFont->draw(dInfo.clientname, p2size, 0xffffffff, false, false, 0);
+	} else {
+		auto cld = textFont->getDimension(dInfo.clientname_tag);
+		p2size.UpperLeftCorner.X -= cld.Width;
+		textFont->draw(dInfo.clientname_tag, p2size, 0xffffffff, false, false, 0);
+	}
 	driver->draw2DRectangle(Resize(632, 10, 688, 30), 0x00000000, 0x00000000, 0xffffffff, 0xffffffff);
 	driver->draw2DRectangle(Resize(632, 30, 688, 50), 0xffffffff, 0xffffffff, 0x00000000, 0x00000000);
 	DrawShadowText(lpcFont, dataManager.GetNumString(dInfo.turn), Resize(635, 5, 687, 40), Resize(0, 0, 2, 0), 0x8000ffff, 0x80000000, true, false, 0);
