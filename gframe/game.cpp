@@ -396,6 +396,12 @@ bool Game::Initialize() {
 	chkIgnoreDeckChanges = env->addCheckBox(false, rect<s32>(posX, posY, posX + 260, posY + 25), tabSystem, -1, dataManager.GetSysString(1357));
 	chkIgnoreDeckChanges->setChecked(gameConf.chkIgnoreDeckChanges != 0);
 	posY += 30;
+	env->addStaticText(dataManager.GetSysString(1442), rect<s32>(posX + 23, posY + 3, posX + 120, posY + 28), false, false, tabSystem);
+	btnWinResizeS = env->addButton(rect<s32>(posX + 115, posY, posX + 145, posY + 25), tabSystem, BUTTON_WINDOW_RESIZE_S, dataManager.GetSysString(1443));
+	btnWinResizeM = env->addButton(rect<s32>(posX + 150, posY, posX + 180, posY + 25), tabSystem, BUTTON_WINDOW_RESIZE_M, dataManager.GetSysString(1444));
+	btnWinResizeL = env->addButton(rect<s32>(posX + 185, posY, posX + 215, posY + 25), tabSystem, BUTTON_WINDOW_RESIZE_L, dataManager.GetSysString(1445));
+	btnWinResizeXL = env->addButton(rect<s32>(posX + 220, posY, posX + 250, posY + 25), tabSystem, BUTTON_WINDOW_RESIZE_XL, dataManager.GetSysString(1446));
+	posY += 30;
 	chkEnableSound = env->addCheckBox(gameConf.enable_sound, rect<s32>(posX, posY, posX + 120, posY + 25), tabSystem, CHECKBOX_ENABLE_SOUND, dataManager.GetSysString(1279));
 	chkEnableSound->setChecked(gameConf.enable_sound);
 	scrSoundVolume = env->addScrollBar(true, rect<s32>(posX + 116, posY + 4, posX + 250, posY + 21), tabSystem, SCROLL_VOLUME);
@@ -485,6 +491,10 @@ bool Game::Initialize() {
 	for(int i = 0; i < 5; ++i) {
 		btnOption[i] = env->addButton(rect<s32>(10, 30 + 40 * i, 340, 60 + 40 * i), wOptions, BUTTON_OPTION_0 + i, L"");
 	}
+	scrOption = env->addScrollBar(false, rect<s32>(350, 30, 365, 220), wOptions, SCROLL_OPTION_SELECT);
+	scrOption->setLargeStep(1);
+	scrOption->setSmallStep(1);
+	scrOption->setMin(0);
 	//pos select
 	wPosSelect = env->addWindow(rect<s32>(340, 200, 935, 410), false, dataManager.GetSysString(561));
 	wPosSelect->getCloseButton()->setVisible(false);
@@ -1577,6 +1587,13 @@ void Game::ClearCardInfo(int player) {
 	stText->setText(L"");
 	scrCardText->setVisible(false);
 }
+void Game::AddLog(const wchar_t* msg, int param) {
+	logParam.push_back(param);
+	lstLog->addItem(msg);
+	if(!env->hasFocus(lstLog)) {
+		lstLog->setSelected(-1);
+	}
+}
 void Game::AddChatMsg(const wchar_t* msg, int player) {
 	for(int i = 7; i > 0; --i) {
 		chatMsg[i] = chatMsg[i - 1];
@@ -1624,8 +1641,7 @@ void Game::AddChatMsg(const wchar_t* msg, int player) {
 	chatMsg[0].append(msg);
 	wchar_t msg_front[256];
 	myswprintf(msg_front, L"[Chat]%ls", chatMsg[0].c_str());
-	lstLog->addItem(msg_front);
-	logParam.push_back(0);
+	AddLog(msg_front);
 }
 void Game::ClearChatMsg() {
 	for(int i = 7; i >= 0; --i) {

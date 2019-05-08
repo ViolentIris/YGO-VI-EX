@@ -858,6 +858,14 @@ bool ClientField::OnEvent(const irr::SEvent& event) {
 		}
 		case irr::gui::EGET_SCROLL_BAR_CHANGED: {
 			switch(id) {
+			case SCROLL_OPTION_SELECT: {
+				int step = mainGame->scrOption->isVisible() ? mainGame->scrOption->getPos() : 0;
+				for(int i = 0; i < 5; i++) {
+					const wchar_t* option = dataManager.GetDesc(select_options[i + step]);
+					mainGame->btnOption[i]->setText(option);
+				}
+				break;
+			}
 			case SCROLL_CARD_SELECT: {
 				int pos = mainGame->scrCardList->getPos() / 10;
 				for(int i = 0; i < 5; ++i) {
@@ -1820,6 +1828,26 @@ bool ClientField::OnCommonEvent(const irr::SEvent& event) {
 				soundManager.PlaySoundEffect(SOUND_BUTTON);
 				mainGame->lstLog->clear();
 				mainGame->logParam.clear();
+				return true;
+				break;
+			}
+			case BUTTON_WINDOW_RESIZE_S: {
+				mainGame->SetWindowsScale(0.8f);
+				return true;
+				break;
+			}
+			case BUTTON_WINDOW_RESIZE_M: {
+				mainGame->SetWindowsScale(1.0f);
+				return true;
+				break;
+			}
+			case BUTTON_WINDOW_RESIZE_L: {
+				mainGame->SetWindowsScale(1.25f);
+				return true;
+				break;
+			}
+			case BUTTON_WINDOW_RESIZE_XL: {
+				mainGame->SetWindowsScale(1.5f);
 				return true;
 				break;
 			}

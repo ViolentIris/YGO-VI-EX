@@ -460,6 +460,7 @@ public:
 	irr::gui::IGUIButton* btnOptionn;
 	irr::gui::IGUIButton* btnOptionOK;
 	irr::gui::IGUIButton* btnOption[5];
+	irr::gui::IGUIScrollBar* scrOption;
 	//pos selection
 	irr::gui::IGUIWindow* wPosSelect;
 	irr::gui::CGUIImageButton* btnPSAU;
@@ -674,6 +675,7 @@ extern Game* mainGame;
 #define BUTTON_OPTION_2				225
 #define BUTTON_OPTION_3				226
 #define BUTTON_OPTION_4				227
+#define SCROLL_OPTION_SELECT		228
 #define BUTTON_CARD_0				230
 #define BUTTON_CARD_1				231
 #define BUTTON_CARD_2				232
@@ -805,6 +807,11 @@ extern Game* mainGame;
 
 #define BUTTON_SYS						406
 #define BUTTON_SYS_EXIT					407
+
+#define BUTTON_WINDOW_RESIZE_S		408
+#define BUTTON_WINDOW_RESIZE_M		409
+#define BUTTON_WINDOW_RESIZE_L		410
+#define BUTTON_WINDOW_RESIZE_XL		411
 
 #define TEXTURE_DUEL				0
 #define TEXTURE_DECK				1
