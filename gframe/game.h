@@ -161,6 +161,7 @@ public:
 	void SaveConfig();
 	void ShowCardInfo(int code, bool resize = false);
 	void ClearCardInfo(int player = 0);
+	void AddLog(const wchar_t* msg, int param = 0);
 	void AddChatMsg(const wchar_t* msg, int player);
 	void ClearChatMsg();
 	void AddDebugMsg(const char* msgbuf);
@@ -316,6 +317,10 @@ public:
 	irr::gui::IGUIScrollBar* scrSoundVolume;
 	irr::gui::IGUIScrollBar* scrMusicVolume;
 	irr::gui::IGUICheckBox* chkMusicMode;
+	irr::gui::IGUIButton* btnWinResizeS;
+	irr::gui::IGUIButton* btnWinResizeM;
+	irr::gui::IGUIButton* btnWinResizeL;
+	irr::gui::IGUIButton* btnWinResizeXL;
 	irr::gui::IGUICheckBox* chkEnablePScale;
 	irr::gui::IGUIWindow* wTBWindow;
 	irr::gui::IGUIButton* btnTB;
