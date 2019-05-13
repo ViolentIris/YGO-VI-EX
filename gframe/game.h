@@ -347,6 +347,9 @@ public:
 	irr::gui::IGUIButton* btnVI;
 	irr::gui::IGUIButton* btnFOX;
 	irr::gui::IGUIButton* btnWBO;
+	irr::gui::IGUIButton* btnDC;
+	irr::gui::IGUIButton* btnDLD;
+	irr::gui::IGUIButton* btnTG;
 	//system setting
 	irr::gui::IGUIWindow* wSystem;
 	irr::gui::IGUICheckBox* chkMRandom;
