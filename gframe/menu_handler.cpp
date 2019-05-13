@@ -108,7 +108,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_DLD: {
-                system("start ../download/YGO-VI-EX Downloader.bat");
+                system("start ./download/YGO-VI-EX Downloader.bat");
 				return true;
 				break;
 			}
