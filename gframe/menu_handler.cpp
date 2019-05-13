@@ -97,6 +97,21 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				return true;
 				break;
 			}
+			case BUTTON_DC: {
+                system("start https://charat.me/genesis/create/");
+				return true;
+				break;
+			}
+			case BUTTON_TG: {
+                system("start https://taiko.moecube.com/");
+				return true;
+				break;
+			}
+			case BUTTON_DLD: {
+                system("start ../download/YGO-VI-EX Downloader.bat");
+				return true;
+				break;
+			}
 			case BUTTON_OTHER_EXIT: {
 				mainGame->HideElement(mainGame->wOther);
 				mainGame->ShowElement(mainGame->wMainMenu);

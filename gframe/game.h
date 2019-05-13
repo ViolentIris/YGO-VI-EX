@@ -818,6 +818,10 @@ extern Game* mainGame;
 #define BUTTON_WINDOW_RESIZE_L		410
 #define BUTTON_WINDOW_RESIZE_XL		411
 
+#define BUTTON_DC		412
+#define BUTTON_DLD		413
+#define BUTTON_TG		414
+
 #define TEXTURE_DUEL				0
 #define TEXTURE_DECK				1
 #define TEXTURE_MENU				2
