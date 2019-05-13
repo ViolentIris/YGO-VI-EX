@@ -204,7 +204,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_222: {
-				wcscpy(mainGame->gameConf.lasthost, L"koishi.ygopro.cn");
+				wcscpy(mainGame->gameConf.lasthost, L"koishi.moecube.com");
 				wcscpy(mainGame->gameConf.lastport, L"222");
 				wchar_t buf[256];
 				wchar_t buff[256];
