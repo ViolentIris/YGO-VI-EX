@@ -131,7 +131,7 @@ bool Game::Initialize() {
 	btnSYS = env->addButton(rect<s32>(10, 205, 270, 235), wMainMenu, BUTTON_SYS, dataManager.GetSysString(1207));
 
 	//other
-	wOther = env->addWindow(rect<s32>(370, 120, 650, 530), false, dataManager.GetSysString(1422));
+	wOther = env->addWindow(rect<s32>(370, 100, 650, 535), false, dataManager.GetSysString(1422));
 	wOther->getCloseButton()->setVisible(false);
 	wOther->setVisible(false);
 	btnSEM = env->addButton(rect<s32>(10, 30, 270, 60), wOther, BUTTON_SEM, dataManager.GetSysString(1423));
@@ -1810,7 +1810,7 @@ void Game::OnResize() {
 	//env->getSkin()->setFont(guiFont);
 
 	wMainMenu->setRelativePosition(ResizeWin(370, 200, 650, 485));
-	wOther->setRelativePosition(ResizeWin(370, 120, 650, 530));
+	wOther->setRelativePosition(ResizeWin(370, 100, 650, 535));
 	wSystem->setRelativePosition(ResizeWin(212, 150, 812, 350));
 	wDeckEdit->setRelativePosition(Resize(309, 8, 605, 130));
 	cbDBLFList->setRelativePosition(Resize(80, 5, 220, 30));
