@@ -1810,7 +1810,7 @@ void Game::OnResize() {
 	//env->getSkin()->setFont(guiFont);
 
 	wMainMenu->setRelativePosition(ResizeWin(370, 200, 650, 485));
-	wOther->setRelativePosition(ResizeWin(370, 100, 650, 535));
+	wOther->setRelativePosition(ResizeWin(370, 105, 650, 530));
 	wSystem->setRelativePosition(ResizeWin(212, 150, 812, 350));
 	wDeckEdit->setRelativePosition(Resize(309, 8, 605, 130));
 	cbDBLFList->setRelativePosition(Resize(80, 5, 220, 30));
