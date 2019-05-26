@@ -128,6 +128,9 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				mainGame->chkRegex->setEnabled(true);
 				mainGame->cbFont->setEnabled(true);
 				mainGame->cbLocale->setEnabled(true);
+				mainGame->btnHeadS->setEnabled(true);
+				mainGame->btnCoverS->setEnabled(true);
+				mainGame->btnbtnBgS->setEnabled(true);
 				mainGame->btnSystemExit->setEnabled(true);
 				mainGame->HideElement(mainGame->wMainMenu);
 				mainGame->ShowElement(mainGame->wSystem);
@@ -138,6 +141,27 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				mainGame->ShowElement(mainGame->wMainMenu);
 				if(exit_on_return)
 					mainGame->device->closeDevice();
+				break;
+			}
+			case BUTTON_HDS: {
+				mainGame->cbHDS->setEnabled(true);
+				mainGame->btnHDSOK->setEnabled(true);
+				mainGame->btnHDSExit->setEnabled(true);
+				mainGame->HideElement(mainGame->wSystem);
+				mainGame->ShowElement(mainGame->wHDS);
+				break;
+			}
+			case BUTTON_HDS_EXIT: {
+				mainGame->HideElement(mainGame->wHDS);
+				mainGame->ShowElement(mainGame->wSystem);
+				if(exit_on_return)
+					mainGame->device->closeDevice();
+				break;
+			}
+			case BUTTON_CRS: {
+				break;
+			}
+			case BUTTON_BGS: {
 				break;
 			}
 			case BUTTON_LAN_MODE: {

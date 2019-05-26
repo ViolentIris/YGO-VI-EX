@@ -137,6 +137,7 @@ public:
 	void RefreshBot();
 	void RefreshLocales();
 	void RefreshFont();
+	void RefreshHDS();
 	void DrawSelectionLine(irr::video::S3DVertex* vec, bool strip, int width, float* cv);
 	void DrawSelectionLine(irr::gui::IGUIElement* element, int width, irr::video::SColor color);
 	void DrawBackGround();
@@ -360,7 +361,15 @@ public:
 	irr::gui::IGUICheckBox* chkRegex;
 	irr::gui::IGUIComboBox* cbLocale;
 	irr::gui::IGUIComboBox* cbFont;
+	irr::gui::IGUIButton* btnHeadS
+	irr::gui::IGUIButton* btnCoverS
+	irr::gui::IGUIButton* btnBgS
 	irr::gui::IGUIButton* btnSystemExit;
+	//head select
+	irr::gui::IGUIWindow* wHDS
+	irr::gui::IGUIComboBox* cbHDS
+	irr::gui::IGUIButton* btnHDSOK
+	irr::gui::IGUIButton* btnHDSExit;
 	//lan
 	irr::gui::IGUIWindow* wLanWindow;
 	irr::gui::IGUIEditBox* ebNickName;
@@ -662,6 +671,11 @@ extern Game* mainGame;
 #define BUTTON_DELETE_REPLAY		133
 #define BUTTON_RENAME_REPLAY		134
 #define BUTTON_EXPORT_DECK			135
+
+#define BUTTON_DC		136
+#define BUTTON_DLD		137
+#define BUTTON_TG		138
+
 #define EDITBOX_CHAT				140
 #define BUTTON_MSG_OK				200
 #define BUTTON_YES					201
@@ -820,10 +834,14 @@ extern Game* mainGame;
 #define BUTTON_WINDOW_RESIZE_M		409
 #define BUTTON_WINDOW_RESIZE_L		410
 #define BUTTON_WINDOW_RESIZE_XL		411
+#define BUTTON_HDS		412
+#define BUTTON_CRS		413
+#define BUTTON_BGS		414
 
-#define BUTTON_DC		412
-#define BUTTON_DLD		413
-#define BUTTON_TG		414
+//head select
+#define BUTTON_HDS_OK		415
+#define BUTTON_HDS_EXIT		416
+#define COMBOBOX_HDS			417
 
 #define TEXTURE_DUEL				0
 #define TEXTURE_DECK				1

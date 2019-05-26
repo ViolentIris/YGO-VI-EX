@@ -173,6 +173,9 @@ void Game::DrawBackGround() {
 		
 	    }
 	}
+	//Cover Select
+	
+	//Background Select
 	
 	//disabled field
 	{

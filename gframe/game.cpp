@@ -147,7 +147,7 @@ bool Game::Initialize() {
 	btnOtherExit = env->addButton(rect<s32>(10, 380, 270, 410), wOther, BUTTON_OTHER_EXIT, dataManager.GetSysString(1210));
 	
 	//system setting
-	wSystem = env->addWindow(rect<s32>(212, 150, 812, 350), false, dataManager.GetSysString(1207));
+	wSystem = env->addWindow(rect<s32>(212, 140, 812, 410), false, dataManager.GetSysString(1207));
 	wSystem->getCloseButton()->setVisible(false);
 	wSystem->setVisible(false);
 	chkMRandom = env->addCheckBox(false, rect<s32>(30, 20, 260, 45), wSystem, CHECKBOX_RDM, dataManager.GetSysString(1437));
@@ -166,9 +166,23 @@ bool Game::Initialize() {
 	cbFont = env->addComboBox(rect<s32>(427, 80, 590, 105), wSystem, COMBOBOX_FONT);
 	env->addStaticText(dataManager.GetSysString(1288), rect<s32>(270, 113, 426, 138), false, false, wSystem);
 	cbLocale = env->addComboBox(rect<s32>(427, 110, 590, 135), wSystem, COMBOBOX_LOCALE);
-	btnSystemExit = env->addButton(rect<s32>(200, 145, 400, 190), wSystem, BUTTON_SYS_EXIT, dataManager.GetSysString(1210));
+	btnHeadS = env->addButton(rect<s32>(30, 145, 200, 170), wSystem, BUTTON_HDS, dataManager.GetSysString(1450));
+	btnCoverS = env->addButton(rect<s32>(215, 145, 385, 170), wSystem, BUTTON_CRS, dataManager.GetSysString(1452));
+	btnBgS = env->addButton(rect<s32>(400, 145, 570, 170), wSystem, BUTTON_BGS, dataManager.GetSysString(1458));
+	btnSystemExit = env->addButton(rect<s32>(200, 175, 400, 210), wSystem, BUTTON_SYS_EXIT, dataManager.GetSysString(1210));
 	RefreshFont();
 	RefreshLocales();
+	
+	//Head Select
+	wHDS = env->addWindow(rect<s32>(212, 140, 812, 410), false, dataManager.GetSysString(1451));
+	wHDS->getCloseButton()->setVisible(false);
+	wHDS->setVisible(false);
+	cbHDS = env->addComboBox(rect<s32>(227, 80, 290, 105), wHDS, COMBOBOX_HDS);
+	btnHDSOK = env->addButton(rect<s32>(200, 175, 400, 210), wHDS, BUTTON_HDS_OK, dataManager.GetSysString(1211));
+	btnHDSExit = env->addButton(rect<s32>(200, 175, 400, 210), wHDS, BUTTON_HDS_EXIT, dataManager.GetSysString(1210));
+	RefreshHDS();
+	//Cover Select
+	//Background Select
 	
 	//lan mode
 	wLanWindow = env->addWindow(rect<s32>(220, 100, 800, 520), false, dataManager.GetSysString(1200));
@@ -1147,6 +1161,13 @@ void Game::RefreshFont() {
 			break;
 		}
 	}
+}
+void Game::RefreshHDS() {
+	lstReplayList->clear();
+	FileSystem::TraversalDir(L"./head", [this](const wchar_t* name, bool isdir) {
+		if(!isdir && wcsrchr(name, '.') && !mywcsncasecmp(wcsrchr(name, '.'), L".jpg", 4))
+			cbHDS->addItem(name);
+	});
 }
 void Game::RefreshBot() {
 	if(!gameConf.enable_bot_mode)

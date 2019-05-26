@@ -808,6 +808,12 @@ bool ClientField::OnEvent(const irr::SEvent& event) {
 				mainGame->HideElement(mainGame->wCardDisplay);
 				break;
 			}
+			case BUTTON_HDS_OK: {
+				int sel = -1
+				myswprintf(sel, L"%ls",  mainGame->cbHDS->getItem(mainGame->cbHDS->getSelected()));
+				CopyFile(sel, L"../texture/output.jpg", FALSE);
+				break;
+			}
 			}
 			break;
 		}
@@ -2019,6 +2025,10 @@ bool ClientField::OnCommonEvent(const irr::SEvent& event) {
 			case COMBOBOX_FONT: {
 				myswprintf(mainGame->gameConf.textfont, L"font/%ls",  mainGame->cbFont->getItem(mainGame->cbFont->getSelected()));
 				mainGame->SaveConfig();
+				break;
+			}
+			case COMBOBOX_FONT: {
+				mainGame->cbHDS->setSelected(-1)
 				break;
 			}
 			}
