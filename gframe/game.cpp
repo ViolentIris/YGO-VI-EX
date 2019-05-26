@@ -1163,7 +1163,7 @@ void Game::RefreshFont() {
 }
 void Game::RefreshHDS() {
 	cbHDS->clear();
-	FileSystem::TraversalDir(L"./head", [this](const wchar_t* name, bool isdir) {
+	FileSystem::TraversalDir(L"./textures/head", [this](const wchar_t* name, bool isdir) {
 		if(!isdir && wcsrchr(name, '.') && !mywcsncasecmp(wcsrchr(name, '.'), L".jpg", 4))
 			cbHDS->addItem(name);
 	});
