@@ -361,14 +361,14 @@ public:
 	irr::gui::IGUICheckBox* chkRegex;
 	irr::gui::IGUIComboBox* cbLocale;
 	irr::gui::IGUIComboBox* cbFont;
-	irr::gui::IGUIButton* btnHeadS
-	irr::gui::IGUIButton* btnCoverS
-	irr::gui::IGUIButton* btnBgS
+	irr::gui::IGUIButton* btnHeadS;
+	irr::gui::IGUIButton* btnCoverS;
+	irr::gui::IGUIButton* btnBgS;
 	irr::gui::IGUIButton* btnSystemExit;
 	//head select
-	irr::gui::IGUIWindow* wHDS
-	irr::gui::IGUIComboBox* cbHDS
-	irr::gui::IGUIButton* btnHDSOK
+	irr::gui::IGUIWindow* wHDS;
+	irr::gui::IGUIComboBox* cbHDS;
+	irr::gui::IGUIButton* btnHDSOK;
 	irr::gui::IGUIButton* btnHDSExit;
 	//lan
 	irr::gui::IGUIWindow* wLanWindow;
