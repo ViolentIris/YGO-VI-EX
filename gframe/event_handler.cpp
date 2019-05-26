@@ -810,8 +810,7 @@ bool ClientField::OnEvent(const irr::SEvent& event) {
 			}
 			case BUTTON_HDS_OK: {
 				char sbuf1[256];
-				const wchar_t* spstr1
-				myswprintf(spstr1, L"%ls",  mainGame->cbHDS->getItem(mainGame->cbHDS->getSelected()));
+				const wchar_t* spstr1 = mainGame->cbHDS->getItem(mainGame->cbHDS->getSelected())
 				int sLength = WideCharToMultiByte(CP_ACP, 0, spstr1, -1, NULL, 0, NULL,NULL);
 				WideCharToMultiByte(CP_ACP, 0, spstr1, -1, sbuf1, sLength, NULL, NULL);
 				char sbuffer1[300];
