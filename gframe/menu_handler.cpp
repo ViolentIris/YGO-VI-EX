@@ -130,7 +130,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				mainGame->cbLocale->setEnabled(true);
 				mainGame->btnHeadS->setEnabled(true);
 				mainGame->btnCoverS->setEnabled(true);
-				mainGame->btnbtnBgS->setEnabled(true);
+				mainGame->btnBgS->setEnabled(true);
 				mainGame->btnSystemExit->setEnabled(true);
 				mainGame->HideElement(mainGame->wMainMenu);
 				mainGame->ShowElement(mainGame->wSystem);
