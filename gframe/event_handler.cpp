@@ -810,13 +810,13 @@ bool ClientField::OnEvent(const irr::SEvent& event) {
 			}
 			case BUTTON_HDS_OK: {
 				char sbuf1[256];
-				const wchar_t* spstr1 = mainGame->cbHDS->getItem(mainGame->cbHDS->getSelected());
+				const wchar_t* spstr1 = mainGame->cbHDS->setText(mainGame->cbHDS->getItem(mainGame->cbHDS->getSelected()));
 				int sLength = WideCharToMultiByte(CP_ACP, 0, spstr1, -1, NULL, 0, NULL,NULL);
 				WideCharToMultiByte(CP_ACP, 0, spstr1, -1, sbuf1, sLength, NULL, NULL);
 				char sbuffer1[300];
-				swprintf(sbuffer1, "../textures/head/%ls", sbuf1); 
-				LPCWSTR sbf1 = sbuffer1
-				CopyFile(sbf1, "../textures/output.jpg", FALSE);
+				sprintf(sbuffer1, L"../textures/head/%ls", sbuf1); 
+				LPCWSTR sbf1 = sbuffer1;
+				CopyFile(sbf1, L"../textures/output.jpg", FALSE);
 				break;
 			}
 			}
