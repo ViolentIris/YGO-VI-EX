@@ -2027,10 +2027,6 @@ bool ClientField::OnCommonEvent(const irr::SEvent& event) {
 				mainGame->SaveConfig();
 				break;
 			}
-			case COMBOBOX_HDS: {
-				mainGame->cbHDS->setSelected(-1);
-				break;
-			}
 			}
 			break;
 		}
