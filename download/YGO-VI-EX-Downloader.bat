@@ -93,7 +93,7 @@ pause
 goto 开始
 
 :5
-start http://koishi.222diy.gdn/download.html
+start https://ygobbs.com/
 pause
 goto 开始
 
