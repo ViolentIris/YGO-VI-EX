@@ -814,8 +814,9 @@ bool ClientField::OnEvent(const irr::SEvent& event) {
 				int sLength = WideCharToMultiByte(CP_ACP, 0, spstr1, -1, NULL, 0, NULL,NULL);
 				WideCharToMultiByte(CP_ACP, 0, spstr1, -1, sbuf1, sLength, NULL, NULL);
 				char sbuffer1[300];
-				sprintf(sbuffer1, L"../textures/head/%ls", sbuf1); 
-				CopyFile(sbuffer1, L"../textures/output.jpg", FALSE);
+				swprintf(sbuffer1, "../textures/head/%ls", sbuf1); 
+				LPCWSTR sbf1 = sbuffer1
+				CopyFile(sbf1, "../textures/output.jpg", FALSE);
 				break;
 			}
 			}
