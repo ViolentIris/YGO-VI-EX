@@ -178,8 +178,9 @@ bool Game::Initialize() {
 	wHDS->getCloseButton()->setVisible(false);
 	wHDS->setVisible(false);
 	cbHDS = env->addComboBox(rect<s32>(227, 80, 290, 105), wHDS, COMBOBOX_HDS);
-	btnHDSOK = env->addButton(rect<s32>(200, 175, 400, 210), wHDS, BUTTON_HDS_OK, dataManager.GetSysString(1211));
-	btnHDSExit = env->addButton(rect<s32>(200, 175, 400, 210), wHDS, BUTTON_HDS_EXIT, dataManager.GetSysString(1210));
+	cbHDS->setMaxSelectionRows(10);
+	btnHDSOK = env->addButton(rect<s32>(200, 15, 400, 29), wHDS, BUTTON_HDS_OK, dataManager.GetSysString(1211));
+	btnHDSExit = env->addButton(rect<s32>(300, 175, 500, 210), wHDS, BUTTON_HDS_EXIT, dataManager.GetSysString(1210));
 	RefreshHDS();
 	//Cover Select
 	//Background Select
