@@ -809,11 +809,13 @@ bool ClientField::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_HDS_OK: {
-				int spstr1 = -1;
-				printf(spstr1, L"../textures/head/%ls", mainGame->cbHDS->getItem(mainGame->cbHDS->getSelected()));
-				wchar_t char1[300];
-				_itow_s(spstr1, char1, 300, 300); 
-				CopyFile(char1, L"../textures/output.jpg", FALSE);
+				char sbuf1[256];
+				const wchar_t* spstr1 = mainGame->cbHDS->getItem(mainGame->cbHDS->getSelected());
+				int sLength = WideCharToMultiByte(CP_ACP, 0, spstr1, -1, NULL, 0, NULL,NULL);
+				WideCharToMultiByte(CP_ACP, 0, spstr1, -1, sbuf1, sLength, NULL, NULL);
+				char sbuffer1[300];
+				sprintf(sbuffer1, L"../textures/head/%ls", sbuf1); 
+				CopyFile(sbuffer1, L"../textures/output.jpg", FALSE);
 				break;
 			}
 			}
