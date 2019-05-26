@@ -811,7 +811,9 @@ bool ClientField::OnEvent(const irr::SEvent& event) {
 			case BUTTON_HDS_OK: {
 				wchar_t selff[2048];
 				myswprintf(selff, L"../textures/head/%ls",  mainGame->cbHDS->getItem(mainGame->cbHDS->getSelected()));
-				CopyFile(selff, L"../textures/output.jpg", FALSE);
+				CString sstr(selff);
+				LPCTSTR lpctstr1 = sstr; 
+				CopyFile(lpctstr1, L"../textures/output.jpg", FALSE);
 				break;
 			}
 			}

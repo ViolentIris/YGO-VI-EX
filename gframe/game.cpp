@@ -175,7 +175,7 @@ bool Game::Initialize() {
 	wHDS = env->addWindow(rect<s32>(212, 140, 812, 410), false, dataManager.GetSysString(1451));
 	wHDS->getCloseButton()->setVisible(false);
 	wHDS->setVisible(false);
-	cbHDS = env->addComboBox(rect<s32>(227, 80, 290, 105), wHDS, COMBOBOX_HDS);
+	cbHDS = env->addComboBox(rect<s32>(127, 80, 510, 105), wHDS, COMBOBOX_HDS);
 	cbHDS->setMaxSelectionRows(10);
 	btnHDSOK = env->addButton(rect<s32>(200, 15, 400, 29), wHDS, BUTTON_HDS_OK, dataManager.GetSysString(1211));
 	btnHDSExit = env->addButton(rect<s32>(300, 175, 500, 210), wHDS, BUTTON_HDS_EXIT, dataManager.GetSysString(1210));
