@@ -811,7 +811,7 @@ bool ClientField::OnEvent(const irr::SEvent& event) {
 			case BUTTON_HDS_OK: {
 				wchar_t self1[2048];
 				myswprintf(self1, L".\\textures\\head\\%ls", mainGame->cbHDS->getItem(mainGame->cbHDS->getSelected()));
-				wchar_t linebuf1[256];
+				char linebuf1[256];
 				BufferIO::EncodeUTF8(self1, linebuf1);
 				CopyFile(linebuf1, L".\\textures\\output.jpg", FALSE);
 				break;
