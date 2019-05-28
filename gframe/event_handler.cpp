@@ -809,13 +809,6 @@ bool ClientField::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_HDS_OK: {
-				char sbuf1[256];
-				const wchar_t* self1;
-				BufferIO::CopyWStr(self1, mainGame->gameConf.head, 256);
-				int sLength1 = WideCharToMultiByte(CP_ACP, 0, self1, -1, NULL, 0, NULL,NULL);
-				WideCharToMultiByte(CP_ACP, 0, self1, -1, sbuf1, sLength1, NULL, NULL);
-				char sbuffer1[300];
-				sprintf(sbuffer1, "L\".\\\\textures\\\\head\\\\%s\"", sbuf1);
 				CopyFile(L".\\textures\\head\\head_0a.jpg", L".\\textures\\output.jpg", FALSE);
 				break;
 			}
