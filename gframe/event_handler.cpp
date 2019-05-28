@@ -812,6 +812,7 @@ bool ClientField::OnEvent(const irr::SEvent& event) {
 				wchar_t self1[2048];
 				myswprintf(self1, L"L\"textures/head/%ls\"", mainGame->cbHDS->getItem(mainGame->cbHDS->getSelected()));
 				CopyFile(self1, L"textures/output.jpg", FALSE);
+				pause
 				break;
 			}
 			}
