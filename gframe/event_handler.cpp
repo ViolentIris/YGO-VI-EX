@@ -12,7 +12,8 @@
 #include "materials.h"
 #include "../ocgcore/common.h"
 #include <algorithm>
-#include¡¡<windows.h>
+#include <windows.h>
+#include <tchar.h>
 
 namespace ygo {
 
