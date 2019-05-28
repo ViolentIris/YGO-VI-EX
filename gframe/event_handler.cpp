@@ -12,7 +12,6 @@
 #include "materials.h"
 #include "../ocgcore/common.h"
 #include <algorithm>
-#include <windows.h>
 
 namespace ygo {
 
@@ -810,8 +809,8 @@ bool ClientField::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_HDS_OK: {
-				const wchar_t* self1[2048];
-				myswprintf(self1, L"%ls", mainGame->cbHDS->getItem(mainGame->cbHDS->getSelected()));
+				wchar_t self1[2048];
+				myswprintf(self1, L"%s", mainGame->cbHDS->getItem(mainGame->cbHDS->getSelected()));
 				char sbuf1[256];
 				int sLength1 = WideCharToMultiByte(CP_ACP, 0, self1, -1, NULL, 0, NULL,NULL);
 				WideCharToMultiByte(CP_ACP, 0, self1, -1, sbuf1, sLength1, NULL, NULL);
