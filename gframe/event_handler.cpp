@@ -810,6 +810,7 @@ bool ClientField::OnEvent(const irr::SEvent& event) {
 			}
 			case BUTTON_HDS_OK: {
 				printf("%S\n", mainGame->cbHDS->getItem(mainGame->cbHDS->getSelected()));
+				break;
 			}
 			}
 			break;
