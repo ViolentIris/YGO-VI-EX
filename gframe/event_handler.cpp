@@ -816,7 +816,7 @@ bool ClientField::OnEvent(const irr::SEvent& event) {
 				WideCharToMultiByte(CP_ACP, 0, self1, -1, sbuf1, sLength1, NULL, NULL);
 				char sbuffer1[300];
 				sprintf(sbuffer1, "L\".\\textures\\head\\s%\"", sbuf1);
-				CopyFile(sbuffer1, L".\\textures\\output.jpg", FALSE);
+				CopyFile(self1, L".\\textures\\output.jpg", FALSE);
 				break;
 			}
 			}
@@ -2028,12 +2028,12 @@ bool ClientField::OnCommonEvent(const irr::SEvent& event) {
 				break;
 			}
 			case COMBOBOX_FONT: {
-				myswprintf(mainGame->gameConf.textfont, L"font/%ls",  mainGame->cbFont->getItem(mainGame->cbFont->getSelected()));
+				myswprintf(mainGame->gameConf.textfont, L"font/%ls", mainGame->cbFont->getItem(mainGame->cbFont->getSelected()));
 				mainGame->SaveConfig();
 				break;
 			}
 			case COMBOBOX_HDS: {
-				myswprintf(mainGame->gameConf.head, L"%ls",  mainGame->cbHDS->getItem(mainGame->cbHDS->getSelected()));
+				myswprintf(mainGame->gameConf.head, L"L\".\\textures\\head\\ls%\"", mainGame->cbHDS->getItem(mainGame->cbHDS->getSelected()));
 				mainGame->SaveConfig();
 				break;
 			}
