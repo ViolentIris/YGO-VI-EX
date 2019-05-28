@@ -810,14 +810,8 @@ bool ClientField::OnEvent(const irr::SEvent& event) {
 			}
 			case BUTTON_HDS_OK: {
 				wchar_t self1[2048];
-				myswprintf(self1, L"%s", mainGame->cbHDS->getItem(mainGame->cbHDS->getSelected()));
-				char sbuf1[256];
-				int sLength1 = WideCharToMultiByte(CP_ACP, 0, self1, -1, NULL, 0, NULL,NULL);
-				WideCharToMultiByte(CP_ACP, 0, self1, -1, sbuf1, sLength1, NULL, NULL);
-				char sbuffer1[300];
-				sprintf(sbuffer1, "xcopy \".\\textures\\head\\%s\" \".\\textures\\\"", sbuf1);
-				system(sbuffer1);
-				break;
+				myswprintf(self1, L".\\textures\\head\\%S", mainGame->cbHDS->getItem(mainGame->cbHDS->getSelected()));
+				CopyFile(self1, L".\\textures\\output.jpg", FALSE);
 			}
 			}
 			break;
