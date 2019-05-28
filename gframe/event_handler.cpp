@@ -2033,7 +2033,7 @@ bool ClientField::OnCommonEvent(const irr::SEvent& event) {
 				break;
 			}
 			case COMBOBOX_HDS: {
-				myswprintf(mainGame->gameConf.head, L"font/%ls",  mainGame->cbHDS->getItem(mainGame->cbHDS->getSelected()));
+				myswprintf(mainGame->gameConf.head, L"%ls",  mainGame->cbHDS->getItem(mainGame->cbHDS->getSelected()));
 				mainGame->SaveConfig();
 				break;
 			}
