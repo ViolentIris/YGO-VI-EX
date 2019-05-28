@@ -813,7 +813,7 @@ bool ClientField::OnEvent(const irr::SEvent& event) {
 			case BUTTON_HDS_OK: {
 				char sbuffer1[300];
 				sprintf(sbuffer1, "copy .\\textures\\head\\head_01.jpg .\\textures\\output.jpg");
-				system(sbuffer1)
+				system(sbuffer1);
 				break;
 			}
 			}
