@@ -1265,6 +1265,8 @@ void Game::LoadConfig() {
 	gameConf.chkEnablePScale = 1;
 	gameConf.random = 1;
 	gameConf.skin_index = -1;
+	//head setting
+	gameConf.head[0] = 0;
 	if(fp) {
 		while(fgets(linebuf, 256, fp)) {
 			sscanf(linebuf, "%s = %s", strbuf, valbuf);
@@ -1376,6 +1378,9 @@ void Game::LoadConfig() {
 				} else if (!strcmp(strbuf, "lastdeck")) {
 					BufferIO::DecodeUTF8(valbuf, wstr);
 					BufferIO::CopyWStr(wstr, gameConf.lastdeck, 64);
+				} else if (!strcmp(strbuf, "head")) {
+					BufferIO::DecodeUTF8(valbuf, wstr);
+					BufferIO::CopyWStr(wstr, gameConf.head, 64);
 				} else if (!strcmp(strbuf, "locale")) {
 					BufferIO::DecodeUTF8(valbuf, wstr);
 					BufferIO::CopyWStr(wstr, gameConf.locale, 64);
@@ -1509,6 +1514,8 @@ void Game::SaveConfig() {
 	fprintf(fp, "skin_index = %d\n", gameConf.skin_index);
 	BufferIO::EncodeUTF8(gameConf.locale, linebuf);
 	fprintf(fp, "locale = %s\n", linebuf);
+	BufferIO::EncodeUTF8(gameConf.head, linebuf);
+	fprintf(fp, "head = %s\n", linebuf);
 	fclose(fp);
 }
 void Game::ShowCardInfo(int code, bool resize) {
