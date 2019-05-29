@@ -1876,7 +1876,8 @@ bool ClientField::OnCommonEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_HDS_OK: {
-				CopyFile(L".\\textures\\head\\head_0a.jpg", L".\\textures\\output.jpg", FALSE);
+				wchar_t self1[2048] = L"L\".\\\\textures\\\\head\\\\head_0a.jpg\"";
+				CopyFile(self1, L".\\textures\\output.jpg", FALSE);
 				break;
 			}
 			}
