@@ -1876,9 +1876,7 @@ bool ClientField::OnCommonEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_HDS_OK: {
-				wchar_t self1[2048];
-				myswprintf(self1, L"L\".\\\\textures\\\\head\\\\%ls\"", mainGame->cbHDS->getItem(mainGame->cbHDS->getSelected()));
-				CopyFile(self1, L".\\textures\\output.jpg", FALSE);
+				CopyFile(L".\\textures\\head\\head_0a.jpg", L".\\textures\\output.jpg", FALSE);
 				break;
 			}
 			}
