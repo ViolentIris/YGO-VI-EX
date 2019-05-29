@@ -810,12 +810,6 @@ bool ClientField::OnEvent(const irr::SEvent& event) {
 				mainGame->HideElement(mainGame->wCardDisplay);
 				break;
 			}
-			case BUTTON_HDS_OK: {
-				char sbuffer1[300];
-				sprintf(sbuffer1, "copy .\\textures\\head\\head_01.jpg .\\textures\\output.jpg");
-				system(sbuffer1);
-				break;
-			}
 			}
 			break;
 		}
@@ -1879,6 +1873,12 @@ bool ClientField::OnCommonEvent(const irr::SEvent& event) {
 			}
 			case BUTTON_TB_CANCEL: {
 				mainGame->HideElement(mainGame->wTBWindow);
+				break;
+			}
+			case BUTTON_HDS_OK: {
+				char sbuffer1[300];
+				sprintf(sbuffer1, "copy .\\textures\\head\\head_01.jpg .\\textures\\output.jpg");
+				system(sbuffer1);
 				break;
 			}
 			}
