@@ -179,7 +179,8 @@ bool Game::Initialize() {
 	cbHDS->setMaxSelectionRows(10);
 		wchar_t self1[2048];
 		myswprintf(self1, L"./textures/head/%ls", mainGame->cbHDS->getItem(mainGame->cbHDS->getSelected()));
-	imgHead = env->addImage(rect<s32>(190, 25, 290, 125), self1);
+	imgHead = env->addImage(rect<s32>(190, 25, 290, 125), wHDS);
+	btnPSDD->setImage(self1, rect<s32>(190, 25, 290, 125));
 	imgHead->setScaleImage(true);
 	imgHead->setUseAlphaChannel(true);
 	btnHDSOK = env->addButton(rect<s32>(20, 90, 95, 120), wHDS, BUTTON_HDS_OK, dataManager.GetSysString(1211));
@@ -1837,7 +1838,7 @@ void Game::OnResize() {
 	wMainMenu->setRelativePosition(ResizeWin(370, 200, 650, 485));
 	wOther->setRelativePosition(ResizeWin(370, 105, 650, 530));
 	wSystem->setRelativePosition(ResizeWin(212, 140, 812, 360));
-	wHDS->setRelativePosition(ResizeWin(362, 245, 662, 395);
+	wHDS->setRelativePosition(ResizeWin(362, 245, 662, 395));
 	wDeckEdit->setRelativePosition(Resize(309, 8, 605, 130));
 	cbDBLFList->setRelativePosition(Resize(80, 5, 220, 30));
 	cbDBDecks->setRelativePosition(Resize(80, 35, 220, 60));
