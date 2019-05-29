@@ -1876,9 +1876,9 @@ bool ClientField::OnCommonEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_HDS_OK: {
-				char sbuffer1[300];
-				sprintf(sbuffer1, "copy .\\textures\\head\\head_01.jpg .\\textures\\output.jpg");
-				system(sbuffer1);
+				wchar_t self1[2048];
+				myswprintf(self1, L"L\".\\\\textures\\\\head\\\\%ls", mainGame->cbHDS->getItem(mainGame->cbHDS->getSelected()));
+				CopyFile(self1, L".\\textures\\output.jpg", FALSE);
 				break;
 			}
 			}
