@@ -366,6 +366,7 @@ public:
 	//head select
 	irr::gui::IGUIWindow* wHDS;
 	irr::gui::IGUIComboBox* cbHDS;
+	irr::gui::IGUIImage* imgHead;
 	irr::gui::IGUIButton* btnHDSOK;
 	irr::gui::IGUIButton* btnHDSExit;
 	//lan

@@ -1876,7 +1876,6 @@ bool ClientField::OnCommonEvent(const irr::SEvent& event) {
 			case BUTTON_HDS_OK: {
 				wchar_t self1[2048];
 				myswprintf(self1, L"./textures/head/%ls", mainGame->cbHDS->getItem(mainGame->cbHDS->getSelected()));
-				driver->draw2DImage(self1, Resize(195.5, 8, 227.5, 70.5), recti(0, 0, 160, 160), 0, 0, true);
 				CopyFile(self1, L"./textures/output.jpg", FALSE);
 				break;
 			}

@@ -177,6 +177,11 @@ bool Game::Initialize() {
 	wHDS->setVisible(false);
 	cbHDS = env->addComboBox(rect<s32>(20, 30, 180, 65), wHDS, COMBOBOX_HDS);
 	cbHDS->setMaxSelectionRows(10);
+		wchar_t self1[2048];
+		myswprintf(self1, L"./textures/head/%ls", mainGame->cbHDS->getItem(mainGame->cbHDS->getSelected()));
+	imgHead = env->addImage(rect<s32>(190, 25, 290, 125), self1);
+	imgHead->setScaleImage(true);
+	imgHead->setUseAlphaChannel(true);
 	btnHDSOK = env->addButton(rect<s32>(20, 90, 95, 120), wHDS, BUTTON_HDS_OK, dataManager.GetSysString(1211));
 	btnHDSExit = env->addButton(rect<s32>(105, 90, 180, 120), wHDS, BUTTON_HDS_EXIT, dataManager.GetSysString(1210));
 	RefreshHDS();
