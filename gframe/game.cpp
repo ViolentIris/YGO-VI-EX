@@ -147,7 +147,7 @@ bool Game::Initialize() {
 	btnOtherExit = env->addButton(rect<s32>(10, 380, 270, 410), wOther, BUTTON_OTHER_EXIT, dataManager.GetSysString(1210));
 	
 	//system setting
-	wSystem = env->addWindow(rect<s32>(212, 140, 812, 410), false, dataManager.GetSysString(1207));
+	wSystem = env->addWindow(rect<s32>(212, 140, 812, 360), false, dataManager.GetSysString(1207));
 	wSystem->getCloseButton()->setVisible(false);
 	wSystem->setVisible(false);
 	chkMRandom = env->addCheckBox(false, rect<s32>(30, 20, 260, 45), wSystem, CHECKBOX_RDM, dataManager.GetSysString(1437));
@@ -175,10 +175,10 @@ bool Game::Initialize() {
 	wHDS = env->addWindow(rect<s32>(362, 245, 662, 395), false, dataManager.GetSysString(1451));
 	wHDS->getCloseButton()->setVisible(false);
 	wHDS->setVisible(false);
-	cbHDS = env->addComboBox(rect<s32>(20, 50, 120, 90), wHDS, COMBOBOX_HDS);
+	cbHDS = env->addComboBox(rect<s32>(20, 30, 180, 65), wHDS, COMBOBOX_HDS);
 	cbHDS->setMaxSelectionRows(10);
-	btnHDSOK = env->addButton(rect<s32>(20, 95, 65, 125), wHDS, BUTTON_HDS_OK, dataManager.GetSysString(1211));
-	btnHDSExit = env->addButton(rect<s32>(75, 95, 120, 125), wHDS, BUTTON_HDS_EXIT, dataManager.GetSysString(1210));
+	btnHDSOK = env->addButton(rect<s32>(20, 90, 95, 120), wHDS, BUTTON_HDS_OK, dataManager.GetSysString(1211));
+	btnHDSExit = env->addButton(rect<s32>(105, 90, 180, 120), wHDS, BUTTON_HDS_EXIT, dataManager.GetSysString(1210));
 	RefreshHDS();
 	//Cover Select
 	//Background Select
@@ -1831,7 +1831,8 @@ void Game::OnResize() {
 
 	wMainMenu->setRelativePosition(ResizeWin(370, 200, 650, 485));
 	wOther->setRelativePosition(ResizeWin(370, 105, 650, 530));
-	wSystem->setRelativePosition(ResizeWin(212, 140, 812, 410));
+	wSystem->setRelativePosition(ResizeWin(212, 140, 812, 360));
+	wHDS->setRelativePosition(ResizeWin(362, 245, 662, 395);
 	wDeckEdit->setRelativePosition(Resize(309, 8, 605, 130));
 	cbDBLFList->setRelativePosition(Resize(80, 5, 220, 30));
 	cbDBDecks->setRelativePosition(Resize(80, 35, 220, 60));
