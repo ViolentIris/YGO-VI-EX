@@ -166,19 +166,19 @@ bool Game::Initialize() {
 	cbFont = env->addComboBox(rect<s32>(427, 80, 590, 105), wSystem, COMBOBOX_FONT);
 	env->addStaticText(dataManager.GetSysString(1288), rect<s32>(270, 113, 426, 138), false, false, wSystem);
 	cbLocale = env->addComboBox(rect<s32>(227, 110, 590, 135), wSystem, COMBOBOX_LOCALE);
-	btnHeadS = env->addButton(rect<s32>(30, 145, 200, 170), wSystem, BUTTON_HDS, dataManager.GetSysString(1450));
-	btnSystemExit = env->addButton(rect<s32>(200, 175, 400, 210), wSystem, BUTTON_SYS_EXIT, dataManager.GetSysString(1210));
+	btnHeadS = env->addButton(rect<s32>(30, 150, 200, 180), wSystem, BUTTON_HDS, dataManager.GetSysString(1450));
+	btnSystemExit = env->addButton(rect<s32>(200, 185, 400, 210), wSystem, BUTTON_SYS_EXIT, dataManager.GetSysString(1210));
 	RefreshFont();
 	RefreshLocales();
 	
 	//Head Select
-	wHDS = env->addWindow(rect<s32>(212, 140, 812, 410), false, dataManager.GetSysString(1451));
+	wHDS = env->addWindow(rect<s32>(362, 245, 662, 395), false, dataManager.GetSysString(1451));
 	wHDS->getCloseButton()->setVisible(false);
 	wHDS->setVisible(false);
-	cbHDS = env->addComboBox(rect<s32>(127, 80, 510, 105), wHDS, COMBOBOX_HDS);
+	cbHDS = env->addComboBox(rect<s32>(20, 50, 120, 90), wHDS, COMBOBOX_HDS);
 	cbHDS->setMaxSelectionRows(10);
-	btnHDSOK = env->addButton(rect<s32>(200, 15, 400, 29), wHDS, BUTTON_HDS_OK, dataManager.GetSysString(1211));
-	btnHDSExit = env->addButton(rect<s32>(300, 175, 500, 210), wHDS, BUTTON_HDS_EXIT, dataManager.GetSysString(1210));
+	btnHDSOK = env->addButton(rect<s32>(20, 95, 65, 125), wHDS, BUTTON_HDS_OK, dataManager.GetSysString(1211));
+	btnHDSExit = env->addButton(rect<s32>(75, 95, 120, 125), wHDS, BUTTON_HDS_EXIT, dataManager.GetSysString(1210));
 	RefreshHDS();
 	//Cover Select
 	//Background Select
@@ -1265,8 +1265,6 @@ void Game::LoadConfig() {
 	gameConf.chkEnablePScale = 1;
 	gameConf.random = 1;
 	gameConf.skin_index = -1;
-	//head setting
-	gameConf.head[0] = 0;
 	if(fp) {
 		while(fgets(linebuf, 256, fp)) {
 			sscanf(linebuf, "%s = %s", strbuf, valbuf);
@@ -1378,9 +1376,6 @@ void Game::LoadConfig() {
 				} else if (!strcmp(strbuf, "lastdeck")) {
 					BufferIO::DecodeUTF8(valbuf, wstr);
 					BufferIO::CopyWStr(wstr, gameConf.lastdeck, 64);
-				} else if (!strcmp(strbuf, "head")) {
-					BufferIO::DecodeUTF8(valbuf, wstr);
-					BufferIO::CopyWStr(wstr, gameConf.head, 64);
 				} else if (!strcmp(strbuf, "locale")) {
 					BufferIO::DecodeUTF8(valbuf, wstr);
 					BufferIO::CopyWStr(wstr, gameConf.locale, 64);
@@ -1514,8 +1509,6 @@ void Game::SaveConfig() {
 	fprintf(fp, "skin_index = %d\n", gameConf.skin_index);
 	BufferIO::EncodeUTF8(gameConf.locale, linebuf);
 	fprintf(fp, "locale = %s\n", linebuf);
-	BufferIO::EncodeUTF8(gameConf.head, linebuf);
-	fprintf(fp, "head = %s\n", linebuf);
 	fclose(fp);
 }
 void Game::ShowCardInfo(int code, bool resize) {
@@ -1838,7 +1831,7 @@ void Game::OnResize() {
 
 	wMainMenu->setRelativePosition(ResizeWin(370, 200, 650, 485));
 	wOther->setRelativePosition(ResizeWin(370, 105, 650, 530));
-	wSystem->setRelativePosition(ResizeWin(212, 150, 812, 350));
+	wSystem->setRelativePosition(ResizeWin(212, 140, 812, 410));
 	wDeckEdit->setRelativePosition(Resize(309, 8, 605, 130));
 	cbDBLFList->setRelativePosition(Resize(80, 5, 220, 30));
 	cbDBDecks->setRelativePosition(Resize(80, 35, 220, 60));

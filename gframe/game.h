@@ -61,7 +61,6 @@ struct Config {
 	int random;
 	int chkEnablePScale;
 	int skin_index;
-	wchar_t head[256];
 };
 
 struct DuelInfo {
