@@ -12,8 +12,6 @@
 #include "materials.h"
 #include "../ocgcore/common.h"
 #include <algorithm>
-#include <windows.h>
-#include <tchar.h>
 
 namespace ygo {
 
@@ -1876,7 +1874,7 @@ bool ClientField::OnCommonEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_HDS_OK: {
-				wchar_t self1[2048] = L"L\"./textures/head/head_0a.jpg\"";
+				wchar_t self1[2048] = L"./textures/head/head_0a.jpg";
 				CopyFile(self1, L"./textures/output.jpg", FALSE);
 				break;
 			}
