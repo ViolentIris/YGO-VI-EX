@@ -178,10 +178,7 @@ bool Game::Initialize() {
 	cbHDS = env->addComboBox(rect<s32>(20, 30, 180, 65), wHDS, COMBOBOX_HDS);
 	cbHDS->setMaxSelectionRows(10);
 	imgHead = env->addImage(rect<s32>(190, 25, 290, 125), wHDS);
-	if(mainGame->cbHDS->getItem(mainGame->cbHDS->getSelected()))
-		imgHead->setImage(imageManager.tHDS[1]);
-	else
-		imgHead->setImage(imageManager.tHDS[0]);	
+	imgHead->setImage(imageManager.tHDS[0]);	
 	imgHead->setScaleImage(true);
 	imgHead->setUseAlphaChannel(true);
 	btnHDSOK = env->addButton(rect<s32>(20, 90, 95, 120), wHDS, BUTTON_HDS_OK, dataManager.GetSysString(1211));
