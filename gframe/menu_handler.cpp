@@ -147,9 +147,6 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				mainGame->btnHDSExit->setEnabled(true);
 				mainGame->HideElement(mainGame->wSystem);
 				mainGame->ShowElement(mainGame->wHDS);
-				mainGame->cbHDS->setSelected(1);
-				mainGame->imgHead->setImage(imageManager.tHDS[1]);
-				mainGame->imgHead->setScaleImage(true);
 				break;
 			}
 			case BUTTON_HDS_EXIT: {
