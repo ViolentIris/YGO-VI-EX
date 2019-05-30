@@ -74,9 +74,9 @@ bool ImageManager::Initial()  {
 	tOT = driver->getTexture("textures/ot.png");
 	tCardType = driver->getTexture("textures/cardtype.png");
 	tHDS[0] = driver->getTexture("textures/head.jpg");
-		wchar_t self1[2048];
-		myswprintf(self1, L"%ls", mainGame->cbHDS->getItem(mainGame->cbHDS->getSelected()));
-	tHDS[1] = driver->getTexture("textures/head/self1");
+		char ssbuf1[2048];
+		snprintf(ssbuf1, 300, "textures/head/%S", mainGame->cbHDS->getItem(mainGame->cbHDS->getSelected()));
+	tHDS[1] = driver->getTexture(ssbuf1);
 	tHand[0] = driver->getTexture("textures/f1.jpg");
 	tHand[1] = driver->getTexture("textures/f2.jpg");
 	tHand[2] = driver->getTexture("textures/f3.jpg");
