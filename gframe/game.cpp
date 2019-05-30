@@ -1170,8 +1170,6 @@ void Game::RefreshHDS() {
 	FileSystem::TraversalDir(L"./textures/head", [this](const wchar_t* name, bool isdir) {
 		if(!isdir && wcsrchr(name, '.') && !mywcsncasecmp(wcsrchr(name, '.'), L".jpg", 4))
 			cbHDS->addItem(name);
-			imgHead->setImage(imageManager.GetTextureFromFile("textures/head/name", 100, 100));
-			imgHead->setScaleImage(true);
 	});
 }
 void Game::RefreshBot() {
