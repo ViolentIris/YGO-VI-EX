@@ -1748,6 +1748,8 @@ void Game::ClearTextures() {
 	imgCard->setImage(imageManager.tCover[0]);
 	scrCardText->setVisible(false);
 	imgCard->setScaleImage(true);
+	imgHead->setImage(imageManager.tHDS);
+	imgHead->setScaleImage(true);
 	btnPSAU->setImage();
 	btnPSDU->setImage();
 	for(int i=0; i<=4; ++i) {
