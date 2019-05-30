@@ -2027,11 +2027,6 @@ bool ClientField::OnCommonEvent(const irr::SEvent& event) {
 				mainGame->SaveConfig();
 				break;
 			}
-			case COMBOBOX_HDS: {
-				mainGame->imgHead->setImage(imageManager.tHDS[1]);
-				mainGame->imgHead->setScaleImage(true);
-				break;
-			}
 			}
 			break;
 		}
