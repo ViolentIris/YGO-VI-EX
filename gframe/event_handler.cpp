@@ -2032,6 +2032,7 @@ bool ClientField::OnCommonEvent(const irr::SEvent& event) {
 				mainGame->imgHead->setScaleImage(true);
 				break;
 			}
+			}
 			break;
 		}
 		case irr::gui::EGET_EDITBOX_ENTER: {
