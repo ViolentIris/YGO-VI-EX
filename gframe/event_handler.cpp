@@ -1949,6 +1949,11 @@ bool ClientField::OnCommonEvent(const irr::SEvent& event) {
 				return true;
 				break;
 			}
+			case CHECKBOX_HDS: {
+				mainGame->imgHead->setImage(imageManager.tAvatar[1]);	
+				mainGame->imgHead->setScaleImage(true);
+				break;
+			}
 			}
 			break;
 		}
