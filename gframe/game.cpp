@@ -1170,7 +1170,6 @@ void Game::RefreshHDS() {
 	FileSystem::TraversalDir(L"./textures/head", [this](const wchar_t* name, bool isdir) {
 		if(!isdir && wcsrchr(name, '.') && !mywcsncasecmp(wcsrchr(name, '.'), L".jpg", 4))
 			cbHDS->addItem(name);
-			cbHDS->setSelected(0);
 	});
 }
 void Game::RefreshBot() {
