@@ -156,6 +156,13 @@ irr::video::ITexture* ImageManager::GetHeadImage() {
 	BufferIO::EncodeUTF8(fnameS, ImageNameS);
 	return driver->getTexture(ImageNameS);
 }
+irr::video::ITexture* ImageManager::GetCoverImage() {
+	char ImageNameC[1024];
+	wchar_t fnameC[1024];
+	myswprintf(fnameC, L"./textures/cover/%ls", mainGame->cbCRS->getItem(mainGame->cbCRSS->getSelected()));
+	BufferIO::EncodeUTF8(fnameC, ImageNameC);
+	return driver->getTexture(ImageNameC);
+}
 void ImageManager::RefreshRandomImageList() {
 	RefreshImageDir(L"bg", TEXTURE_DUEL);
 	RefreshImageDir(L"bg_duel", TEXTURE_DUEL);

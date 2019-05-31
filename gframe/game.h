@@ -138,6 +138,7 @@ public:
 	void RefreshLocales();
 	void RefreshFont();
 	void RefreshHDS();
+	void RefreshCRS();
 	void DrawSelectionLine(irr::video::S3DVertex* vec, bool strip, int width, float* cv);
 	void DrawSelectionLine(irr::gui::IGUIElement* element, int width, irr::video::SColor color);
 	void DrawBackGround();
@@ -369,6 +370,15 @@ public:
 	irr::gui::IGUIImage* imgHead;
 	irr::gui::IGUIButton* btnHDSOK;
 	irr::gui::IGUIButton* btnHDSExit;
+	//cover select
+	irr::gui::IGUIWindow* wCRS;
+	irr::gui::IGUIComboBox* cbCRS;
+	irr::gui::IGUIImage* imgCover;
+	irr::gui::IGUIButton* btnCoverOK1;
+	irr::gui::IGUIButton* btnCoverOK2;
+	irr::gui::IGUIButton* btnCoverOK3;
+	irr::gui::IGUIButton* btnCoverOK4;
+	irr::gui::IGUIButton* btnCRSExit;
 	//lan
 	irr::gui::IGUIWindow* wLanWindow;
 	irr::gui::IGUIEditBox* ebNickName;
@@ -840,7 +850,15 @@ extern Game* mainGame;
 //head select
 #define BUTTON_HDS_OK		415
 #define BUTTON_HDS_EXIT		416
-#define COMBOBOX_HDS			417
+#define COMBOBOX_HDS		417
+
+//cover select
+#define BUTTON_CRS_OK1		418
+#define BUTTON_CRS_OK2		419
+#define BUTTON_CRS_OK3		420
+#define BUTTON_CRS_OK4		421
+#define BUTTON_CRS_EXIT		422
+#define COMBOBOX_CRS		423
 
 #define TEXTURE_DUEL				0
 #define TEXTURE_DECK				1
