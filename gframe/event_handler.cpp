@@ -1949,11 +1949,6 @@ bool ClientField::OnCommonEvent(const irr::SEvent& event) {
 				return true;
 				break;
 			}
-			case CHECKBOX_HDS: {
-				mainGame->imgHead->setImage(imageManager.tAvatar[1]);	
-				mainGame->imgHead->setScaleImage(true);
-				break;
-			}
 			}
 			break;
 		}
@@ -2030,6 +2025,11 @@ bool ClientField::OnCommonEvent(const irr::SEvent& event) {
 			case COMBOBOX_FONT: {
 				myswprintf(mainGame->gameConf.textfont, L"font/%ls", mainGame->cbFont->getItem(mainGame->cbFont->getSelected()));
 				mainGame->SaveConfig();
+				break;
+			}
+			case COMBOBOX_HDS: {
+				mainGame->imgHead->setImage(imageManager.tAvatar[1]);	
+				mainGame->imgHead->setScaleImage(true);
 				break;
 			}
 			}
