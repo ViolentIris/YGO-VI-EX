@@ -363,6 +363,7 @@ public:
 	irr::gui::IGUIComboBox* cbLocale;
 	irr::gui::IGUIComboBox* cbFont;
 	irr::gui::IGUIButton* btnHeadS;
+	irr::gui::IGUIButton* btnCoverS;
 	irr::gui::IGUIButton* btnSystemExit;
 	//head select
 	irr::gui::IGUIWindow* wHDS;

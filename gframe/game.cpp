@@ -167,7 +167,7 @@ bool Game::Initialize() {
 	env->addStaticText(dataManager.GetSysString(1288), rect<s32>(270, 113, 426, 138), false, false, wSystem);
 	cbLocale = env->addComboBox(rect<s32>(227, 110, 590, 135), wSystem, COMBOBOX_LOCALE);
 	btnHeadS = env->addButton(rect<s32>(30, 150, 200, 180), wSystem, BUTTON_HDS, dataManager.GetSysString(1450));
-	btnCoverS = env->addButton(rect<s32>(215, 150, 385, 180), wSystem, BUTTON_HDS, dataManager.GetSysString(1452));
+	btnCoverS = env->addButton(rect<s32>(215, 150, 385, 180), wSystem, BUTTON_CRS, dataManager.GetSysString(1452));
 	btnSystemExit = env->addButton(rect<s32>(200, 185, 400, 210), wSystem, BUTTON_SYS_EXIT, dataManager.GetSysString(1210));
 	RefreshFont();
 	RefreshLocales();
@@ -1192,13 +1192,6 @@ void Game::RefreshHDS() {
 void Game::RefreshCRS() {
 	cbHDS->clear();
 	FileSystem::TraversalDir(L"./textures/cover", [this](const wchar_t* name, bool isdir) {
-		if(!isdir && wcsrchr(name, '.') && !mywcsncasecmp(wcsrchr(name, '.'), L".jpg", 4))
-			cbHDS->addItem(name);
-	});
-}
-void Game::RefreshBGS() {
-	cbHDS->clear();
-	FileSystem::TraversalDir(L"./textures/bg", [this](const wchar_t* name, bool isdir) {
 		if(!isdir && wcsrchr(name, '.') && !mywcsncasecmp(wcsrchr(name, '.'), L".jpg", 4))
 			cbHDS->addItem(name);
 	});

@@ -159,7 +159,7 @@ irr::video::ITexture* ImageManager::GetHeadImage() {
 irr::video::ITexture* ImageManager::GetCoverImage() {
 	char ImageNameC[1024];
 	wchar_t fnameC[1024];
-	myswprintf(fnameC, L"./textures/cover/%ls", mainGame->cbCRS->getItem(mainGame->cbCRSS->getSelected()));
+	myswprintf(fnameC, L"./textures/cover/%ls", mainGame->cbCRS->getItem(mainGame->cbCRS->getSelected()));
 	BufferIO::EncodeUTF8(fnameC, ImageNameC);
 	return driver->getTexture(ImageNameC);
 }
