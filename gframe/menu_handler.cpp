@@ -145,7 +145,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				mainGame->cbHDS->setEnabled(true);
 				mainGame->btnHDSOK->setEnabled(true);
 				mainGame->btnHDSExit->setEnabled(true);
-				mainGame->cbHDS->setSelected(0);
+				mainGame->cbHDS->setSelected(111);
 				mainGame->HideElement(mainGame->wSystem);
 				mainGame->ShowElement(mainGame->wHDS);
 				break;
