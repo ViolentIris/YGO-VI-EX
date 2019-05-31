@@ -2028,7 +2028,7 @@ bool ClientField::OnCommonEvent(const irr::SEvent& event) {
 				break;
 			}
 			case COMBOBOX_HDS: {
-				mainGame->imgHead->setImage("./textures/head/head_01.jpg");	
+				mainGame->imgHead->setImage(imageManager.GetHeadImage());	
 				mainGame->imgHead->setScaleImage(true);
 				break;
 			}

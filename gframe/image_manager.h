@@ -13,6 +13,7 @@ public:
 	bool Initial();
 	//random image
 	irr::video::ITexture* GetRandomImage(int image_type);
+	irr::video::ITexture* GetHeadImage();
 	void RefreshRandomImageList();
 	void RefreshImageDir(std::wstring path, int image_type);
 	void SetDevice(irr::IrrlichtDevice* dev);
