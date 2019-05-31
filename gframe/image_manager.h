@@ -32,6 +32,7 @@ public:
 	irr::video::IVideoDriver* driver;
 	irr::video::ITexture* tCover[8];
 	irr::video::ITexture* tAvatar[2];
+	irr::video::ITexture* tHDS;
 	irr::video::ITexture* tUnknown;
 	irr::video::ITexture* tUnknownFit;
 	irr::video::ITexture* tUnknownThumb;
