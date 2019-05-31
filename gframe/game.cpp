@@ -1190,10 +1190,10 @@ void Game::RefreshHDS() {
 	});
 }
 void Game::RefreshCRS() {
-	cbHDS->clear();
+	cbCRS->clear();
 	FileSystem::TraversalDir(L"./textures/cover", [this](const wchar_t* name, bool isdir) {
 		if(!isdir && wcsrchr(name, '.') && !mywcsncasecmp(wcsrchr(name, '.'), L".jpg", 4))
-			cbHDS->addItem(name);
+			cbCRS->addItem(name);
 	});
 }
 void Game::RefreshBot() {
