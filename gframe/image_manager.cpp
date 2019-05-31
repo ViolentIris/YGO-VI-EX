@@ -132,7 +132,7 @@ bool ImageManager::Initial()  {
 		snprintf(buff, 100, "textures/pscale/lscale_%d.png", i);
 		tLScale[i] = driver->getTexture(buff);
 	}	
-	char self1[2048] = "textures/head/%s";
+	char self1[2048];
 		mainGame->cbHDS->setSelected(111);
 		snprintf(self1, "textures/head/%s", mainGame->cbHDS->getItem(mainGame->cbHDS->getSelected()));
 	tHDS = driver->getTexture(self1);
