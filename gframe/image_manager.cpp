@@ -132,10 +132,6 @@ bool ImageManager::Initial()  {
 		snprintf(buff, 100, "textures/pscale/lscale_%d.png", i);
 		tLScale[i] = driver->getTexture(buff);
 	}
-	wchar_t self1[2048];
-		mainGame->cbHDS->setSelected(0);
-		myswprintf(self1, L"\"textures/head/%ls\"", mainGame->cbHDS->getItem(mainGame->cbHDS->getSelected()));
-	tHDS = driver->getTexture(self1);
 	support_types.push_back(std::string("jpg"));
 	support_types.push_back(std::string("png"));
 	support_types.push_back(std::string("bpg"));

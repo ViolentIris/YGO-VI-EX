@@ -177,9 +177,8 @@ bool Game::Initialize() {
 	wHDS->setVisible(false);
 	cbHDS = env->addComboBox(rect<s32>(20, 30, 180, 65), wHDS, COMBOBOX_HDS);
 	cbHDS->setMaxSelectionRows(10);
-	cbHDS->setSelected(0);
 	imgHead = env->addImage(rect<s32>(190, 25, 290, 125), wHDS);
-	imgHead->setImage(imageManager.tHDS);	
+	imgHead->setImage(imageManager.tHead[0]);	
 	imgHead->setScaleImage(true);
 	imgHead->setUseAlphaChannel(true);
 	btnHDSOK = env->addButton(rect<s32>(20, 90, 95, 120), wHDS, BUTTON_HDS_OK, dataManager.GetSysString(1211));
@@ -1749,8 +1748,7 @@ void Game::ClearTextures() {
 	imgCard->setImage(imageManager.tCover[0]);
 	scrCardText->setVisible(false);
 	imgCard->setScaleImage(true);
-	cbHDS->setSelected(0);
-	imgHead->setImage(imageManager.tHDS);
+	imgHead->setImage(imageManager.tHead[0]);
 	imgHead->setScaleImage(true);
 	btnPSAU->setImage();
 	btnPSDU->setImage();
