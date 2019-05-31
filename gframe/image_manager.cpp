@@ -73,7 +73,6 @@ bool ImageManager::Initial()  {
 	tLim = driver->getTexture("textures/lim.png");
 	tOT = driver->getTexture("textures/ot.png");
 	tCardType = driver->getTexture("textures/cardtype.png");
-	tHDS = driver->getTexture("textures/head.jpg");
 	tHand[0] = driver->getTexture("textures/f1.jpg");
 	tHand[1] = driver->getTexture("textures/f2.jpg");
 	tHand[2] = driver->getTexture("textures/f3.jpg");
@@ -133,6 +132,9 @@ bool ImageManager::Initial()  {
 		snprintf(buff, 100, "textures/pscale/lscale_%d.png", i);
 		tLScale[i] = driver->getTexture(buff);
 	}
+	wchar_t self1[2048];
+		myswprintf(self1, L"textures/head/%ls", mainGame->cbHDS->getItem(mainGame->cbHDS->getSelected()));
+	tHDS = driver->getTexture(self1);
 	support_types.push_back(std::string("jpg"));
 	support_types.push_back(std::string("png"));
 	support_types.push_back(std::string("bpg"));
