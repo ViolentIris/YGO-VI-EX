@@ -133,7 +133,7 @@ bool ImageManager::Initial()  {
 		tLScale[i] = driver->getTexture(buff);
 	}	
 	char self1[2048];
-		snprintf(self1, L"\"textures/head/%ls\"", mainGame->cbHDS->getItem(mainGame->cbHDS->setSelected(111)));
+		snprintf(self1, "textures/head/%S", mainGame->cbHDS->getItem(mainGame->cbHDS->setSelected(111)));
 	tHDS = driver->getTexture(self1);
 	support_types.push_back(std::string("jpg"));
 	support_types.push_back(std::string("png"));
