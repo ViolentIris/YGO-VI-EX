@@ -139,6 +139,7 @@ public:
 	void RefreshFont();
 	void RefreshHDS();
 	void RefreshCRS();
+	void RefreshBGS();
 	void DrawSelectionLine(irr::video::S3DVertex* vec, bool strip, int width, float* cv);
 	void DrawSelectionLine(irr::gui::IGUIElement* element, int width, irr::video::SColor color);
 	void DrawBackGround();
@@ -364,6 +365,7 @@ public:
 	irr::gui::IGUIComboBox* cbFont;
 	irr::gui::IGUIButton* btnHeadS;
 	irr::gui::IGUIButton* btnCoverS;
+	irr::gui::IGUIButton* btnBgS;
 	irr::gui::IGUIButton* btnSystemExit;
 	//head select
 	irr::gui::IGUIWindow* wHDS;
@@ -380,6 +382,14 @@ public:
 	irr::gui::IGUIButton* btnCoverOK3;
 	irr::gui::IGUIButton* btnCoverOK4;
 	irr::gui::IGUIButton* btnCRSExit;
+	//background select
+	irr::gui::IGUIWindow* wBGS;
+	irr::gui::IGUIComboBox* cbBGS;
+	irr::gui::IGUIImage* imgBG;
+	irr::gui::IGUIButton* btnBGOK1;
+	irr::gui::IGUIButton* btnBGOK2;
+	irr::gui::IGUIButton* btnBGOK3;
+	irr::gui::IGUIButton* btnBGSExit;
 	//lan
 	irr::gui::IGUIWindow* wLanWindow;
 	irr::gui::IGUIEditBox* ebNickName;
@@ -863,6 +873,13 @@ extern Game* mainGame;
 #define BUTTON_CRS_OK4		421
 #define BUTTON_CRS_EXIT		422
 #define COMBOBOX_CRS		423
+
+//bg select
+#define BUTTON_BGS_OK1		424
+#define BUTTON_BGS_OK2		425
+#define BUTTON_BGS_OK3		426
+#define BUTTON_BGS_EXIT		427
+#define COMBOBOX_BGS		428
 
 #define TEXTURE_DUEL				0
 #define TEXTURE_DECK				1

@@ -168,6 +168,7 @@ bool Game::Initialize() {
 	cbLocale = env->addComboBox(rect<s32>(227, 110, 590, 135), wSystem, COMBOBOX_LOCALE);
 	btnHeadS = env->addButton(rect<s32>(30, 150, 200, 180), wSystem, BUTTON_HDS, dataManager.GetSysString(1450));
 	btnCoverS = env->addButton(rect<s32>(215, 150, 385, 180), wSystem, BUTTON_CRS, dataManager.GetSysString(1452));
+	btnBgS = env->addButton(rect<s32>(400, 150, 570, 180), wSystem, BUTTON_BGS, dataManager.GetSysString(1458));
 	btnSystemExit = env->addButton(rect<s32>(200, 185, 400, 210), wSystem, BUTTON_SYS_EXIT, dataManager.GetSysString(1210));
 	RefreshFont();
 	RefreshLocales();
@@ -185,7 +186,6 @@ bool Game::Initialize() {
 	btnHDSOK = env->addButton(rect<s32>(20, 90, 95, 120), wHDS, BUTTON_HDS_OK, dataManager.GetSysString(1211));
 	btnHDSExit = env->addButton(rect<s32>(105, 90, 180, 120), wHDS, BUTTON_HDS_EXIT, dataManager.GetSysString(1210));
 	RefreshHDS();
-	
 	//Cover Select
 	wCRS = env->addWindow(rect<s32>(279.5, 197.5, 744.5, 442.5), false, dataManager.GetSysString(1453));
 	wCRS->getCloseButton()->setVisible(false);
@@ -203,7 +203,20 @@ bool Game::Initialize() {
 	btnCRSExit = env->addButton(rect<s32>(30, 162.5, 150, 197.5), wCRS, BUTTON_CRS_EXIT, dataManager.GetSysString(1210));
 	RefreshCRS();
 	//Background Select
-
+	wBGS = env->addWindow(rect<s32>(157, 140, 867, 460), false, dataManager.GetSysString(1453));
+	wBGS->getCloseButton()->setVisible(false);
+	wBGS->setVisible(false);
+	cbBGS = env->addComboBox(rect<s32>(30, 50, 150, 90), wBGS, COMBOBOX_BGS);
+	cbBGS->setMaxSelectionRows(10);
+	imgBG = env->addImage(rect<s32>(305, 25, 445, 225), wBGS);
+	imgBG->setImage(imageManager.tBackGround);	
+	imgBG->setScaleImage(true);
+	imgBG->setUseAlphaChannel(true);
+	btnBGOK1 = env->addButton(rect<s32>(30, 110, 150, 150), wBGS, BUTTON_BGS_OK1, dataManager.GetSysString(1460));
+	btnBGOK2 = env->addButton(rect<s32>(30, 170, 150, 210), wBGS, BUTTON_BGS_OK2, dataManager.GetSysString(1461));
+	btnBGOK3 = env->addButton(rect<s32>(30, 230, 150, 270), wBGS, BUTTON_BGS_OK3, dataManager.GetSysString(1462));
+	btnBGSExit = env->addButton(rect<s32>(30, 290, 150, 330), wBGS, BUTTON_BGS_EXIT, dataManager.GetSysString(1210));
+	RefreshBG();
 	//lan mode
 	wLanWindow = env->addWindow(rect<s32>(220, 100, 800, 520), false, dataManager.GetSysString(1200));
 	wLanWindow->getCloseButton()->setVisible(false);
@@ -1204,6 +1217,13 @@ void Game::RefreshCRS() {
 			cbCRS->addItem(name);
 	});
 }
+void Game::RefreshBGS() {
+	cbBGS->clear();
+	FileSystem::TraversalDir(L"./textures/bg", [this](const wchar_t* name, bool isdir) {
+		if(!isdir && wcsrchr(name, '.') && !mywcsncasecmp(wcsrchr(name, '.'), L".jpg", 4))
+			cbBGS->addItem(name);
+	});
+}
 void Game::RefreshBot() {
 	if(!gameConf.enable_bot_mode)
 		return;
@@ -1784,6 +1804,8 @@ void Game::ClearTextures() {
 	imgHead->setScaleImage(true);
 	imgCover->setImage(imageManager.tCover[0]);
 	imgCover->setScaleImage(true);
+	imgBG->setImage(imageManager.tBackGround);
+	imgBG->setScaleImage(true);
 	btnPSAU->setImage();
 	btnPSDU->setImage();
 	for(int i=0; i<=4; ++i) {
@@ -1874,6 +1896,7 @@ void Game::OnResize() {
 	wSystem->setRelativePosition(ResizeWin(212, 140, 812, 360));
 	wHDS->setRelativePosition(ResizeWin(362, 245, 662, 395));
 	wCRS->setRelativePosition(ResizeWin(279.5, 197.5, 744.5, 442.5));
+	wBGS->setRelativePosition(ResizeWin(157, 140, 867, 460));
 	wDeckEdit->setRelativePosition(Resize(309, 8, 605, 130));
 	cbDBLFList->setRelativePosition(Resize(80, 5, 220, 30));
 	cbDBDecks->setRelativePosition(Resize(80, 35, 220, 60));
@@ -1941,7 +1964,7 @@ void Game::OnResize() {
 	wFTSelect->setRelativePosition(ResizeWin(550, 240, 780, 340));
 	wMessage->setRelativePosition(ResizeWin(490, 200, 840, 340));
 	wACMessage->setRelativePosition(ResizeWin(490, 240, 840, 300));
-	wASMessage->setRelativePosition(ResizeWin(490, 240, 840, 300));
+	wASMessage->setRelativePosition(ResizeWin(337, 290, 687, 350));
 	wQuery->setRelativePosition(ResizeWin(490, 200, 840, 340));
 	wSurrender->setRelativePosition(ResizeWin(490, 200, 840, 340));
 	wOptions->setRelativePosition(ResizeWin(490, 200, 840, 340));

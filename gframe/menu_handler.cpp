@@ -130,6 +130,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				mainGame->cbLocale->setEnabled(true);
 				mainGame->btnHeadS->setEnabled(true);
 				mainGame->btnCoverS->setEnabled(true);
+				mainGame->btnBgS->setEnabled(true);
 				mainGame->btnSystemExit->setEnabled(true);
 				mainGame->HideElement(mainGame->wMainMenu);
 				mainGame->ShowElement(mainGame->wSystem);
@@ -172,6 +173,24 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 			}
 			case BUTTON_CRS_EXIT: {
 				mainGame->HideElement(mainGame->wCRS);
+				mainGame->ShowElement(mainGame->wSystem);
+				if(exit_on_return)
+					mainGame->device->closeDevice();
+				break;
+			}
+			case BUTTON_CRS: {
+				mainGame->cbBGS->setEnabled(true);
+				mainGame->btnBGOK1->setEnabled(true);
+				mainGame->btnBGOK2->setEnabled(true);
+				mainGame->btnBGOK3->setEnabled(true);
+				mainGame->btnBGSExit->setEnabled(true);
+				mainGame->cBGS->setSelected(0);
+				mainGame->HideElement(mainGame->wSystem);
+				mainGame->ShowElement(mainGame->wBGS);
+				break;
+			}
+			case BUTTON_CRS_EXIT: {
+				mainGame->HideElement(mainGame->wBGS);
 				mainGame->ShowElement(mainGame->wSystem);
 				if(exit_on_return)
 					mainGame->device->closeDevice();
