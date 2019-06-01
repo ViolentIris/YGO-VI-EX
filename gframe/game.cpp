@@ -500,6 +500,14 @@ bool Game::Initialize() {
 	stACMessage = env->addStaticText(L"", rect<s32>(0, 0, 350, 60), true, true, wACMessage, -1, true);
 	stACMessage->setBackgroundColor(0xc0c0c0ff);
 	stACMessage->setTextAlignment(irr::gui::EGUIA_CENTER, irr::gui::EGUIA_CENTER);
+	//auto center message (310)
+	wASMessage = env->addWindow(rect<s32>(337, 290, 687, 350), false, L"");
+	wASMessage->getCloseButton()->setVisible(false);
+	wASMessage->setVisible(false);
+	wASMessage->setDrawBackground(false);
+	stASMessage = env->addStaticText(L"", rect<s32>(0, 0, 350, 60), true, true, wASMessage, -1, true);
+	stASMessage->setBackgroundColor(0xc0c0c0ff);
+	stASMessage->setTextAlignment(irr::gui::EGUIA_CENTER, irr::gui::EGUIA_CENTER);
 	//yes/no (310)
 	wQuery = env->addWindow(rect<s32>(490, 200, 840, 340), false, dataManager.GetSysString(560));
 	wQuery->getCloseButton()->setVisible(false);
@@ -1933,6 +1941,7 @@ void Game::OnResize() {
 	wFTSelect->setRelativePosition(ResizeWin(550, 240, 780, 340));
 	wMessage->setRelativePosition(ResizeWin(490, 200, 840, 340));
 	wACMessage->setRelativePosition(ResizeWin(490, 240, 840, 300));
+	wASMessage->setRelativePosition(ResizeWin(490, 240, 840, 300));
 	wQuery->setRelativePosition(ResizeWin(490, 200, 840, 340));
 	wSurrender->setRelativePosition(ResizeWin(490, 200, 840, 340));
 	wOptions->setRelativePosition(ResizeWin(490, 200, 840, 340));

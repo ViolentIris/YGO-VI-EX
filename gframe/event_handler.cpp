@@ -1877,40 +1877,40 @@ bool ClientField::OnCommonEvent(const irr::SEvent& event) {
 				wchar_t self[2048];
 				myswprintf(self, L"./textures/head/%ls", mainGame->cbHDS->getItem(mainGame->cbHDS->getSelected()));
 				CopyFile(self, L"./textures/head.jpg", FALSE);
-				mainGame->stACMessage->setText(dataManager.GetSysString(1464));
-				mainGame->PopupElement(mainGame->wACMessage, 20);
+				mainGame->stASMessage->setText(dataManager.GetSysString(1464));
+				mainGame->PopupElement(mainGame->wASMessage, 20);
 				break;
 			}
 			case BUTTON_CRS_OK1: {
 				wchar_t self1[2048];
 				myswprintf(self1, L"./textures/cover/%ls", mainGame->cbCRS->getItem(mainGame->cbCRS->getSelected()));
 				CopyFile(self1, L"./textures/cover.jpg", FALSE);
-				mainGame->stACMessage->setText(dataManager.GetSysString(1464));
-				mainGame->PopupElement(mainGame->wACMessage, 20);
+				mainGame->stASMessage->setText(dataManager.GetSysString(1464));
+				mainGame->PopupElement(mainGame->wASMessage, 20);
 				break;
 			}
 			case BUTTON_CRS_OK2: {
 				wchar_t self2[2048];
 				myswprintf(self2, L"./textures/cover/%ls", mainGame->cbCRS->getItem(mainGame->cbCRS->getSelected()));
 				CopyFile(self2, L"./textures/cover3.jpg", FALSE);
-				mainGame->stACMessage->setText(dataManager.GetSysString(1464));
-				mainGame->PopupElement(mainGame->wACMessage, 20);
+				mainGame->stASMessage->setText(dataManager.GetSysString(1464));
+				mainGame->PopupElement(mainGame->wASMessage, 20);
 				break;
 			}
 			case BUTTON_CRS_OK3: {
 				wchar_t self3[2048];
 				myswprintf(self3, L"./textures/cover/%ls", mainGame->cbCRS->getItem(mainGame->cbCRS->getSelected()));
 				CopyFile(self3, L"./textures/cover2.jpg", FALSE);
-				mainGame->stACMessage->setText(dataManager.GetSysString(1464));
-				mainGame->PopupElement(mainGame->wACMessage, 20);
+				mainGame->stASMessage->setText(dataManager.GetSysString(1464));
+				mainGame->PopupElement(mainGame->wASMessage, 20);
 				break;
 			}
 			case BUTTON_CRS_OK4: {
 				wchar_t self4[2048];
 				myswprintf(self4, L"./textures/cover/%ls", mainGame->cbCRS->getItem(mainGame->cbCRS->getSelected()));
 				CopyFile(self4, L"./textures/cover4.jpg", FALSE);
-				mainGame->stACMessage->setText(dataManager.GetSysString(1464));
-				mainGame->PopupElement(mainGame->wACMessage, 20);
+				mainGame->stASMessage->setText(dataManager.GetSysString(1464));
+				mainGame->PopupElement(mainGame->wASMessage, 20);
 				break;
 			}
 			}
