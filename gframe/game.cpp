@@ -203,7 +203,7 @@ bool Game::Initialize() {
 	btnCRSExit = env->addButton(rect<s32>(30, 162.5, 150, 197.5), wCRS, BUTTON_CRS_EXIT, dataManager.GetSysString(1210));
 	RefreshCRS();
 	//Background Select
-	wBGS = env->addWindow(rect<s32>(157, 110, 867, 490), false, dataManager.GetSysString(1453));
+	wBGS = env->addWindow(rect<s32>(157, 110, 867, 490), false, dataManager.GetSysString(1459));
 	wBGS->getCloseButton()->setVisible(false);
 	wBGS->setVisible(false);
 	cbBGS = env->addComboBox(rect<s32>(25, 50, 160, 90), wBGS, COMBOBOX_BGS);
