@@ -216,7 +216,7 @@ bool Game::Initialize() {
 	btnBGOK2 = env->addButton(rect<s32>(30, 170, 150, 210), wBGS, BUTTON_BGS_OK2, dataManager.GetSysString(1461));
 	btnBGOK3 = env->addButton(rect<s32>(30, 230, 150, 270), wBGS, BUTTON_BGS_OK3, dataManager.GetSysString(1462));
 	btnBGSExit = env->addButton(rect<s32>(30, 290, 150, 330), wBGS, BUTTON_BGS_EXIT, dataManager.GetSysString(1210));
-	RefreshBG();
+	RefreshBGS();
 	//lan mode
 	wLanWindow = env->addWindow(rect<s32>(220, 100, 800, 520), false, dataManager.GetSysString(1200));
 	wLanWindow->getCloseButton()->setVisible(false);

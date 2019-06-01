@@ -178,18 +178,18 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 					mainGame->device->closeDevice();
 				break;
 			}
-			case BUTTON_CRS: {
+			case BUTTON_BGS: {
 				mainGame->cbBGS->setEnabled(true);
 				mainGame->btnBGOK1->setEnabled(true);
 				mainGame->btnBGOK2->setEnabled(true);
 				mainGame->btnBGOK3->setEnabled(true);
 				mainGame->btnBGSExit->setEnabled(true);
-				mainGame->cBGS->setSelected(0);
+				mainGame->cbBGS->setSelected(0);
 				mainGame->HideElement(mainGame->wSystem);
 				mainGame->ShowElement(mainGame->wBGS);
 				break;
 			}
-			case BUTTON_CRS_EXIT: {
+			case BUTTON_BGS_EXIT: {
 				mainGame->HideElement(mainGame->wBGS);
 				mainGame->ShowElement(mainGame->wSystem);
 				if(exit_on_return)
