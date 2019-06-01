@@ -187,20 +187,20 @@ bool Game::Initialize() {
 	RefreshHDS();
 	
 	//Cover Select
-	wCRS = env->addWindow(rect<s32>(242, 215, 782, 425), false, dataManager.GetSysString(1453));
+	wCRS = env->addWindow(rect<s32>(279.5, 197.5, 744.5, 442.5), false, dataManager.GetSysString(1453));
 	wCRS->getCloseButton()->setVisible(false);
 	wCRS->setVisible(false);
-	cbCRS = env->addComboBox(rect<s32>(390, 175, 510, 210), wCRS, COMBOBOX_CRS);
+	cbCRS = env->addComboBox(rect<s32>(165, 162.5, 285, 197.5), wCRS, COMBOBOX_CRS);
 	cbCRS->setMaxSelectionRows(10);
-	imgCover = env->addImage(rect<s32>(420, 30, 510, 160), wCRS);
+	imgCover = env->addImage(rect<s32>(305, 25, 445, 225), wCRS);
 	imgCover->setImage(imageManager.tCover[0]);	
 	imgCover->setScaleImage(true);
 	imgCover->setUseAlphaChannel(true);
-	btnCoverOK1 = env->addButton(rect<s32>(30, 30, 200, 70), wCRS, BUTTON_CRS_OK1, dataManager.GetSysString(1454));
-	btnCoverOK2 = env->addButton(rect<s32>(220, 30, 390, 70), wCRS, BUTTON_CRS_OK2, dataManager.GetSysString(1455));
-	btnCoverOK3 = env->addButton(rect<s32>(30, 90, 200, 130), wCRS, BUTTON_CRS_OK3, dataManager.GetSysString(1456));
-	btnCoverOK4 = env->addButton(rect<s32>(220, 90, 390, 130), wCRS, BUTTON_CRS_OK4, dataManager.GetSysString(1457));
-	btnCRSExit = env->addButton(rect<s32>(125, 150, 295, 190), wCRS, BUTTON_CRS_EXIT, dataManager.GetSysString(1210));
+	btnCoverOK1 = env->addButton(rect<s32>(30, 52.5, 150, 87.5), wCRS, BUTTON_CRS_OK1, dataManager.GetSysString(1454));
+	btnCoverOK2 = env->addButton(rect<s32>(165, 52.5, 285, 87.5), wCRS, BUTTON_CRS_OK2, dataManager.GetSysString(1455));
+	btnCoverOK3 = env->addButton(rect<s32>(30, 107.5, 150, 142.5), wCRS, BUTTON_CRS_OK3, dataManager.GetSysString(1456));
+	btnCoverOK4 = env->addButton(rect<s32>(165, 107.5, 285, 142.5), wCRS, BUTTON_CRS_OK4, dataManager.GetSysString(1457));
+	btnCRSExit = env->addButton(rect<s32>(30, 162.5, 150, 197.5), wCRS, BUTTON_CRS_EXIT, dataManager.GetSysString(1210));
 	RefreshCRS();
 	//Background Select
 
@@ -1865,7 +1865,7 @@ void Game::OnResize() {
 	wOther->setRelativePosition(ResizeWin(370, 105, 650, 530));
 	wSystem->setRelativePosition(ResizeWin(212, 140, 812, 360));
 	wHDS->setRelativePosition(ResizeWin(362, 245, 662, 395));
-	wCRS->setRelativePosition(ResizeWin(242, 215, 782, 425));
+	wCRS->setRelativePosition(ResizeWin(279.5, 197.5, 744.5, 442.5));
 	wDeckEdit->setRelativePosition(Resize(309, 8, 605, 130));
 	cbDBLFList->setRelativePosition(Resize(80, 5, 220, 30));
 	cbDBDecks->setRelativePosition(Resize(80, 35, 220, 60));
