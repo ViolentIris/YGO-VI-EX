@@ -203,7 +203,7 @@ bool Game::Initialize() {
 	btnCRSExit = env->addButton(rect<s32>(30, 162.5, 150, 197.5), wCRS, BUTTON_CRS_EXIT, dataManager.GetSysString(1210));
 	RefreshCRS();
 	//Background Select
-	wBGS = env->addWindow(rect<s32>(157, 100, 867, 490), false, dataManager.GetSysString(1453));
+	wBGS = env->addWindow(rect<s32>(157, 110, 867, 490), false, dataManager.GetSysString(1453));
 	wBGS->getCloseButton()->setVisible(false);
 	wBGS->setVisible(false);
 	cbBGS = env->addComboBox(rect<s32>(25, 50, 160, 90), wBGS, COMBOBOX_BGS);
@@ -1896,7 +1896,7 @@ void Game::OnResize() {
 	wSystem->setRelativePosition(ResizeWin(212, 140, 812, 360));
 	wHDS->setRelativePosition(ResizeWin(362, 245, 662, 395));
 	wCRS->setRelativePosition(ResizeWin(279.5, 197.5, 744.5, 442.5));
-	wBGS->setRelativePosition(ResizeWin(157, 100, 867, 490));
+	wBGS->setRelativePosition(ResizeWin(157, 110, 867, 490));
 	wDeckEdit->setRelativePosition(Resize(309, 8, 605, 130));
 	cbDBLFList->setRelativePosition(Resize(80, 5, 220, 30));
 	cbDBDecks->setRelativePosition(Resize(80, 35, 220, 60));
