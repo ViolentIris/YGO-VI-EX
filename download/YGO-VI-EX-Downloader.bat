@@ -78,7 +78,7 @@ goto 开始
  
 :2
 wget -t 0 -c https://github.com/ViolentIris/YGO-VI-EX-Updates/archive/master.zip
-ren "master.zip" "YGO-VI-EX简易版.zip"
+ren "master.zip" "YGO-VI-EX更新.zip"
 pause
 goto 开始
 
