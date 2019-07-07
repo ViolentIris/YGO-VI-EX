@@ -12,7 +12,7 @@
 #include <sstream>
 #include <regex>
 
-unsigned short PRO_VERSION = 0x134A;
+unsigned short PRO_VERSION = 0x134B;
 
 bool delay_swap = false;
 int swap_player = 0;
