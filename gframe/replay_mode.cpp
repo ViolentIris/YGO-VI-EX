@@ -776,7 +776,7 @@ bool ReplayMode::ReplayAnalyze(char* msg, unsigned int len) {
 			pbuf += 4;
 			return ReadReplayResponse();
 		}
-		case MSG_ANNOUNCE_NUMBER:
+		case MSG_ANNOUNCE_NUMBER: {
 			player = BufferIO::ReadInt8(pbuf);
 			count = BufferIO::ReadUInt8(pbuf);
 			pbuf += 4 * count;
