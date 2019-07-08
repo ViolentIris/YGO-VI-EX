@@ -1027,7 +1027,7 @@ int DuelClient::ClientAnalyze(char * msg, unsigned int len) {
 				break;
 			case MSG_SELECT_PLACE:
 			case MSG_SELECT_DISFIELD:
-				err_desc = 147`;
+				err_desc = 1471;
 				break;
 			case MSG_SELECT_POSITION:
 				err_desc = 1472;
