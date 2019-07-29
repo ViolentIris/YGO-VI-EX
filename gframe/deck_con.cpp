@@ -129,10 +129,10 @@ bool DeckBuilder::OnEvent(const irr::SEvent& event) {
 			soundManager.PlaySoundEffect(SOUND_BUTTON);
 			switch(id) {
 			case BUTTON_CLEAR_DECK: {
-				mainGame->gMutex.Lock();
+				mainGame->gMutex.lock();
 				mainGame->SetStaticText(mainGame->stQMessage, 310, mainGame->guiFont, dataManager.GetSysString(1339));
 				mainGame->PopupElement(mainGame->wQuery);
-				mainGame->gMutex.Unlock();
+				mainGame->gMutex.unlock();
 				prev_operation = id;
 				break;
 			}
@@ -237,10 +237,10 @@ bool DeckBuilder::OnEvent(const irr::SEvent& event) {
 			}
 			case BUTTON_LEAVE_GAME: {
 				if(is_modified && !mainGame->chkIgnoreDeckChanges->isChecked()) {
-					mainGame->gMutex.Lock();
+					mainGame->gMutex.lock();
 					mainGame->SetStaticText(mainGame->stQMessage, 310, mainGame->guiFont, dataManager.GetSysString(1356));
 					mainGame->PopupElement(mainGame->wQuery);
-					mainGame->gMutex.Unlock();
+					mainGame->gMutex.unlock();
 					prev_operation = id;
 					break;
 				}
@@ -410,10 +410,10 @@ bool DeckBuilder::OnEvent(const irr::SEvent& event) {
 			}
 			case COMBOBOX_DBDECKS: {
 				if(is_modified && !mainGame->chkIgnoreDeckChanges->isChecked()) {
-					mainGame->gMutex.Lock();
+					mainGame->gMutex.lock();
 					mainGame->SetStaticText(mainGame->stQMessage, 310, mainGame->guiFont, dataManager.GetSysString(1356));
 					mainGame->PopupElement(mainGame->wQuery);
-					mainGame->gMutex.Unlock();
+					mainGame->gMutex.unlock();
 					prev_operation = id;
 					break;
 				}
