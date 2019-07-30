@@ -73,7 +73,7 @@ bool DeckManager::RenameDeck(const wchar_t* oldname, const wchar_t* newname) {
 	return result == 0;
 #endif
 }
-wchar_t* DeckManager::GetLFListName(int lfhash) {
+const wchar_t* DeckManager::GetLFListName(int lfhash) {
 	for(size_t i = 0; i < _lfList.size(); ++i) {
 		if(_lfList[i].hash == (unsigned int)lfhash) {
 			return _lfList[i].listName;
@@ -86,7 +86,7 @@ int DeckManager::CheckDeck(Deck& deck, int lfhash, bool allow_ocg, bool allow_tc
 	std::unordered_map<int, int>* list = 0;
 	for(size_t i = 0; i < _lfList.size(); ++i) {
 		if(_lfList[i].hash == (unsigned int)lfhash) {
-			list = _lfList[i].content;
+			list = &_lfList[i].content;
 			break;
 		}
 	}
