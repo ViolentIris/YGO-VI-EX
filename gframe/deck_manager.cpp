@@ -76,7 +76,7 @@ bool DeckManager::RenameDeck(const wchar_t* oldname, const wchar_t* newname) {
 const wchar_t* DeckManager::GetLFListName(int lfhash) {
 	for(size_t i = 0; i < _lfList.size(); ++i) {
 		if(_lfList[i].hash == (unsigned int)lfhash) {
-			return _lfList[i].listName;
+			return _lfList[i].listName.c_str();
 		}
 	}
 	return (wchar_t*)dataManager.unknown_string;
