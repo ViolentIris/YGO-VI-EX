@@ -57,6 +57,14 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				mainGame->btnTakeout1->setEnabled(true);
 				mainGame->btnTakeout2->setEnabled(true);
 				mainGame->btnLantern->setEnabled(true);
+				mainGame->btnVI->setEnabled(true);
+				mainGame->btnFOX->setEnabled(true);
+				mainGame->btnWBO->setEnabled(true);
+				mainGame->btnDC->setEnabled(true);
+				mainGame->btnDLD->setEnabled(true);
+				mainGame->btnTG->setEnabled(true);
+				mainGame->btnYST->setEnabled(true);
+				mainGame->btnMJ->setEnabled(true);
 				mainGame->btnOtherExit->setEnabled(true);
 				mainGame->HideElement(mainGame->wMainMenu);
 				mainGame->ShowElement(mainGame->wOther);
@@ -109,6 +117,16 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 			}
 			case BUTTON_DLD: {
                 system("start .\\download\\YGO-VI-EX-Downloader.bat");
+				return true;
+				break;
+			}
+			case BUTTON_YST: {
+                system("start https://yugioh-list.com/");
+				return true;
+				break;
+			}
+			case BUTTON_MJ: {
+                system("start https://majsoul.union-game.com/0/");
 				return true;
 				break;
 			}

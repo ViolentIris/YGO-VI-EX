@@ -352,6 +352,8 @@ public:
 	irr::gui::IGUIButton* btnDC;
 	irr::gui::IGUIButton* btnDLD;
 	irr::gui::IGUIButton* btnTG;
+	irr::gui::IGUIButton* btnYST;
+	irr::gui::IGUIButton* btnMJ;
 	//system setting
 	irr::gui::IGUIWindow* wSystem;
 	irr::gui::IGUICheckBox* chkMRandom;
@@ -838,6 +840,12 @@ extern Game* mainGame;
 #define BUTTON_VI						403
 #define BUTTON_FOX						404
 #define BUTTON_WBO						405
+#define BUTTON_TG						429
+#define BUTTON_DC						430
+#define BUTTON_DLD						431
+#define BUTTON_YST						432
+#define BUTTON_MJ						433
+#define BUTTON_OTHER_EXIT				434
 
 #define BUTTON_SERVER_CHOOSE			394
 #define BUTTON_233						395
