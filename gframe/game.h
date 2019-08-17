@@ -696,10 +696,6 @@ extern Game* mainGame;
 #define BUTTON_RENAME_REPLAY		134
 #define BUTTON_EXPORT_DECK			135
 
-#define BUTTON_DC		136
-#define BUTTON_DLD		137
-#define BUTTON_TG		138
-
 #define EDITBOX_CHAT				140
 #define BUTTON_MSG_OK				200
 #define BUTTON_YES					201
@@ -845,7 +841,6 @@ extern Game* mainGame;
 #define BUTTON_DLD						431
 #define BUTTON_YST						432
 #define BUTTON_MJ						433
-#define BUTTON_OTHER_EXIT				434
 
 #define BUTTON_SERVER_CHOOSE			394
 #define BUTTON_233						395
