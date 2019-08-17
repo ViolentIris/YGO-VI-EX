@@ -28,6 +28,7 @@ struct Config {
 	wchar_t roompass[20];
 	wchar_t locale[64];
 	wchar_t TBname[256];
+	wchar_t MJname[256];
 	//settings
 	int chkMAutoPos;
 	int chkSTAutoPos;
@@ -368,6 +369,12 @@ public:
 	irr::gui::IGUIButton* btnCoverS;
 	irr::gui::IGUIButton* btnBgS;
 	irr::gui::IGUIButton* btnSystemExit;
+	//majiong
+	irr::gui::IGUIWindow* wMJWindow;
+	irr::gui::IGUIButton* btnMJB;
+	irr::gui::IGUIButton* btnMJAgree;
+	irr::gui::IGUIButton* btnMJCancel;
+	irr::gui::IGUIEditBox* ebMJName;
 	//head select
 	irr::gui::IGUIWindow* wHDS;
 	irr::gui::IGUIComboBox* cbHDS;
@@ -841,6 +848,10 @@ extern Game* mainGame;
 #define BUTTON_DLD						431
 #define BUTTON_YST						432
 #define BUTTON_MJ						433
+
+#define BUTTON_MJB				434
+#define BUTTON_MJ_AGREE			435
+#define BUTTON_MJ_CANCEL		436
 
 #define BUTTON_SERVER_CHOOSE			394
 #define BUTTON_233						395

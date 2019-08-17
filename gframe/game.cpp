@@ -129,7 +129,6 @@ bool Game::Initialize() {
 	btnModeExit = env->addButton(rect<s32>(10, 240, 270, 270), wMainMenu, BUTTON_MODE_EXIT, dataManager.GetSysString(1210));
 	btnOther = env->addButton(rect<s32>(10, 170, 270, 200), wMainMenu, BUTTON_OTHER, dataManager.GetSysString(1422));
 	btnSYS = env->addButton(rect<s32>(10, 205, 270, 235), wMainMenu, BUTTON_SYS, dataManager.GetSysString(1207));
-
 	//other
 	wOther = env->addWindow(rect<s32>(370, 70, 650, 565), false, dataManager.GetSysString(1422));
 	wOther->getCloseButton()->setVisible(false);
@@ -147,7 +146,17 @@ bool Game::Initialize() {
 	btnYST = env->addButton(rect<s32>(10, 380, 270, 410), wOther, BUTTON_YST, dataManager.GetSysString(1512));
 	btnMJ = env->addButton(rect<s32>(10, 415, 270, 445), wOther, BUTTON_MJ, dataManager.GetSysString(1513));
 	btnOtherExit = env->addButton(rect<s32>(10, 450, 270, 480), wOther, BUTTON_OTHER_EXIT, dataManager.GetSysString(1210));
-	
+	btnTB = env->addButton(rect<s32>(135, 45, 245, 95), tabSystem, BUTTON_TB, dataManager.GetSysString(1283));
+	//majiong
+	wMJWindow = env->addWindow(rect<s32>(510, 200, 820, 320), false, dataManager.GetSysString(1514));
+	wMJWindow->getCloseButton()->setVisible(false);
+	wMJWindow->setVisible(false);
+	env->addStaticText(dataManager.GetSysString(1515), rect<s32>(20, 27, 130, 47), false, false, wMJWindow);
+	ebMJName = env->addEditBox(gameConf.MJname, rect<s32>(20, 50, 290, 70), true, wMJWindow);
+	ebMJName->setTextAlignment(irr::gui::EGUIA_UPPERLEFT, irr::gui::EGUIA_CENTER);
+	btnMJAgree = env->addButton(rect<s32>(20, 80, 100, 105), wMJWindow, BUTTON_MJ_AGREE, dataManager.GetSysString(1286));
+	btnMJCancel = env->addButton(rect<s32>(115, 80, 195, 105), wMJWindow, BUTTON_MJ_CANCEL, dataManager.GetSysString(1287));
+	btnMJB = env->addButton(rect<s32>(210, 80, 290, 105), wMJWindow, BUTTON_MJB, dataManager.GetSysString(1516));
 	//system setting
 	wSystem = env->addWindow(rect<s32>(212, 140, 812, 360), false, dataManager.GetSysString(1207));
 	wSystem->getCloseButton()->setVisible(false);
@@ -1282,6 +1291,7 @@ void Game::LoadConfig() {
 	gameConf.lastport[0] = 0;
 	gameConf.roompass[0] = 0;
 	gameConf.TBname[0] = 0;
+	gameConf.MJname[0] = 0;
 	//settings
 	gameConf.chkMAutoPos = 0;
 	gameConf.chkSTAutoPos = 1;

@@ -125,14 +125,40 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				return true;
 				break;
 			}
+			case BUTTON_OTHER_EXIT: {
+				mainGame->HideElement(mainGame->wOther);
+				mainGame->ShowElement(mainGame->wMainMenu);
+				if(exit_on_return)
+					mainGame->device->closeDevice();
+				break;
+			}
 			case BUTTON_MJ: {
+				mainGame->btnMJAgree->setEnabled(true);
+				mainGame->btnMJCancel->setEnabled(true);
+				mainGame->btnMJB->setEnabled(true);
+				mainGame->ShowElement(mainGame->wMJWindow);
+				break;
+			}
+			case BUTTON_MJ_AGREE: {
+				char buf[256];
+				const wchar_t* pstr = mainGame->ebMJName->getText();
+				BufferIO::CopyWStr(pstr, mainGame->gameConf.MJname, 256);
+				int nLength = WideCharToMultiByte(CP_ACP, 0, pstr, -1, NULL, 0, NULL,NULL);
+				WideCharToMultiByte(CP_ACP, 0, pstr, -1, buf, nLength, NULL, NULL);
+				char buffer[300];
+				sprintf(buffer, "start \"\" \"https://majsoul.union-game.com/0/?room=%s\"", buf);
+				system(buffer);
+				mainGame->HideElement(mainGame->wMJWindow);
+				break;
+			}
+			case BUTTON_MJB: {
                 system("start https://majsoul.union-game.com/0/");
 				return true;
 				break;
 			}
-			case BUTTON_OTHER_EXIT: {
-				mainGame->HideElement(mainGame->wOther);
-				mainGame->ShowElement(mainGame->wMainMenu);
+			case BUTTON_MJ_CANCEL: {
+				mainGame->HideElement(mainGame->wMJWindow);
+				mainGame->ShowElement(mainGame->wOther);
 				if(exit_on_return)
 					mainGame->device->closeDevice();
 				break;
