@@ -146,9 +146,8 @@ bool Game::Initialize() {
 	btnYST = env->addButton(rect<s32>(10, 380, 270, 410), wOther, BUTTON_YST, dataManager.GetSysString(1512));
 	btnMJ = env->addButton(rect<s32>(10, 415, 270, 445), wOther, BUTTON_MJ, dataManager.GetSysString(1513));
 	btnOtherExit = env->addButton(rect<s32>(10, 450, 270, 480), wOther, BUTTON_OTHER_EXIT, dataManager.GetSysString(1210));
-	btnTB = env->addButton(rect<s32>(135, 45, 245, 95), tabSystem, BUTTON_TB, dataManager.GetSysString(1283));
 	//majiong
-	wMJWindow = env->addWindow(rect<s32>(510, 200, 820, 320), false, dataManager.GetSysString(1514));
+	wMJWindow = env->addWindow(rect<s32>(357, 260, 667, 380), false, dataManager.GetSysString(1514));
 	wMJWindow->getCloseButton()->setVisible(false);
 	wMJWindow->setVisible(false);
 	env->addStaticText(dataManager.GetSysString(1515), rect<s32>(20, 27, 130, 47), false, false, wMJWindow);
@@ -183,7 +182,6 @@ bool Game::Initialize() {
 	btnSystemExit = env->addButton(rect<s32>(200, 185, 400, 210), wSystem, BUTTON_SYS_EXIT, dataManager.GetSysString(1210));
 	RefreshFont();
 	RefreshLocales();
-	
 	//Head Select
 	wHDS = env->addWindow(rect<s32>(362, 245, 662, 395), false, dataManager.GetSysString(1451));
 	wHDS->getCloseButton()->setVisible(false);

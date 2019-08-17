@@ -158,7 +158,6 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 			}
 			case BUTTON_MJ_CANCEL: {
 				mainGame->HideElement(mainGame->wMJWindow);
-				mainGame->ShowElement(mainGame->wOther);
 				if(exit_on_return)
 					mainGame->device->closeDevice();
 				break;
