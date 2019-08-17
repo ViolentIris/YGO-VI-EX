@@ -1886,7 +1886,7 @@ void Game::OnResize() {
 	//env->getSkin()->setFont(guiFont);
 
 	wMainMenu->setRelativePosition(ResizeWin(370, 200, 650, 485));
-	wOther->setRelativePosition(ResizeWin(370, 105, 650, 530));
+	wOther->setRelativePosition(ResizeWin(370, 70, 650, 565));
 	wSystem->setRelativePosition(ResizeWin(212, 140, 812, 360));
 	wHDS->setRelativePosition(ResizeWin(362, 245, 662, 395));
 	wCRS->setRelativePosition(ResizeWin(279.5, 197.5, 744.5, 442.5));
