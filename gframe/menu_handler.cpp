@@ -372,11 +372,14 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_RM1: {
-				wchar_t* pstr = mainGame->ebJoinPass->getText();
-				wcscat_s(pstr, L"M");
-				wchar_t buf[1024];
-				myswprintf(buf, L"%s", pstr);
-				mainGame->ebJoinPass->setText(buf);
+				char buf[256];
+				const wchar_t* pstr = mainGame->ebJoinPass->getText();
+				int nLength = WideCharToMultiByte(CP_ACP, 0, pstr, -1, NULL, 0, NULL,NULL);
+				WideCharToMultiByte(CP_ACP, 0, pstr, -1, buf, nLength, NULL, NULL);
+				strcat(buf, L"M");
+				wchar_t buff[1024];
+				myswprintf(buff, L"%s", buf);
+				mainGame->ebJoinPass->setText(buff);
 				break;
 			}
 			case BUTTON_RM_EXIT: {
