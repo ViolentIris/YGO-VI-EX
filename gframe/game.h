@@ -430,7 +430,7 @@ public:
 	irr::gui::IGUIButton* btnRM5;
 	irr::gui::IGUIButton* btnRM6;
 	irr::gui::IGUIButton* btnRM7;
-	irr::gui::IGUIWindow* btnRM8;
+	irr::gui::IGUIButton* btnRM8;
 	irr::gui::IGUIButton* btnRM9;
 	irr::gui::IGUIButton* btnRM10;
 	irr::gui::IGUIButton* btnRM11;
