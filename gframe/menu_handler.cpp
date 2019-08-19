@@ -347,6 +347,44 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				mainGame->device->closeDevice();
 				break;
 			}
+			case BUTTON_ROOM_CODE: {
+				mainGame->btnRM1->setEnabled(true);
+				mainGame->btnRM2->setEnabled(true);
+				mainGame->btnRM3->setEnabled(true);
+				mainGame->btnRM4->setEnabled(true);
+				mainGame->btnRM5->setEnabled(true);
+				mainGame->btnRM6->setEnabled(true);
+				mainGame->btnRM7->setEnabled(true);
+				mainGame->btnRM8->setEnabled(true);
+				mainGame->btnRM9->setEnabled(true);
+				mainGame->btnRM10->setEnabled(true);
+				mainGame->btnRM11->setEnabled(true);
+				mainGame->btnRM12->setEnabled(true);
+				mainGame->btnRM13->setEnabled(true);
+				mainGame->btnRM14->setEnabled(true);
+				mainGame->btnRMCM->setEnabled(true);
+				mainGame->btnRMWN->setEnabled(true);
+				mainGame->btnRMAI->setEnabled(true);
+				mainGame->btnRMA->setEnabled(true);
+				mainGame->btnRMExit->setEnabled(true);
+				mainGame->ShowElement(mainGame->wRM);
+				mainGame->PopupElement(mainGame->wRM);
+				break;
+			}
+			case BUTTON_RM1: {
+				const wchar_t* pstr = mainGame->ebJoinPass->getText();
+				wcscat(pstr, L"M");
+				wchar_t buf[1024];
+				myswprintf(buf, L"%s", pstr);
+				mainGame->ebJoinPass->setText(buf);
+				break;
+			}
+			case BUTTON_RM_EXIT: {
+				mainGame->HideElement(mainGame->wRM);
+					if(exit_on_return)
+				mainGame->device->closeDevice();
+				break;
+			}
 			case BUTTON_JOIN_HOST: {
 				bot_mode = false;
 				char ip[20];
