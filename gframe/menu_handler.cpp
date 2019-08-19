@@ -376,7 +376,8 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				const wchar_t* pstr = mainGame->ebJoinPass->getText();
 				int nLength = WideCharToMultiByte(CP_ACP, 0, pstr, -1, NULL, 0, NULL,NULL);
 				WideCharToMultiByte(CP_ACP, 0, pstr, -1, buf, nLength, NULL, NULL);
-				strcat(buf, L"M");
+				char a[10]="M"
+				strcat(buf, a);
 				wchar_t buff[1024];
 				myswprintf(buff, L"%s", buf);
 				mainGame->ebJoinPass->setText(buff);
