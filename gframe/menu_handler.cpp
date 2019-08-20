@@ -372,7 +372,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_RM1: {
-				const wchar_t* pstr = mainGame->ebJoinPass->getText();
+				wchar_t pstr = mainGame->ebJoinPass->getText();
 				char a[10]="M";
 				strcat(pstr, a);
 				wchar_t buff[1024];
