@@ -374,8 +374,9 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 			case BUTTON_RM1: {
 				const wchar_t* pstr = mainGame->ebJoinPass->getText();
 				char buf[1024];
-				BufferIO::CopyWStr(pstr, buf, 256);
-				char a[10]="M";
+				int nLength = WideCharToMultiByte(CP_ACP, 0, pstr, -1, NULL, 0, NULL,NULL);
+				WideCharToMultiByte(CP_ACP, 0, pstr, -1, buf, nLength, NULL, NULL);
+				char a[10]="\u4d";
 				strcat(buf, a);
 				wchar_t buff[1024];
 				myswprintf(buff, L"%s", buf);
