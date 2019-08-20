@@ -373,10 +373,12 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 			}
 			case BUTTON_RM1: {
 				const wchar_t* pstr = mainGame->ebJoinPass->getText();
+				char buf[1024];
+				BufferIO::CopyWStr(pstr, buf, 256);
 				char a[10]="M";
-				wcscat(pstr, a);
+				strcat(buf, a);
 				wchar_t buff[1024];
-				myswprintf(buff, L"%s", pstr);
+				myswprintf(buff, L"%s", buf);
 				mainGame->ebJoinPass->setText(buff);
 				break;
 			}
