@@ -376,10 +376,10 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				char buf[1024];
 				int nLength = WideCharToMultiByte(CP_ACP, 0, pstr, -1, NULL, 0, NULL,NULL);
 				WideCharToMultiByte(CP_ACP, 0, pstr, -1, buf, nLength, NULL, NULL);
-				char* a = "\\0M";
+				char* a = "M";
 				strcat(buf, a);
-				wchar_t buff[1024];
-				myswprintf(buff, L"%s", buf);
+				char buff[1024];
+				sprintf(buff, "%s", buf);
 				mainGame->ebJoinPass->setText(buff);
 				break;
 			}
