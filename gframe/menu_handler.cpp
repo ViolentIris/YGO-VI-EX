@@ -378,7 +378,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				WideCharToMultiByte(CP_ACP, 0, pstr, -1, buf, nLength, NULL, NULL);
 				char* a = "M";
 				strcat(buf, a);
-				char buff[1024];
+				wchar_t buff[1024];
 				sprintf(buff, "%s", buf);
 				mainGame->ebJoinPass->setText(buff);
 				break;
