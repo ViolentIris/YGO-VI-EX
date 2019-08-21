@@ -375,7 +375,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				const wchar_t* pstr = mainGame->ebJoinPass->getText();
 				char buf[1024];
 				BufferIO::CopyWStr(pstr, buf, 16);
-				char* a = "\\u004d";
+				char* a = "\0M";
 				strcat(buf, a);
 				wchar_t buff[1024];
 				myswprintf(buff, L"%s", buf);
