@@ -378,6 +378,123 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				mainGame->ebJoinPass->setText(buff);
 				break;
 			}
+			case BUTTON_RM2: {
+				const wchar_t* pstr = mainGame->ebJoinPass->getText();
+				wchar_t buff[1024];
+				swprintf(buff, L"%sT", pstr);
+				mainGame->ebJoinPass->setText(buff);
+				break;
+			}
+			case BUTTON_RM3: {
+				const wchar_t* pstr = mainGame->ebJoinPass->getText();
+				wchar_t buff[1024];
+				swprintf(buff, L"%sOT", pstr);
+				mainGame->ebJoinPass->setText(buff);
+				break;
+			}
+			case BUTTON_RM4: {
+				const wchar_t* pstr = mainGame->ebJoinPass->getText();
+				wchar_t buff[1024];
+				swprintf(buff, L"%sTO", pstr);
+				mainGame->ebJoinPass->setText(buff);
+				break;
+			}
+			case BUTTON_RM5: {
+				const wchar_t* pstr = mainGame->ebJoinPass->getText();
+				wchar_t buff[1024];
+				swprintf(buff, L"%sLP4000", pstr);
+				mainGame->ebJoinPass->setText(buff);
+				break;
+			}
+			case BUTTON_RM6: {
+				const wchar_t* pstr = mainGame->ebJoinPass->getText();
+				wchar_t buff[1024];
+				swprintf(buff, L"%sTM", pstr);
+				mainGame->ebJoinPass->setText(buff);
+				break;
+			}
+			case BUTTON_RM7: {
+				const wchar_t* pstr = mainGame->ebJoinPass->getText();
+				wchar_t buff[1024];
+				swprintf(buff, L"%sST", pstr);
+				mainGame->ebJoinPass->setText(buff);
+				break;
+			}
+			case BUTTON_RM8: {
+				const wchar_t* pstr = mainGame->ebJoinPass->getText();
+				wchar_t buff[1024];
+				swprintf(buff, L"%sDR", pstr);
+				mainGame->ebJoinPass->setText(buff);
+				break;
+			}
+			case BUTTON_RM9: {
+				const wchar_t* pstr = mainGame->ebJoinPass->getText();
+				wchar_t buff[1024];
+				swprintf(buff, L"%sLF", pstr);
+				mainGame->ebJoinPass->setText(buff);
+				break;
+			}
+			case BUTTON_RM10: {
+				const wchar_t* pstr = mainGame->ebJoinPass->getText();
+				wchar_t buff[1024];
+				swprintf(buff, L"%sNF", pstr);
+				mainGame->ebJoinPass->setText(buff);
+				break;
+			}
+			case BUTTON_RM11: {
+				const wchar_t* pstr = mainGame->ebJoinPass->getText();
+				wchar_t buff[1024];
+				swprintf(buff, L"%sNU", pstr);
+				mainGame->ebJoinPass->setText(buff);
+				break;
+			}
+			case BUTTON_RM12: {
+				const wchar_t* pstr = mainGame->ebJoinPass->getText();
+				wchar_t buff[1024];
+				swprintf(buff, L"%sNC", pstr);
+				mainGame->ebJoinPass->setText(buff);
+				break;
+			}
+			case BUTTON_RM13: {
+				const wchar_t* pstr = mainGame->ebJoinPass->getText();
+				wchar_t buff[1024];
+				swprintf(buff, L"%sNS", pstr);
+				mainGame->ebJoinPass->setText(buff);
+				break;
+			}
+			case BUTTON_RM14: {
+				const wchar_t* pstr = mainGame->ebJoinPass->getText();
+				wchar_t buff[1024];
+				swprintf(buff, L"%sPR", pstr);
+				mainGame->ebJoinPass->setText(buff);
+				break;
+			}
+			case BUTTON_RMCM: {
+				const wchar_t* pstr = mainGame->ebJoinPass->getText();
+				wchar_t buff[1024];
+				swprintf(buff, L"%s,", pstr);
+				mainGame->ebJoinPass->setText(buff);
+				break;
+			}
+			case BUTTON_RMWN: {
+				const wchar_t* pstr = mainGame->ebJoinPass->getText();
+				wchar_t buff[1024];
+				swprintf(buff, L"%s#", pstr);
+				mainGame->ebJoinPass->setText(buff);
+				break;
+			}
+			case BUTTON_RMAI: {
+				const wchar_t* pstr = mainGame->ebJoinPass->getText();
+				wchar_t buff[1024];
+				swprintf(buff, L"%sAI", pstr);
+				mainGame->ebJoinPass->setText(buff);
+				break;
+			}
+			case BUTTON_RMA: {
+                system("start https://ygo233.com/usage");
+				return true;
+				break;
+			}
 			case BUTTON_RM_EXIT: {
 				mainGame->HideElement(mainGame->wRM);
 					if(exit_on_return)
