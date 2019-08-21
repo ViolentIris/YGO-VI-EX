@@ -377,7 +377,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				wcscpy(a, L"M");
 				wcscat(a, pstr);
 				wchar_t buff[1024];
-				myswprintf(buff, L"%s", pstr);
+				myswprintf(buff, L"%s", a);
 				mainGame->ebJoinPass->setText(buff);
 				break;
 			}
