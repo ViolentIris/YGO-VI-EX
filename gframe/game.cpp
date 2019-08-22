@@ -235,10 +235,10 @@ bool Game::Initialize() {
 	ebNickName->setTextAlignment(irr::gui::EGUIA_UPPERLEFT, irr::gui::EGUIA_CENTER);
 	lstHostList = env->addListBox(rect<s32>(10, 60, 570, 320), wLanWindow, LISTBOX_LAN_HOST, true);
 	lstHostList->setItemHeight(18);
-	btnLanRefresh = env->addButton(rect<s32>(75, 325, 175, 350), wLanWindow, BUTTON_LAN_REFRESH, dataManager.GetSysString(1217));
+	btnLanRefresh = env->addButton(rect<s32>(100, 325, 200, 350), wLanWindow, BUTTON_LAN_REFRESH, dataManager.GetSysString(1217));
 	env->addStaticText(dataManager.GetSysString(1221), rect<s32>(10, 360, 220, 380), false, false, wLanWindow);
-	btnSC = env->addButton(rect<s32>(215, 325, 315, 350), wLanWindow, BUTTON_SERVER_CHOOSE, dataManager.GetSysString(1427));
-	btnRM = env->addButton(rect<s32>(355, 325, 455, 350), wLanWindow, BUTTON_ROOM_CODE, dataManager.GetSysString(1517));
+	btnSC = env->addButton(rect<s32>(240, 325, 340, 350), wLanWindow, BUTTON_SERVER_CHOOSE, dataManager.GetSysString(1427));
+	btnRM = env->addButton(rect<s32>(380, 325, 480, 350), wLanWindow, BUTTON_ROOM_CODE, dataManager.GetSysString(1517));
 	ebJoinHost = env->addEditBox(gameConf.lasthost, rect<s32>(110, 355, 350, 380), true, wLanWindow);
 	ebJoinHost->setTextAlignment(irr::gui::EGUIA_CENTER, irr::gui::EGUIA_CENTER);
 	ebJoinPort = env->addEditBox(gameConf.lastport, rect<s32>(360, 355, 420, 380), true, wLanWindow);
@@ -262,7 +262,7 @@ bool Game::Initialize() {
 	btnNK = env->addButton(rect<s32>(10, 240, 270, 270), wSC, BUTTON_NK, dataManager.GetSysString(1435));
 	btnSCExit = env->addButton(rect<s32>(10, 275, 270, 305), wSC, BUTTON_SC_EXIT, dataManager.GetSysString(1436));
 	//room code
-	wRM = env->addWindow(rect<s32>(232, 170, 792, 470), false, dataManager.GetSysString(1517));
+	wRM = env->addWindow(rect<s32>(232, 135, 792, 420), false, dataManager.GetSysString(1517));
 	wRM->getCloseButton()->setVisible(false);
 	wRM->setVisible(false);
 	btnRM1 = env->addButton(rect<s32>(10, 30, 210, 60), wRM, BUTTON_RM1, dataManager.GetSysString(1518));
@@ -279,11 +279,11 @@ bool Game::Initialize() {
 	btnRM12 = env->addButton(rect<s32>(220, 205, 420, 235), wRM, BUTTON_RM12, dataManager.GetSysString(1529));
 	btnRM13 = env->addButton(rect<s32>(10, 240, 210, 270), wRM, BUTTON_RM13, dataManager.GetSysString(1530));
 	btnRM14 = env->addButton(rect<s32>(220, 240, 420, 270), wRM, BUTTON_RM14, dataManager.GetSysString(1531));
-	btnRMCM = env->addButton(rect<s32>(425, 30, 485, 90), wRM, BUTTON_RMCM, dataManager.GetSysString(1532));
-	btnRMWN = env->addButton(rect<s32>(495, 30, 555, 90), wRM, BUTTON_RMWN, dataManager.GetSysString(1533));
-	btnRMAI = env->addButton(rect<s32>(440, 155, 550, 185), wRM, BUTTON_RMAI, dataManager.GetSysString(1534));
-	btnRMA = env->addButton(rect<s32>(440, 195, 540, 225), wRM, BUTTON_RMA, dataManager.GetSysString(1535));
-	btnRMExit = env->addButton(rect<s32>(440, 235, 540, 265), wRM, BUTTON_RM_EXIT, dataManager.GetSysString(1436));
+	btnRMCM = env->addButton(rect<s32>(425, 55, 485, 115), wRM, BUTTON_RMCM, dataManager.GetSysString(1532));
+	btnRMWN = env->addButton(rect<s32>(495, 55, 555, 115), wRM, BUTTON_RMWN, dataManager.GetSysString(1533));
+	btnRMAI = env->addButton(rect<s32>(440, 125, 540, 155), wRM, BUTTON_RMAI, dataManager.GetSysString(1534));
+	btnRMA = env->addButton(rect<s32>(440, 165, 540, 195), wRM, BUTTON_RMA, dataManager.GetSysString(1535));
+	btnRMExit = env->addButton(rect<s32>(440, 205, 540, 235), wRM, BUTTON_RM_EXIT, dataManager.GetSysString(1436));
 	//create host
 	wCreateHost = env->addWindow(rect<s32>(320, 100, 700, 520), false, dataManager.GetSysString(1224));
 	wCreateHost->getCloseButton()->setVisible(false);
