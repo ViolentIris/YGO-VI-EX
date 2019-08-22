@@ -409,28 +409,28 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 			case BUTTON_RM6: {
 				const wchar_t* pstr = mainGame->ebJoinPass->getText();
 				wchar_t buff[1024];
-				swprintf(buff, L"%sTM", pstr);
+				swprintf(buff, L"%sTM5", pstr);
 				mainGame->ebJoinPass->setText(buff);
 				break;
 			}
 			case BUTTON_RM7: {
 				const wchar_t* pstr = mainGame->ebJoinPass->getText();
 				wchar_t buff[1024];
-				swprintf(buff, L"%sST", pstr);
+				swprintf(buff, L"%sST8", pstr);
 				mainGame->ebJoinPass->setText(buff);
 				break;
 			}
 			case BUTTON_RM8: {
 				const wchar_t* pstr = mainGame->ebJoinPass->getText();
 				wchar_t buff[1024];
-				swprintf(buff, L"%sDR", pstr);
+				swprintf(buff, L"%sDR2", pstr);
 				mainGame->ebJoinPass->setText(buff);
 				break;
 			}
 			case BUTTON_RM9: {
 				const wchar_t* pstr = mainGame->ebJoinPass->getText();
 				wchar_t buff[1024];
-				swprintf(buff, L"%sLF", pstr);
+				swprintf(buff, L"%sLF2", pstr);
 				mainGame->ebJoinPass->setText(buff);
 				break;
 			}
