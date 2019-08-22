@@ -1981,7 +1981,7 @@ void Game::OnResize() {
 
 	wLanWindow->setRelativePosition(ResizeWin(220, 100, 800, 520));
 	wSC->setRelativePosition(ResizeWin(380, 103, 660, 420));
-	wRM->setRelativePosition(ResizeWin(232, 170, 792, 470));
+	wRM->setRelativePosition(ResizeWin(232, 135, 792, 420));
 	wCreateHost->setRelativePosition(ResizeWin(320, 100, 700, 520));
 	wHostPrepare->setRelativePosition(ResizeWin(270, 120, 750, 440));
 	wReplay->setRelativePosition(ResizeWin(220, 100, 800, 520));
