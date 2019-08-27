@@ -15,6 +15,7 @@
 #include <windows.h>
 #include <stdio.h>
 #include <TCHAR.H>
+#include <AFXWIN.H>
 
 namespace ygo {
 
@@ -1814,7 +1815,7 @@ bool ClientField::OnCommonEvent(const irr::SEvent& event) {
 	case irr::EET_GUI_EVENT: {
 		ShowCursor(TRUE);
 		HCURSOR hCursor1 = AfxGetApp()->LoadCursorFromFile(L"E:\\Me\\YGO-VI-EX\\textures\\point\\Arrow.ani");
-		HCURSOR hCursor2 = AfxGetApp()->LoadCursorFromFile(L"E:\\Me\\YGO-VI-EX\\textures\\point\\IBeam.ani");
+		HCURSOR hCursor2 = LoadCursorFromFile(L"E:\\Me\\YGO-VI-EX\\textures\\point\\IBeam.ani");
 		SetCursor(hCursor1);
 		s32 id = event.GUIEvent.Caller->getID();
 		switch(event.GUIEvent.EventType) {
