@@ -11,9 +11,6 @@
 #include "single_mode.h"
 #include <sstream>
 #include <regex>
-#include <windows.h>
-#include <stdio.h>
-#include <TCHAR.H>
 
 unsigned short PRO_VERSION = 0x134B;
 
@@ -120,9 +117,6 @@ bool Game::Initialize() {
 		hWnd = reinterpret_cast<HWND>(exposedData.OpenGLWin32.HWnd);
 #endif
 	SetWindowsIcon();
-	ShowCursor(TRUE);
-	HCURSOR hCursor1 = LoadCursorFromFile(L"E:\\Me\\YGO-VI-EX\\textures\\point\\Arrow.ani");
-	HCURSOR SetCursor(hCursor1);
 	//main menu
 	wchar_t strbuf[256];
 	myswprintf(strbuf, L"YGO-VI-EX Version:%X.0%X.%X", PRO_VERSION >> 12, (PRO_VERSION >> 4) & 0xff, PRO_VERSION & 0xf);
