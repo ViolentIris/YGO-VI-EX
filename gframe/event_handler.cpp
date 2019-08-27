@@ -12,6 +12,9 @@
 #include "materials.h"
 #include "../ocgcore/common.h"
 #include <algorithm>
+#include <windows.h>
+#include <stdio.h>
+#include <TCHAR.H>
 
 namespace ygo {
 
@@ -1807,8 +1810,8 @@ bool ClientField::OnEvent(const irr::SEvent& event) {
 	return false;
 }
 bool ClientField::OnCommonEvent(const irr::SEvent& event) {
-	wndcls.hCursor1=LoadCursorFromFile(".\\textures\\point\\Arrow.ani");
-	wndcls.hCursor2=LoadCursorFromFile(".\\textures\\point\\IBeam.ani");
+	wndcls.hCursor1=LoadCursorFromFile(L".\\textures\\point\\Arrow.ani");
+	wndcls.hCursor2=LoadCursorFromFile(L".\\textures\\point\\IBeam.ani");
 	switch(event.EventType) {
 	case irr::EET_GUI_EVENT: {
 		s32 id = event.GUIEvent.Caller->getID();
