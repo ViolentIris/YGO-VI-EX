@@ -1818,14 +1818,14 @@ bool ClientField::OnCommonEvent(const irr::SEvent& event) {
 		switch(event.GUIEvent.EventType) {
 		case irr::gui::EGET_ELEMENT_HOVERED: {
 			if(event.GUIEvent.Caller->getType() == EGUIET_EDIT_BOX) {
-				mainGame->SetCursor(event.GUIEvent.Caller->isEnabled() ? hCursor2 : hCursor1);
+				HCURSOR SetCursor(event.GUIEvent.Caller->isEnabled() ? hCursor2 : hCursor1);
 				return true;
 			}
 			break;
 		}
 		case irr::gui::EGET_ELEMENT_LEFT: {
 			if(event.GUIEvent.Caller->getType() == EGUIET_EDIT_BOX) {
-				mainGame->SetCursor(hCursor1);
+				HCURSOR SetCursor(hCursor1);
 				return true;
 			}
 			break;
