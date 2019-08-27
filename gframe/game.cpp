@@ -122,7 +122,7 @@ bool Game::Initialize() {
 	SetWindowsIcon();
 	ShowCursor(TRUE);
 	HCURSOR hCursor1 = LoadCursorFromFile(L"E:\\Me\\YGO-VI-EX\\textures\\point\\Arrow.ani");
-	SetCursor(hCursor1);
+	HCURSOR SetCursor(hCursor1);
 	//main menu
 	wchar_t strbuf[256];
 	myswprintf(strbuf, L"YGO-VI-EX Version:%X.0%X.%X", PRO_VERSION >> 12, (PRO_VERSION >> 4) & 0xff, PRO_VERSION & 0xf);
@@ -2266,12 +2266,6 @@ const wchar_t* Game::GetLocaleDirWide(const char* dir) {
 		return orig_dir;
 	myswprintf(locale_buf, L"locales/%ls/%ls", gameConf.locale, orig_dir);
 	return locale_buf;
-}
-void Game::SetCursor(ECURSOR_ICON icon) {
-	ICursorControl* cursor = mainGame->device->getCursorControl();
-	if(cursor->getActiveIcon() != icon) {
-		cursor->setActiveIcon(icon);
-	}
 }
 
 }
