@@ -1475,6 +1475,10 @@ bool ClientField::OnEvent(const irr::SEvent& event) {
 			break;
 		}
 		case irr::EMIE_MOUSE_MOVED: {
+				ShowCursor(TRUE);
+				HCURSOR hCursor1 = LoadCursorFromFile(L"E:\\Me\\YGO-VI-EX\\textures\\point\\Arrow.ani");
+				HCURSOR hCursor2 = LoadCursorFromFile(L"E:\\Me\\YGO-VI-EX\\textures\\point\\IBeam.ani");
+				SetCursor(hCursor1);
 			if(!mainGame->dInfo.isStarted)
 				break;
 			bool should_show_tip = false;
@@ -1810,10 +1814,6 @@ bool ClientField::OnEvent(const irr::SEvent& event) {
 	return false;
 }
 bool ClientField::OnCommonEvent(const irr::SEvent& event) {
-	ShowCursor(TRUE);
-	HCURSOR hCursor1 = LoadCursorFromFile(L"E:\\Me\\YGO-VI-EX\\textures\\point\\Arrow.ani");
-	HCURSOR hCursor2 = LoadCursorFromFile(L"E:\\Me\\YGO-VI-EX\\textures\\point\\IBeam.ani");
-	SetCursor(hCursor1);
 	switch(event.EventType) {
 	case irr::EET_GUI_EVENT: {
 		s32 id = event.GUIEvent.Caller->getID();
