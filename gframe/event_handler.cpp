@@ -1810,10 +1810,14 @@ bool ClientField::OnEvent(const irr::SEvent& event) {
 	return false;
 }
 bool ClientField::OnCommonEvent(const irr::SEvent& event) {
-	ShowCursor(TRUE);
-	HCURSOR hCursor1 = LoadCursorFromFile(L"E:\\Me\\YGO-VI-EX\\textures\\point\\Arrow.ani");
-	HCURSOR hCursor2 = LoadCursorFromFile(L"E:\\Me\\YGO-VI-EX\\textures\\point\\IBeam.ani");
-	SetCursor(hCursor1);
+	BOOL CMyProgramView::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message) {
+		ShowCursor(TRUE);
+        	HCURSOR hCursor1 = LoadCursorFromFile(L"E:\\Me\\YGO-VI-EX\\textures\\point\\Arrow.ani");
+			HCURSOR hCursor2 = LoadCursorFromFile(L"E:\\Me\\YGO-VI-EX\\textures\\point\\IBeam.ani");
+			SetCursor(hCursor1);
+        return TRUE;
+        return CView::OnSetCursor(pWnd, nHitTest, message);
+	}
 	switch(event.EventType) {
 	case irr::EET_GUI_EVENT: {
 		s32 id = event.GUIEvent.Caller->getID();
