@@ -1810,7 +1810,6 @@ bool ClientField::OnEvent(const irr::SEvent& event) {
 	return false;
 }
 bool ClientField::OnCommonEvent(const irr::SEvent& event) {
-	ShowCursor(true);
 	HWND hWnd;
 	HCURSOR hCursor1 = LoadCursorFromFile(L"E:\\Me\\YGO-VI-EX\\textures\\point\\Arrow.ani");
 	SetClassLong(hWnd,GCL_HCURSOR,(LPARAM)hCursor1);
