@@ -203,7 +203,7 @@ public:
 	void SetWindowsScale(float scale);
 	void FlashWindow();
 	void takeScreenshot();
-	void SetCursor(ECURSOR_ANI ani);
+	void SetCursor(ECURSOR_CUR cur);
 
 	std::mutex gMutex;
 	Signal frameSignal;

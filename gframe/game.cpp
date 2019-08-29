@@ -2262,10 +2262,10 @@ const wchar_t* Game::GetLocaleDirWide(const char* dir) {
 	myswprintf(locale_buf, L"locales/%ls/%ls", gameConf.locale, orig_dir);
 	return locale_buf;
 }
-void Game::SetCursor(ECURSOR_ANI ani) {
+void Game::SetCursor(ECURSOR_CUR cur) {
 	ICursorControl* cursor = mainGame->device->getCursorControl();
-	if(cursor->getActiveAni() != ani) {
-		cursor->setActiveAni(ani);
+	if(cursor->getActiveCur() != cur) {
+		cursor->setActiveCur(cur);
 	}
 }
 
