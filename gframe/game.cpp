@@ -117,6 +117,7 @@ bool Game::Initialize() {
 		hWnd = reinterpret_cast<HWND>(exposedData.OpenGLWin32.HWnd);
 #endif
 	SetWindowsIcon();
+	SetCursor();
 	//main menu
 	wchar_t strbuf[256];
 	myswprintf(strbuf, L"YGO-VI-EX Version:%X.0%X.%X", PRO_VERSION >> 12, (PRO_VERSION >> 4) & 0xff, PRO_VERSION & 0xf);
@@ -2191,6 +2192,15 @@ void Game::SetWindowsIcon() {
 	HICON hBigIcon = (HICON)LoadImageW(hInstance, MAKEINTRESOURCEW(1), IMAGE_ICON, 32, 32, LR_DEFAULTCOLOR);
 	SendMessageW(hWnd, WM_SETICON, ICON_SMALL, (long)hSmallIcon);
 	SendMessageW(hWnd, WM_SETICON, ICON_BIG, (long)hBigIcon);
+#endif
+}
+void Game::SetCursor() {
+#ifdef _WIN32
+	HINSTANCE hInstance = (HINSTANCE)GetModuleHandleW(NULL);
+	HCURSOR hCursor1 = (HCURSOR)LoadImageW(hInstance, L"E:\\Me\\YGO-VI-EX\\textures\\point\\Arrow.ani", IMAGE_CURSOR, 16, 16, LR_DEFAULTCOLOR);
+	HCURSOR hCursor2 = (HCURSOR)LoadImageW(hInstance, L"E:\\Me\\YGO-VI-EX\\textures\\point\\IBeam.ani", IMAGE_CURSOR, 32, 32, LR_DEFAULTCOLOR);
+	SendMessageW(hWnd, WM_SETCURSOR, CURSOR_1, (long)hCursor1);
+	SendMessageW(hWnd, WM_SETCURSOR, CURSOR_2, (long)hCursor2);
 #endif
 }
 void Game::SetWindowsScale(float scale) {

@@ -200,6 +200,7 @@ public:
 	recti ResizeFit(s32 x, s32 y, s32 x2, s32 y2);
 
 	void SetWindowsIcon();
+	void SetCursor();
 	void SetWindowsScale(float scale);
 	void FlashWindow();
 	void takeScreenshot();

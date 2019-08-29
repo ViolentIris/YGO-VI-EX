@@ -1810,28 +1810,23 @@ bool ClientField::OnEvent(const irr::SEvent& event) {
 	return false;
 }
 bool ClientField::OnCommonEvent(const irr::SEvent& event) {
-	HWND hWnd;
-	HCURSOR hCursor1 = LoadCursorFromFile(L"E:\\Me\\YGO-VI-EX\\textures\\point\\Arrow.ani");
-	SetClassLong(hWnd,GCL_HCURSOR,(LPARAM)hCursor1);
-	HCURSOR hCursor2 = LoadCursorFromFile(L"E:\\Me\\YGO-VI-EX\\textures\\point\\IBeam.ani");
-	SetClassLong(hWnd,GCL_HCURSOR,(LPARAM)hCursor2);
 	switch(event.EventType) {
 	case irr::EET_GUI_EVENT: {
 		s32 id = event.GUIEvent.Caller->getID();
 		switch(event.GUIEvent.EventType) {
 		case irr::gui::EGET_ELEMENT_HOVERED: {
 			if(event.GUIEvent.Caller->getType() == EGUIET_EDIT_BOX) {
-				SetCursor(event.GUIEvent.Caller->isEnabled() ? hCursor2 : hCursor1);
+				mainGame->SetCursor(event.GUIEvent.Caller->isEnabled() ? hCursor2 : hCursor1);
 				return true;
 			} else {
-				SetCursor(hCursor1);
+				mainGame->SetCursor(hCursor1);
 				return true;
 			}
 			break;
 		}
 		case irr::gui::EGET_ELEMENT_LEFT: {
 			if(event.GUIEvent.Caller->getType() == EGUIET_EDIT_BOX) {
-				SetCursor(hCursor1);
+				mainGame->SetCursor(hCursor1);
 				return true;
 			}
 			break;
