@@ -1816,10 +1816,10 @@ bool ClientField::OnCommonEvent(const irr::SEvent& event) {
 		switch(event.GUIEvent.EventType) {
 		case irr::gui::EGET_ELEMENT_HOVERED: {
 			if(event.GUIEvent.Caller->getType() == EGUIET_EDIT_BOX) {
-				mainGame->SetCursor(event.GUIEvent.Caller->isEnabled() ? hCursor2 : hCursor1);
+				mainGame->SetCursor(event.GUIEvent.Caller->isEnabled() ? mainGame->hCursor2 : mainGame->hCursor1);
 				return true;
 			} else {
-				mainGame->SetCursor(hCursor1);
+				mainGame->SetCursor(mainGame->hCursor1);
 				return true;
 			}
 			break;
