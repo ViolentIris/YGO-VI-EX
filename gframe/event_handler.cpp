@@ -12,9 +12,6 @@
 #include "materials.h"
 #include "../ocgcore/common.h"
 #include <algorithm>
-#include <windows.h>
-#include <stdio.h>
-#include <TCHAR.H>
 
 namespace ygo {
 
@@ -307,33 +304,14 @@ bool ClientField::OnEvent(const irr::SEvent& event) {
 				mainGame->SetStaticText(mainGame->stOptions, 310, mainGame->guiFont, dataManager.GetDesc(select_options[selected_option]));
 				break;
 			}
-			case BUTTON_OPTION_0: {
-				soundManager.PlaySoundEffect(SOUND_BUTTON);
-				selected_option = 0;
-				SetResponseSelectedOption();
-				break;
-			}
-			case BUTTON_OPTION_1: {
-				soundManager.PlaySoundEffect(SOUND_BUTTON);
-				selected_option = 1;
-				SetResponseSelectedOption();
-				break;
-			}
-			case BUTTON_OPTION_2: {
-				soundManager.PlaySoundEffect(SOUND_BUTTON);
-				selected_option = 2;
-				SetResponseSelectedOption();
-				break;
-			}
-			case BUTTON_OPTION_3: {
-				soundManager.PlaySoundEffect(SOUND_BUTTON);
-				selected_option = 3;
-				SetResponseSelectedOption();
-				break;
-			}
+			case BUTTON_OPTION_0:
+			case BUTTON_OPTION_1: 
+			case BUTTON_OPTION_2: 
+			case BUTTON_OPTION_3: 
 			case BUTTON_OPTION_4: {
 				soundManager.PlaySoundEffect(SOUND_BUTTON);
-				selected_option = 4;
+				int step = mainGame->scrOption->isVisible() ? mainGame->scrOption->getPos() : 0;
+				selected_option = id - BUTTON_OPTION_0 + step;
 				SetResponseSelectedOption();
 				break;
 			}
@@ -1816,17 +1794,14 @@ bool ClientField::OnCommonEvent(const irr::SEvent& event) {
 		switch(event.GUIEvent.EventType) {
 		case irr::gui::EGET_ELEMENT_HOVERED: {
 			if(event.GUIEvent.Caller->getType() == EGUIET_EDIT_BOX) {
-				mainGame->SetCursor(event.GUIEvent.Caller->isEnabled() ? mainGame->hCursor2 : mainGame->hCursor1);
-				return true;
-			} else {
-				mainGame->SetCursor(mainGame->hCursor1);
+				mainGame->SetCursor(event.GUIEvent.Caller->isEnabled() ? L"E:\\Me\\YGO-VI-EX\\textures\\point\\IBeam.ani" : L"E:\\Me\\YGO-VI-EX\\textures\\point\\Arrow.ani");
 				return true;
 			}
 			break;
 		}
 		case irr::gui::EGET_ELEMENT_LEFT: {
 			if(event.GUIEvent.Caller->getType() == EGUIET_EDIT_BOX) {
-				mainGame->SetCursor(hCursor1);
+				mainGame->SetCursor(L"E:\\Me\\YGO-VI-EX\\textures\\point\\Arrow.ani");
 				return true;
 			}
 			break;

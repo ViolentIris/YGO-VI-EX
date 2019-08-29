@@ -2194,15 +2194,6 @@ void Game::SetWindowsIcon() {
 	SendMessageW(hWnd, WM_SETICON, ICON_BIG, (long)hBigIcon);
 #endif
 }
-void Game::SetCursor(HCURSOR ) {
-#ifdef _WIN32
-	HINSTANCE hInstance = (HINSTANCE)GetModuleHandleW(NULL);
-	HCURSOR hCursor1 = (HCURSOR)LoadImageW(hInstance, L"E:\\Me\\YGO-VI-EX\\textures\\point\\Arrow.ani", IMAGE_CURSOR, 16, 16, LR_DEFAULTCOLOR);
-	HCURSOR hCursor2 = (HCURSOR)LoadImageW(hInstance, L"E:\\Me\\YGO-VI-EX\\textures\\point\\IBeam.ani", IMAGE_CURSOR, 32, 32, LR_DEFAULTCOLOR);
-	SendMessageW(hWnd, WM_SETCURSOR,(long)hCursor1);
-	SendMessageW(hWnd, WM_SETCURSOR,(long)hCursor2);
-#endif
-}
 void Game::SetWindowsScale(float scale) {
 #ifdef _WIN32
 	WINDOWPLACEMENT plc;
@@ -2270,6 +2261,12 @@ const wchar_t* Game::GetLocaleDirWide(const char* dir) {
 		return orig_dir;
 	myswprintf(locale_buf, L"locales/%ls/%ls", gameConf.locale, orig_dir);
 	return locale_buf;
+}
+void Game::SetCursor(ECURSOR_ANI ani) {
+	ICursorControl* cursor = mainGame->device->getCursorControl();
+	if(cursor->getActiveAni() != ani) {
+		cursor->setActiveAni(ani);
+	}
 }
 
 }
