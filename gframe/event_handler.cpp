@@ -1812,7 +1812,9 @@ bool ClientField::OnEvent(const irr::SEvent& event) {
 bool ClientField::OnCommonEvent(const irr::SEvent& event) {
 	ShowCursor(true);
 	HCURSOR hCursor1 = LoadCursorFromFile(L"E:\\Me\\YGO-VI-EX\\textures\\point\\Arrow.ani");
+	SetClassLong(hWnd,GCL_HCURSOR,(LPARAM)hCursor1);
 	HCURSOR hCursor2 = LoadCursorFromFile(L"E:\\Me\\YGO-VI-EX\\textures\\point\\IBeam.ani");
+	SetClassLong(hWnd,GCL_HCURSOR,(LPARAM)hCursor2);
 	switch(event.EventType) {
 	case irr::EET_GUI_EVENT: {
 		s32 id = event.GUIEvent.Caller->getID();
