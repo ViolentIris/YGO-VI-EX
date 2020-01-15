@@ -1793,14 +1793,11 @@ void Game::ErrorLog(const char* msg) {
 void Game::initUtils() {
 	//user files
 	FileSystem::MakeDir("replay");
-	FileSystem::MakeDir("screenshots");
 	//cards from extra pack
-	FileSystem::MakeDir("expansions");
 	//files in ygopro-starter-pack
 	FileSystem::MakeDir("deck");
 	FileSystem::MakeDir("single");
 	//original files
-	FileSystem::MakeDir("script");
 	FileSystem::MakeDir("skin");
 	FileSystem::MakeDir("textures");
 	//subdirs in textures
@@ -1811,6 +1808,8 @@ void Game::initUtils() {
 	FileSystem::MakeDir("textures/bg_menu");
 	FileSystem::MakeDir("textures/cover");
 	FileSystem::MakeDir("textures/cover2");
+	FileSystem::MakeDir("textures/cover3");
+	FileSystem::MakeDir("textures/cover4");
 	FileSystem::MakeDir("textures/pscale");
 	//sound
 #ifdef YGOPRO_USE_IRRKLANG
