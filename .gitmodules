@@ -10,6 +10,3 @@
 [submodule "locales"]
 	path = locales
 	url = https://github.com/moecube/ygopro-database.git
-[submodule "ygopro-images"]
-	path = ygopro-images
-	url = git://35.231.145.151/mycard/ygopro-images.git
