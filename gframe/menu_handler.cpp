@@ -146,7 +146,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				int nLength = WideCharToMultiByte(CP_ACP, 0, pstr, -1, NULL, 0, NULL,NULL);
 				WideCharToMultiByte(CP_ACP, 0, pstr, -1, buf, nLength, NULL, NULL);
 				char buffer[300];
-				sprintf(buffer, "start \"\" \"https://majsoul.union-game.com/0/?room=%s\"", buf);
+				sprintf(buffer, "start \"\" \"https://www.majsoul.com/1/?room=%s\"", buf);
 				system(buffer);
 				mainGame->HideElement(mainGame->wMJWindow);
 				break;
