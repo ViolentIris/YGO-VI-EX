@@ -152,7 +152,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_MJB: {
-                system("start https://majsoul.union-game.com/0/");
+                system("start https://www.majsoul.com/1/");
 				return true;
 				break;
 			}
