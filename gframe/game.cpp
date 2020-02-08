@@ -1823,8 +1823,6 @@ void Game::initUtils() {
 	FileSystem::MakeDir("sound/BGM/menu");
 	FileSystem::MakeDir("sound/BGM/win");
 #endif
-	//locales
-	FileSystem::MakeDir("locales");
 	//pics
 	FileSystem::MakeDir("pics");
 	FileSystem::MakeDir("pics/field");
