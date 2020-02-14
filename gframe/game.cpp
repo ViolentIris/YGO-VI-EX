@@ -506,7 +506,7 @@ bool Game::Initialize() {
 	posY += 30;
 	chkMusicMode = env->addCheckBox(false, rect<s32>(posX, posY, posX + 260, posY + 25), tabSystem, -1, dataManager.GetSysString(1281));
 	chkMusicMode->setChecked(gameConf.music_mode != 0);
-	btnTB = env->addButton(rect<s32>(125, 55, 225, 105), tabSystem, BUTTON_TB, dataManager.GetSysString(1283));
+	btnTB = env->addButton(rect<s32>(130, 35, 230, 85), tabSystem, BUTTON_TB, dataManager.GetSysString(1283));
 	wTBWindow = env->addWindow(rect<s32>(510, 200, 820, 320), false, dataManager.GetSysString(1284));
 	wTBWindow->getCloseButton()->setVisible(false);
 	wTBWindow->setVisible(false);
