@@ -112,14 +112,14 @@ pause
 goto 开始
 
 :1
-wget -t 0 -c https://github.com/ViolentIris/YGO-VI-EX-Full/archive/master.zip
+wget -t 0 -c https://gitee.com/vi1911/YGO-VI-EX-Full/repository/archive/master.zip
 ren "master.zip" "YGO-VI-EX完整版.zip"
 pause
 goto 开始
 
  
 :2
-wget -t 0 -c https://github.com/ViolentIris/YGO-VI-EX-Updates/archive/master.zip
+wget -t 0 -c https://gitee.com/vi1911/YGO-VI-EX-Updates/repository/archive/master.zip
 ren "master.zip" "YGO-VI-EX更新.zip"
 pause
 goto 开始
