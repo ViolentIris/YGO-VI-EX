@@ -76,7 +76,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_TAKEOUT1: {
-                system("start https://www.ele.me/home/");
+                system("start https://www.4008123123.com/");
 				return true;
 				break;
 			}
@@ -106,12 +106,12 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_DC: {
-                system("start https://charat.me/genesis/create/");
+                system("start https://charat.me/genesis/");
 				return true;
 				break;
 			}
 			case BUTTON_TG: {
-                system("start https://taiko.moecube.com/");
+                system("start https://www.yugioh-card.com/japan/");
 				return true;
 				break;
 			}
@@ -121,7 +121,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_YST: {
-                system("start https://yugioh-list.com/");
+                system("start https://yugioh-list.com/decks");
 				return true;
 				break;
 			}
