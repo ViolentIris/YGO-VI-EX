@@ -72,7 +72,6 @@ bool ImageManager::Initial()  {
 	tChainTarget = driver->getTexture("textures/chaintarget.png");
 	tLim = driver->getTexture("textures/lim.png");
 	tOT = driver->getTexture("textures/ot.png");
-	tCardType = driver->getTexture("textures/cardtype.png");
 	tHand[0] = driver->getTexture("textures/f1.jpg");
 	tHand[1] = driver->getTexture("textures/f2.jpg");
 	tHand[2] = driver->getTexture("textures/f3.jpg");
@@ -91,6 +90,13 @@ bool ImageManager::Initial()  {
 		tBackGround_menu = driver->getTexture("textures/bg_menu.jpg");
 	if(!tBackGround_menu)
 		tBackGround_menu = GetRandomImage(TEXTURE_DUEL);
+	tCardType[0] = driver->getTexture("textures/type/monster.jpg");
+	tCardType[1] = driver->getTexture("textures/type/spell.jpg");
+	tCardType[2] = driver->getTexture("textures/type/trap.jpg");
+	tCardType[3] = driver->getTexture("textures/type/fusion.jpg");
+	tCardType[4] = driver->getTexture("textures/type/synchro.jpg");
+	tCardType[5] = driver->getTexture("textures/type/xyz.jpg");
+	tCardType[6] = driver->getTexture("textures/type/link.jpg");
 	if(!tBackGround_menu)
 		tBackGround_menu = tBackGround;
 	if(mainGame->gameConf.random)
