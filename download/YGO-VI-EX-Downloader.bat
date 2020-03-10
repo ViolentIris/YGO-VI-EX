@@ -27,7 +27,8 @@ echo ★☆ ★☆     9.蛤蟆池联机平台下载         ★☆ ★☆
 echo ★☆ ★☆     10.美工补充包下载            ★☆ ★☆
 echo ★☆ ★☆     11.YGO皮肤下载               ★☆ ★☆
 echo ★☆ ★☆     12.喵预组卡组下载            ★☆ ★☆
-echo ★☆ ★☆     13.退出下载器                ★☆ ★☆
+echo ★☆ ★☆     13.决斗BGM下载               ★☆ ★☆
+echo ★☆ ★☆     14.退出下载器                ★☆ ★☆
 echo ★☆ ★☆ ★☆ ★☆ ★☆★☆★☆ ★☆ ★☆ ★☆ ★☆
 echo ★☆ ★☆ ★☆ ★☆ ★☆★☆★☆ ★☆ ★☆ ★☆ ★☆
 @echo.
@@ -44,7 +45,8 @@ if %num%==9 (goto 9)
 if %num%==10 (goto 10)
 if %num%==11 (goto 11)
 if %num%==12 (goto 12)
-if %num%==13 (exit)  
+if %num%==13 (goto 13)
+if %num%==14 (exit)  
 
 :0
 @echo.
@@ -194,6 +196,13 @@ pause
 goto 开始
 
 :13
+wget -t 0 -c https://gitee.com/vi1911/sound/repository/archive/master.zip
+ren "master.zip" "BGM.zip"
+FOR %%F IN (BGM.zip) DO START %%F
+pause
+goto 开始
+
+:14
 exit
 
 @pause   
