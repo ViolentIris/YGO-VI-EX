@@ -968,6 +968,8 @@ void DeckBuilder::FilterCards() {
 				continue;
 			if(filter_lm == 7 && data.ot != 4)
 				continue;
+			if(filter_lm == 8 && data.ot != 5)
+				continue;
 		}
 		bool is_target = true;
 		for (auto elements_iterator = query_elements.begin(); elements_iterator != query_elements.end(); ++elements_iterator) {
