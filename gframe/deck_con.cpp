@@ -968,7 +968,7 @@ void DeckBuilder::FilterCards() {
 				continue;
 			if(filter_lm == 7 && data.ot != 4)
 				continue;
-			if(filter_lm == 8 && data.ot != 5)
+			if(filter_lm == 8 && data.ot != 8)
 				continue;
 		}
 		bool is_target = true;
