@@ -1380,7 +1380,7 @@ void Game::DrawDeckBd() {
 				wcscat(textBuffer, L" [TCG]");
 			else if((ptr->second.ot & 0x7) == 4)
 				wcscat(textBuffer, L" [Custom]");
-			else if((ptr->second.ot & 0x15) == 8)
+			else if((ptr->second.ot & 0xf) == 8)
 				wcscat(textBuffer, L" [Rush Duel]");
 			DrawShadowText(textFont, textBuffer, Resize(860, 209 + i * 66, 955, 229 + i * 66), Resize(1, 1, 0, 0));
 		} else {
@@ -1395,7 +1395,7 @@ void Game::DrawDeckBd() {
 				wcscat(textBuffer, L"[TCG]");
 			else if((ptr->second.ot & 0x7) == 4)
 				wcscat(textBuffer, L"[Custom]");
-			else if((ptr->second.ot & 0x15) == 8)
+			else if((ptr->second.ot & 0xf) == 8)
 				wcscat(textBuffer, L"[Rush Duel]");
 			DrawShadowText(textFont, textBuffer, Resize(860, 209 + i * 66, 955, 229 + i * 66), Resize(1, 1, 0, 0));
 		}
