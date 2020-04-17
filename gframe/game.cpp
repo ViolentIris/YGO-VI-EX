@@ -2096,7 +2096,7 @@ void Game::OnResize() {
 		ShowCardInfo(showingcode, true);
 	btnClearLog->setRelativePosition(Resize(160, 300, 260, 325));
 	btnTB->setRelativePosition(Resize(150, 20, 250, 70));
-	recti btnTBpos = btnTBSearch->getAbsolutePosition();
+	recti btnTBpos = btnTB->getAbsolutePosition();
 	wTBWindow->setRelativePosition(recti(
 		btnTBpos.LowerRightCorner.X - 310,
 		btnTBpos.LowerRightCorner.Y - 1,
