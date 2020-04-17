@@ -182,7 +182,7 @@ bool Game::Initialize() {
 	RefreshFont();
 	RefreshLocales();
 	//Head Select
-	wHDS = env->addWindow(rect<s32>(342, 235, 682, 405), false, dataManager.GetSysString(1451));
+	wHDS = env->addWindow(rect<s32>(342, 235, 682, 395), false, dataManager.GetSysString(1451));
 	wHDS->getCloseButton()->setVisible(false);
 	wHDS->setVisible(false);
 	wHDS->setDraggable(false);
@@ -1323,7 +1323,6 @@ void Game::LoadConfig() {
 	gameConf.antialias = 0;
 	gameConf.serverport = 7911;
 	gameConf.textfontsize = 12;
-	gameConf.game_version = 4944;
 	gameConf.nickname[0] = 0;
 	gameConf.gamename[0] = 0;
 	gameConf.lastdeck[0] = 0;
@@ -1883,7 +1882,7 @@ void Game::CloseDuelWindow() {
 	wOptions->setVisible(false);
 	wPhase->setVisible(false);
 	wPosSelect->setVisible(false);
-	wSearchWindow->setVisible(false);
+	wTBWindow->setVisible(false);
 	wQuery->setVisible(false);
 	wSurrender->setVisible(false);
 	wReplayControl->setVisible(false);
@@ -2097,7 +2096,7 @@ void Game::OnResize() {
 		ShowCardInfo(showingcode, true);
 	btnClearLog->setRelativePosition(Resize(160, 300, 260, 325));
 	btnTB->setRelativePosition(Resize(150, 20, 250, 70));
-	recti btnTBpos = btnCardSearch->getAbsolutePosition();
+	recti btnTBpos = btnTBSearch->getAbsolutePosition();
 	wTBWindow->setRelativePosition(recti(
 		btnTBpos.LowerRightCorner.X - 310,
 		btnTBpos.LowerRightCorner.Y - 1,
