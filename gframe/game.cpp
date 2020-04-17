@@ -49,7 +49,7 @@ bool Game::Initialize() {
 			if(gameConf.skin_index < 0)
 				index = rand() % count;
 			else if((size_t)gameConf.skin_index <= skins.size())
-				index = skins.size() - gameConf.skin_index; // reverse index
+				index = skins.size() - gameConf.skin_index;
 			if(index >= 0)
 				skinSystem->applySkin(skins[index].c_str());
 		}
@@ -115,6 +115,12 @@ bool Game::Initialize() {
 		hWnd = reinterpret_cast<HWND>(exposedData.D3D9.HWnd);
 	else
 		hWnd = reinterpret_cast<HWND>(exposedData.OpenGLWin32.HWnd);
+	/*if(hWnd) {
+		LONG style = GetWindowLong(hWnd, GWL_STYLE);
+		style |= WS_MINIMIZEBOX;
+		SetWindowLong(hWnd, GWL_STYLE, style);
+		SendMessage(hWnd, WM_NCPAINT, 1, 0);
+	}*/
 #endif
 	SetWindowsIcon();
 	//main menu
@@ -122,6 +128,7 @@ bool Game::Initialize() {
 	myswprintf(strbuf, L"YGO-VI-EX Version:%X.0%X.%X", PRO_VERSION >> 12, (PRO_VERSION >> 4) & 0xff, PRO_VERSION & 0xf);
 	wMainMenu = env->addWindow(rect<s32>(370, 200, 650, 485), false, strbuf);
 	wMainMenu->getCloseButton()->setVisible(false);
+	wMainMenu->setDraggable(false);
 	btnLanMode = env->addButton(rect<s32>(10, 30, 270, 60), wMainMenu, BUTTON_LAN_MODE, dataManager.GetSysString(1200));
 	btnSingleMode = env->addButton(rect<s32>(10, 65, 270, 95), wMainMenu, BUTTON_SINGLE_MODE, dataManager.GetSysString(1201));
 	btnReplayMode = env->addButton(rect<s32>(10, 100, 270, 130), wMainMenu, BUTTON_REPLAY_MODE, dataManager.GetSysString(1202));
@@ -133,6 +140,7 @@ bool Game::Initialize() {
 	wOther = env->addWindow(rect<s32>(370, 70, 650, 565), false, dataManager.GetSysString(1422));
 	wOther->getCloseButton()->setVisible(false);
 	wOther->setVisible(false);
+	wOther->setDraggable(false);
 	btnSEM = env->addButton(rect<s32>(10, 30, 270, 60), wOther, BUTTON_SEM, dataManager.GetSysString(1423));
 	btnTakeout1 = env->addButton(rect<s32>(10, 65, 270, 95), wOther, BUTTON_TAKEOUT1, dataManager.GetSysString(1424));
 	btnTakeout2 = env->addButton(rect<s32>(10, 100, 270, 130), wOther, BUTTON_TAKEOUT2, dataManager.GetSysString(1425));
@@ -146,20 +154,11 @@ bool Game::Initialize() {
 	btnYST = env->addButton(rect<s32>(10, 380, 270, 410), wOther, BUTTON_YST, dataManager.GetSysString(1536));
 	btnMJ = env->addButton(rect<s32>(10, 415, 270, 445), wOther, BUTTON_MJ, dataManager.GetSysString(1513));
 	btnOtherExit = env->addButton(rect<s32>(10, 450, 270, 480), wOther, BUTTON_OTHER_EXIT, dataManager.GetSysString(1210));
-	//majiong
-	wMJWindow = env->addWindow(rect<s32>(357, 260, 667, 380), false, dataManager.GetSysString(1514));
-	wMJWindow->getCloseButton()->setVisible(false);
-	wMJWindow->setVisible(false);
-	env->addStaticText(dataManager.GetSysString(1515), rect<s32>(20, 27, 130, 47), false, false, wMJWindow);
-	ebMJName = env->addEditBox(gameConf.MJname, rect<s32>(20, 50, 290, 70), true, wMJWindow);
-	ebMJName->setTextAlignment(irr::gui::EGUIA_UPPERLEFT, irr::gui::EGUIA_CENTER);
-	btnMJAgree = env->addButton(rect<s32>(20, 80, 100, 105), wMJWindow, BUTTON_MJ_AGREE, dataManager.GetSysString(1286));
-	btnMJCancel = env->addButton(rect<s32>(115, 80, 195, 105), wMJWindow, BUTTON_MJ_CANCEL, dataManager.GetSysString(1287));
-	btnMJB = env->addButton(rect<s32>(210, 80, 290, 105), wMJWindow, BUTTON_MJB, dataManager.GetSysString(1516));
 	//system setting
 	wSystem = env->addWindow(rect<s32>(212, 140, 812, 360), false, dataManager.GetSysString(1207));
 	wSystem->getCloseButton()->setVisible(false);
 	wSystem->setVisible(false);
+	wSystem->setDraggable(false);
 	chkMRandom = env->addCheckBox(false, rect<s32>(30, 20, 260, 45), wSystem, CHECKBOX_RDM, dataManager.GetSysString(1437));
 	chkMRandom->setChecked(gameConf.random != 0);
 	chkSkin = env->addCheckBox(false, rect<s32>(30, 50, 260, 75), wSystem, CHECKBOX_SKIN, dataManager.GetSysString(1438));
@@ -183,53 +182,57 @@ bool Game::Initialize() {
 	RefreshFont();
 	RefreshLocales();
 	//Head Select
-	wHDS = env->addWindow(rect<s32>(362, 245, 662, 395), false, dataManager.GetSysString(1451));
+	wHDS = env->addWindow(rect<s32>(342, 235, 682, 405), false, dataManager.GetSysString(1451));
 	wHDS->getCloseButton()->setVisible(false);
 	wHDS->setVisible(false);
-	cbHDS = env->addComboBox(rect<s32>(20, 30, 180, 65), wHDS, COMBOBOX_HDS);
+	wHDS->setDraggable(false);
+	cbHDS = env->addComboBox(rect<s32>(20, 40, 200, 85), wHDS, COMBOBOX_HDS);
 	cbHDS->setMaxSelectionRows(10);
-	imgHead = env->addImage(rect<s32>(190, 25, 290, 125), wHDS);
+	imgHead = env->addImage(rect<s32>(210, 25, 330, 145), wHDS);
 	imgHead->setImage(imageManager.tAvatar[0]);	
 	imgHead->setScaleImage(true);
 	imgHead->setUseAlphaChannel(true);
-	btnHDSOK = env->addButton(rect<s32>(20, 90, 95, 120), wHDS, BUTTON_HDS_OK, dataManager.GetSysString(1211));
-	btnHDSExit = env->addButton(rect<s32>(105, 90, 180, 120), wHDS, BUTTON_HDS_EXIT, dataManager.GetSysString(1210));
+	btnHDSOK = env->addButton(rect<s32>(20, 105, 105, 135), wHDS, BUTTON_HDS_OK, dataManager.GetSysString(1211));
+	btnHDSExit = env->addButton(rect<s32>(115, 105, 200, 135), wHDS, BUTTON_HDS_EXIT, dataManager.GetSysString(1210));
 	RefreshHDS();
 	//Cover Select
-	wCRS = env->addWindow(rect<s32>(279.5, 197.5, 744.5, 442.5), false, dataManager.GetSysString(1453));
+	wCRS = env->addWindow(rect<s32>(269.5, 187.5, 774.5, 452.5), false, dataManager.GetSysString(1453));
 	wCRS->getCloseButton()->setVisible(false);
 	wCRS->setVisible(false);
-	cbCRS = env->addComboBox(rect<s32>(165, 162.5, 285, 197.5), wCRS, COMBOBOX_CRS);
+	wCRS->setDraggable(false);
+	cbCRS = env->addComboBox(rect<s32>(170, 182.5, 300, 227.5), wCRS, COMBOBOX_CRS);
 	cbCRS->setMaxSelectionRows(10);
-	imgCover = env->addImage(rect<s32>(305, 25, 445, 225), wCRS);
+	imgCover = env->addImage(rect<s32>(320, 20, 490, 250), wCRS);
 	imgCover->setImage(imageManager.tCover[0]);	
 	imgCover->setScaleImage(true);
 	imgCover->setUseAlphaChannel(true);
-	btnCoverOK1 = env->addButton(rect<s32>(30, 52.5, 150, 87.5), wCRS, BUTTON_CRS_OK1, dataManager.GetSysString(1454));
-	btnCoverOK2 = env->addButton(rect<s32>(165, 52.5, 285, 87.5), wCRS, BUTTON_CRS_OK2, dataManager.GetSysString(1455));
-	btnCoverOK3 = env->addButton(rect<s32>(30, 107.5, 150, 142.5), wCRS, BUTTON_CRS_OK3, dataManager.GetSysString(1456));
-	btnCoverOK4 = env->addButton(rect<s32>(165, 107.5, 285, 142.5), wCRS, BUTTON_CRS_OK4, dataManager.GetSysString(1457));
-	btnCRSExit = env->addButton(rect<s32>(30, 162.5, 150, 197.5), wCRS, BUTTON_CRS_EXIT, dataManager.GetSysString(1210));
+	btnCoverOK1 = env->addButton(rect<s32>(30, 47.5, 160, 92.5), wCRS, BUTTON_CRS_OK1, dataManager.GetSysString(1454));
+	btnCoverOK2 = env->addButton(rect<s32>(170, 47.5, 300, 92.5), wCRS, BUTTON_CRS_OK2, dataManager.GetSysString(1455));
+	btnCoverOK3 = env->addButton(rect<s32>(30, 117.5, 160, 162.5), wCRS, BUTTON_CRS_OK3, dataManager.GetSysString(1456));
+	btnCoverOK4 = env->addButton(rect<s32>(170, 117.5, 300, 162.5), wCRS, BUTTON_CRS_OK4, dataManager.GetSysString(1457));
+	btnCRSExit = env->addButton(rect<s32>(30, 182.5, 160, 222.5), wCRS, BUTTON_CRS_EXIT, dataManager.GetSysString(1210));
 	RefreshCRS();
 	//Background Select
-	wBGS = env->addWindow(rect<s32>(157, 110, 867, 490), false, dataManager.GetSysString(1459));
+	wBGS = env->addWindow(rect<s32>(132, 100, 882, 500), false, dataManager.GetSysString(1459));
 	wBGS->getCloseButton()->setVisible(false);
 	wBGS->setVisible(false);
-	cbBGS = env->addComboBox(rect<s32>(25, 50, 160, 90), wBGS, COMBOBOX_BGS);
+	wBGS->setDraggable(false);
+	cbBGS = env->addComboBox(rect<s32>(25, 40, 170, 90), wBGS, COMBOBOX_BGS);
 	cbBGS->setMaxSelectionRows(10);
-	imgBG = env->addImage(rect<s32>(180, 30, 692, 350), wBGS);
+	imgBG = env->addImage(rect<s32>(180, 25, 732, 385), wBGS);
 	imgBG->setImage(imageManager.tBackGround);	
 	imgBG->setScaleImage(true);
 	imgBG->setUseAlphaChannel(true);
-	btnBGOK1 = env->addButton(rect<s32>(25, 110, 160, 150), wBGS, BUTTON_BGS_OK1, dataManager.GetSysString(1460));
-	btnBGOK2 = env->addButton(rect<s32>(25, 170, 160, 210), wBGS, BUTTON_BGS_OK2, dataManager.GetSysString(1461));
-	btnBGOK3 = env->addButton(rect<s32>(25, 230, 160, 270), wBGS, BUTTON_BGS_OK3, dataManager.GetSysString(1462));
-	btnBGSExit = env->addButton(rect<s32>(25, 290, 160, 330), wBGS, BUTTON_BGS_EXIT, dataManager.GetSysString(1210));
+	btnBGOK1 = env->addButton(rect<s32>(25, 110, 170, 160), wBGS, BUTTON_BGS_OK1, dataManager.GetSysString(1460));
+	btnBGOK2 = env->addButton(rect<s32>(25, 180, 170, 230), wBGS, BUTTON_BGS_OK2, dataManager.GetSysString(1461));
+	btnBGOK3 = env->addButton(rect<s32>(25, 250, 170, 300), wBGS, BUTTON_BGS_OK3, dataManager.GetSysString(1462));
+	btnBGSExit = env->addButton(rect<s32>(25, 320, 170, 365), wBGS, BUTTON_BGS_EXIT, dataManager.GetSysString(1210));
 	RefreshBGS();
 	//lan mode
 	wLanWindow = env->addWindow(rect<s32>(220, 100, 800, 520), false, dataManager.GetSysString(1200));
 	wLanWindow->getCloseButton()->setVisible(false);
 	wLanWindow->setVisible(false);
+	wLanWindow->setDraggable(false);
 	env->addStaticText(dataManager.GetSysString(1220), rect<s32>(10, 30, 220, 50), false, false, wLanWindow);
 	ebNickName = env->addEditBox(gameConf.nickname, rect<s32>(110, 25, 450, 50), true, wLanWindow);
 	ebNickName->setTextAlignment(irr::gui::EGUIA_UPPERLEFT, irr::gui::EGUIA_CENTER);
@@ -238,7 +241,7 @@ bool Game::Initialize() {
 	btnLanRefresh = env->addButton(rect<s32>(100, 325, 200, 350), wLanWindow, BUTTON_LAN_REFRESH, dataManager.GetSysString(1217));
 	env->addStaticText(dataManager.GetSysString(1221), rect<s32>(10, 360, 220, 380), false, false, wLanWindow);
 	btnSC = env->addButton(rect<s32>(240, 325, 340, 350), wLanWindow, BUTTON_SERVER_CHOOSE, dataManager.GetSysString(1427));
-	btnRM = env->addButton(rect<s32>(380, 325, 480, 350), wLanWindow, BUTTON_ROOM_CODE, dataManager.GetSysString(1517));
+	btnRM = env->addButton(rect<s32>(380, 325, 480, 350), wLanWindow, BUTTON_ROOM_CODE, dataManager.GetSysString(1513));
 	ebJoinHost = env->addEditBox(gameConf.lasthost, rect<s32>(110, 355, 350, 380), true, wLanWindow);
 	ebJoinHost->setTextAlignment(irr::gui::EGUIA_CENTER, irr::gui::EGUIA_CENTER);
 	ebJoinPort = env->addEditBox(gameConf.lastport, rect<s32>(360, 355, 420, 380), true, wLanWindow);
@@ -250,9 +253,10 @@ bool Game::Initialize() {
 	btnJoinCancel = env->addButton(rect<s32>(460, 385, 570, 410), wLanWindow, BUTTON_JOIN_CANCEL, dataManager.GetSysString(1212));
 	btnCreateHost = env->addButton(rect<s32>(460, 25, 570, 50), wLanWindow, BUTTON_CREATE_HOST, dataManager.GetSysString(1224));
 	//server choose
-	wSC = env->addWindow(rect<s32>(372, 103, 652, 420), false, dataManager.GetSysString(1428));
+	wSC = env->addWindow(rect<s32>(-60, 100, 220, 417), false, dataManager.GetSysString(1428));
 	wSC->getCloseButton()->setVisible(false);
 	wSC->setVisible(false);
+	wSC->setDraggable(false);
 	btn233 = env->addButton(rect<s32>(10, 30, 270, 60), wSC, BUTTON_233, dataManager.GetSysString(1429));
 	btn23333 = env->addButton(rect<s32>(10, 65, 270, 95), wSC, BUTTON_23333, dataManager.GetSysString(1430));
 	btn7210 = env->addButton(rect<s32>(10, 100, 270, 130), wSC, BUTTON_7210, dataManager.GetSysString(1431));
@@ -262,9 +266,10 @@ bool Game::Initialize() {
 	btnNK = env->addButton(rect<s32>(10, 240, 270, 270), wSC, BUTTON_NK, dataManager.GetSysString(1435));
 	btnSCExit = env->addButton(rect<s32>(10, 275, 270, 305), wSC, BUTTON_SC_EXIT, dataManager.GetSysString(1436));
 	//room code
-	wRM = env->addWindow(rect<s32>(232, 135, 792, 420), false, dataManager.GetSysString(1517));
+	wRM = env->addWindow(rect<s32>(800, 100, 1230, 460), false, dataManager.GetSysString(1517));
 	wRM->getCloseButton()->setVisible(false);
 	wRM->setVisible(false);
+	wRM->setDraggable(false);
 	btnRM1 = env->addButton(rect<s32>(10, 30, 210, 60), wRM, BUTTON_RM1, dataManager.GetSysString(1518));
 	btnRM2 = env->addButton(rect<s32>(220, 30, 420, 60), wRM, BUTTON_RM2, dataManager.GetSysString(1519));
 	btnRM3 = env->addButton(rect<s32>(10, 65, 210, 95), wRM, BUTTON_RM3, dataManager.GetSysString(1520));
@@ -279,15 +284,16 @@ bool Game::Initialize() {
 	btnRM12 = env->addButton(rect<s32>(220, 205, 420, 235), wRM, BUTTON_RM12, dataManager.GetSysString(1529));
 	btnRM13 = env->addButton(rect<s32>(10, 240, 210, 270), wRM, BUTTON_RM13, dataManager.GetSysString(1530));
 	btnRM14 = env->addButton(rect<s32>(220, 240, 420, 270), wRM, BUTTON_RM14, dataManager.GetSysString(1531));
-	btnRMCM = env->addButton(rect<s32>(425, 55, 485, 115), wRM, BUTTON_RMCM, dataManager.GetSysString(1532));
-	btnRMWN = env->addButton(rect<s32>(495, 55, 555, 115), wRM, BUTTON_RMWN, dataManager.GetSysString(1533));
-	btnRMAI = env->addButton(rect<s32>(440, 125, 540, 155), wRM, BUTTON_RMAI, dataManager.GetSysString(1534));
-	btnRMA = env->addButton(rect<s32>(440, 165, 540, 195), wRM, BUTTON_RMA, dataManager.GetSysString(1535));
-	btnRMExit = env->addButton(rect<s32>(440, 205, 540, 235), wRM, BUTTON_RM_EXIT, dataManager.GetSysString(1436));
+	btnRMCM = env->addButton(rect<s32>(30, 285, 90, 345), wRM, BUTTON_RMCM, dataManager.GetSysString(1532));
+	btnRMWN = env->addButton(rect<s32>(120, 285, 180, 345), wRM, BUTTON_RMWN, dataManager.GetSysString(1533));
+	btnRMAI = env->addButton(rect<s32>(210, 280, 310, 310), wRM, BUTTON_RMAI, dataManager.GetSysString(1534));
+	btnRMA = env->addButton(rect<s32>(320, 280, 420, 310), wRM, BUTTON_RMA, dataManager.GetSysString(1535));
+	btnRMExit = env->addButton(rect<s32>(250, 320, 380, 350), wRM, BUTTON_RM_EXIT, dataManager.GetSysString(1436));
 	//create host
 	wCreateHost = env->addWindow(rect<s32>(320, 100, 700, 520), false, dataManager.GetSysString(1224));
 	wCreateHost->getCloseButton()->setVisible(false);
 	wCreateHost->setVisible(false);
+	wCreateHost->setDraggable(false);
 	env->addStaticText(dataManager.GetSysString(1226), rect<s32>(20, 30, 220, 50), false, false, wCreateHost);
 	cbLFlist = env->addComboBox(rect<s32>(140, 25, 300, 50), wCreateHost);
 	for(unsigned int i = 0; i < deckManager._lfList.size(); ++i)
@@ -343,6 +349,7 @@ bool Game::Initialize() {
 	wHostPrepare = env->addWindow(rect<s32>(270, 120, 750, 440), false, dataManager.GetSysString(1250));
 	wHostPrepare->getCloseButton()->setVisible(false);
 	wHostPrepare->setVisible(false);
+	wHostPrepare->setDraggable(false);
 	btnHostPrepDuelist = env->addButton(rect<s32>(10, 30, 110, 55), wHostPrepare, BUTTON_HP_DUELIST, dataManager.GetSysString(1251));
 	for(int i = 0; i < 2; ++i) {
 		stHostPrepDuelist[i] = env->addStaticText(L"", rect<s32>(40, 65 + i * 25, 240, 85 + i * 25), true, false, wHostPrepare);
@@ -506,10 +513,11 @@ bool Game::Initialize() {
 	posY += 30;
 	chkMusicMode = env->addCheckBox(false, rect<s32>(posX, posY, posX + 260, posY + 25), tabSystem, -1, dataManager.GetSysString(1281));
 	chkMusicMode->setChecked(gameConf.music_mode != 0);
-	btnTB = env->addButton(rect<s32>(150, 30, 250, 80), tabSystem, BUTTON_TB, dataManager.GetSysString(1283));
+	btnTB = env->addButton(rect<s32>(150, 20, 250, 70), tabSystem, BUTTON_TB, dataManager.GetSysString(1283));
 	wTBWindow = env->addWindow(rect<s32>(510, 200, 820, 320), false, dataManager.GetSysString(1284));
 	wTBWindow->getCloseButton()->setVisible(false);
 	wTBWindow->setVisible(false);
+	wTBWindow->setDraggable(false);
 	env->addStaticText(dataManager.GetSysString(1285), rect<s32>(20, 27, 130, 47), false, false, wTBWindow);
 	ebTBName = env->addEditBox(gameConf.TBname, rect<s32>(20, 50, 290, 70), true, wTBWindow);
 	ebTBName->setTextAlignment(irr::gui::EGUIA_UPPERLEFT, irr::gui::EGUIA_CENTER);
@@ -633,17 +641,19 @@ bool Game::Initialize() {
 	wANNumber = env->addWindow(rect<s32>(550, 200, 780, 295), false, L"");
 	wANNumber->getCloseButton()->setVisible(false);
 	wANNumber->setVisible(false);
+	wANNumber->setDraggable(false);
 	cbANNumber =  env->addComboBox(rect<s32>(40, 30, 190, 50), wANNumber, -1);
 	cbANNumber->setTextAlignment(irr::gui::EGUIA_CENTER, irr::gui::EGUIA_CENTER);
 	btnANNumberOK = env->addButton(rect<s32>(80, 60, 150, 85), wANNumber, BUTTON_ANNUMBER_OK, dataManager.GetSysString(1211));
 	//announce card
-	wANCard = env->addWindow(rect<s32>(560, 170, 770, 370), false, L"");
+	wANCard = env->addWindow(rect<s32>(510, 120, 820, 420), false, L"");
 	wANCard->getCloseButton()->setVisible(false);
 	wANCard->setVisible(false);
-	ebANCard = env->addEditBox(L"", rect<s32>(20, 25, 190, 45), true, wANCard, EDITBOX_ANCARD);
+	wANCard->setDraggable(false);
+	ebANCard = env->addEditBox(L"", rect<s32>(20, 25, 290, 45), true, wANCard, EDITBOX_ANCARD);
 	ebANCard->setTextAlignment(irr::gui::EGUIA_CENTER, irr::gui::EGUIA_CENTER);
-	lstANCard = env->addListBox(rect<s32>(20, 50, 190, 160), wANCard, LISTBOX_ANCARD, true);
-	btnANCardOK = env->addButton(rect<s32>(60, 165, 150, 190), wANCard, BUTTON_ANCARD_OK, dataManager.GetSysString(1211));
+	lstANCard = env->addListBox(rect<s32>(20, 50, 290, 265), wANCard, LISTBOX_ANCARD, true);
+	btnANCardOK = env->addButton(rect<s32>(110, 270, 200, 295), wANCard, BUTTON_ANCARD_OK, dataManager.GetSysString(1211));
 	//announce attribute
 	wANAttribute = env->addWindow(rect<s32>(500, 200, 830, 285), false, dataManager.GetSysString(562));
 	wANAttribute->getCloseButton()->setVisible(false);
@@ -715,8 +725,9 @@ bool Game::Initialize() {
 	wRenameDeck = env->addWindow(rect<s32>(510, 200, 820, 320), false, dataManager.GetSysString(1376));
 	wRenameDeck->getCloseButton()->setVisible(false);
 	wRenameDeck->setVisible(false);
+	wRenameDeck->setDraggable(false);
 	env->addStaticText(dataManager.GetSysString(1377), rect<s32>(20, 27, 290, 47), false, false, wRenameDeck);
-	ebREName =  env->addEditBox(L"", rect<s32>(20, 50, 290, 70), true, wRenameDeck, -1);
+	ebREName = env->addEditBox(L"", rect<s32>(20, 50, 290, 70), true, wRenameDeck, -1);
 	ebREName->setTextAlignment(irr::gui::EGUIA_CENTER, irr::gui::EGUIA_CENTER);
 	btnREYes = env->addButton(rect<s32>(70, 80, 140, 105), wRenameDeck, BUTTON_RENAME_DECK_SAVE, dataManager.GetSysString(1341));
 	btnRENo = env->addButton(rect<s32>(170, 80, 240, 105), wRenameDeck, BUTTON_RENAME_DECK_CANCEL, dataManager.GetSysString(1212));
@@ -1312,6 +1323,7 @@ void Game::LoadConfig() {
 	gameConf.antialias = 0;
 	gameConf.serverport = 7911;
 	gameConf.textfontsize = 12;
+	gameConf.game_version = 4944;
 	gameConf.nickname[0] = 0;
 	gameConf.gamename[0] = 0;
 	gameConf.lastdeck[0] = 0;
@@ -1321,7 +1333,6 @@ void Game::LoadConfig() {
 	gameConf.lastport[0] = 0;
 	gameConf.roompass[0] = 0;
 	gameConf.TBname[0] = 0;
-	gameConf.MJname[0] = 0;
 	//settings
 	gameConf.chkMAutoPos = 0;
 	gameConf.chkSTAutoPos = 1;
@@ -1350,12 +1361,12 @@ void Game::LoadConfig() {
 	gameConf.music_volume = 0.5;
 	gameConf.music_mode = 1;
 	gameConf.window_maximized = false;
-	gameConf.window_width = 1024;
-	gameConf.window_height = 640;
+	gameConf.window_width = 1515;
+	gameConf.window_height = 916;
 	gameConf.resize_popup_menu = false;
 	gameConf.chkEnablePScale = 1;
 	gameConf.random = 1;
-	gameConf.skin_index = -1;
+	gameConf.skin_index = 1;
 	if(fp) {
 		while(fgets(linebuf, 256, fp)) {
 			sscanf(linebuf, "%s = %s", strbuf, valbuf);
@@ -1872,6 +1883,7 @@ void Game::CloseDuelWindow() {
 	wOptions->setVisible(false);
 	wPhase->setVisible(false);
 	wPosSelect->setVisible(false);
+	wSearchWindow->setVisible(false);
 	wQuery->setVisible(false);
 	wSurrender->setVisible(false);
 	wReplayControl->setVisible(false);
@@ -1931,9 +1943,9 @@ void Game::OnResize() {
 	wMainMenu->setRelativePosition(ResizeWin(370, 200, 650, 485));
 	wOther->setRelativePosition(ResizeWin(370, 70, 650, 565));
 	wSystem->setRelativePosition(ResizeWin(212, 140, 812, 360));
-	wHDS->setRelativePosition(ResizeWin(362, 245, 662, 395));
-	wCRS->setRelativePosition(ResizeWin(279.5, 197.5, 744.5, 442.5));
-	wBGS->setRelativePosition(ResizeWin(157, 110, 867, 490));
+	wHDS->setRelativePosition(ResizeWin(342, 235, 682, 405));
+	wCRS->setRelativePosition(ResizeWin(269.5, 187.5, 774.5, 452.5));
+	wBGS->setRelativePosition(ResizeWin(132, 100, 882, 500));
 	wDeckEdit->setRelativePosition(Resize(309, 8, 605, 130));
 	cbDBLFList->setRelativePosition(Resize(80, 5, 220, 30));
 	cbDBDecks->setRelativePosition(Resize(80, 35, 220, 60));
@@ -1991,8 +2003,17 @@ void Game::OnResize() {
 	btnRenameDeck->setRelativePosition(Resize(170, 99, 220, 120));
 
 	wLanWindow->setRelativePosition(ResizeWin(220, 100, 800, 520));
-	wSC->setRelativePosition(ResizeWin(380, 103, 660, 420));
-	wRM->setRelativePosition(ResizeWin(232, 135, 792, 420));
+	recti btnCRpos = wLanWindow->getAbsolutePosition();
+	wSC->setRelativePosition(recti(
+		btnCRpos.LowerRightCorner.X - 860,
+		btnCRpos.LowerRightCorner.Y - 420,
+		btnCRpos.LowerRightCorner.X - 580,
+		btnCRpos.LowerRightCorner.Y - 103));
+	wRM->setRelativePosition(recti(
+		btnCRpos.LowerRightCorner.X,
+		btnCRpos.LowerRightCorner.Y - 420,
+		btnCRpos.LowerRightCorner.X + 430,
+		btnCRpos.LowerRightCorner.Y - 60));
 	wCreateHost->setRelativePosition(ResizeWin(320, 100, 700, 520));
 	wHostPrepare->setRelativePosition(ResizeWin(270, 120, 750, 440));
 	wReplay->setRelativePosition(ResizeWin(220, 100, 800, 520));
@@ -2009,11 +2030,16 @@ void Game::OnResize() {
 	wPosSelect->setRelativePosition(ResizeWin(340, 200, 935, 410));
 	wCardSelect->setRelativePosition(ResizeWin(320, 100, 1000, 400));
 	wANNumber->setRelativePosition(ResizeWin(550, 200, 780, 295));
-	wANCard->setRelativePosition(ResizeWin(560, 170, 770, 370));
+	wANCard->setRelativePosition(ResizeWin(510, 120, 820, 420));
 	wANAttribute->setRelativePosition(ResizeWin(500, 200, 830, 285));
 	wANRace->setRelativePosition(ResizeWin(480, 200, 850, 410));
 	wReplaySave->setRelativePosition(ResizeWin(510, 200, 820, 320));
-	wRenameDeck->setRelativePosition(ResizeWin(510, 200, 820, 320));
+	recti btnREpos = btnRenameDeck->getAbsolutePosition();
+	wRenameDeck->setRelativePosition(recti(
+		btnREpos.LowerRightCorner.X - 310,
+		btnREpos.LowerRightCorner.Y - 1,
+		btnREpos.LowerRightCorner.X,
+		btnREpos.LowerRightCorner.Y + 119));
 	stHintMsg->setRelativePosition(ResizeWin(500, 82, 820, 112));
 
 	//sound / music volume bar
@@ -2070,7 +2096,13 @@ void Game::OnResize() {
 	if(showingcode)
 		ShowCardInfo(showingcode, true);
 	btnClearLog->setRelativePosition(Resize(160, 300, 260, 325));
-	btnTB->setRelativePosition(Resize(150, 30, 250, 80));
+	btnTB->setRelativePosition(Resize(150, 20, 250, 70));
+	recti btnTBpos = btnCardSearch->getAbsolutePosition();
+	wTBWindow->setRelativePosition(recti(
+		btnTBpos.LowerRightCorner.X - 310,
+		btnTBpos.LowerRightCorner.Y - 1,
+		btnTBpos.LowerRightCorner.X,
+		btnTBpos.LowerRightCorner.Y + 119));
 
 	wPhase->setRelativePosition(Resize(480, 310, 855, 330));
 	btnPhaseStatus->setRelativePosition(Resize(0, 0, 50, 20));

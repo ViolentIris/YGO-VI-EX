@@ -41,6 +41,10 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 			mainGame->wReplaySave->getParent()->bringToFront(mainGame->wReplaySave);
 			break;
 		}
+		if(mainGame->wSC->isVisible() && id != BUTTON_233 && id != BUTTON_23333 && id != BUTTON_7210 && id != BUTTON_765 && id != BUTTON_222 && id != BUTTON_JP && id != BUTTON_NK && id != BUTTON_SC_EXIT)
+			break;
+		if(mainGame->wRM->isVisible() && id != BUTTON_RM_EXIT && id != BUTTON_RM1 && id != BUTTON_RM2 && id != BUTTON_RM3 && id != BUTTON_RM4 && id != BUTTON_RM5 && id != BUTTON_RM6 && id != BUTTON_RM7 && id != BUTTON_RM8 && id != BUTTON_RM9 && id != BUTTON_RM10 && id != BUTTON_RM11 && id != BUTTON_RM12 && id != BUTTON_RM13 && id != BUTTON_RM14 && id != BUTTON_RMCM && id != BUTTON_RMWN && id != BUTTON_RMAI && id != BUTTON_RMA)
+			break;
 		switch(event.GUIEvent.EventType) {
 		case irr::gui::EGET_BUTTON_CLICKED: {
 			if(id < 110)
@@ -116,7 +120,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_DLD: {
-                system("start .\\download\\YGO-VI-EX-Downloader.bat");
+                system("start .\\download\\YGO-VI-EX-Downloader.exe");
 				return true;
 				break;
 			}
@@ -133,33 +137,8 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_MJ: {
-				mainGame->btnMJAgree->setEnabled(true);
-				mainGame->btnMJCancel->setEnabled(true);
-				mainGame->btnMJB->setEnabled(true);
-				mainGame->ShowElement(mainGame->wMJWindow);
-				break;
-			}
-			case BUTTON_MJ_AGREE: {
-				char buf[256];
-				const wchar_t* pstr = mainGame->ebMJName->getText();
-				BufferIO::CopyWStr(pstr, mainGame->gameConf.MJname, 256);
-				int nLength = WideCharToMultiByte(CP_ACP, 0, pstr, -1, NULL, 0, NULL,NULL);
-				WideCharToMultiByte(CP_ACP, 0, pstr, -1, buf, nLength, NULL, NULL);
-				char buffer[300];
-				sprintf(buffer, "start \"\" \"https://www.majsoul.com/1/?room=%s\"", buf);
-				system(buffer);
-				mainGame->HideElement(mainGame->wMJWindow);
-				break;
-			}
-			case BUTTON_MJB: {
-                system("start https://www.majsoul.com/1/");
+                system("start https://www.bilibili.com/bangumi/play/ep151806");
 				return true;
-				break;
-			}
-			case BUTTON_MJ_CANCEL: {
-				mainGame->HideElement(mainGame->wMJWindow);
-				if(exit_on_return)
-					mainGame->device->closeDevice();
 				break;
 			}
 			case BUTTON_SYS: {

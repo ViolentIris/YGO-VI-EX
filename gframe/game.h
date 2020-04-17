@@ -28,7 +28,6 @@ struct Config {
 	wchar_t roompass[20];
 	wchar_t locale[64];
 	wchar_t TBname[256];
-	wchar_t MJname[256];
 	//settings
 	int chkMAutoPos;
 	int chkSTAutoPos;
@@ -262,7 +261,7 @@ public:
 	wchar_t locale_buf[256];
 	wchar_t orig_dir[64];
 	char locale_buf_utf8[256];
-
+	
 	ClientField dField;
 	DeckBuilder deckBuilder;
 	MenuHandler menuHandler;
@@ -371,12 +370,6 @@ public:
 	irr::gui::IGUIButton* btnCoverS;
 	irr::gui::IGUIButton* btnBgS;
 	irr::gui::IGUIButton* btnSystemExit;
-	//majiong
-	irr::gui::IGUIWindow* wMJWindow;
-	irr::gui::IGUIButton* btnMJB;
-	irr::gui::IGUIButton* btnMJAgree;
-	irr::gui::IGUIButton* btnMJCancel;
-	irr::gui::IGUIEditBox* ebMJName;
 	//head select
 	irr::gui::IGUIWindow* wHDS;
 	irr::gui::IGUIComboBox* cbHDS;
@@ -726,7 +719,6 @@ extern Game* mainGame;
 #define BUTTON_DELETE_REPLAY		133
 #define BUTTON_RENAME_REPLAY		134
 #define BUTTON_EXPORT_DECK			135
-
 #define EDITBOX_CHAT				140
 #define BUTTON_MSG_OK				200
 #define BUTTON_YES					201
@@ -872,10 +864,6 @@ extern Game* mainGame;
 #define BUTTON_DLD						431
 #define BUTTON_YST						432
 #define BUTTON_MJ						433
-
-#define BUTTON_MJB				434
-#define BUTTON_MJ_AGREE			435
-#define BUTTON_MJ_CANCEL		436
 
 #define BUTTON_SERVER_CHOOSE			394
 #define BUTTON_233						395

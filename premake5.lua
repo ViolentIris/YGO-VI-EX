@@ -6,7 +6,7 @@ solution "ygo"
     USE_IRRKLANG = true
 
     configurations { "Release", "Debug" }
-    defines { "LUA_COMPAT_5_2" }
+
     configuration "windows"
         defines { "WIN32", "_WIN32", "WINVER=0x0501" }
         libdirs { "$(DXSDK_DIR)Lib/x86" }
@@ -65,10 +65,10 @@ solution "ygo"
     include "ocgcore"
     include "gframe"
     if os.ishost("windows") then
+    include "lua"
     include "event"
     include "freetype"
     include "irrlicht"
-    include "lua"
     include "sqlite3"
     include "ikpmp3"
     end

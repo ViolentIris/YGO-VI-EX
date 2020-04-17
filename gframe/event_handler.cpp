@@ -1834,9 +1834,7 @@ bool ClientField::OnCommonEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_TB: {
-				mainGame->btnTBAgree->setEnabled(true);
-				mainGame->btnTBCancel->setEnabled(true);
-				mainGame->ShowElement(mainGame->wTBWindow);
+				mainGame->PopupElement(mainGame->wTBWindow);
 				break;
 			}
 			case BUTTON_TB_AGREE: {
@@ -2058,7 +2056,7 @@ bool ClientField::OnCommonEvent(const irr::SEvent& event) {
 		case irr::gui::EGET_COMBO_BOX_CHANGED: {
 			switch(id) {
 			case COMBOBOX_LOCALE: {
-				myswprintf(mainGame->gameConf.locale, L"%ls",  mainGame->cbLocale->getItem(mainGame->cbLocale->getSelected()));
+				myswprintf(mainGame->gameConf.locale, L"%ls", mainGame->cbLocale->getItem(mainGame->cbLocale->getSelected()));
 				mainGame->SaveConfig();
 				break;
 			}
