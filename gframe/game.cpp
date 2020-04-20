@@ -241,7 +241,7 @@ bool Game::Initialize() {
 	btnLanRefresh = env->addButton(rect<s32>(100, 325, 200, 350), wLanWindow, BUTTON_LAN_REFRESH, dataManager.GetSysString(1217));
 	env->addStaticText(dataManager.GetSysString(1221), rect<s32>(10, 360, 220, 380), false, false, wLanWindow);
 	btnSC = env->addButton(rect<s32>(240, 325, 340, 350), wLanWindow, BUTTON_SERVER_CHOOSE, dataManager.GetSysString(1427));
-	btnRM = env->addButton(rect<s32>(380, 325, 480, 350), wLanWindow, BUTTON_ROOM_CODE, dataManager.GetSysString(1513));
+	btnRM = env->addButton(rect<s32>(380, 325, 480, 350), wLanWindow, BUTTON_ROOM_CODE, dataManager.GetSysString(1517));
 	ebJoinHost = env->addEditBox(gameConf.lasthost, rect<s32>(110, 355, 350, 380), true, wLanWindow);
 	ebJoinHost->setTextAlignment(irr::gui::EGUIA_CENTER, irr::gui::EGUIA_CENTER);
 	ebJoinPort = env->addEditBox(gameConf.lastport, rect<s32>(360, 355, 420, 380), true, wLanWindow);
