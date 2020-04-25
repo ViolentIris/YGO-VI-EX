@@ -30,8 +30,7 @@ bool Game::Initialize() {
 	LoadConfig();
 	irr::SIrrlichtCreationParameters params = irr::SIrrlichtCreationParameters();
 	params.AntiAlias = gameConf.antialias;
-	LPCTSTR CURname = _T(".\\textures\\Arrow.ani");
-	SetClassLong(hWnd,GCL_HCURSOR,(LONG)LoadCursorFromFile(CURname));
+	SetClassLong(hWnd,GCL_HCURSOR,(LPARAM)LoadCursorFromFile(".\\textures\\Arrow.ani"));
 	if(gameConf.use_d3d)
 		params.DriverType = irr::video::EDT_DIRECT3D9;
 	else
