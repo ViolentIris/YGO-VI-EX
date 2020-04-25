@@ -13,6 +13,7 @@
 #include <regex>
 #include <iostream> 
 #include <windows.h>
+#include <atlstr.h>
 
 unsigned short PRO_VERSION = 0x1350;
 
