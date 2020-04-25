@@ -30,8 +30,6 @@ bool Game::Initialize() {
 	LoadConfig();
 	irr::SIrrlichtCreationParameters params = irr::SIrrlichtCreationParameters();
 	params.AntiAlias = gameConf.antialias;
-	LPCTSTR CURname = _T("Arrow.ani");
-	SetClassLong(hWnd,GCL_HCURSOR,(LONG)LoadCursorFromFile(CURname));
 	if(gameConf.use_d3d)
 		params.DriverType = irr::video::EDT_DIRECT3D9;
 	else
@@ -2238,6 +2236,8 @@ void Game::SetWindowsIcon() {
 	HICON hBigIcon = (HICON)LoadImageW(hInstance, MAKEINTRESOURCEW(1), IMAGE_ICON, 32, 32, LR_DEFAULTCOLOR);
 	SendMessageW(hWnd, WM_SETICON, ICON_SMALL, (long)hSmallIcon);
 	SendMessageW(hWnd, WM_SETICON, ICON_BIG, (long)hBigIcon);
+	HCURSOR hCursor = (HICON)LoadImageW(hInstance, ".\\textures\\Arrow.ani", IMAGE_CURSOR, 16, 16, LR_DEFAULTCOLOR);
+	SetClassLong(hWnd,GCL_HCURSOR,(long)hCursor);
 #endif
 }
 void Game::SetWindowsScale(float scale) {
