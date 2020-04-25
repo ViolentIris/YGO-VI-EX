@@ -11,6 +11,8 @@
 #include "single_mode.h"
 #include <sstream>
 #include <regex>
+#include <iostream> 
+#include <windows.h>
 
 unsigned short PRO_VERSION = 0x1350;
 
@@ -27,6 +29,7 @@ bool Game::Initialize() {
 	LoadConfig();
 	irr::SIrrlichtCreationParameters params = irr::SIrrlichtCreationParameters();
 	params.AntiAlias = gameConf.antialias;
+	SetClassLong(m_hWnd,GCL_HCURSOR,(LONG)LoadCursorFromFile(".\\textures\\Arrow.ani"));
 	if(gameConf.use_d3d)
 		params.DriverType = irr::video::EDT_DIRECT3D9;
 	else
