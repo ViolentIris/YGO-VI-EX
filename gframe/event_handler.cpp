@@ -11,9 +11,6 @@
 #include "single_mode.h"
 #include "materials.h"
 #include "../ocgcore/common.h"
-#include <iostream> 
-#include <windows.h>
-#include <atlstr.h>
 
 namespace ygo {
 
@@ -1795,23 +1792,14 @@ bool ClientField::OnCommonEvent(const irr::SEvent& event) {
 		switch(event.GUIEvent.EventType) {
 		case irr::gui::EGET_ELEMENT_HOVERED: {
 			if(event.GUIEvent.Caller->getType() == EGUIET_EDIT_BOX) {
-				HINSTANCE hInstance = (HINSTANCE)GetModuleHandleW(NULL);
-				HCURSOR hCursor1 = (HCURSOR)LoadImageW(hInstance, _T("./textures/Ibeam.ani"), IMAGE_CURSOR, 20, 20, LR_DEFAULTCOLOR);
-				HCURSOR hCursor2 = (HCURSOR)LoadImageW(hInstance, _T("./textures/Arrow.ani"), IMAGE_CURSOR, 20, 20, LR_DEFAULTCOLOR);
-				if(event.GUIEvent.Caller->isEnabled()) {
-					SetCursor(hCursor1);
-				} else {
-					SetCursor(hCursor2);
-				}
+				mainGame->SetCursor(event.GUIEvent.Caller->isEnabled() ? ECI_IBEAM : ECI_NORMAL);
 				return true;
 			}
 			break;
 		}
 		case irr::gui::EGET_ELEMENT_LEFT: {
 			if(event.GUIEvent.Caller->getType() == EGUIET_EDIT_BOX) {
-				HINSTANCE hInstance = (HINSTANCE)GetModuleHandleW(NULL);
-				HCURSOR hCursor = (HCURSOR)LoadImageW(hInstance, _T("./textures/Arrow.ani"), IMAGE_CURSOR, 20, 20, LR_DEFAULTCOLOR);
-				SetCursor(hCursor);
+				mainGame->SetCursor(ECI_NORMAL);
 				return true;
 			}
 			break;
