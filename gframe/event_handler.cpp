@@ -1797,7 +1797,7 @@ bool ClientField::OnCommonEvent(const irr::SEvent& event) {
 			if(event.GUIEvent.Caller->getType() == EGUIET_EDIT_BOX) {
 				HINSTANCE hInstance = (HINSTANCE)GetModuleHandleW(NULL);
 				HCURSOR hCursor = (HCURSOR)LoadImageW(hInstance, _T("./textures/Arrow.ani"), IMAGE_CURSOR, 20, 20, LR_DEFAULTCOLOR);
-				SetCursor(event.GUIEvent.Caller->isEnabled() ? IDC_IBEAM : hCursor);
+				SetCursor(event.GUIEvent.Caller->isEnabled() ? IDC_IBEAM : (long)hCursor);
 				return true;
 			}
 			break;
@@ -1806,7 +1806,7 @@ bool ClientField::OnCommonEvent(const irr::SEvent& event) {
 			if(event.GUIEvent.Caller->getType() == EGUIET_EDIT_BOX) {
 				HINSTANCE hInstance = (HINSTANCE)GetModuleHandleW(NULL);
 				HCURSOR hCursor = (HCURSOR)LoadImageW(hInstance, _T("./textures/Arrow.ani"), IMAGE_CURSOR, 20, 20, LR_DEFAULTCOLOR);
-				SetCursor(hCursor);
+				SetCursor((long)hCursor);
 				return true;
 			}
 			break;
