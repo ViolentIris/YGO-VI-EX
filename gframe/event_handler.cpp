@@ -1793,9 +1793,9 @@ bool ClientField::OnCommonEvent(const irr::SEvent& event) {
 	case irr::EET_GUI_EVENT: {
 		s32 id = event.GUIEvent.Caller->getID();
 		switch(event.GUIEvent.EventType) {
-		HCURSOR hCursor = (HCURSOR)LoadImageW(hInstance, _T("./textures/Arrow.ani"), IMAGE_CURSOR, 20, 20, LR_DEFAULTCOLOR);
 		case irr::gui::EGET_ELEMENT_HOVERED: {
 			if(event.GUIEvent.Caller->getType() == EGUIET_EDIT_BOX) {
+				HCURSOR hCursor = (HCURSOR)LoadImageW(hInstance, _T("./textures/Arrow.ani"), IMAGE_CURSOR, 20, 20, LR_DEFAULTCOLOR);
 				mainGame->SetCursor(event.GUIEvent.Caller->isEnabled() ? ECI_IBEAM : (long)hCursor);
 				return true;
 			}
@@ -1803,6 +1803,7 @@ bool ClientField::OnCommonEvent(const irr::SEvent& event) {
 		}
 		case irr::gui::EGET_ELEMENT_LEFT: {
 			if(event.GUIEvent.Caller->getType() == EGUIET_EDIT_BOX) {
+				HCURSOR hCursor = (HCURSOR)LoadImageW(hInstance, _T("./textures/Arrow.ani"), IMAGE_CURSOR, 20, 20, LR_DEFAULTCOLOR);
 				mainGame->SetCursor((long)hCursor);
 				return true;
 			}
