@@ -1795,16 +1795,18 @@ bool ClientField::OnCommonEvent(const irr::SEvent& event) {
 		switch(event.GUIEvent.EventType) {
 		case irr::gui::EGET_ELEMENT_HOVERED: {
 			if(event.GUIEvent.Caller->getType() == EGUIET_EDIT_BOX) {
+				HINSTANCE hInstance = (HINSTANCE)GetModuleHandleW(NULL);
 				HCURSOR hCursor = (HCURSOR)LoadImageW(hInstance, _T("./textures/Arrow.ani"), IMAGE_CURSOR, 20, 20, LR_DEFAULTCOLOR);
-				mainGame->SetCursor(event.GUIEvent.Caller->isEnabled() ? ECI_IBEAM : (long)hCursor);
+				mainGame->SetCursor(event.GUIEvent.Caller->isEnabled() ? ECI_IBEAM : hCursor);
 				return true;
 			}
 			break;
 		}
 		case irr::gui::EGET_ELEMENT_LEFT: {
 			if(event.GUIEvent.Caller->getType() == EGUIET_EDIT_BOX) {
+				HINSTANCE hInstance = (HINSTANCE)GetModuleHandleW(NULL);
 				HCURSOR hCursor = (HCURSOR)LoadImageW(hInstance, _T("./textures/Arrow.ani"), IMAGE_CURSOR, 20, 20, LR_DEFAULTCOLOR);
-				mainGame->SetCursor((long)hCursor);
+				mainGame->SetCursor(hCursor);
 				return true;
 			}
 			break;
