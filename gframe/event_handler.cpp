@@ -1796,8 +1796,13 @@ bool ClientField::OnCommonEvent(const irr::SEvent& event) {
 		case irr::gui::EGET_ELEMENT_HOVERED: {
 			if(event.GUIEvent.Caller->getType() == EGUIET_EDIT_BOX) {
 				HINSTANCE hInstance = (HINSTANCE)GetModuleHandleW(NULL);
-				HCURSOR hCursor = (HCURSOR)LoadImageW(hInstance, _T("./textures/Arrow.ani"), IMAGE_CURSOR, 20, 20, LR_DEFAULTCOLOR);
-				SetCursor(event.GUIEvent.Caller->isEnabled() ? IDC_IBEAM : hCursor);
+				HCURSOR hCursor1 = (HCURSOR)LoadImageW(hInstance, _T("./textures/Ibeam.ani"), IMAGE_CURSOR, 20, 20, LR_DEFAULTCOLOR);
+				HCURSOR hCursor2 = (HCURSOR)LoadImageW(hInstance, _T("./textures/Arrow.ani"), IMAGE_CURSOR, 20, 20, LR_DEFAULTCOLOR);
+				if(event.GUIEvent.Caller->isEnabled()) {
+					SetCursor(hCursor1);
+				} else {
+					SetCursor(hCursor2);
+				}
 				return true;
 			}
 			break;
