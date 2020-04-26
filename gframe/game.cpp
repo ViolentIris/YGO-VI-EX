@@ -2236,7 +2236,7 @@ void Game::SetWindowsIcon() {
 	HICON hBigIcon = (HICON)LoadImageW(hInstance, MAKEINTRESOURCEW(1), IMAGE_ICON, 32, 32, LR_DEFAULTCOLOR);
 	SendMessageW(hWnd, WM_SETICON, ICON_SMALL, (long)hSmallIcon);
 	SendMessageW(hWnd, WM_SETICON, ICON_BIG, (long)hBigIcon);
-	HCURSOR hCursor = (HICON)LoadImageW(hInstance, _T("./textures/Arrow.ani"), IMAGE_CURSOR, 16, 16, LR_DEFAULTCOLOR);
+	HCURSOR hCursor = (HCURSOR)LoadImageW(hInstance, _T("./textures/Arrow.ani"), IMAGE_CURSOR, 16, 16, LR_DEFAULTCOLOR);
 	SetClassLong(hWnd,GCL_HCURSOR,(long)hCursor);
 #endif
 }
