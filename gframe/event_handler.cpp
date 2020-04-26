@@ -11,6 +11,9 @@
 #include "single_mode.h"
 #include "materials.h"
 #include "../ocgcore/common.h"
+#include <iostream> 
+#include <windows.h>
+#include <atlstr.h>
 
 namespace ygo {
 
@@ -1790,16 +1793,17 @@ bool ClientField::OnCommonEvent(const irr::SEvent& event) {
 	case irr::EET_GUI_EVENT: {
 		s32 id = event.GUIEvent.Caller->getID();
 		switch(event.GUIEvent.EventType) {
+		HCURSOR hCursor = (HCURSOR)LoadImageW(hInstance, _T("./textures/Arrow.ani"), IMAGE_CURSOR, 20, 20, LR_DEFAULTCOLOR);
 		case irr::gui::EGET_ELEMENT_HOVERED: {
 			if(event.GUIEvent.Caller->getType() == EGUIET_EDIT_BOX) {
-				mainGame->SetCursor(event.GUIEvent.Caller->isEnabled() ? ECI_IBEAM : ECI_NORMAL);
+				mainGame->SetCursor(event.GUIEvent.Caller->isEnabled() ? ECI_IBEAM : (long)hCursor);
 				return true;
 			}
 			break;
 		}
 		case irr::gui::EGET_ELEMENT_LEFT: {
 			if(event.GUIEvent.Caller->getType() == EGUIET_EDIT_BOX) {
-				mainGame->SetCursor(ECI_NORMAL);
+				mainGame->SetCursor((long)hCursor);
 				return true;
 			}
 			break;
