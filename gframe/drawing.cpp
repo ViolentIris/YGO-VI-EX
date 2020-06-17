@@ -596,8 +596,8 @@ void Game::DrawMisc() {
 	//avatar image
 	//driver->draw2DImage(imageManager.tAvatar[0], Resize(445.5, 8, 507.5, 70.5), recti(0, 0, 160, 160), 0, 0, true);
 	//driver->draw2DImage(imageManager.tAvatar[1], Resize(808.5, 8, 870.5, 70.5), recti(0, 0, 160, 160), 0, 0, true);
-	driver->draw2DImage(imageManager.tAvatar[0], ResizeCardMid(328, 80, 408, 160, 328, 80), recti(0, 0, 160, 160), 0, 0, true);
-	driver->draw2DImage(imageManager.tAvatar[1], ResizeCardMid(910.5, 80, 990.5, 160, 990.5, 160), recti(0, 0, 160, 160), 0, 0, true);
+	driver->draw2DImage(imageManager.tAvatar[0], ResizeCardMid(328, 60, 408, 140, 328, 60), recti(0, 0, 160, 160), 0, 0, true);
+	driver->draw2DImage(imageManager.tAvatar[1], ResizeCardMid(910.5, 60, 990.5, 140, 990.5, 140), recti(0, 0, 160, 160), 0, 0, true);
 	/*if((dInfo.turn % 2 && dInfo.isFirst) || (!(dInfo.turn % 2) && !dInfo.isFirst)) {
 		driver->draw2DImage(imageManager.tLPBarFrame, Resize(325, 8, 630, 78), recti(0, 0, 610, 140), 0, 0, true);
 		driver->draw2DImage(imageManager.tLPBarFrame, Resize(689, 8, 991, 78), recti(0, 420, 610, 560), 0, 0, true);		
@@ -660,8 +660,10 @@ void Game::DrawMisc() {
 		//DrawShadowText(numFont, dInfo.str_time_left[0], Resize(386, 10, 416, 29), Resize(0, 1, 2, 0), dInfo.time_color[0], 0xff000000, true, false, 0);
 		//DrawShadowText(numFont, dInfo.str_time_left[1], Resize(915, 10, 945, 29), Resize(0, 1, 2, 0), dInfo.time_color[1], 0xff000000, true, false, 0);
 
-		driver->draw2DImage(imageManager.tAvatar[0], ResizeCardMid(330, 10, 348, 28, 348, 19), rect<s32>(0, 0, 160, 160), 0, 0, true);
-		driver->draw2DImage(imageManager.tAvatar[1], ResizeCardMid(951, 10, 968, 28, 968, 19), rect<s32>(0, 0, 160, 160), 0, 0, true);
+		driver->draw2DImage(imageManager.tAvatar[0], ResizeCardMid(541, 32, 559, 50, 559, 41), rect<s32>(0, 0, 160, 160), 0, 0, true);
+		driver->draw2DImage(imageManager.tAvatar[1], ResizeCardMid(746, 32, 764, 50, 764, 41), rect<s32>(0, 0, 160, 160), 0, 0, true);
+		//driver->draw2DImage(imageManager.tAvatar[0], ResizeCardMid(330, 10, 348, 28, 348, 19), rect<s32>(0, 0, 160, 160), 0, 0, true);
+		//driver->draw2DImage(imageManager.tAvatar[1], ResizeCardMid(951, 10, 968, 28, 968, 19), rect<s32>(0, 0, 160, 160), 0, 0, true);
 		DrawShadowText(numFont, dInfo.str_card_count[0], Resize(560, 32, 580, 51), Resize(0, 1, 2, 0), dInfo.card_count_color[0], 0xff000000, true, false, 0);
 		DrawShadowText(numFont, dInfo.str_card_count[1], Resize(765, 32, 781, 51), Resize(0, 1, 2, 0), dInfo.card_count_color[1], 0xff000000, true, false, 0);
 		//DrawShadowText(numFont, dInfo.str_card_count[0], Resize(349, 10, 369, 29), Resize(0, 1, 2, 0), dInfo.card_count_color[0], 0xff000000, true, false, 0);
