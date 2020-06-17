@@ -111,7 +111,7 @@ bool ImageManager::Initial()  {
 	tFieldTransparent[0] = driver->getTexture("textures/field-transparent2.png");
 	tField[1] = driver->getTexture("textures/field3.png");
 	tFieldTransparent[1] = driver->getTexture("textures/field-transparent3.png");
-	tDoll_start[0] = driver->getTexture("textures/Dolls1/Doll_Start.png");
+	/*tDoll_start[0] = driver->getTexture("textures/Dolls1/Doll_Start.png");
 	tDoll_start[1] = driver->getTexture("textures/Dolls2/Doll_Start.png");
 	tDoll_3000M[0] = driver->getTexture("textures/Dolls1/Doll_3000M.png");
 	tDoll_3000M[1] = driver->getTexture("textures/Dolls2/Doll_3000M.png");
@@ -126,7 +126,7 @@ bool ImageManager::Initial()  {
 	tDoll_Lose[0] = driver->getTexture("textures/Dolls1/Doll_Lose.png");
 	tDoll_Lose[1] = driver->getTexture("textures/Dolls2/Doll_Lose.png");
 	tDoll_Draw[0] = driver->getTexture("textures/Dolls1/Doll_Draw.png");
-	tDoll_Draw[1] = driver->getTexture("textures/Dolls2/Doll_Draw.png");
+	tDoll_Draw[1] = driver->getTexture("textures/Dolls2/Doll_Draw.png");*/
 	tClock = driver->getTexture("textures/clock.png");
 	int i = 0;
 	char buff[100];
