@@ -673,8 +673,10 @@ void Game::DrawMisc() {
 		//driver->draw2DRectangleOutline(Resize(695, 34, 795, 44), 0xffffffff);
 	}
 	else {
-		driver->draw2DImage(imageManager.tAvatar[0], ResizeCardMid(330, 10, 348, 28, 348, 19), rect<s32>(0, 0, 160, 160), 0, 0, true);
-		driver->draw2DImage(imageManager.tAvatar[1], ResizeCardMid(951, 10, 968, 28, 968, 19), rect<s32>(0, 0, 160, 160), 0, 0, true);
+		driver->draw2DImage(imageManager.tAvatar[0], ResizeCardMid(595, 32, 613, 50, 613, 41), rect<s32>(0, 0, 160, 160), 0, 0, true);
+		driver->draw2DImage(imageManager.tAvatar[1], ResizeCardMid(692, 32, 710, 50, 710, 41), rect<s32>(0, 0, 160, 160), 0, 0, true);
+		//driver->draw2DImage(imageManager.tAvatar[0], ResizeCardMid(330, 10, 348, 28, 348, 19), rect<s32>(0, 0, 160, 160), 0, 0, true);
+		//driver->draw2DImage(imageManager.tAvatar[1], ResizeCardMid(951, 10, 968, 28, 968, 19), rect<s32>(0, 0, 160, 160), 0, 0, true);
 
 		DrawShadowText(numFont, dInfo.str_card_count[0], Resize(614, 32, 632, 51), Resize(0, 1, 2, 0), dInfo.card_count_color[0], 0xff000000, true, false, 0);
 		DrawShadowText(numFont, dInfo.str_card_count[1], Resize(711, 32, 730, 51), Resize(0, 1, 2, 0), dInfo.card_count_color[1], 0xff000000, true, false, 0);

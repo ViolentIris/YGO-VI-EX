@@ -62,7 +62,7 @@ public:
 	irr::video::ITexture* tLScale[14];
 	irr::video::ITexture* tCardType[7];
 	irr::video::ITexture* tClock;
-	irr::video::ITexture* tLPBarFrame;
+	/*irr::video::ITexture* tLPBarFrame;
 	irr::video::ITexture* tDoll_start[2];
 	irr::video::ITexture* tDoll_3000M[2];
 	irr::video::ITexture* tDoll_3000L[2];
@@ -70,7 +70,7 @@ public:
 	irr::video::ITexture* tDoll_LPA[2];
 	irr::video::ITexture* tDoll_Win[2];
 	irr::video::ITexture* tDoll_Lose[2];
-	irr::video::ITexture* tDoll_Draw[2];
+	irr::video::ITexture* tDoll_Draw[2];*/
 	std::list<std::string> support_types;
 };
 
