@@ -547,27 +547,39 @@ void Game::DrawMisc() {
 	}
 	//finish button
 	if(btnCancelOrFinish->isVisible() && dField.select_ready)
-		DrawSelectionLine(btnCancelOrFinish, 2, 0xffffff00);
+		DrawSelectionLine(btnCancelOrFinish, 2, 0xffff0000);
 	//lp bar
 	if((dInfo.turn % 2 && dInfo.isFirst && !dInfo.is_swapped) || (!(dInfo.turn % 2) && !dInfo.isFirst && !dInfo.is_swapped) || (!(dInfo.turn % 2) && dInfo.isFirst && dInfo.is_swapped) || (dInfo.turn % 2 && !dInfo.isFirst && dInfo.is_swapped)) {
+		driver->draw2DRectangle(0xa0000000, Resize(327, 8, 630, 51));
+		driver->draw2DRectangleOutline(Resize(327, 8, 630, 51), 0xff644300);
 		//driver->draw2DRectangle(0xa0000000, Resize(327, 8, 630, 51));
 		//driver->draw2DRectangleOutline(Resize(327, 8, 630, 51), 0xffff8080);
 	} else {
+		driver->draw2DRectangle(0xa0000000, Resize(689, 8, 991, 51));
+		driver->draw2DRectangleOutline(Resize(689, 8, 991, 51), 0xff644300);
 		//driver->draw2DRectangle(0xa0000000, Resize(689, 8, 991, 51));
 		//driver->draw2DRectangleOutline(Resize(689, 8, 991, 51), 0xffff8080);
 	}
+	driver->draw2DImage(imageManager.tLPFrame, Resize(330, 10, 629, 30), recti(0, 0, 200, 20), 0, 0, true);
+	driver->draw2DImage(imageManager.tLPFrame, Resize(691, 10, 990, 30), recti(0, 0, 200, 20), 0, 0, true);
 	//driver->draw2DImage(imageManager.tLPFrame, Resize(330, 10, 629, 30), recti(0, 0, 200, 20), 0, 0, true);
 	//driver->draw2DImage(imageManager.tLPFrame, Resize(691, 10, 990, 30), recti(0, 0, 200, 20), 0, 0, true);
 	if(!dInfo.start_lp[0])
-		driver->draw2DImage(imageManager.tLPBar, Resize(390, 12, 625, 74), recti(0, 0, 16, 16), 0, 0, true);
+		driver->draw2DImage(imageManager.tLPBar, Resize(335, 12, 335, 28), recti(0, 0, 16, 16), 0, 0, true);
+		//driver->draw2DImage(imageManager.tLPBar, Resize(390, 12, 625, 74), recti(0, 0, 16, 16), 0, 0, true);
 	else if(dInfo.lp[0] >= dInfo.start_lp[0])
-		driver->draw2DImage(imageManager.tLPBar, Resize(390, 12, 625, 74), recti(0, 0, 16, 16), 0, 0, true);
-	else driver->draw2DImage(imageManager.tLPBar, Resize(390, 12, 390 + 235 * dInfo.lp[0] / dInfo.start_lp[0], 74), recti(0, 0, 16, 16), 0, 0, true);
+		driver->draw2DImage(imageManager.tLPBar, Resize(335, 12, 625, 28), recti(0, 0, 16, 16), 0, 0, true);
+	else driver->draw2DImage(imageManager.tLPBar, Resize(335, 12, 335 + 290 * dInfo.lp[0] / dInfo.start_lp[0], 28), recti(0, 0, 16, 16), 0, 0, true);
+		//driver->draw2DImage(imageManager.tLPBar, Resize(390, 12, 625, 74), recti(0, 0, 16, 16), 0, 0, true);
+	//else driver->draw2DImage(imageManager.tLPBar, Resize(390, 12, 390 + 235 * dInfo.lp[0] / dInfo.start_lp[0], 74), recti(0, 0, 16, 16), 0, 0, true);
 	if(!dInfo.start_lp[1])
-		driver->draw2DImage(imageManager.tLPBar, Resize(696, 12, 930, 74), recti(0, 0, 16, 16), 0, 0, true);
+		driver->draw2DImage(imageManager.tLPBar, Resize(986, 12, 986, 28), recti(0, 0, 16, 16), 0, 0, true);
+		//driver->draw2DImage(imageManager.tLPBar, Resize(696, 12, 930, 74), recti(0, 0, 16, 16), 0, 0, true);
 	else if(dInfo.lp[1] >= dInfo.start_lp[1])
-		driver->draw2DImage(imageManager.tLPBar, Resize(696, 12, 930, 74), recti(0, 0, 16, 16), 0, 0, true);
-	else driver->draw2DImage(imageManager.tLPBar, Resize(930 - 235 * dInfo.lp[1] / dInfo.start_lp[1], 12, 930, 74), recti(0, 0, 16, 16), 0, 0, true);
+		driver->draw2DImage(imageManager.tLPBar, Resize(696, 12, 986, 28), recti(0, 0, 16, 16), 0, 0, true);
+	else driver->draw2DImage(imageManager.tLPBar, Resize(986 - 290 * dInfo.lp[1] / dInfo.start_lp[1], 12, 986, 28), recti(0, 0, 16, 16), 0, 0, true);
+		//driver->draw2DImage(imageManager.tLPBar, Resize(696, 12, 930, 74), recti(0, 0, 16, 16), 0, 0, true);
+	//else driver->draw2DImage(imageManager.tLPBar, Resize(930 - 235 * dInfo.lp[1] / dInfo.start_lp[1], 12, 930, 74), recti(0, 0, 16, 16), 0, 0, true);
 	if(lpframe) {
 		dInfo.lp[lpplayer] -= lpd;
 		myswprintf(dInfo.strLP[lpplayer], L"%d", dInfo.lp[lpplayer]);
@@ -586,14 +598,14 @@ void Game::DrawMisc() {
 	//driver->draw2DImage(imageManager.tAvatar[1], Resize(808.5, 8, 870.5, 70.5), recti(0, 0, 160, 160), 0, 0, true);
 	driver->draw2DImage(imageManager.tAvatar[0], ResizeCardMid(328, 80, 408, 160, 328, 80), recti(0, 0, 160, 160), 0, 0, true);
 	driver->draw2DImage(imageManager.tAvatar[1], ResizeCardMid(910.5, 80, 990.5, 160, 990.5, 160), recti(0, 0, 160, 160), 0, 0, true);
-	if((dInfo.turn % 2 && dInfo.isFirst) || (!(dInfo.turn % 2) && !dInfo.isFirst)) {
+	/*if((dInfo.turn % 2 && dInfo.isFirst) || (!(dInfo.turn % 2) && !dInfo.isFirst)) {
 		driver->draw2DImage(imageManager.tLPBarFrame, Resize(325, 8, 630, 78), recti(0, 0, 610, 140), 0, 0, true);
 		driver->draw2DImage(imageManager.tLPBarFrame, Resize(689, 8, 991, 78), recti(0, 420, 610, 560), 0, 0, true);		
 	} else {
 		driver->draw2DImage(imageManager.tLPBarFrame, Resize(325, 8, 630, 78), recti(0, 140, 610, 280), 0, 0, true);
 		driver->draw2DImage(imageManager.tLPBarFrame, Resize(689, 8, 991, 78), recti(0, 280, 610, 420), 0, 0, true);
-	}
-	//Dolls stage
+	}*/
+	/*//Dolls stage
 	if(((dInfo.start_lp[0]) || (dInfo.lp[0] == dInfo.lp[1]) || (dInfo.lp[0] - dInfo.lp[1] < 3000) || (dInfo.lp[1] - dInfo.lp[0] < 3000)) && !(mainGame->dInfo.isFinished) && !(mainGame->dInfo.curMsg == MSG_RECOVER) && !(mainGame->dInfo.curMsg == MSG_DAMAGE) && !(dInfo.lp[1] - dInfo.lp[0] >= 3000) && !(dInfo.lp[0] - dInfo.lp[1] >= 3000)) {
 		driver->draw2DImage(imageManager.tDoll_start[0], Resize(552, 3, 632, 83), recti(0, 0, 125, 125), 0, 0, true);
 		driver->draw2DImage(imageManager.tDoll_start[1], Resize(687, 3, 767, 83), recti(0, 0, 125, 125), 0, 0, true);
@@ -634,20 +646,26 @@ void Game::DrawMisc() {
 		driver->draw2DImage(imageManager.tDoll_Draw[0], Resize(552, 3, 632, 83), recti(0, 0, 125, 125), 0, 0, true);
 		driver->draw2DImage(imageManager.tDoll_Draw[1], Resize(687, 3, 767, 83), recti(0, 0, 125, 125), 0, 0, true);
 	}
+	*/
 	//Time Display
 	if(!dInfo.isReplay && dInfo.player_type < 7 && dInfo.time_limit) {
 		if(imageManager.tClock) {
-			driver->draw2DImage(imageManager.tClock, Resize(368, 8, 386, 26), recti(0, 0, 34, 34), 0, 0, true);
-			driver->draw2DImage(imageManager.tClock, Resize(896, 8, 914, 26), recti(0, 0, 34, 34), 0, 0, true);
+			driver->draw2DImage(imageManager.tClock, ResizeCardMid(579, 32, 597, 50, 597, 41), recti(0, 0, 34, 34), 0, 0, true);
+			driver->draw2DImage(imageManager.tClock, ResizeCardMid(695, 32, 713, 50, 713, 41), recti(0, 0, 34, 34), 0, 0, true);			
+			//driver->draw2DImage(imageManager.tClock, Resize(368, 8, 386, 26), recti(0, 0, 34, 34), 0, 0, true);
+			//driver->draw2DImage(imageManager.tClock, Resize(896, 8, 914, 26), recti(0, 0, 34, 34), 0, 0, true);
 		}
-		DrawShadowText(numFont, dInfo.str_time_left[0], Resize(386, 10, 416, 29), Resize(0, 1, 2, 0), dInfo.time_color[0], 0xff000000, true, false, 0);
-		DrawShadowText(numFont, dInfo.str_time_left[1], Resize(915, 10, 945, 29), Resize(0, 1, 2, 0), dInfo.time_color[1], 0xff000000, true, false, 0);
+		DrawShadowText(numFont, dInfo.str_time_left[0], Resize(597, 32, 627, 51), rect<s32>(0, 1, 2, 0), dInfo.time_color[0], 0xff000000, true, false, 0);
+		DrawShadowText(numFont, dInfo.str_time_left[1], Resize(713, 32, 743, 51), rect<s32>(0, 1, 2, 0), dInfo.time_color[1], 0xff000000, true, false, 0);
+		//DrawShadowText(numFont, dInfo.str_time_left[0], Resize(386, 10, 416, 29), Resize(0, 1, 2, 0), dInfo.time_color[0], 0xff000000, true, false, 0);
+		//DrawShadowText(numFont, dInfo.str_time_left[1], Resize(915, 10, 945, 29), Resize(0, 1, 2, 0), dInfo.time_color[1], 0xff000000, true, false, 0);
 
 		driver->draw2DImage(imageManager.tAvatar[0], ResizeCardMid(330, 10, 348, 28, 348, 19), rect<s32>(0, 0, 160, 160), 0, 0, true);
 		driver->draw2DImage(imageManager.tAvatar[1], ResizeCardMid(951, 10, 968, 28, 968, 19), rect<s32>(0, 0, 160, 160), 0, 0, true);
-
-		DrawShadowText(numFont, dInfo.str_card_count[0], Resize(349, 10, 369, 29), Resize(0, 1, 2, 0), dInfo.card_count_color[0], 0xff000000, true, false, 0);
-		DrawShadowText(numFont, dInfo.str_card_count[1], Resize(969, 10, 985, 29), Resize(0, 1, 2, 0), dInfo.card_count_color[1], 0xff000000, true, false, 0);
+		DrawShadowText(numFont, dInfo.str_card_count[0], Resize(560, 32, 580, 51), Resize(0, 1, 2, 0), dInfo.card_count_color[0], 0xff000000, true, false, 0);
+		DrawShadowText(numFont, dInfo.str_card_count[1], Resize(765, 32, 781, 51), Resize(0, 1, 2, 0), dInfo.card_count_color[1], 0xff000000, true, false, 0);
+		//DrawShadowText(numFont, dInfo.str_card_count[0], Resize(349, 10, 369, 29), Resize(0, 1, 2, 0), dInfo.card_count_color[0], 0xff000000, true, false, 0);
+		//DrawShadowText(numFont, dInfo.str_card_count[1], Resize(969, 10, 985, 29), Resize(0, 1, 2, 0), dInfo.card_count_color[1], 0xff000000, true, false, 0);
 
 		//driver->draw2DRectangle(Resize(525, 34, 525 + dInfo.time_left[0] * 100 / dInfo.time_limit, 44), 0xa0e0e0e0, 0xa0e0e0e0, 0xa0c0c0c0, 0xa0c0c0c0);
 		//driver->draw2DRectangleOutline(Resize(525, 34, 625, 44), 0xffffffff);
@@ -658,14 +676,20 @@ void Game::DrawMisc() {
 		driver->draw2DImage(imageManager.tAvatar[0], ResizeCardMid(330, 10, 348, 28, 348, 19), rect<s32>(0, 0, 160, 160), 0, 0, true);
 		driver->draw2DImage(imageManager.tAvatar[1], ResizeCardMid(951, 10, 968, 28, 968, 19), rect<s32>(0, 0, 160, 160), 0, 0, true);
 
-		DrawShadowText(numFont, dInfo.str_card_count[0], Resize(349, 10, 369, 29), Resize(0, 1, 2, 0), dInfo.card_count_color[0], 0xff000000, true, false, 0);
-		DrawShadowText(numFont, dInfo.str_card_count[1], Resize(969, 10, 985, 29), Resize(0, 1, 2, 0), dInfo.card_count_color[1], 0xff000000, true, false, 0);
+		DrawShadowText(numFont, dInfo.str_card_count[0], Resize(614, 32, 632, 51), Resize(0, 1, 2, 0), dInfo.card_count_color[0], 0xff000000, true, false, 0);
+		DrawShadowText(numFont, dInfo.str_card_count[1], Resize(711, 32, 730, 51), Resize(0, 1, 2, 0), dInfo.card_count_color[1], 0xff000000, true, false, 0);
+		//DrawShadowText(numFont, dInfo.str_card_count[0], Resize(349, 10, 369, 29), Resize(0, 1, 2, 0), dInfo.card_count_color[0], 0xff000000, true, false, 0);
+		//DrawShadowText(numFont, dInfo.str_card_count[1], Resize(969, 10, 985, 29), Resize(0, 1, 2, 0), dInfo.card_count_color[1], 0xff000000, true, false, 0);
 	}
-	DrawShadowText(numFont, dInfo.strLP[0], Resize(330, 32, 450, 50), Resize(0, 1, 2, 0), 0xffffff00, 0xff000000, true, false, 0);
-	DrawShadowText(numFont, dInfo.strLP[1], Resize(872, 32, 992, 50), Resize(0, 1, 2, 0), 0xffffff00, 0xff000000, true, false, 0);
+	DrawShadowText(numFont, dInfo.strLP[0], Resize(330, 12, 631, 30), Resize(0, 1, 2, 0), 0xffffff00, 0xff000000, true, false, 0);
+	DrawShadowText(numFont, dInfo.strLP[1], Resize(691, 12, 992, 30), Resize(0, 1, 2, 0), 0xffffff00, 0xff000000, true, false, 0);
+	//DrawShadowText(numFont, dInfo.strLP[0], Resize(330, 32, 450, 50), Resize(0, 1, 2, 0), 0xffffff00, 0xff000000, true, false, 0);
+	//DrawShadowText(numFont, dInfo.strLP[1], Resize(872, 32, 992, 50), Resize(0, 1, 2, 0), 0xffffff00, 0xff000000, true, false, 0);
 
-	recti p1size = Resize(335, 50, 629, 69);
-	recti p2size = Resize(986, 50, 986, 69);
+	recti p1size = Resize(335, 31, 629, 50);
+	recti p2size = Resize(986, 31, 986, 50);
+	//recti p1size = Resize(335, 50, 629, 69);
+	//recti p2size = Resize(986, 50, 986, 69);
 	if(!dInfo.isTag || !dInfo.tag_player[0])
 		textFont->draw(dInfo.hostname, p1size, 0xffffffff, false, false, 0);
 	else
