@@ -47,6 +47,8 @@ bool ImageManager::Initial()  {
 	tCover[6] = tCover[2];
 	tCover[7] = tCover[3];
 	tUnknown = driver->getTexture("textures/unknown.jpg");
+	tUnknownFit = NULL;
+	tUnknownThumb = NULL;
 	tAvatar[0] = driver->getTexture("textures/head.jpg");
 	tAvatar[1] = GetRandomImage(TEXTURE_AVATAR_S);
 	tAct = NULL;
@@ -137,7 +139,7 @@ bool ImageManager::Initial()  {
 	for (i = 0; i < 14; i++) {
 		snprintf(buff, 100, "textures/pscale/lscale_%d.png", i);
 		tLScale[i] = driver->getTexture(buff);
-	}	
+	}
 	support_types.push_back(std::string("jpg"));
 	support_types.push_back(std::string("png"));
 	support_types.push_back(std::string("bpg"));
@@ -378,9 +380,6 @@ irr::video::ITexture* ImageManager::GetTexture(int code, bool fit) {
 			mul = mainGame->yScale;
 		width = width * mul;
 		height = height * mul;
-	} else if(fit) {
-		width = width * mainGame->xScale;
-		height = height * mainGame->yScale;
 	}
 	auto tit = tMap[fit ? 1 : 0].find(code);
 	if(tit == tMap[fit ? 1 : 0].end()) {
@@ -404,7 +403,10 @@ irr::video::ITexture* ImageManager::GetTexture(int code, bool fit) {
 			return GetTextureThumb(code);
 		}
 		tMap[fit ? 1 : 0][code] = img;
-		tUnknownFit = GetTextureFromFile("textures/unknown.jpg", width, height);
+		float mul = (mainGame->xScale > mainGame->yScale) ? mainGame->yScale : mainGame->xScale;
+		irr::s32 imgWidthFit = CARD_IMG_WIDTH * mul;
+		irr::s32 imgHeightFit = CARD_IMG_HEIGHT * mul;
+		tUnknownFit = GetTextureFromFile("textures/unknown.jpg", imgWidthFit, imgHeightFit);
 		return (img == NULL) ? (fit ? tUnknownFit : tUnknown) : img;
 	}
 	if(tit->second)
