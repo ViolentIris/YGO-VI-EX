@@ -90,7 +90,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_LANTERN: {
-                system("start https://github.com/getlantern/download");
+                system("start https://github.com/copytranslator/copytranslator/releases");
 				return true;
 				break;
 			}
