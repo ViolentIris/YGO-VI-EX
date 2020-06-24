@@ -137,7 +137,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_MJ: {
-                system("start https://www.bilibili.com/bangumi/play/ep151806");
+                system("start https://www.resdiy.com/");
 				return true;
 				break;
 			}
