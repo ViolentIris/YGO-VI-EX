@@ -547,16 +547,16 @@ void Game::DrawMisc() {
 	}
 	//finish button
 	if(btnCancelOrFinish->isVisible() && dField.select_ready)
-		DrawSelectionLine(btnCancelOrFinish, 2, 0xffffff00);
+		DrawSelectionLine(btnCancelOrFinish, 2, 0xffffb500);
 	//lp bar
 	if((dInfo.turn % 2 && dInfo.isFirst && !dInfo.is_swapped) || (!(dInfo.turn % 2) && !dInfo.isFirst && !dInfo.is_swapped) || (!(dInfo.turn % 2) && dInfo.isFirst && dInfo.is_swapped) || (dInfo.turn % 2 && !dInfo.isFirst && dInfo.is_swapped)) {
 		driver->draw2DRectangle(0xa0000000, Resize(327, 8, 630, 51));
-		driver->draw2DRectangleOutline(Resize(327, 8, 630, 51), 0xff980000);
+		driver->draw2DRectangleOutline(Resize(327, 8, 630, 51), 0x0000c800);
 		//driver->draw2DRectangle(0xa0000000, Resize(327, 8, 630, 51));
 		//driver->draw2DRectangleOutline(Resize(327, 8, 630, 51), 0xffff8080);
 	} else {
 		driver->draw2DRectangle(0xa0000000, Resize(689, 8, 991, 51));
-		driver->draw2DRectangleOutline(Resize(689, 8, 991, 51), 0xff980000);
+		driver->draw2DRectangleOutline(Resize(689, 8, 991, 51), 0x0000c800);
 		//driver->draw2DRectangle(0xa0000000, Resize(689, 8, 991, 51));
 		//driver->draw2DRectangleOutline(Resize(689, 8, 991, 51), 0xffff8080);
 	}
