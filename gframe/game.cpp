@@ -1331,7 +1331,7 @@ void Game::LoadConfig() {
 	gameConf.lasthost[0] = 0;
 	gameConf.lastport[0] = 0;
 	gameConf.roompass[0] = 0;
-	gameConf.TBname[0] = 0;
+	gameConf.searchname[0] = 0;
 	//settings
 	gameConf.chkMAutoPos = 0;
 	gameConf.chkSTAutoPos = 1;
@@ -1478,6 +1478,9 @@ void Game::LoadConfig() {
 				} else if (!strcmp(strbuf, "gamename")) {
 					BufferIO::DecodeUTF8(valbuf, wstr);
 					BufferIO::CopyWStr(wstr, gameConf.gamename, 20);
+			} else if (!strcmp(strbuf, "searchname")) {
+				BufferIO::DecodeUTF8(valbuf, wstr);
+				BufferIO::CopyWStr(wstr, gameConf.searchname, 256);
 				} else if (!strcmp(strbuf, "lastdeck")) {
 					BufferIO::DecodeUTF8(valbuf, wstr);
 					BufferIO::CopyWStr(wstr, gameConf.lastdeck, 64);
@@ -1881,7 +1884,7 @@ void Game::CloseDuelWindow() {
 	wOptions->setVisible(false);
 	wPhase->setVisible(false);
 	wPosSelect->setVisible(false);
-	wTBWindow->setVisible(false);
+	wSearchWindow->setVisible(false);
 	wQuery->setVisible(false);
 	wSurrender->setVisible(false);
 	wReplayControl->setVisible(false);
@@ -2094,13 +2097,13 @@ void Game::OnResize() {
 	if(showingcode)
 		ShowCardInfo(showingcode, true);
 	btnClearLog->setRelativePosition(Resize(160, 300, 260, 325));
-	btnTB->setRelativePosition(Resize(150, 20, 250, 70));
-	recti btnTBpos = btnTB->getAbsolutePosition();
-	wTBWindow->setRelativePosition(recti(
-		btnTBpos.LowerRightCorner.X - 310,
-		btnTBpos.LowerRightCorner.Y - 1,
-		btnTBpos.LowerRightCorner.X,
-		btnTBpos.LowerRightCorner.Y + 119));
+	btnCardSearch->setRelativePosition(Resize(150, 20, 250, 70));
+	recti btnCSpos = btnCardSearch->getAbsolutePosition();
+	wSearchWindow->setRelativePosition(recti(
+		btnCSpos.LowerRightCorner.X - 310,
+		btnCSpos.LowerRightCorner.Y - 1,
+		btnCSpos.LowerRightCorner.X,
+		btnCSpos.LowerRightCorner.Y + 119));
 
 	wPhase->setRelativePosition(Resize(480, 310, 855, 330));
 	btnPhaseStatus->setRelativePosition(Resize(0, 0, 50, 20));
