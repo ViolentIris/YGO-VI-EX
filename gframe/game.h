@@ -27,7 +27,7 @@ struct Config {
 	wchar_t numfont[256];
 	wchar_t roompass[20];
 	wchar_t locale[64];
-	wchar_t TBname[256];
+	wchar_t searchname[256];
 	//settings
 	int chkMAutoPos;
 	int chkSTAutoPos;
