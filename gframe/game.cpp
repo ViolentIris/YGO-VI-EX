@@ -513,16 +513,16 @@ bool Game::Initialize() {
 	posY += 30;
 	chkMusicMode = env->addCheckBox(false, rect<s32>(posX, posY, posX + 260, posY + 25), tabSystem, -1, dataManager.GetSysString(1281));
 	chkMusicMode->setChecked(gameConf.music_mode != 0);
-	btnTB = env->addButton(rect<s32>(150, 20, 250, 70), tabSystem, BUTTON_TB, dataManager.GetSysString(1283));
-	wTBWindow = env->addWindow(rect<s32>(510, 200, 820, 320), false, dataManager.GetSysString(1284));
-	wTBWindow->getCloseButton()->setVisible(false);
-	wTBWindow->setVisible(false);
-	wTBWindow->setDraggable(false);
-	env->addStaticText(dataManager.GetSysString(1285), rect<s32>(20, 27, 130, 47), false, false, wTBWindow);
-	ebTBName = env->addEditBox(gameConf.TBname, rect<s32>(20, 50, 290, 70), true, wTBWindow);
-	ebTBName->setTextAlignment(irr::gui::EGUIA_UPPERLEFT, irr::gui::EGUIA_CENTER);
-	btnTBAgree = env->addButton(rect<s32>(70, 80, 140, 105), wTBWindow, BUTTON_TB_AGREE, dataManager.GetSysString(1286));
-	btnTBCancel = env->addButton(rect<s32>(170, 80, 240, 105), wTBWindow, BUTTON_TB_CANCEL, dataManager.GetSysString(1287));
+	btnCardSearch = env->addButton(rect<s32>(150, 20, 250, 70), tabSystem, BUTTON_CARD_SEARCH, dataManager.GetSysString(1283));
+	wSearchWindow = env->addWindow(rect<s32>(510, 200, 820, 320), false, dataManager.GetSysString(1284));
+	wSearchWindow->getCloseButton()->setVisible(false);
+	wSearchWindow->setVisible(false);
+	wSearchWindow->setDraggable(false);
+	env->addStaticText(dataManager.GetSysString(1285), rect<s32>(20, 27, 130, 47), false, false, wSearchWindow);
+	ebSearchName = env->addEditBox(gameConf.searchname, rect<s32>(20, 50, 290, 70), true, wSearchWindow);
+	ebSearchName->setTextAlignment(irr::gui::EGUIA_UPPERLEFT, irr::gui::EGUIA_CENTER);
+	btnSearchAgree = env->addButton(rect<s32>(70, 80, 140, 105), wSearchWindow, BUTTON_SEARCH_AGREE, dataManager.GetSysString(1286));
+	btnSearchCancel = env->addButton(rect<s32>(170, 80, 240, 105), wSearchWindow, BUTTON_SEARCH_CANCEL, dataManager.GetSysString(1287));
 	elmTabSystemLast = chkMusicMode;
 	//
 	wHand = env->addWindow(rect<s32>(500, 450, 825, 605), false, L"");

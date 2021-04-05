@@ -1833,24 +1833,24 @@ bool ClientField::OnCommonEvent(const irr::SEvent& event) {
 				return true;
 				break;
 			}
-			case BUTTON_TB: {
-				mainGame->PopupElement(mainGame->wTBWindow);
+			case BUTTON_CARD_SEARCH: {
+				mainGame->PopupElement(mainGame->wSearchWindow);
 				break;
 			}
-			case BUTTON_TB_AGREE: {
+			case BUTTON_SEARCH_AGREE: {
 				char buf[256];
-				const wchar_t* pstr = mainGame->ebTBName->getText();
-				BufferIO::CopyWStr(pstr, mainGame->gameConf.TBname, 256);
+				const wchar_t* pstr = mainGame->ebSearchName->getText();
+				BufferIO::CopyWStr(pstr, mainGame->gameConf.searchname, 256);
 				int nLength = WideCharToMultiByte(CP_ACP, 0, pstr, -1, NULL, 0, NULL,NULL);
 				WideCharToMultiByte(CP_ACP, 0, pstr, -1, buf, nLength, NULL, NULL);
 				char buffer[300];
-				sprintf(buffer, "start \"\" \"https://s.taobao.com/search?q=%s\"", buf);
+				sprintf(buffer, "start \"\" \"http://www.ourocg.cn/S.aspx?key=%s\"", buf);
 				system(buffer);
-				mainGame->HideElement(mainGame->wTBWindow);
+				mainGame->HideElement(mainGame->wSearchWindow);
 				break;
 			}
-			case BUTTON_TB_CANCEL: {
-				mainGame->HideElement(mainGame->wTBWindow);
+			case BUTTON_SEARCH_CANCEL: {
+				mainGame->HideElement(mainGame->wSearchWindow);
 				break;
 			}
 			case BUTTON_HDS_OK: {

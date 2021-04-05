@@ -332,11 +332,11 @@ public:
 	irr::gui::IGUIButton* btnWinResizeL;
 	irr::gui::IGUIButton* btnWinResizeXL;
 	irr::gui::IGUICheckBox* chkEnablePScale;
-	irr::gui::IGUIWindow* wTBWindow;
-	irr::gui::IGUIButton* btnTB;
-	irr::gui::IGUIButton* btnTBAgree;
-	irr::gui::IGUIButton* btnTBCancel;
-	irr::gui::IGUIEditBox* ebTBName;
+	irr::gui::IGUIWindow* wSearchWindow;
+	irr::gui::IGUIButton* btnCardSearch;
+	irr::gui::IGUIButton* btnSearchAgree;
+	irr::gui::IGUIButton* btnSearchCancel;
+	irr::gui::IGUIEditBox* ebSearchName;
 	//main menu
 	irr::gui::IGUIWindow* wMainMenu;
 	irr::gui::IGUIButton* btnLanMode;
@@ -850,9 +850,10 @@ extern Game* mainGame;
 #define BUTTON_MARKS_FILTER			380
 #define BUTTON_MARKERS_OK			381
 
-#define BUTTON_TB				382
-#define BUTTON_TB_AGREE			383
-#define BUTTON_TB_CANCEL		384
+#define BUTTON_CARD_SEARCH			382
+#define BUTTON_SEARCH_AGREE			383
+#define BUTTON_SEARCH_CANCEL		384
+
 #define BUTTON_OTHER			        385
 #define BUTTON_RENAME_DECK				386
 #define BUTTON_RENAME_DECK_SAVE			387
