@@ -66,7 +66,9 @@ bool ImageManager::Initial()  {
 	tNegated = driver->getTexture("textures/negated.png");
 	tNumber = driver->getTexture("textures/number.png");
 	tLPBar = driver->getTexture("textures/lpb.png");
+	tLPBar2 = driver->getTexture("textures/lp.png");
 	tLPFrame = driver->getTexture("textures/lpfb.png");
+	tLPFrame2 = driver->getTexture("textures/lpf.png");
 	//tLPBarFrame = driver->getTexture("textures/lpbarf.png");
 	tMask = driver->getTexture("textures/mask.png");
 	tEquip = driver->getTexture("textures/equip.png");

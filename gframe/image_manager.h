@@ -45,7 +45,9 @@ public:
 	irr::video::ITexture* tChain;
 	irr::video::ITexture* tNumber;
 	irr::video::ITexture* tLPFrame;
+	irr::video::ITexture* tLPFrame2;
 	irr::video::ITexture* tLPBar;
+	irr::video::ITexture* tLPBar2;
 	irr::video::ITexture* tMask;
 	irr::video::ITexture* tEquip;
 	irr::video::ITexture* tTarget;
