@@ -350,6 +350,7 @@ bool ClientField::OnEvent(const irr::SEvent& event) {
 				if(!list_command) {
 					int index = -1;
 					select_options.clear();
+					select_options_index.clear();
 					for (size_t i = 0; i < activatable_cards.size(); ++i) {
 						if (activatable_cards[i] == clicked_card) {
 							if(activatable_descs[i].second == EDESC_OPERATION)
@@ -360,10 +361,11 @@ bool ClientField::OnEvent(const irr::SEvent& event) {
 								if(id == BUTTON_CMD_RESET) continue;
 							}
 							select_options.push_back(activatable_descs[i].first);
-							if (index == -1) index = i;
+							select_options_index.push_back(i);
 						}
 					}
 					if (select_options.size() == 1) {
+						int index = select_options_index[0];
 						if (mainGame->dInfo.curMsg == MSG_SELECT_IDLECMD) {
 							DuelClient::SetResponseI((index << 16) + 5);
 						} else if (mainGame->dInfo.curMsg == MSG_SELECT_BATTLECMD) {
@@ -638,6 +640,7 @@ bool ClientField::OnEvent(const irr::SEvent& event) {
 						int index = -1;
 						command_card = selectable_cards[id - BUTTON_CARD_0 + mainGame->scrCardList->getPos() / 10];
 						select_options.clear();
+						select_options_index.clear();
 						for (size_t i = 0; i < activatable_cards.size(); ++i) {
 							if (activatable_cards[i] == command_card) {
 								if(activatable_descs[i].second == EDESC_OPERATION) {
@@ -646,10 +649,11 @@ bool ClientField::OnEvent(const irr::SEvent& event) {
 									if(list_command == COMMAND_OPERATION) continue;
 								}
 								select_options.push_back(activatable_descs[i].first);
-								if (index == -1) index = i;
+								select_options_index.push_back(i);
 							}
 						}
 						if (select_options.size() == 1) {
+							int index = select_options_index[0];
 							if (mainGame->dInfo.curMsg == MSG_SELECT_IDLECMD) {
 								DuelClient::SetResponseI((index << 16) + 5);
 							} else if (mainGame->dInfo.curMsg == MSG_SELECT_BATTLECMD) {
@@ -715,7 +719,8 @@ bool ClientField::OnEvent(const irr::SEvent& event) {
 					if (selected_cards.size() > 0) {
 						SetResponseSelectedCards();
 						ShowCancelOrFinishButton(0);
-						mainGame->HideElement(mainGame->wCardSelect, true);}
+						mainGame->HideElement(mainGame->wCardSelect, true);
+					}
 					break;
 				}
 				case MSG_SELECT_SUM: {
