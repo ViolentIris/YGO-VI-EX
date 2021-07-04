@@ -75,7 +75,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_SEM: {
-                system("start https://www.ygo-sem.cn/");
+                system("start https://ygo233.com/pre");
 				return true;
 				break;
 			}
@@ -85,7 +85,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_TAKEOUT2: {
-                system("start https://www.4008823823.com.cn/kfcios/Html/index.html");
+                system("start https://www.starbucks.com.cn/");
 				return true;
 				break;
 			}
