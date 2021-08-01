@@ -9,7 +9,7 @@ namespace ygo {
 
 class ImageManager {
 public:
-	std::vector<std::wstring> ImageList[10];
+	std::vector<std::wstring> ImageList[12];
 	bool Initial();
 	//random image
 	irr::video::ITexture* GetRandomImage(int image_type);
@@ -38,6 +38,7 @@ public:
 	irr::video::ITexture* tUnknown;
 	irr::video::ITexture* tUnknownFit;
 	irr::video::ITexture* tUnknownThumb;
+	irr::video::ITexture* tDV;
 	irr::video::ITexture* tAct;
 	irr::video::ITexture* tAttack;
 	irr::video::ITexture* tTotalAtk;

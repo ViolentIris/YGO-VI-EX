@@ -132,6 +132,7 @@ bool ImageManager::Initial()  {
 	tDoll_Draw[0] = driver->getTexture("textures/Dolls1/Doll_Draw.png");
 	tDoll_Draw[1] = driver->getTexture("textures/Dolls2/Doll_Draw.png");*/
 	tClock = driver->getTexture("textures/clock.png");
+	tDV = GetRandomImage(TEXTURE_DV);
 	int i = 0;
 	char buff[100];
 	for (; i < 21; i++) {
@@ -192,6 +193,7 @@ void ImageManager::RefreshRandomImageList() {
 	RefreshImageDir(L"attack", TEXTURE_ATTACK);
 	RefreshImageDir(L"act", TEXTURE_ACTIVATE);
 	RefreshImageDir(L"head", TEXTURE_AVATAR_S);
+	RefreshImageDir(L"fortune", TEXTURE_DV);
 }
 void ImageManager::RefreshImageDir(std::wstring path, int image_type) {
 	std::wstring search = L"./textures/" + path;

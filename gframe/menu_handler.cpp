@@ -79,6 +79,17 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				return true;
 				break;
 			}
+			case BUTTON_DV: {
+                mainGame->btnDVClose->setEnabled(true);
+				mainGame->ShowElement(mainGame->wDV);
+				break;
+			}
+			case BUTTON_DV_CLOSE:{
+				mainGame->HideElement(mainGame->wDV);
+				if(exit_on_return)
+					mainGame->device->closeDevice();
+				break;
+			}
 			case BUTTON_TAKEOUT1: {
                 system("start https://www.4008123123.com/");
 				return true;
