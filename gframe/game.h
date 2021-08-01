@@ -878,6 +878,8 @@ extern Game* mainGame;
 #define BUTTON_YST						432
 #define BUTTON_MJ						433
 #define BUTTON_DV						434
+#define BUTTON_DV_CLOSE					435
+
 
 #define BUTTON_SERVER_CHOOSE			394
 #define BUTTON_233						395
