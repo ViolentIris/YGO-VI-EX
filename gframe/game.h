@@ -672,7 +672,7 @@ public:
 	irr::gui::IGUIButton* btnChainWhenAvail;
 	//cancel or finish
 	irr::gui::IGUIButton* btnCancelOrFinish;
-	//DV
+	//fortune
 	irr::gui::IGUIWindow* wDV;
 	irr::gui::IGUIImage* imgDV;
 	irr::gui::IGUIButton* btnDVClose;
