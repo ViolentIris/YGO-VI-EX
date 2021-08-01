@@ -69,6 +69,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				mainGame->btnTG->setEnabled(true);
 				mainGame->btnYST->setEnabled(true);
 				mainGame->btnMJ->setEnabled(true);
+				mainGame->btnDV->setEnabled(true);
 				mainGame->btnOtherExit->setEnabled(true);
 				mainGame->HideElement(mainGame->wMainMenu);
 				mainGame->ShowElement(mainGame->wOther);
@@ -143,6 +144,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 			case BUTTON_OTHER_EXIT: {
 				mainGame->HideElement(mainGame->wOther);
 				mainGame->ShowElement(mainGame->wMainMenu);
+				mainGame->HideElement(mainGame->wDV);
 				if(exit_on_return)
 					mainGame->device->closeDevice();
 				break;
