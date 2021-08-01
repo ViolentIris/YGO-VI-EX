@@ -239,7 +239,7 @@ bool Game::Initialize() {
 	imgDV->setImage(imageManager.tDV);
 	imgDV->setScaleImage(false);
 	imgDV->setUseAlphaChannel(true);
-	btnDVClose = env->addButton(rect<s32>(65, 645, 365, 685), wDV, BUTTON_DV_CLOSE, dataManager.GetSysString(1210));
+	btnDVClose = env->addButton(rect<s32>(65, 630, 365, 670), wDV, BUTTON_DV_CLOSE, dataManager.GetSysString(1210));
 	//lan mode
 	wLanWindow = env->addWindow(rect<s32>(220, 100, 800, 520), false, dataManager.GetSysString(1200));
 	wLanWindow->getCloseButton()->setVisible(false);
