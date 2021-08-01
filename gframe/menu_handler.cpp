@@ -45,6 +45,8 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 			break;
 		if(mainGame->wRM->isVisible() && id != BUTTON_RM_EXIT && id != BUTTON_RM1 && id != BUTTON_RM2 && id != BUTTON_RM3 && id != BUTTON_RM4 && id != BUTTON_RM5 && id != BUTTON_RM6 && id != BUTTON_RM7 && id != BUTTON_RM8 && id != BUTTON_RM9 && id != BUTTON_RM10 && id != BUTTON_RM11 && id != BUTTON_RM12 && id != BUTTON_RM13 && id != BUTTON_RM14 && id != BUTTON_RMCM && id != BUTTON_RMWN && id != BUTTON_RMAI && id != BUTTON_RMA)
 			break;
+		if(mainGame->wDV->isVisible() && id != BUTTON_DV_CLOSE)
+			break;
 		switch(event.GUIEvent.EventType) {
 		case irr::gui::EGET_BUTTON_CLICKED: {
 			if(id < 110)
@@ -144,7 +146,6 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 			case BUTTON_OTHER_EXIT: {
 				mainGame->HideElement(mainGame->wOther);
 				mainGame->ShowElement(mainGame->wMainMenu);
-				mainGame->HideElement(mainGame->wDV);
 				if(exit_on_return)
 					mainGame->device->closeDevice();
 				break;
