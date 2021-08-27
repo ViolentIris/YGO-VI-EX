@@ -12,7 +12,7 @@
 #include <sstream>
 #include <regex>
 
-unsigned short PRO_VERSION = 0x1352;
+unsigned short PRO_VERSION = 0x1353;
 
 bool delay_swap = false;
 int swap_player = 0;
@@ -815,7 +815,7 @@ bool Game::Initialize() {
 	int catewidth = 0;
 	for(int i = 0; i < 32; ++i) {
 		irr::core::dimension2d<unsigned int> dtxt = mainGame->guiFont->getDimension(dataManager.GetSysString(1100 + i));
-		if(dtxt.Width + 40 > catewidth)
+		if((int)dtxt.Width + 40 > catewidth)
 			catewidth = dtxt.Width + 40;
 	}
 	for(int i = 0; i < 32; ++i)
