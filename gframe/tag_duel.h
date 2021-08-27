@@ -60,4 +60,3 @@ protected:
 }
 
 #endif //TAG_DUEL_H
-
