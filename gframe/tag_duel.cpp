@@ -901,7 +901,6 @@ int TagDuel::Analyze(char* msgbuffer, unsigned int len) {
 			NetServer::ReSendToPlayer(players[3]);
 			for(auto oit = observers.begin(); oit != observers.end(); ++oit)
 				NetServer::ReSendToPlayer(*oit);
-			if(!(r_player & 0x2)) {
 			if(turn_count > 0) {
 				if(turn_count % 2 == 0) {
 					if(cur_player[0] == players[0])
@@ -916,7 +915,6 @@ int TagDuel::Analyze(char* msgbuffer, unsigned int len) {
 				}
 			}
 			turn_count++;
-			}
 			break;
 		}
 		case MSG_NEW_PHASE: {
