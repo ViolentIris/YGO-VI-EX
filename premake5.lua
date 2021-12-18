@@ -1,85 +1,107 @@
-solution "ygo"
+if os.ishost("windows") then
+    USE_IRRKLANG = true
+    BUILD_LUA = true
+    BUILD_EVENT = true
+    BUILD_FREETYPE = true
+    BUILD_IRRLICHT = true
+    BUILD_SQLITE = true
+else
+    USE_IRRKLANG = true
+    BUILD_LUA = true
+    BUILD_EVENT = false --not implemented on linux
+    BUILD_FREETYPE = false
+    BUILD_IRRLICHT = not os.ishost("macosx")
+    BUILD_SQLITE = false
+end
+
+workspace "YGOPro"
     location "build"
     language "C++"
     objdir "obj"
 
-    USE_IRRKLANG = true
-
     configurations { "Release", "Debug" }
 
-    configuration "windows"
+    filter "system:windows"
         defines { "WIN32", "_WIN32", "WINVER=0x0501" }
-        libdirs { "$(DXSDK_DIR)Lib/x86" }
         entrypoint "mainCRTStartup"
         systemversion "latest"
         startproject "ygopro"
 
-    configuration { "windows", "vs2015" }
+    filter "action:vs2015"
         toolset "v140_xp"
 
-    configuration { "windows", "vs2017" }
+    filter "action:vs2017"
         toolset "v141_xp"
 
-    configuration { "windows", "vs2019" }
+    filter "action:vs2019"
         toolset "v141_xp"
 
-    configuration "bsd"
-        defines { "LUA_USE_POSIX" }
+    filter "system:bsd"
         includedirs { "/usr/local/include" }
         libdirs { "/usr/local/lib" }
 
-    configuration "macosx"
-        defines { "LUA_USE_MACOSX" }
-        includedirs { "/usr/local/include", "/usr/local/include/*" }
-        libdirs { "/usr/local/lib", "/usr/X11/lib" }
+    filter "system:macosx"
+        includedirs { "/usr/local/include/freetype2" }
+        libdirs { "/usr/local/lib" }
         buildoptions { "-stdlib=libc++" }
         links { "OpenGL.framework", "Cocoa.framework", "IOKit.framework" }
 
-    configuration "linux"
-        defines { "LUA_USE_LINUX" }
+    filter "system:linux"
         buildoptions { "-U_FORTIFY_SOURCE" }
 
-    configuration "Release"
+    filter "configurations:Release"
         optimize "Speed"
         targetdir "bin/release"
 
-    configuration "Debug"
+    filter "configurations:Debug"
         symbols "On"
         defines "_DEBUG"
         targetdir "bin/debug"
 
-    configuration { "Release", "vs*" }
+    filter { "configurations:Release", "action:vs*" }
         flags { "LinkTimeOptimization" }
         staticruntime "On"
         disablewarnings { "4244", "4267", "4305", "4838", "4577", "4819", "4018", "4996", "4477", "4091", "4828", "4800" }
 
-    configuration { "Release", "not vs*" }
+    filter { "configurations:Release", "not action:vs*" }
         symbols "On"
         defines "NDEBUG"
         buildoptions "-march=native"
 
-    configuration { "Debug", "vs*" }
+    filter { "configurations:Debug", "action:vs*" }
         defines { "_ITERATOR_DEBUG_LEVEL=0" }
         disablewarnings { "4819", "4828" }
 
-    configuration "vs*"
+    filter "action:vs*"
         vectorextensions "SSE2"
         buildoptions { "/utf-8" }
         defines { "_CRT_SECURE_NO_WARNINGS" }
     
-    configuration "not vs*"
+    filter "not action:vs*"
         buildoptions { "-fno-strict-aliasing", "-Wno-multichar" }
 
-    configuration {"not vs*", "windows"}
+    filter {"not action:vs*", "system:windows"}
         buildoptions { "-static-libgcc" }
+
+    filter {}
 
     include "ocgcore"
     include "gframe"
-    if os.ishost("windows") then
-    include "lua"
-    include "event"
-    include "freetype"
-    include "irrlicht"
-    include "sqlite3"
-    include "ikpmp3"
+    if BUILD_LUA then
+        include "lua"
+    end
+    if BUILD_EVENT then
+        include "event"
+    end
+    if BUILD_FREETYPE then
+        include "freetype"
+    end
+    if BUILD_IRRLICHT then
+        include "irrlicht"
+    end
+    if BUILD_SQLITE then
+        include "sqlite3"
+    end
+    if USE_IRRKLANG then
+	include "ikpmp3"
     end
