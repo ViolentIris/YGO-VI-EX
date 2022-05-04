@@ -119,7 +119,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_WBO: {
-                system("start https://weibo.com/VI1911");
+                system("start .\\download\\note.txt");
 				return true;
 				break;
 			}
