@@ -157,7 +157,7 @@ void Game::DrawBackGround() {
 			if (dField.disabled_field & filter) {
 				matManager.mTexture.setTexture(0, imageManager.tDisplace);
 				driver->setMaterial(matManager.mTexture);
-				driver->drawVertexPrimitiveList(matManager.vDisplace, 4, matManager.iRectangle, 2);
+				driver->drawVertexPrimitiveList(matManager.vSymbol, 4, matManager.iRectangle, 2);
 			}
 		}
 		filter = 0x100;
@@ -165,7 +165,7 @@ void Game::DrawBackGround() {
 			if (dField.disabled_field & filter) {
 				matManager.mTexture.setTexture(0, imageManager.tDisplace);
 				driver->setMaterial(matManager.mTexture);
-				driver->drawVertexPrimitiveList(matManager.vDisplace, 4, matManager.iRectangle, 2);
+				driver->drawVertexPrimitiveList(matManager.vSymbol, 4, matManager.iRectangle, 2);
 			}
 		}
 		filter = 0x10000;
@@ -173,7 +173,7 @@ void Game::DrawBackGround() {
 			if (dField.disabled_field & filter) {
 				matManager.mTexture.setTexture(0, imageManager.tDisplace);
 				driver->setMaterial(matManager.mTexture);
-				driver->drawVertexPrimitiveList(matManager.vDisplace, 4, matManager.iRectangle, 2);
+				driver->drawVertexPrimitiveList(matManager.vSymbol, 4, matManager.iRectangle, 2);
 			}
 		}
 		filter = 0x1000000;
@@ -181,7 +181,7 @@ void Game::DrawBackGround() {
 			if (dField.disabled_field & filter) {
 				matManager.mTexture.setTexture(0, imageManager.tDisplace);
 				driver->setMaterial(matManager.mTexture);
-				driver->drawVertexPrimitiveList(matManager.vDisplace, 4, matManager.iRectangle, 2);
+				driver->drawVertexPrimitiveList(matManager.vSymbol, 4, matManager.iRectangle, 2);
 			}
 		}
 	}

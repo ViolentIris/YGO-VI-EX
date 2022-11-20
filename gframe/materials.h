@@ -14,7 +14,6 @@ public:
 	S3DVertex vPScale[4];
 	S3DVertex vSymbol[4];
 	S3DVertex vNegate[4];
-	S3DVertex vDisplace[4];
 	S3DVertex vChainNum[4];
 	S3DVertex vTotalAtkme[4];
 	S3DVertex vTotalAtkop[4];
