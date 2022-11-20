@@ -27,6 +27,7 @@ struct Config {
 	wchar_t numfont[256];
 	wchar_t roompass[20];
 	wchar_t locale[64];
+	wchar_t cbsoundtheme[64];
 	wchar_t searchname[256];
 	//settings
 	int chkMAutoPos;
@@ -138,6 +139,7 @@ public:
 	void RefreshSingleplay();
 	void RefreshBot();
 	void RefreshLocales();
+	void RefreshSoundTheme();
 	void RefreshFont();
 	void RefreshHDS();
 	void RefreshCRS();
@@ -372,6 +374,7 @@ public:
 	irr::gui::IGUICheckBox* chkMultiKeywords;
 	irr::gui::IGUICheckBox* chkRegex;
 	irr::gui::IGUIComboBox* cbLocale;
+	irr::gui::IGUIComboBox* cbsoundtheme;
 	irr::gui::IGUIComboBox* cbFont;
 	irr::gui::IGUIButton* btnHeadS;
 	irr::gui::IGUIButton* btnCoverS;
@@ -851,6 +854,7 @@ extern Game* mainGame;
 #define COMBOBOX_LIMIT				371
 #define COMBOBOX_FONT				372
 #define COMBOBOX_LOCALE				373
+#define COMBOBOX_SOUNDTHEME			374
 
 #define BUTTON_MARKS_FILTER			380
 #define BUTTON_MARKERS_OK			381

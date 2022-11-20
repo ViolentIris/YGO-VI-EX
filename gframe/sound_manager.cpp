@@ -38,7 +38,7 @@ void SoundManager::RefreshBGMList() {
 	RefershBGMDir(L"lose", BGM_LOSE);
 }
 void SoundManager::RefershBGMDir(std::wstring path, int scene) {
-	std::wstring search = L"./sound/BGM/" + path;
+	std::wstring search = L"./sound/%ls/" + path, mainGame->gameConf.soundtheme;
 	FileSystem::TraversalDir(search.c_str(), [this, &path, scene](const wchar_t* name, bool isdir) {
 		if(!isdir && wcsrchr(name, '.') && (!mywcsncasecmp(wcsrchr(name, '.'), L".mp3", 4) || !mywcsncasecmp(wcsrchr(name, '.'), L".ogg", 4))) {
 			std::wstring filename = path + L"/" + name;

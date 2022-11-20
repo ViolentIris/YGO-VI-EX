@@ -156,7 +156,7 @@ bool Game::Initialize() {
 	btnDV = env->addButton(rect<s32>(10, 450, 270, 480), wOther, BUTTON_DV, dataManager.GetSysString(1537));
 	btnOtherExit = env->addButton(rect<s32>(10, 485, 270, 515), wOther, BUTTON_OTHER_EXIT, dataManager.GetSysString(1210));
 	//system setting
-	wSystem = env->addWindow(rect<s32>(212, 140, 812, 360), false, dataManager.GetSysString(1207));
+	wSystem = env->addWindow(rect<s32>(212, 140, 877, 360), false, dataManager.GetSysString(1207));
 	wSystem->getCloseButton()->setVisible(false);
 	wSystem->setVisible(false);
 	wSystem->setDraggable(false);
@@ -168,20 +168,23 @@ bool Game::Initialize() {
 	chkD3D->setChecked(gameConf.use_d3d != 0);
 	chkAutoSearch = env->addCheckBox(false, rect<s32>(30, 110, 260, 135), wSystem, CHECKBOX_AUTO_SEARCH, dataManager.GetSysString(1358));
 	chkAutoSearch->setChecked(gameConf.auto_search_limit >= 0);
-	chkMultiKeywords = env->addCheckBox(false, rect<s32>(270, 20, 430, 45), wSystem, CHECKBOX_MULTI_KEYWORDS, dataManager.GetSysString(1378));
+	chkMultiKeywords = env->addCheckBox(false, rect<s32>(30, 140, 260, 165), wSystem, CHECKBOX_MULTI_KEYWORDS, dataManager.GetSysString(1378));
 	chkMultiKeywords->setChecked(gameConf.search_multiple_keywords > 0);
-	chkRegex = env->addCheckBox(false, rect<s32>(270, 50, 430, 75), wSystem, CHECKBOX_REGEX, dataManager.GetSysString(1379));
+	chkRegex = env->addCheckBox(false, rect<s32>(30, 170, 260, 195), wSystem, CHECKBOX_REGEX, dataManager.GetSysString(1379));
 	chkRegex->setChecked(gameConf.search_regex > 0);
 	env->addStaticText(dataManager.GetSysString(1206), rect<s32>(270, 83, 426, 108), false, false, wSystem);
 	cbFont = env->addComboBox(rect<s32>(427, 80, 590, 105), wSystem, COMBOBOX_FONT);
 	env->addStaticText(dataManager.GetSysString(1288), rect<s32>(270, 113, 426, 138), false, false, wSystem);
 	cbLocale = env->addComboBox(rect<s32>(227, 110, 590, 135), wSystem, COMBOBOX_LOCALE);
+	env->addStaticText(dataManager.GetSysString(1538), rect<s32>(270, 113, 426, 138), false, false, wSystem);
+	cbsoundtheme = env->addComboBox(rect<s32>(227, 110, 590, 135), wSystem, COMBOBOX_SOUNDTHEME);
 	btnHeadS = env->addButton(rect<s32>(30, 150, 200, 180), wSystem, BUTTON_HDS, dataManager.GetSysString(1450));
 	btnCoverS = env->addButton(rect<s32>(215, 150, 385, 180), wSystem, BUTTON_CRS, dataManager.GetSysString(1452));
 	btnBgS = env->addButton(rect<s32>(400, 150, 570, 180), wSystem, BUTTON_BGS, dataManager.GetSysString(1458));
 	btnSystemExit = env->addButton(rect<s32>(200, 185, 400, 210), wSystem, BUTTON_SYS_EXIT, dataManager.GetSysString(1210));
 	RefreshFont();
 	RefreshLocales();
+	RefreshSoundTheme();
 	//Head Select
 	wHDS = env->addWindow(rect<s32>(342, 235, 682, 395), false, dataManager.GetSysString(1451));
 	wHDS->getCloseButton()->setVisible(false);
@@ -1239,6 +1242,20 @@ void Game::RefreshLocales() {
 		}
 	}
 }
+void Game::RefreshSoundTheme() {
+	cbsoundtheme->clear();
+	cbsoundtheme->addItem(L"default");
+	FileSystem::TraversalDir(L"./sound", [this](const wchar_t* name, bool isdir) {
+		if(isdir && wcscmp(name, L".") && wcscmp(name, L".."))
+			cbsoundtheme->addItem(name);
+	});
+	for(size_t i = 0; i < cbsoundtheme->getItemCount(); ++i) {
+		if(!wcscmp(cbsoundtheme->getItem(i), gameConf.soundtheme)) {
+			cbsoundtheme->setSelected(i);
+			break;
+		}
+	}
+}
 void Game::RefreshFont() {
 	cbFont->clear();
 	FileSystem::TraversalDir(L"./font", [this](const wchar_t* name, bool isdir) {
@@ -1499,6 +1516,9 @@ void Game::LoadConfig() {
 				} else if (!strcmp(strbuf, "locale")) {
 					BufferIO::DecodeUTF8(valbuf, wstr);
 					BufferIO::CopyWStr(wstr, gameConf.locale, 64);
+				} else if (!strcmp(strbuf, "soundtheme")) {
+					BufferIO::DecodeUTF8(valbuf, wstr);
+					BufferIO::CopyWStr(wstr, gameConf.soundtheme, 64);
 				}
 			}
 		}
@@ -1630,6 +1650,7 @@ void Game::SaveConfig() {
 	fprintf(fp, "skin_index = %d\n", gameConf.skin_index);
 	BufferIO::EncodeUTF8(gameConf.locale, linebuf);
 	fprintf(fp, "locale = %s\n", linebuf);
+	fprintf(fp, "soundtheme = %s\n", linebuf);
 	fclose(fp);
 }
 void Game::ShowCardInfo(int code, bool resize) {
@@ -1955,7 +1976,7 @@ void Game::OnResize() {
 
 	wMainMenu->setRelativePosition(ResizeWin(370, 200, 650, 485));
 	wOther->setRelativePosition(ResizeWin(370, 50, 650, 580));
-	wSystem->setRelativePosition(ResizeWin(212, 140, 812, 360));
+	wSystem->setRelativePosition(ResizeWin(212, 140, 877, 360));
 	wHDS->setRelativePosition(ResizeWin(342, 235, 682, 395));
 	wCRS->setRelativePosition(ResizeWin(269.5, 187.5, 774.5, 452.5));
 	wBGS->setRelativePosition(ResizeWin(132, 100, 882, 500));
