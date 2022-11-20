@@ -1394,7 +1394,6 @@ void Game::LoadConfig() {
 	gameConf.chkEnablePScale = 1;
 	gameConf.random = 1;
 	gameConf.skin_index = 1;
-	gameConf.soundtheme = BGM;
 	if(fp) {
 		while(fgets(linebuf, 256, fp)) {
 			sscanf(linebuf, "%s = %s", strbuf, valbuf);
