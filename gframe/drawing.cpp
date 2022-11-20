@@ -155,8 +155,9 @@ void Game::DrawBackGround() {
 		unsigned int filter = 0x1;
 		for (int i = 0; i < 7; ++i, filter <<= 1) {
 			if (dField.disabled_field & filter) {
-				driver->draw3DLine(matManager.vFieldMzone[0][i][0].Pos, matManager.vFieldMzone[0][i][3].Pos, 0xffffffff);
-				driver->draw3DLine(matManager.vFieldMzone[0][i][1].Pos, matManager.vFieldMzone[0][i][2].Pos, 0xffffffff);
+				matManager.mTexture.setTexture(0, imageManager.tDisplace);
+				driver->setMaterial(matManager.mTexture);
+				driver->drawVertexPrimitiveList(matManager.vDisplace, 4, matManager.iRectangle, 2);
 			}
 		}
 		filter = 0x100;
