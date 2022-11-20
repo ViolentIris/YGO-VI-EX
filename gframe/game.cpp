@@ -156,7 +156,7 @@ bool Game::Initialize() {
 	btnDV = env->addButton(rect<s32>(10, 450, 270, 480), wOther, BUTTON_DV, dataManager.GetSysString(1537));
 	btnOtherExit = env->addButton(rect<s32>(10, 485, 270, 515), wOther, BUTTON_OTHER_EXIT, dataManager.GetSysString(1210));
 	//system setting
-	wSystem = env->addWindow(rect<s32>(212, 140, 977, 360), false, dataManager.GetSysString(1207));
+	wSystem = env->addWindow(rect<s32>(212, 140, 817, 460), false, dataManager.GetSysString(1207));
 	wSystem->getCloseButton()->setVisible(false);
 	wSystem->setVisible(false);
 	wSystem->setDraggable(false);
@@ -176,7 +176,7 @@ bool Game::Initialize() {
 	cbFont = env->addComboBox(rect<s32>(427, 80, 590, 105), wSystem, COMBOBOX_FONT);
 	env->addStaticText(dataManager.GetSysString(1288), rect<s32>(270, 113, 426, 138), false, false, wSystem);
 	cbLocale = env->addComboBox(rect<s32>(227, 110, 590, 135), wSystem, COMBOBOX_LOCALE);
-	env->addStaticText(dataManager.GetSysString(1538), rect<s32>(270, 113, 426, 138), false, false, wSystem);
+	env->addStaticText(dataManager.GetSysString(1538), rect<s32>(270, 43, 426, 78), false, false, wSystem);
 	cbsoundtheme = env->addComboBox(rect<s32>(227, 50, 590, 75), wSystem, COMBOBOX_SOUNDTHEME);
 	btnHeadS = env->addButton(rect<s32>(30, 200, 200, 230), wSystem, BUTTON_HDS, dataManager.GetSysString(1450));
 	btnCoverS = env->addButton(rect<s32>(215, 200, 385, 230), wSystem, BUTTON_CRS, dataManager.GetSysString(1452));
@@ -1394,6 +1394,7 @@ void Game::LoadConfig() {
 	gameConf.chkEnablePScale = 1;
 	gameConf.random = 1;
 	gameConf.skin_index = 1;
+	gameConf.soundtheme = BGM;
 	if(fp) {
 		while(fgets(linebuf, 256, fp)) {
 			sscanf(linebuf, "%s = %s", strbuf, valbuf);
@@ -1976,7 +1977,7 @@ void Game::OnResize() {
 
 	wMainMenu->setRelativePosition(ResizeWin(370, 200, 650, 485));
 	wOther->setRelativePosition(ResizeWin(370, 50, 650, 580));
-	wSystem->setRelativePosition(ResizeWin(212, 140, 977, 360));
+	wSystem->setRelativePosition(ResizeWin(212, 140, 817, 460));
 	wHDS->setRelativePosition(ResizeWin(342, 235, 682, 395));
 	wCRS->setRelativePosition(ResizeWin(269.5, 187.5, 774.5, 452.5));
 	wBGS->setRelativePosition(ResizeWin(132, 100, 882, 500));
