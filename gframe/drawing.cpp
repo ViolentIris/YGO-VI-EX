@@ -155,33 +155,29 @@ void Game::DrawBackGround() {
 		unsigned int filter = 0x1;
 		for (int i = 0; i < 7; ++i, filter <<= 1) {
 			if (dField.disabled_field & filter) {
-				matManager.mTexture.setTexture(0, imageManager.tDisplace);
-				driver->setMaterial(matManager.mTexture);
-				driver->drawVertexPrimitiveList(matManager.vSymbol, 4, matManager.iRectangle, 2);
+				driver->draw3DLine(matManager.vFieldMzone[0][i][0].Pos, matManager.vFieldMzone[0][i][3].Pos, 0xffffffff);
+				driver->draw3DLine(matManager.vFieldMzone[0][i][1].Pos, matManager.vFieldMzone[0][i][2].Pos, 0xffffffff);
 			}
 		}
 		filter = 0x100;
 		for (int i = 0; i < 8; ++i, filter <<= 1) {
 			if (dField.disabled_field & filter) {
-				matManager.mTexture.setTexture(0, imageManager.tDisplace);
-				driver->setMaterial(matManager.mTexture);
-				driver->drawVertexPrimitiveList(matManager.vSymbol, 4, matManager.iRectangle, 2);
+				driver->draw3DLine(matManager.vFieldSzone[0][i][rule][0].Pos, matManager.vFieldSzone[0][i][rule][3].Pos, 0xffffffff);
+				driver->draw3DLine(matManager.vFieldSzone[0][i][rule][1].Pos, matManager.vFieldSzone[0][i][rule][2].Pos, 0xffffffff);
 			}
 		}
 		filter = 0x10000;
 		for (int i = 0; i < 7; ++i, filter <<= 1) {
 			if (dField.disabled_field & filter) {
-				matManager.mTexture.setTexture(0, imageManager.tDisplace);
-				driver->setMaterial(matManager.mTexture);
-				driver->drawVertexPrimitiveList(matManager.vSymbol, 4, matManager.iRectangle, 2);
+				driver->draw3DLine(matManager.vFieldMzone[1][i][0].Pos, matManager.vFieldMzone[1][i][3].Pos, 0xffffffff);
+				driver->draw3DLine(matManager.vFieldMzone[1][i][1].Pos, matManager.vFieldMzone[1][i][2].Pos, 0xffffffff);
 			}
 		}
 		filter = 0x1000000;
 		for (int i = 0; i < 8; ++i, filter <<= 1) {
 			if (dField.disabled_field & filter) {
-				matManager.mTexture.setTexture(0, imageManager.tDisplace);
-				driver->setMaterial(matManager.mTexture);
-				driver->drawVertexPrimitiveList(matManager.vSymbol, 4, matManager.iRectangle, 2);
+				driver->draw3DLine(matManager.vFieldSzone[1][i][rule][0].Pos, matManager.vFieldSzone[1][i][rule][3].Pos, 0xffffffff);
+				driver->draw3DLine(matManager.vFieldSzone[1][i][rule][1].Pos, matManager.vFieldSzone[1][i][rule][2].Pos, 0xffffffff);
 			}
 		}
 	}

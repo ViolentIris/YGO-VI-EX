@@ -132,7 +132,6 @@ bool ImageManager::Initial()  {
 	tDoll_Draw[0] = driver->getTexture("textures/Dolls1/Doll_Draw.png");
 	tDoll_Draw[1] = driver->getTexture("textures/Dolls2/Doll_Draw.png");*/
 	tClock = driver->getTexture("textures/clock.png");
-	tDisplace = driver->getTexture("textures/displace.png");
 	tDV = GetRandomImage(TEXTURE_DV);
 	int i = 0;
 	char buff[100];
