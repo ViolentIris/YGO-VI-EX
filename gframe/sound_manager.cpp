@@ -233,7 +233,7 @@ void SoundManager::PlayBGM(int scene) {
 		int bgm = rand() % count;
 		auto name = BGMList[scene][bgm].c_str();
 		wchar_t fname[1024];
-		myswprintf(fname, L"./sound/BGM/%ls", name);
+		myswprintf(fname, L"./sound/%ls/%ls", mainGame->gameConf.soundtheme, name);
 		BufferIO::EncodeUTF8(fname, BGMName);
 		PlayMusic(BGMName, false);
 	}

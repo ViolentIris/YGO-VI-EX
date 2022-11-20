@@ -181,6 +181,8 @@ public:
 	const wchar_t* LocalName(int local_player);
 	const char* GetLocaleDir(const char* dir);
 	const wchar_t* GetLocaleDirWide(const char* dir);
+	const char* GetsoundthemeDir(const char* dir);
+	const wchar_t* GetsoundthemeDirWide(const char* dir);
 	bool CheckRegEx(const std::wstring& text, const std::wstring& exp, bool exact = false);
 
 	bool HasFocus(EGUI_ELEMENT_TYPE type) const {
