@@ -126,7 +126,7 @@ void Game::DrawBackGround() {
 	driver->drawVertexPrimitiveList(matManager.vField, 4, matManager.iRectangle, 2);
 	driver->setMaterial(matManager.mBackLine);
 	//select field
-	if(dInfo.curMsg == MSG_SELECT_PLACE || dInfo.curMsg == MSG_SELECT_DISFIELD) {
+	if(dInfo.curMsg == MSG_SELECT_PLACE || dInfo.curMsg == MSG_SELECT_DISFIELD || dInfo.curMsg == MSG_HINT) {
 		float cv[4] = {0.0f, 0.0f, 1.0f, 1.0f};
 		unsigned int filter = 0x1;
 		for (int i = 0; i < 7; ++i, filter <<= 1) {
@@ -148,29 +148,6 @@ void Game::DrawBackGround() {
 			if (dField.selectable_field & filter)
 				DrawSelectionLine(matManager.vFieldSzone[1][i][rule], !(dField.selected_field & filter), 2, cv);
 		}
-	}
-	//draw total attack
-	if (mainGame->dInfo.total_attack[0] > 0) {
-	    matManager.mTexture.setTexture(0, imageManager.tTotalAtk);
-		driver->setMaterial(matManager.mTexture);
-		if (dInfo.duel_rule >= 4) {
-		    driver->drawVertexPrimitiveList(matManager.vTotalAtkme, 4, matManager.iRectangle, 2);
-			DrawShadowText(numFont, dInfo.str_total_attack[0], Resize(427, 346, 442, 366), rect<s32>(0, 1, 2, 0), dInfo.total_attack_color[0], 0xff000000, true, false, 0);
-	    } else {
-			driver->drawVertexPrimitiveList(matManager.vTotalAtkmeT, 4, matManager.iRectangle, 2);
-		    DrawShadowText(numFont, dInfo.str_total_attack[0], Resize(587, 326, 607, 346), rect<s32>(0, 1, 2, 0), dInfo.total_attack_color[0], 0xff000000, true, false, 0);
-	    }
-	}
-	if (mainGame->dInfo.total_attack[1] > 0) {
-		matManager.mTexture.setTexture(0, imageManager.tTotalAtk);
-		driver->setMaterial(matManager.mTexture);
-		if (dInfo.duel_rule >= 4) {
-		    driver->drawVertexPrimitiveList(matManager.vTotalAtkop, 4, matManager.iRectangle, 2);
-		    DrawShadowText(numFont, dInfo.str_total_attack[1], Resize(882, 271, 902, 291), rect<s32>(0, 1, 2, 0), dInfo.total_attack_color[1], 0xff000000, true, false, 0);
-	    } else {
-			driver->drawVertexPrimitiveList(matManager.vTotalAtkopT, 4, matManager.iRectangle, 2);
-		    DrawShadowText(numFont, dInfo.str_total_attack[1], Resize(737, 295, 757, 315), rect<s32>(0, 1, 2, 0), dInfo.total_attack_color[1], 0xff000000, true, false, 0);
-	    }
 	}
 	//disabled field
 	{
@@ -203,6 +180,29 @@ void Game::DrawBackGround() {
 				driver->draw3DLine(matManager.vFieldSzone[1][i][rule][1].Pos, matManager.vFieldSzone[1][i][rule][2].Pos, 0xffffffff);
 			}
 		}
+	}
+	//draw total attack
+	if (mainGame->dInfo.total_attack[0] > 0) {
+	    matManager.mTexture.setTexture(0, imageManager.tTotalAtk);
+		driver->setMaterial(matManager.mTexture);
+		if (dInfo.duel_rule >= 4) {
+		    driver->drawVertexPrimitiveList(matManager.vTotalAtkme, 4, matManager.iRectangle, 2);
+			DrawShadowText(numFont, dInfo.str_total_attack[0], Resize(427, 346, 442, 366), rect<s32>(0, 1, 2, 0), dInfo.total_attack_color[0], 0xff000000, true, false, 0);
+	    } else {
+			driver->drawVertexPrimitiveList(matManager.vTotalAtkmeT, 4, matManager.iRectangle, 2);
+		    DrawShadowText(numFont, dInfo.str_total_attack[0], Resize(587, 326, 607, 346), rect<s32>(0, 1, 2, 0), dInfo.total_attack_color[0], 0xff000000, true, false, 0);
+	    }
+	}
+	if (mainGame->dInfo.total_attack[1] > 0) {
+		matManager.mTexture.setTexture(0, imageManager.tTotalAtk);
+		driver->setMaterial(matManager.mTexture);
+		if (dInfo.duel_rule >= 4) {
+		    driver->drawVertexPrimitiveList(matManager.vTotalAtkop, 4, matManager.iRectangle, 2);
+		    DrawShadowText(numFont, dInfo.str_total_attack[1], Resize(882, 271, 902, 291), rect<s32>(0, 1, 2, 0), dInfo.total_attack_color[1], 0xff000000, true, false, 0);
+	    } else {
+			driver->drawVertexPrimitiveList(matManager.vTotalAtkopT, 4, matManager.iRectangle, 2);
+		    DrawShadowText(numFont, dInfo.str_total_attack[1], Resize(737, 295, 757, 315), rect<s32>(0, 1, 2, 0), dInfo.total_attack_color[1], 0xff000000, true, false, 0);
+	    }
 	}
 	//current sel
 	if (dField.hovered_location != 0 && dField.hovered_location != 2 && dField.hovered_location != POSITION_HINT
