@@ -156,7 +156,7 @@ bool Game::Initialize() {
 	btnDV = env->addButton(rect<s32>(10, 450, 270, 480), wOther, BUTTON_DV, dataManager.GetSysString(1537));
 	btnOtherExit = env->addButton(rect<s32>(10, 485, 270, 515), wOther, BUTTON_OTHER_EXIT, dataManager.GetSysString(1210));
 	//system setting
-	wSystem = env->addWindow(rect<s32>(212, 140, 817, 460), false, dataManager.GetSysString(1207));
+	wSystem = env->addWindow(rect<s32>(212, 140, 817, 420), false, dataManager.GetSysString(1207));
 	wSystem->getCloseButton()->setVisible(false);
 	wSystem->setVisible(false);
 	wSystem->setDraggable(false);
@@ -1976,7 +1976,7 @@ void Game::OnResize() {
 
 	wMainMenu->setRelativePosition(ResizeWin(370, 200, 650, 485));
 	wOther->setRelativePosition(ResizeWin(370, 50, 650, 580));
-	wSystem->setRelativePosition(ResizeWin(212, 140, 817, 460));
+	wSystem->setRelativePosition(ResizeWin(212, 140, 817, 420));
 	wHDS->setRelativePosition(ResizeWin(342, 235, 682, 395));
 	wCRS->setRelativePosition(ResizeWin(269.5, 187.5, 774.5, 452.5));
 	wBGS->setRelativePosition(ResizeWin(132, 100, 882, 500));
