@@ -176,7 +176,7 @@ bool Game::Initialize() {
 	cbFont = env->addComboBox(rect<s32>(427, 80, 590, 105), wSystem, COMBOBOX_FONT);
 	env->addStaticText(dataManager.GetSysString(1288), rect<s32>(270, 113, 426, 138), false, false, wSystem);
 	cbLocale = env->addComboBox(rect<s32>(227, 110, 590, 135), wSystem, COMBOBOX_LOCALE);
-	env->addStaticText(dataManager.GetSysString(1538), rect<s32>(270, 43, 426, 78), false, false, wSystem);
+	env->addStaticText(dataManager.GetSysString(1538), rect<s32>(270, 53, 426, 78), false, false, wSystem);
 	cbsoundtheme = env->addComboBox(rect<s32>(227, 50, 590, 75), wSystem, COMBOBOX_SOUNDTHEME);
 	btnHeadS = env->addButton(rect<s32>(30, 200, 200, 230), wSystem, BUTTON_HDS, dataManager.GetSysString(1450));
 	btnCoverS = env->addButton(rect<s32>(215, 200, 385, 230), wSystem, BUTTON_CRS, dataManager.GetSysString(1452));

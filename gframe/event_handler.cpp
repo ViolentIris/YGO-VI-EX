@@ -2098,6 +2098,11 @@ bool ClientField::OnCommonEvent(const irr::SEvent& event) {
 				mainGame->SaveConfig();
 				break;
 			}
+			case COMBOBOX_SOUNDTHEME: {
+				myswprintf(mainGame->gameConf.soundtheme, L"%ls", mainGame->cbsoundtheme->getItem(mainGame->cbsoundtheme->getSelected()));
+				mainGame->SaveConfig();
+				break;
+			}
 			case COMBOBOX_FONT: {
 				myswprintf(mainGame->gameConf.textfont, L"font/%ls", mainGame->cbFont->getItem(mainGame->cbFont->getSelected()));
 				mainGame->SaveConfig();
