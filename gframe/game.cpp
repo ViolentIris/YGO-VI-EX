@@ -156,7 +156,7 @@ bool Game::Initialize() {
 	btnDV = env->addButton(rect<s32>(10, 450, 270, 480), wOther, BUTTON_DV, dataManager.GetSysString(1537));
 	btnOtherExit = env->addButton(rect<s32>(10, 485, 270, 515), wOther, BUTTON_OTHER_EXIT, dataManager.GetSysString(1210));
 	//system setting
-	wSystem = env->addWindow(rect<s32>(212, 140, 877, 360), false, dataManager.GetSysString(1207));
+	wSystem = env->addWindow(rect<s32>(212, 140, 977, 360), false, dataManager.GetSysString(1207));
 	wSystem->getCloseButton()->setVisible(false);
 	wSystem->setVisible(false);
 	wSystem->setDraggable(false);
@@ -177,11 +177,11 @@ bool Game::Initialize() {
 	env->addStaticText(dataManager.GetSysString(1288), rect<s32>(270, 113, 426, 138), false, false, wSystem);
 	cbLocale = env->addComboBox(rect<s32>(227, 110, 590, 135), wSystem, COMBOBOX_LOCALE);
 	env->addStaticText(dataManager.GetSysString(1538), rect<s32>(270, 113, 426, 138), false, false, wSystem);
-	cbsoundtheme = env->addComboBox(rect<s32>(227, 110, 590, 135), wSystem, COMBOBOX_SOUNDTHEME);
-	btnHeadS = env->addButton(rect<s32>(30, 150, 200, 180), wSystem, BUTTON_HDS, dataManager.GetSysString(1450));
-	btnCoverS = env->addButton(rect<s32>(215, 150, 385, 180), wSystem, BUTTON_CRS, dataManager.GetSysString(1452));
-	btnBgS = env->addButton(rect<s32>(400, 150, 570, 180), wSystem, BUTTON_BGS, dataManager.GetSysString(1458));
-	btnSystemExit = env->addButton(rect<s32>(200, 185, 400, 210), wSystem, BUTTON_SYS_EXIT, dataManager.GetSysString(1210));
+	cbsoundtheme = env->addComboBox(rect<s32>(227, 50, 590, 75), wSystem, COMBOBOX_SOUNDTHEME);
+	btnHeadS = env->addButton(rect<s32>(30, 200, 200, 230), wSystem, BUTTON_HDS, dataManager.GetSysString(1450));
+	btnCoverS = env->addButton(rect<s32>(215, 200, 385, 230), wSystem, BUTTON_CRS, dataManager.GetSysString(1452));
+	btnBgS = env->addButton(rect<s32>(400, 200, 570, 230), wSystem, BUTTON_BGS, dataManager.GetSysString(1458));
+	btnSystemExit = env->addButton(rect<s32>(200, 235, 400, 260), wSystem, BUTTON_SYS_EXIT, dataManager.GetSysString(1210));
 	RefreshFont();
 	RefreshLocales();
 	RefreshSoundTheme();
@@ -1244,7 +1244,6 @@ void Game::RefreshLocales() {
 }
 void Game::RefreshSoundTheme() {
 	cbsoundtheme->clear();
-	cbsoundtheme->addItem(L"default");
 	FileSystem::TraversalDir(L"./sound", [this](const wchar_t* name, bool isdir) {
 		if(isdir && wcscmp(name, L".") && wcscmp(name, L".."))
 			cbsoundtheme->addItem(name);
@@ -1650,6 +1649,7 @@ void Game::SaveConfig() {
 	fprintf(fp, "skin_index = %d\n", gameConf.skin_index);
 	BufferIO::EncodeUTF8(gameConf.locale, linebuf);
 	fprintf(fp, "locale = %s\n", linebuf);
+	BufferIO::EncodeUTF8(gameConf.soundtheme, linebuf);
 	fprintf(fp, "soundtheme = %s\n", linebuf);
 	fclose(fp);
 }
@@ -1976,7 +1976,7 @@ void Game::OnResize() {
 
 	wMainMenu->setRelativePosition(ResizeWin(370, 200, 650, 485));
 	wOther->setRelativePosition(ResizeWin(370, 50, 650, 580));
-	wSystem->setRelativePosition(ResizeWin(212, 140, 877, 360));
+	wSystem->setRelativePosition(ResizeWin(212, 140, 977, 360));
 	wHDS->setRelativePosition(ResizeWin(342, 235, 682, 395));
 	wCRS->setRelativePosition(ResizeWin(269.5, 187.5, 774.5, 452.5));
 	wBGS->setRelativePosition(ResizeWin(132, 100, 882, 500));
@@ -2081,6 +2081,7 @@ void Game::OnResize() {
 	scrMusicVolume->setRelativePosition(recti(scrMusicVolume->getRelativePosition().UpperLeftCorner.X, scrMusicVolume->getRelativePosition().UpperLeftCorner.Y, 20 + (300 * xScale) - 70, scrMusicVolume->getRelativePosition().LowerRightCorner.Y));
 	cbLocale->setRelativePosition(recti(427, 110, 587, 135));
 	cbFont->setRelativePosition(recti(427, 80, 587, 105));
+	cbsoundtheme->setRelativePosition(recti(427, 50, 587, 75));
 
 	recti tabHelperPos = recti(0, 0, 300 * xScale - 50, 365 * yScale - 65);
 	tabHelper->setRelativePosition(tabHelperPos);
