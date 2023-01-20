@@ -486,6 +486,11 @@ void TagDuel::TPResult(DuelPlayer* dp, unsigned char tp) {
 	RefreshExtra(0);
 	RefreshExtra(1);
 	start_duel(pduel, opt);
+	if(host_info.time_limit) {
+		time_elapsed = 0;
+		timeval timeout = { 1, 0 };
+		event_add(etimer, &timeout);
+	}
 	Process();
 }
 void TagDuel::Process() {
@@ -1512,7 +1517,7 @@ void TagDuel::GetResponse(DuelPlayer* dp, void* pdata, unsigned int len) {
 		if(time_limit[resp_type] >= time_elapsed)
 			time_limit[resp_type] -= time_elapsed;
 		else time_limit[resp_type] = 0;
-		event_del(etimer);
+		time_elapsed = 0;
 	}
 	Process();
 }
@@ -1531,6 +1536,7 @@ void TagDuel::EndDuel() {
 	for(auto oit = observers.begin(); oit != observers.end(); ++oit)
 		NetServer::ReSendToPlayer(*oit);
 	end_duel(pduel);
+	event_del(etimer);
 	pduel = 0;
 }
 void TagDuel::WaitforResponse(int playerid) {
@@ -1557,9 +1563,8 @@ void TagDuel::TimeConfirm(DuelPlayer* dp) {
 	if(dp != cur_player[last_response])
 		return;
 	cur_player[last_response]->state = CTOS_RESPONSE;
-	time_elapsed = 0;
-	timeval timeout = {1, 0};
-	event_add(etimer, &timeout);
+	if(time_elapsed < 10)
+		time_elapsed = 0;
 }
 void TagDuel::RefreshMzone(int player, int flag, int use_cache) {
 	char query_buffer[0x4000];
@@ -1697,7 +1702,7 @@ void TagDuel::RefreshSingle(int player, int location, int sequence, int flag) {
 		}
 	}
 }
-int TagDuel::MessageHandler(long fduel, int type) {
+int TagDuel::MessageHandler(intptr_t fduel, int type) {
 	if(!enable_log)
 		return 0;
 	char msgbuf[1024];
@@ -1708,7 +1713,7 @@ int TagDuel::MessageHandler(long fduel, int type) {
 void TagDuel::TagTimer(evutil_socket_t fd, short events, void* arg) {
 	TagDuel* sd = static_cast<TagDuel*>(arg);
 	sd->time_elapsed++;
-	if(sd->time_elapsed >= sd->time_limit[sd->last_response]) {
+	if(sd->time_elapsed >= sd->time_limit[sd->last_response] || sd->time_limit[sd->last_response] <= 0) {
 		unsigned char wbuf[3];
 		uint32 player = sd->last_response;
 		wbuf[0] = MSG_WIN;
@@ -1721,7 +1726,10 @@ void TagDuel::TagTimer(evutil_socket_t fd, short events, void* arg) {
 		sd->EndDuel();
 		sd->DuelEndProc();
 		event_del(sd->etimer);
+		return;
 	}
+	timeval timeout = { 1, 0 };
+	event_add(sd->etimer, &timeout);
 }
 
 }
