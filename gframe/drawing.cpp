@@ -564,33 +564,48 @@ void Game::DrawMisc() {
 	if((dInfo.turn % 2 && dInfo.isFirst && !dInfo.is_swapped) || (!(dInfo.turn % 2) && !dInfo.isFirst && !dInfo.is_swapped) || (!(dInfo.turn % 2) && dInfo.isFirst && dInfo.is_swapped) || (dInfo.turn % 2 && !dInfo.isFirst && dInfo.is_swapped)) {
 		driver->draw2DRectangle(0xa0000000, Resize(327, 8, 630, 51));
 		driver->draw2DRectangleOutline(Resize(327, 8, 630, 51), 0x0000c800);
-		//driver->draw2DRectangle(0xa0000000, Resize(327, 8, 630, 51));
-		//driver->draw2DRectangleOutline(Resize(327, 8, 630, 51), 0xffff8080);
 	} else {
 		driver->draw2DRectangle(0xa0000000, Resize(689, 8, 991, 51));
 		driver->draw2DRectangleOutline(Resize(689, 8, 991, 51), 0xff980000);
-		//driver->draw2DRectangle(0xa0000000, Resize(689, 8, 991, 51));
-		//driver->draw2DRectangleOutline(Resize(689, 8, 991, 51), 0xffff8080);
 	}
 	driver->draw2DImage(imageManager.tLPFrame, Resize(330, 10, 629, 30), recti(0, 0, 200, 20), 0, 0, true);
 	driver->draw2DImage(imageManager.tLPFrame2, Resize(691, 10, 990, 30), recti(0, 0, 200, 20), 0, 0, true);
+	if(dInfo.start_lp) {
+		auto maxLP = dInfo.isTag ? dInfo.start_lp / 2 : dInfo.start_lp;
+		if(dInfo.lp[0] >= maxLP) {
+			auto layerCount = dInfo.lp[0] / maxLP;
+			auto partialLP = dInfo.lp[0] % maxLP;
+			auto bgColorPos = (layerCount - 1) % 5;
+			auto fgColorPos = layerCount % 5; 
+			driver->draw2DImage(imageManager.tLPBar, Resize(335 + 290 * partialLP / maxLP, 12, 625, 28), recti(0, bgColorPos * 16, 16, (bgColorPos + 1) * 16), 0, 0, true);
+			if(partialLP > 0) {
+				driver->draw2DImage(imageManager.tLPBar, Resize(335, 12, 335 + 290 * partialLP / maxLP, 28), recti(0, fgColorPos * 16, 16, (fgColorPos + 1) * 16), 0, 0, true);
+			}
+		}
+		else driver->draw2DImage(imageManager.tLPBar, Resize(335, 12, 335 + 290 * dInfo.lp[0] / maxLP, 28), recti(0, 0, 16, 16), 0, 0, true);
+		if(dInfo.lp[1] >= maxLP) {
+			auto layerCount = dInfo.lp[1] / maxLP;
+			auto partialLP = dInfo.lp[1] % maxLP;
+			auto bgColorPos = (layerCount - 1) % 5;
+			auto fgColorPos = layerCount % 5;
+			driver->draw2DImage(imageManager.tLPBar2, Resize(696, 12, 986 - 290 * partialLP / maxLP, 28), recti(0, bgColorPos * 16, 16, (bgColorPos + 1) * 16), 0, 0, true);
+			if(partialLP > 0) {
+				driver->draw2DImage(imageManager.tLPBar2, Resize(986 - 290 * partialLP / maxLP, 12, 986, 28), recti(0, fgColorPos * 16, 16, (fgColorPos + 1) * 16), 0, 0, true);
+			}
+		}
+		else driver->draw2DImage(imageManager.tLPBar2, Resize(986 - 290 * dInfo.lp[1] / maxLP, 12, 986, 28), recti(0, 0, 16, 16), 0, 0, true);
+	}
+	//driver->draw2DRectangle(0xa0000000, Resize(327, 8, 630, 51));
+	//driver->draw2DRectangleOutline(Resize(327, 8, 630, 51), 0xffff8080);
+	//driver->draw2DRectangle(0xa0000000, Resize(689, 8, 991, 51));
+	//driver->draw2DRectangleOutline(Resize(689, 8, 991, 51), 0xffff8080);
 	//driver->draw2DImage(imageManager.tLPFrame, Resize(330, 10, 629, 30), recti(0, 0, 200, 20), 0, 0, true);
 	//driver->draw2DImage(imageManager.tLPFrame, Resize(691, 10, 990, 30), recti(0, 0, 200, 20), 0, 0, true);
-	if(!dInfo.start_lp[0])
-		driver->draw2DImage(imageManager.tLPBar, Resize(335, 12, 335, 28), recti(0, 0, 16, 16), 0, 0, true);
-		//driver->draw2DImage(imageManager.tLPBar, Resize(390, 12, 625, 74), recti(0, 0, 16, 16), 0, 0, true);
-	else if(dInfo.lp[0] >= dInfo.start_lp[0])
-		driver->draw2DImage(imageManager.tLPBar, Resize(335, 12, 625, 28), recti(0, 0, 16, 16), 0, 0, true);
-	else driver->draw2DImage(imageManager.tLPBar, Resize(335, 12, 335 + 290 * dInfo.lp[0] / dInfo.start_lp[0], 28), recti(0, 0, 16, 16), 0, 0, true);
-		//driver->draw2DImage(imageManager.tLPBar, Resize(390, 12, 625, 74), recti(0, 0, 16, 16), 0, 0, true);
+	//driver->draw2DImage(imageManager.tLPBar, Resize(390, 12, 625, 74), recti(0, 0, 16, 16), 0, 0, true);
+	//driver->draw2DImage(imageManager.tLPBar, Resize(390, 12, 625, 74), recti(0, 0, 16, 16), 0, 0, true);
 	//else driver->draw2DImage(imageManager.tLPBar, Resize(390, 12, 390 + 235 * dInfo.lp[0] / dInfo.start_lp[0], 74), recti(0, 0, 16, 16), 0, 0, true);
-	if(!dInfo.start_lp[1])
-		driver->draw2DImage(imageManager.tLPBar2, Resize(986, 12, 986, 28), recti(0, 0, 16, 16), 0, 0, true);
-		//driver->draw2DImage(imageManager.tLPBar, Resize(696, 12, 930, 74), recti(0, 0, 16, 16), 0, 0, true);
-	else if(dInfo.lp[1] >= dInfo.start_lp[1])
-		driver->draw2DImage(imageManager.tLPBar2, Resize(696, 12, 986, 28), recti(0, 0, 16, 16), 0, 0, true);
-	else driver->draw2DImage(imageManager.tLPBar2, Resize(986 - 290 * dInfo.lp[1] / dInfo.start_lp[1], 12, 986, 28), recti(0, 0, 16, 16), 0, 0, true);
-		//driver->draw2DImage(imageManager.tLPBar, Resize(696, 12, 930, 74), recti(0, 0, 16, 16), 0, 0, true);
+	//driver->draw2DImage(imageManager.tLPBar, Resize(696, 12, 930, 74), recti(0, 0, 16, 16), 0, 0, true);
+	//driver->draw2DImage(imageManager.tLPBar, Resize(696, 12, 930, 74), recti(0, 0, 16, 16), 0, 0, true);
 	//else driver->draw2DImage(imageManager.tLPBar, Resize(930 - 235 * dInfo.lp[1] / dInfo.start_lp[1], 12, 930, 74), recti(0, 0, 16, 16), 0, 0, true);
 	if(lpframe) {
 		dInfo.lp[lpplayer] -= lpd;
