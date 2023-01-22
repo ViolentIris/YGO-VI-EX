@@ -153,8 +153,8 @@ bool Game::Initialize() {
 	btnTG = env->addButton(rect<s32>(10, 345, 270, 375), wOther, BUTTON_TG, dataManager.GetSysString(1449));
 	btnYST = env->addButton(rect<s32>(10, 380, 270, 410), wOther, BUTTON_YST, dataManager.GetSysString(1536));
 	btnMJ = env->addButton(rect<s32>(10, 415, 270, 445), wOther, BUTTON_MJ, dataManager.GetSysString(1513));
-	btnDV = env->addButton(rect<s32>(10, 450, 270, 480), wOther, BUTTON_DV, dataManager.GetSysString(1537));
-	btnDIY = env->addButton(rect<s32>(10, 485, 270, 515), wOther, BUTTON_DIYHEAD, dataManager.GetSysString(1539));
+	btnDIY = env->addButton(rect<s32>(10, 450, 270, 480), wOther, BUTTON_DIYHEAD, dataManager.GetSysString(1539));
+	btnDV = env->addButton(rect<s32>(10, 485, 270, 515), wOther, BUTTON_DV, dataManager.GetSysString(1537));
 	btnOtherExit = env->addButton(rect<s32>(10, 520, 270, 550), wOther, BUTTON_OTHER_EXIT, dataManager.GetSysString(1210));
 	//system setting
 	wSystem = env->addWindow(rect<s32>(212, 140, 817, 420), false, dataManager.GetSysString(1207));
