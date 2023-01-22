@@ -137,7 +137,7 @@ bool Game::Initialize() {
 	btnOther = env->addButton(rect<s32>(10, 170, 270, 200), wMainMenu, BUTTON_OTHER, dataManager.GetSysString(1422));
 	btnSYS = env->addButton(rect<s32>(10, 205, 270, 235), wMainMenu, BUTTON_SYS, dataManager.GetSysString(1207));
 	//other
-	wOther = env->addWindow(rect<s32>(370, 50, 650, 580), false, dataManager.GetSysString(1422));
+	wOther = env->addWindow(rect<s32>(370, 40, 650, 600), false, dataManager.GetSysString(1422));
 	wOther->getCloseButton()->setVisible(false);
 	wOther->setVisible(false);
 	wOther->setDraggable(false);
@@ -154,7 +154,8 @@ bool Game::Initialize() {
 	btnYST = env->addButton(rect<s32>(10, 380, 270, 410), wOther, BUTTON_YST, dataManager.GetSysString(1536));
 	btnMJ = env->addButton(rect<s32>(10, 415, 270, 445), wOther, BUTTON_MJ, dataManager.GetSysString(1513));
 	btnDV = env->addButton(rect<s32>(10, 450, 270, 480), wOther, BUTTON_DV, dataManager.GetSysString(1537));
-	btnOtherExit = env->addButton(rect<s32>(10, 485, 270, 515), wOther, BUTTON_OTHER_EXIT, dataManager.GetSysString(1210));
+	btnDIY = env->addButton(rect<s32>(10, 485, 270, 515), wOther, BUTTON_DIYHEAD, dataManager.GetSysString(1539));
+	btnOtherExit = env->addButton(rect<s32>(10, 520, 270, 550), wOther, BUTTON_OTHER_EXIT, dataManager.GetSysString(1210));
 	//system setting
 	wSystem = env->addWindow(rect<s32>(212, 140, 817, 420), false, dataManager.GetSysString(1207));
 	wSystem->getCloseButton()->setVisible(false);
@@ -1975,7 +1976,7 @@ void Game::OnResize() {
 	//env->getSkin()->setFont(guiFont);
 
 	wMainMenu->setRelativePosition(ResizeWin(370, 200, 650, 485));
-	wOther->setRelativePosition(ResizeWin(370, 50, 650, 580));
+	wOther->setRelativePosition(ResizeWin(370, 40, 650, 600));
 	wSystem->setRelativePosition(ResizeWin(212, 140, 817, 420));
 	wHDS->setRelativePosition(ResizeWin(342, 235, 682, 395));
 	wCRS->setRelativePosition(ResizeWin(269.5, 187.5, 774.5, 452.5));

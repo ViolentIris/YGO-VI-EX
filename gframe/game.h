@@ -367,6 +367,7 @@ public:
 	irr::gui::IGUIButton* btnYST;
 	irr::gui::IGUIButton* btnMJ;
 	irr::gui::IGUIButton* btnDV;
+	irr::gui::IGUIButton* btnDIY;
 	//system setting
 	irr::gui::IGUIWindow* wSystem;
 	irr::gui::IGUICheckBox* chkMRandom;
@@ -885,6 +886,7 @@ extern Game* mainGame;
 #define BUTTON_MJ						433
 #define BUTTON_DV						434
 #define BUTTON_DV_CLOSE					435
+#define BUTTON_DIYHEAD					436
 
 
 #define BUTTON_SERVER_CHOOSE			394

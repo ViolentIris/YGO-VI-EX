@@ -123,6 +123,11 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				return true;
 				break;
 			}
+			case BUTTON_DIYHEAD: {
+                system("start https://picrew.me/");
+				return true;
+				break;
+			}
 			case BUTTON_DC: {
                 system("start https://charat.me/genesis/");
 				return true;
