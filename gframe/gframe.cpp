@@ -99,8 +99,17 @@ int main(int argc, char* argv[]) {
 			continue;
 		} else if(!wcscmp(wargv[i], L"-p")) { // host Port
 			++i;
-			if(i < wargc)
-				ygo::mainGame->ebJoinPort->setText(wargv[i]);
+			if(i < wargc) {
+				portSpecified = true;
+				auto port = _wtoi(wargv[i]);
+				if(port) {
+					wchar_t portStr[6];
+					myswprintf(portStr, L"%d", port);
+					ygo::mainGame->ebJoinPort->setText(portStr);
+				} else {
+					ygo::mainGame->ebJoinPort->setText(L"");
+				}
+			}
 			continue;
 		} else if(!wcscmp(wargv[i], L"-w")) { // host passWord
 			++i;

@@ -55,6 +55,7 @@ struct Config {
 	int window_height;
 	bool resize_popup_menu;
 	int auto_save_replay;
+	int ask_mset;
 	bool enable_sound;
 	bool enable_music;
 	double sound_volume;
@@ -320,6 +321,7 @@ public:
 	irr::gui::IGUICheckBox* chkWaitChain;
 	irr::gui::IGUICheckBox* chkQuickAnimation;
 	irr::gui::IGUICheckBox* chkAutoSaveReplay;
+	irr::gui::IGUICheckBox* chkAskMSet;
 	irr::gui::IGUIWindow* tabSystem;
 	irr::gui::IGUIElement* elmTabSystemLast;
 	irr::gui::IGUIScrollBar* scrTabSystem;
@@ -858,6 +860,7 @@ extern Game* mainGame;
 #define COMBOBOX_FONT				372
 #define COMBOBOX_LOCALE				373
 #define COMBOBOX_SOUNDTHEME			374
+#define CHECKBOX_ASK_MSET			375
 
 #define BUTTON_MARKS_FILTER			380
 #define BUTTON_MARKERS_OK			381

@@ -472,6 +472,9 @@ bool Game::Initialize() {
 	chkQuickAnimation = env->addCheckBox(false, rect<s32>(posX, posY, posX + 260, posY + 25), tabHelper, CHECKBOX_QUICK_ANIMATION, dataManager.GetSysString(1299));
 	chkQuickAnimation->setChecked(gameConf.quick_animation != 0);
 	posY += 30;
+	chkAskMSet = env->addCheckBox(false, rect<s32>(posX, posY, posX + 260, posY + 25), tabHelper, CHECKBOX_ASK_MSET, dataManager.GetSysString(1268));
+	chkAskMSet->setChecked(gameConf.ask_mset != 0);
+	posY += 30;
 	chkAutoSaveReplay = env->addCheckBox(false, rect<s32>(posX, posY, posX + 260, posY + 25), tabHelper, -1, dataManager.GetSysString(1366));
 	chkAutoSaveReplay->setChecked(gameConf.auto_save_replay != 0);
 	elmTabHelperLast = chkRegex;
@@ -1472,6 +1475,8 @@ void Game::LoadConfig() {
 				gameConf.quick_animation = atoi(valbuf);
 			} else if(!strcmp(strbuf, "auto_save_replay")) {
 				gameConf.auto_save_replay = atoi(valbuf);
+		} else if(!strcmp(strbuf, "ask_mset")) {
+			gameConf.ask_mset = atoi(valbuf);
 #ifdef YGOPRO_USE_IRRKLANG
 			} else if(!strcmp(strbuf, "enable_sound")) {
 				gameConf.enable_sound = atoi(valbuf) > 0;
@@ -1524,6 +1529,7 @@ void Game::LoadConfig() {
 		}
 		fclose(fp);
 	} else
+	gameConf.ask_mset = 0;
 	if(!gameConf.locale || wcslen(gameConf.locale) <= 0)
 	{
 		unsigned int lcid = 0;
@@ -1629,6 +1635,7 @@ void Game::SaveConfig() {
 	fprintf(fp, "enable_bot_mode = %d\n", gameConf.enable_bot_mode);
 	fprintf(fp, "quick_animation = %d\n", gameConf.quick_animation);
 	fprintf(fp, "auto_save_replay = %d\n", (chkAutoSaveReplay->isChecked() ? 1 : 0));
+	fprintf(fp, "ask_mset = %d\n", gameConf.ask_mset);
 	fprintf(fp, "window_maximized = %d\n", (gameConf.window_maximized ? 1 : 0));
 	fprintf(fp, "window_width = %d\n", gameConf.window_width);
 	fprintf(fp, "window_height = %d\n", gameConf.window_height);
