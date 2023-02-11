@@ -48,7 +48,7 @@ project "ygopro"
                 libdirs { "../irrklang/lib/Win32-visualStudio" }
             end
         end
-        links { "opengl32", "ws2_32", "winmm", "gdi32", "kernel32", "user32", "imm32" }
+        links { "opengl32", "ws2_32", "winmm", "gdi32", "kernel32", "user32", "imm32", "Dnsapi" }
     filter { "system:windows", "not action:vs*"}
         includedirs { "/mingw/include/irrlicht", "/mingw/include/freetype2" }
     filter "not action:vs*"
