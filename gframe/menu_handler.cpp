@@ -519,7 +519,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				unsigned int remote_port = _wtoi(mainGame->ebJoinPort->getText());
 				BufferIO::CopyWStr(pstr, mainGame->gameConf.lasthost, 100);
 				BufferIO::CopyWStr(mainGame->ebJoinPort->getText(), mainGame->gameConf.lastport, 20);
-				if(DuelClient::StartClient(remote_addr, remote_port, false)) {
+				if(DuelClient::StartClient(remote.host, remote.port, false)) {
 					mainGame->btnCreateHost->setEnabled(false);
 					mainGame->btnJoinHost->setEnabled(false);
 					mainGame->btnJoinCancel->setEnabled(false);
