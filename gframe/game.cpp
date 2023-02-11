@@ -1387,6 +1387,7 @@ void Game::LoadConfig() {
 	gameConf.quick_animation = 0;
 	gameConf.auto_save_replay = 0;
 	gameConf.enable_sound = true;
+	gameConf.ask_mset = 0;
 	gameConf.sound_volume = 0.5;
 	gameConf.enable_music = true;
 	gameConf.music_volume = 0.5;
