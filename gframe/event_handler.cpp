@@ -225,6 +225,13 @@ bool ClientField::OnEvent(const irr::SEvent& event) {
 					}
 					break;
 				}
+				case MSG_SELECT_IDLECMD: {
+					mainGame->HideElement(mainGame->wQuery);
+					if(current_mset_param) {
+						DuelClient::SetResponseI(current_mset_param);
+						DuelClient::SendResponse();
+					}
+				}
 				default: {
 					mainGame->HideElement(mainGame->wQuery);
 					break;
