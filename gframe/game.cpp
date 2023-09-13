@@ -282,7 +282,7 @@ bool Game::Initialize() {
 	btnNK = env->addButton(rect<s32>(10, 240, 270, 270), wSC, BUTTON_NK, dataManager.GetSysString(1435));
 	btnSCExit = env->addButton(rect<s32>(10, 275, 270, 305), wSC, BUTTON_SC_EXIT, dataManager.GetSysString(1436));
 	//room code
-	wRM = env->addWindow(rect<s32>(800, 100, 1230, 460), false, dataManager.GetSysString(1517));
+	wRM = env->addWindow(rect<s32>(270, 65, 700, 425), false, dataManager.GetSysString(1517));
 	wRM->getCloseButton()->setVisible(false);
 	wRM->setVisible(false);
 	wRM->setDraggable(false);
@@ -2053,10 +2053,10 @@ void Game::OnResize() {
 		btnCRpos.LowerRightCorner.X - 580,
 		btnCRpos.LowerRightCorner.Y - 103));
 	wRM->setRelativePosition(recti(
-		btnCRpos.LowerRightCorner.X,
-		btnCRpos.LowerRightCorner.Y - 420,
-		btnCRpos.LowerRightCorner.X + 430,
-		btnCRpos.LowerRightCorner.Y - 60));
+		btnCRpos.LowerRightCorner.X + 50,
+		btnCRpos.LowerRightCorner.Y - 35,
+		btnCRpos.LowerRightCorner.X - 100,
+		btnCRpos.LowerRightCorner.Y - 95));
 	wCreateHost->setRelativePosition(ResizeWin(320, 100, 700, 520));
 	wHostPrepare->setRelativePosition(ResizeWin(270, 120, 750, 440));
 	wReplay->setRelativePosition(ResizeWin(220, 100, 800, 520));
