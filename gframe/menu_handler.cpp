@@ -41,7 +41,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 			mainGame->wReplaySave->getParent()->bringToFront(mainGame->wReplaySave);
 			break;
 		}
-		if(mainGame->wSC->isVisible() && id != BUTTON_233 && id != BUTTON_23333 && id != BUTTON_7210 && id != BUTTON_765 && id != BUTTON_222 && id != BUTTON_JP && id != BUTTON_NK && id != BUTTON_SC_EXIT)
+		if(mainGame->wSC->isVisible() && id != BUTTON_233 && id != BUTTON_23333 && id != BUTTON_7210 && id != BUTTON_765 && id != BUTTON_222 && id != BUTTON_JP && id != BUTTON_NK && id != BUTTON_SP && id != BUTTON_SC_EXIT)
 			break;
 		if(mainGame->wRM->isVisible() && id != BUTTON_RM_EXIT && id != BUTTON_RM1 && id != BUTTON_RM2 && id != BUTTON_RM3 && id != BUTTON_RM4 && id != BUTTON_RM5 && id != BUTTON_RM6 && id != BUTTON_RM7 && id != BUTTON_RM8 && id != BUTTON_RM9 && id != BUTTON_RM10 && id != BUTTON_RM11 && id != BUTTON_RM12 && id != BUTTON_RM13 && id != BUTTON_RM14 && id != BUTTON_RMCM && id != BUTTON_RMWN && id != BUTTON_RMAI && id != BUTTON_RMA)
 			break;
@@ -252,6 +252,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				mainGame->btn23333->setEnabled(true);
 				mainGame->btn7210->setEnabled(true);
 				mainGame->btn222->setEnabled(true);
+				mainGame->btnSP->setEnabled(true);
 				mainGame->btnSCExit->setEnabled(true);
 				mainGame->ShowElement(mainGame->wSC);
 				mainGame->PopupElement(mainGame->wSC);
@@ -332,6 +333,18 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 			case BUTTON_NK: {
 				wcscpy(mainGame->gameConf.lasthost, L"duelstart.com");
 				wcscpy(mainGame->gameConf.lastport, L"2333");
+				wchar_t buf[256];
+				wchar_t buff[256];
+				myswprintf(buf, L"%s", mainGame->gameConf.lasthost);
+				mainGame->ebJoinHost->setText(buf);
+				myswprintf(buff, L"%s", mainGame->gameConf.lastport);
+				mainGame->ebJoinPort->setText(buff);
+				mainGame->HideElement(mainGame->wSC);
+				break;
+			}
+			case BUTTON_SP: {
+				wcscpy(mainGame->gameConf.lasthost, L"mygo.superpre.pro");
+				wcscpy(mainGame->gameConf.lastport, L"888");
 				wchar_t buf[256];
 				wchar_t buff[256];
 				myswprintf(buf, L"%s", mainGame->gameConf.lasthost);

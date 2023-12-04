@@ -269,7 +269,7 @@ bool Game::Initialize() {
 	btnJoinCancel = env->addButton(rect<s32>(460, 385, 570, 410), wLanWindow, BUTTON_JOIN_CANCEL, dataManager.GetSysString(1212));
 	btnCreateHost = env->addButton(rect<s32>(460, 25, 570, 50), wLanWindow, BUTTON_CREATE_HOST, dataManager.GetSysString(1224));
 	//server choose
-	wSC = env->addWindow(rect<s32>(-60, 100, 220, 417), false, dataManager.GetSysString(1428));
+	wSC = env->addWindow(rect<s32>(-60, 80, 220, 437), false, dataManager.GetSysString(1428));
 	wSC->getCloseButton()->setVisible(false);
 	wSC->setVisible(false);
 	wSC->setDraggable(false);
@@ -280,7 +280,8 @@ bool Game::Initialize() {
 	btn765 = env->addButton(rect<s32>(10, 170, 270, 200), wSC, BUTTON_765, dataManager.GetSysString(1433));
 	btnJP = env->addButton(rect<s32>(10, 205, 270, 235), wSC, BUTTON_JP, dataManager.GetSysString(1434));
 	btnNK = env->addButton(rect<s32>(10, 240, 270, 270), wSC, BUTTON_NK, dataManager.GetSysString(1435));
-	btnSCExit = env->addButton(rect<s32>(10, 275, 270, 305), wSC, BUTTON_SC_EXIT, dataManager.GetSysString(1436));
+	btnSP = env->addButton(rect<s32>(10, 275, 270, 305), wSC, BUTTON_SP, dataManager.GetSysString(1625));
+	btnSCExit = env->addButton(rect<s32>(10, 310, 270, 340), wSC, BUTTON_SC_EXIT, dataManager.GetSysString(1436));
 	//room code
 	wRM = env->addWindow(rect<s32>(270, 65, 700, 425), false, dataManager.GetSysString(1517));
 	wRM->getCloseButton()->setVisible(false);
@@ -2049,9 +2050,9 @@ void Game::OnResize() {
 	recti btnCRpos = wLanWindow->getAbsolutePosition();
 	wSC->setRelativePosition(recti(
 		btnCRpos.LowerRightCorner.X - 860,
-		btnCRpos.LowerRightCorner.Y - 420,
+		btnCRpos.LowerRightCorner.Y - 400,
 		btnCRpos.LowerRightCorner.X - 580,
-		btnCRpos.LowerRightCorner.Y - 103));
+		btnCRpos.LowerRightCorner.Y - 43));
 	wRM->setRelativePosition(recti(
 		btnCRpos.LowerRightCorner.X - 530,
 		btnCRpos.LowerRightCorner.Y - 455,
