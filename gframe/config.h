@@ -7,8 +7,8 @@
 #define IRR_COMPILE_WITH_DX9_DEV_PACK
 #ifdef _WIN32
 
-#include <WinSock2.h>
 #define NOMINMAX
+#include <WinSock2.h>
 #include <windows.h>
 #include <ws2tcpip.h>
 
@@ -87,6 +87,7 @@ using namespace video;
 using namespace io;
 using namespace gui;
 
+typedef int BOOL;
 extern unsigned short PRO_VERSION;
 extern int enable_log;
 extern bool exit_on_return;

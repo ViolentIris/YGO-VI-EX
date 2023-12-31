@@ -21,6 +21,38 @@ namespace ygo {
 
 Game* mainGame;
 
+void DuelInfo::Clear() {
+	isStarted = false;
+	isFinished = false;
+	isReplay = false;
+	isReplaySkiping = false;
+	isFirst = false;
+	isTag = false;
+	isSingleMode = false;
+	is_shuffling = false;
+	tag_player[0] = false;
+	tag_player[1] = false;
+	isReplaySwapped = false;
+	lp[0] = 0;
+	lp[1] = 0;
+	start_lp = 0;
+	duel_rule = 0;
+	turn = 0;
+	curMsg = 0;
+	hostname[0] = 0;
+	clientname[0] = 0;
+	hostname_tag[0] = 0;
+	clientname_tag[0] = 0;
+	strLP[0][0] = 0;
+	strLP[1][0] = 0;
+	vic_string = 0;
+	player_type = 0;
+	time_player = 0;
+	time_limit = 0;
+	time_left[0] = 0;
+	time_left[1] = 0;
+}
+
 bool Game::Initialize() {
 	srand(time(0));
 	initUtils();
@@ -70,6 +102,8 @@ bool Game::Initialize() {
 	is_building = false;
 	menuHandler.prev_operation = 0;
 	menuHandler.prev_sel = -1;
+	deckBuilder.prev_operation = 0;
+	deckBuilder.prev_sel = -1;
 	memset(&dInfo, 0, sizeof(DuelInfo));
 	memset(chatTiming, 0, sizeof(chatTiming));
 	deckManager.LoadLFList();
@@ -1742,6 +1776,7 @@ void Game::ShowCardInfo(int code, bool resize) {
 	} else {
 		myswprintf(formatBuffer, L"[%ls]", dataManager.FormatType(cd.type));
 		stInfo->setText(formatBuffer);
+		stDataInfo->setRelativePosition(recti(15, 60, 300 * xScale - 13, 83));
 		stDataInfo->setText(L"");
 		stSetName->setRelativePosition(rect<s32>(15, 60, 296 * xScale, 60 + offset));
 		stText->setRelativePosition(rect<s32>(15, 60 + offset, 287 * xScale, 324 * yScale));

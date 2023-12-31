@@ -364,8 +364,21 @@ void Game::DrawCards() {
 		for(auto it = dField.extra[p].begin(); it != dField.extra[p].end(); ++it)
 			DrawCard(*it);
 	}
-	for(auto cit = dField.overlay_cards.begin(); cit != dField.overlay_cards.end(); ++cit)
-		DrawCard(*cit);
+	for (auto cit = dField.overlay_cards.begin(); cit != dField.overlay_cards.end(); ++cit) {
+		auto pcard = (*cit);
+		auto olcard = pcard->overlayTarget;
+		if (pcard->aniFrame) {
+			DrawCard(pcard);
+		}
+		else if (olcard && olcard->location == LOCATION_MZONE) {
+			if (pcard->sequence < MAX_LAYER_COUNT) {
+				DrawCard(pcard);
+			}
+		}
+		else {
+			DrawCard(pcard);
+		}
+	}
 }
 void Game::DrawCard(ClientCard* pcard) {
 	if(pcard->aniFrame) {
@@ -442,7 +455,8 @@ void Game::DrawCard(ClientCard* pcard) {
 		matManager.mTexture.setTexture(0, imageManager.tAttack);
 		driver->setMaterial(matManager.mTexture);
 		irr::core::matrix4 atk;
-		atk.setTranslation(pcard->curPos + vector3df(0, -atkdy / 4.0f - 0.35f, 0.05f));
+		atk.setTranslation(pcard->curPos + vector3df(0, (pcard->controler == 0 ? -1 : 1) * (atkdy / 4.0f + 0.35f), 0.05f));
+		atk.setRotationRadians(vector3df(0, 0, pcard->controler == 0 ? 0 : 3.1415926f));
 		driver->setTransform(irr::video::ETS_WORLD, atk);
 		driver->drawVertexPrimitiveList(matManager.vSymbol, 4, matManager.iRectangle, 2);
 	}
@@ -517,9 +531,21 @@ void Game::DrawMisc() {
 		driver->drawVertexPrimitiveList(matManager.vActivate, 4, matManager.iRectangle, 2);
 	}
 	if(dField.conti_act) {
-		im.setTranslation(vector3df((matManager.vFieldContiAct[0].X + matManager.vFieldContiAct[1].X) / 2,
-			(matManager.vFieldContiAct[0].Y + matManager.vFieldContiAct[2].Y) / 2, 0.03f));
+		irr::core::vector3df pos = vector3df((matManager.vFieldContiAct[0].X + matManager.vFieldContiAct[1].X) / 2,
+			(matManager.vFieldContiAct[0].Y + matManager.vFieldContiAct[2].Y) / 2, 0);
+		im.setRotationRadians(irr::core::vector3df(0, 0, 0));
+		for(auto cit = dField.conti_cards.begin(); cit != dField.conti_cards.end(); ++cit) {
+			im.setTranslation(pos);
+			driver->setTransform(irr::video::ETS_WORLD, im);
+			matManager.mCard.setTexture(0, imageManager.GetTexture((*cit)->code));
+			driver->setMaterial(matManager.mCard);
+			driver->drawVertexPrimitiveList(matManager.vCardFront, 4, matManager.iRectangle, 2);
+			pos.Z += 0.03f;
+		}
+		im.setTranslation(pos);
+		im.setRotationRadians(act_rot);
 		driver->setTransform(irr::video::ETS_WORLD, im);
+		driver->setMaterial(matManager.mTexture);
 		driver->drawVertexPrimitiveList(matManager.vActivate, 4, matManager.iRectangle, 2);
 	}
 	if(dField.chains.size() > 1) {
@@ -561,7 +587,7 @@ void Game::DrawMisc() {
 	if(btnCancelOrFinish->isVisible() && dField.select_ready)
 		DrawSelectionLine(btnCancelOrFinish, 2, 0xffffb500);
 	//lp bar
-	if((dInfo.turn % 2 && dInfo.isFirst && !dInfo.is_swapped) || (!(dInfo.turn % 2) && !dInfo.isFirst && !dInfo.is_swapped) || (!(dInfo.turn % 2) && dInfo.isFirst && dInfo.is_swapped) || (dInfo.turn % 2 && !dInfo.isFirst && dInfo.is_swapped)) {
+	if((dInfo.turn % 2 && dInfo.isFirst) || (!(dInfo.turn % 2) && !dInfo.isFirst)) {
 		driver->draw2DRectangle(0xa0000000, Resize(327, 8, 630, 51));
 		driver->draw2DRectangleOutline(Resize(327, 8, 630, 51), 0x0000c800);
 	} else {
@@ -859,10 +885,10 @@ void Game::DrawStatus(ClientCard* pcard, int x1, int y1, int x2, int y2) {
 	}
 }
 void Game::DrawGUI() {
-	if(imageLoading.size()) {
-		for(auto mit = imageLoading.begin(); mit != imageLoading.end(); ++mit)
-			mit->first->setImage(imageManager.GetTexture(mit->second));
-		imageLoading.clear();
+	while (imageLoading.size()) {
+		auto mit = imageLoading.cbegin();
+		mit->first->setImage(imageManager.GetTexture(mit->second));
+		imageLoading.erase(mit);
 	}
 	for(auto fit = fadingList.begin(); fit != fadingList.end();) {
 		auto fthis = fit++;
@@ -1095,8 +1121,11 @@ void Game::DrawSpec() {
 			} else if(showcardp < showcarddif) {
 				DrawShadowText(lpcFont, lstr, ResizePhaseHint(660, 290, 960, 370, pos.Width), Resize(-1, -1, 0, 0), 0xffffffff);
 				if(dInfo.vic_string && (showcardcode == 1 || showcardcode == 2)) {
-					driver->draw2DRectangle(0xa0000000, Resize(540, 320, 790, 340));
-					DrawShadowText(guiFont, dInfo.vic_string, Resize(490, 320, 840, 340), Resize(-2, -1, 0, 0), 0xffffffff, 0xff000000, true, true, 0);
+					int w = guiFont->getDimension(dInfo.vic_string).Width;
+					if(w < 200)
+						w = 200;
+					driver->draw2DRectangle(0xa0000000, ResizeWin(640 - w / 2, 320, 690 + w / 2, 340));
+					DrawShadowText(guiFont, dInfo.vic_string, ResizeWin(640 - w / 2, 320, 690 + w / 2, 340), Resize(-2, -1, 0, 0), 0xffffffff, 0xff000000, true, true, 0);
 				}
 			} else if(showcardp < showcarddif + 10) {
 				int alpha = ((showcarddif + 10 - showcardp) * 25) << 24;
@@ -1190,9 +1219,12 @@ void Game::ShowElement(irr::gui::IGUIElement * win, int autoframe) {
 			btnCardDisplay[i]->setDrawImage(false);
 	}
 	win->setRelativePosition(irr::core::recti(center.X, center.Y, 0, 0));
+	win->setVisible(true);
 	fadingList.push_back(fu);
 }
 void Game::HideElement(irr::gui::IGUIElement * win, bool set_action) {
+	if(!win->isVisible() && !set_action)
+		return;
 	FadingUnit fu;
 	fu.fadingSize = win->getRelativePosition();
 	for(auto fit = fadingList.begin(); fit != fadingList.end(); ++fit)
@@ -1217,10 +1249,16 @@ void Game::HideElement(irr::gui::IGUIElement * win, bool set_action) {
 		for(int i = 0; i < 5; ++i)
 			btnCardSelect[i]->setDrawImage(false);
 		dField.conti_selecting = false;
+		stCardListTip->setVisible(false);
+		for(auto& pcard : dField.selectable_cards)
+			dField.SetShowMark(pcard, false);
 	}
 	if(win == wCardDisplay) {
 		for(int i = 0; i < 5; ++i)
 			btnCardDisplay[i]->setDrawImage(false);
+		stCardListTip->setVisible(false);
+		for(auto& pcard : dField.display_cards)
+			dField.SetShowMark(pcard, false);
 	}
 	fadingList.push_back(fu);
 }
@@ -1393,8 +1431,8 @@ void Game::DrawDeckBd() {
 			driver->draw2DRectangleOutline(Resize(313 + i * dx, 563, 359 + i * dx, 629));
 	}
 	//search result
-	driver->draw2DRectangle(Resize(805, 137, 915, 157), 0x400000ff, 0x400000ff, 0x40000000, 0x40000000);
-	driver->draw2DRectangleOutline(Resize(804, 136, 915, 157));
+	driver->draw2DRectangle(Resize(805, 137, 926, 157), 0x400000ff, 0x400000ff, 0x40000000, 0x40000000);
+	driver->draw2DRectangleOutline(Resize(804, 136, 926, 157));
 	DrawShadowText(textFont, dataManager.GetSysString(1333), Resize(810, 137, 915, 157), Resize(1, 1, 1, 1), 0xffffffff, 0xff000000, false, true);
 	DrawShadowText(numFont, deckBuilder.result_string, Resize(875, 137, 935, 157), Resize(1, 1, 1, 1), 0xffffffff, 0xff000000, false, true);
 	driver->draw2DRectangle(Resize(805, 160, 1020, 630), 0x400000ff, 0x400000ff, 0x40000000, 0x40000000);

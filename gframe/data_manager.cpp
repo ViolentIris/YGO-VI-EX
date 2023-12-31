@@ -94,7 +94,7 @@ bool DataManager::LoadStrings(const char* file) {
 		ReadStringConfLine(linebuf);
 	}
 	fclose(fp);
-	for(int i = 0; i < 255; ++i)
+	for(int i = 0; i < 301; ++i)
 		myswprintf(numStrings[i], L"%d", i);
 	return true;
 }
@@ -145,12 +145,25 @@ bool DataManager::Error(spmemvfs_db_t* pDB, sqlite3_stmt* pStmt) {
 	spmemvfs_env_fini();
 	return false;
 }
-bool DataManager::GetData(int code, CardData* pData) {
+bool DataManager::GetData(unsigned int code, CardData* pData) {
 	auto cdit = _datas.find(code);
 	if(cdit == _datas.end())
 		return false;
-	if(pData)
-		*pData = *((CardData*)&cdit->second);
+	auto data = cdit->second;
+	if (pData) {
+		pData->code = data.code;
+		pData->alias = data.alias;
+		pData->setcode = data.setcode;
+		pData->type = data.type;
+		pData->level = data.level;
+		pData->attribute = data.attribute;
+		pData->race = data.race;
+		pData->attack = data.attack;
+		pData->defense = data.defense;
+		pData->lscale = data.lscale;
+		pData->rscale = data.rscale;
+		pData->link_marker = data.link_marker;
+	}
 	return true;
 }
 code_pointer DataManager::GetCodePointer(int code) {
@@ -182,11 +195,11 @@ const wchar_t* DataManager::GetText(int code) {
 		return csit->second.text.c_str();
 	return unknown_string;
 }
-const wchar_t* DataManager::GetDesc(int strCode) {
-	if(strCode < 10000)
+const wchar_t* DataManager::GetDesc(unsigned int strCode) {
+	if(strCode < 10000u)
 		return GetSysString(strCode);
-	int code = strCode >> 4;
-	int offset = strCode & 0xf;
+	unsigned int code = (strCode >> 4) & 0x0fffffff;
+	unsigned int offset = strCode & 0xf;
 	auto csit = _strings.find(code);
 	if(csit == _strings.end())
 		return unknown_string;
@@ -223,7 +236,7 @@ const wchar_t* DataManager::GetSetName(int code) {
 unsigned int DataManager::GetSetCode(const wchar_t* setname) {
 	for(auto csit = _setnameStrings.begin(); csit != _setnameStrings.end(); ++csit) {
 		auto xpos = csit->second.find_first_of(L'|');//setname|another setname or extra info
-		if(csit->second.compare(0, xpos, setname) == 0 || csit->second.compare(xpos + 1, csit->second.length(), setname) == 0 || mainGame->CheckRegEx(csit->second, setname, true))
+		if(csit->second.compare(0, xpos, setname) == 0 || csit->second.compare(xpos + 1, csit->second.length(), setname) == 0)
 			return csit->first;
 	}
 	return 0;
