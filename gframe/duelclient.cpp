@@ -1277,8 +1277,6 @@ int DuelClient::ClientAnalyze(unsigned char* msg, unsigned int len) {
 				mainGame->showcardcode = 2;
 				myswprintf(vic_name, L"%ls", mainGame->dInfo.hostname);
 			}
-			if(mainGame->gameConf.hide_player_name)
-				myswprintf(vic_name, L"********");
 			if(match_kill)
 				myswprintf(vic_buf, dataManager.GetVictoryString(0xffff), dataManager.GetName(match_kill));
 			else if(type < 0x10)
