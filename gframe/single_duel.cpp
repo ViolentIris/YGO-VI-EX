@@ -555,7 +555,7 @@ void SingleDuel::DuelEndProc() {
 	}
 }
 void SingleDuel::Surrender(DuelPlayer* dp) {
-	if (dp->type > 1 || dp->player_id > 1 || !pduel)
+	if(dp->type > 1 || !pduel)
 		return;
 	unsigned char wbuf[3];
 	uint32 player = dp->type;
@@ -1598,9 +1598,13 @@ void SingleDuel::SingleTimer(evutil_socket_t fd, short events, void* arg) {
 		NetServer::ReSendToPlayer(sd->players[1]);
 		for(auto oit = sd->observers.begin(); oit != sd->observers.end(); ++oit)
 			NetServer::ReSendToPlayer(*oit);
-		sd->match_result[sd->duel_count] = sd->players[1 - player]->player_id;
-		++sd->duel_count;
-		sd->tp_player = player;
+		if(sd->players[player] == sd->pplayer[player]) {
+			sd->match_result[sd->duel_count++] = 1 - player;
+			sd->tp_player = player;
+		} else {
+			sd->match_result[sd->duel_count++] = player;
+			sd->tp_player = 1 - player;
+		}
 		sd->EndDuel();
 		sd->DuelEndProc();
 		event_del(sd->etimer);
