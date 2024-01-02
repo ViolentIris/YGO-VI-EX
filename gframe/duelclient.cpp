@@ -561,8 +561,11 @@ void DuelClient::HandleSTOCPacketLan(unsigned char* data, unsigned int len) {
 			mainGame->stHostPrepDuelist[2]->setVisible(false);
 			mainGame->stHostPrepDuelist[3]->setVisible(false);
 		}
-		for(int i = 0; i < 4; ++i)
+		for(int i = 0; i < 4; ++i) {
 			mainGame->chkHostPrepReady[i]->setChecked(false);
+			mainGame->stHostPrepDuelist[i]->setText(L"");
+			mainGame->stHostPrepDuelist[i]->setToolTipText(L"");
+		}
 		mainGame->btnHostPrepReady->setVisible(true);
 		mainGame->btnHostPrepNotReady->setVisible(false);
 		mainGame->dInfo.time_limit = pkt->info.time_limit;
@@ -575,10 +578,6 @@ void DuelClient::HandleSTOCPacketLan(unsigned char* data, unsigned int len) {
 				mainGame->deckBuilder.filterList = &lit->content;
 		if(mainGame->deckBuilder.filterList == 0)
 			mainGame->deckBuilder.filterList = &deckManager._lfList[0].content;
-		mainGame->stHostPrepDuelist[0]->setText(L"");
-		mainGame->stHostPrepDuelist[1]->setText(L"");
-		mainGame->stHostPrepDuelist[2]->setText(L"");
-		mainGame->stHostPrepDuelist[3]->setText(L"");
 		mainGame->stHostPrepOB->setText(L"");
 		mainGame->SetStaticText(mainGame->stHostPrepRule, 180, mainGame->guiFont, str.c_str());
 		mainGame->RefreshDeck(mainGame->cbDeckSelect);
@@ -923,6 +922,7 @@ void DuelClient::HandleSTOCPacketLan(unsigned char* data, unsigned int len) {
 		}
 		mainGame->gMutex.lock();
 		mainGame->stHostPrepDuelist[pkt->pos]->setText(name);
+		mainGame->stHostPrepDuelist[pkt->pos]->setToolTipText(name);
 		mainGame->gMutex.unlock();
 		mainGame->FlashWindow();
 		break;
@@ -1267,21 +1267,22 @@ int DuelClient::ClientAnalyze(unsigned char* msg, unsigned int len) {
 		wchar_t vic_buf[256];
 		if(player == 2)
 			mainGame->showcardcode = 3;
-		else if(mainGame->LocalPlayer(player) == 0) {
-			mainGame->showcardcode = 1;
+		else {
+			wchar_t vic_name[20];
+			if(mainGame->LocalPlayer(player) == 0) {
+				mainGame->showcardcode = 1;
+				myswprintf(vic_name, L"%ls", mainGame->dInfo.clientname);
+			}
+			else {
+				mainGame->showcardcode = 2;
+				myswprintf(vic_name, L"%ls", mainGame->dInfo.hostname);
+			}
+			if(mainGame->gameConf.hide_player_name)
+				myswprintf(vic_name, L"********");
 			if(match_kill)
 				myswprintf(vic_buf, dataManager.GetVictoryString(0xffff), dataManager.GetName(match_kill));
 			else if(type < 0x10)
-				myswprintf(vic_buf, L"[%ls] %ls", mainGame->dInfo.clientname, dataManager.GetVictoryString(type));
-			else
-				myswprintf(vic_buf, L"%ls", dataManager.GetVictoryString(type));
-			mainGame->dInfo.vic_string = vic_buf;
-		} else {
-			mainGame->showcardcode = 2;
-			if(match_kill)
-				myswprintf(vic_buf, dataManager.GetVictoryString(0xffff), dataManager.GetName(match_kill));
-			else if(type < 0x10)
-				myswprintf(vic_buf, L"[%ls] %ls", mainGame->dInfo.hostname, dataManager.GetVictoryString(type));
+				myswprintf(vic_buf, L"[%ls] %ls", vic_name, dataManager.GetVictoryString(type));
 			else
 				myswprintf(vic_buf, L"%ls", dataManager.GetVictoryString(type));
 			mainGame->dInfo.vic_string = vic_buf;

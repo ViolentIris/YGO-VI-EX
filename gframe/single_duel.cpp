@@ -9,13 +9,6 @@ namespace ygo {
 
 SingleDuel::SingleDuel(bool is_match) {
 	match_mode = is_match;
-	match_kill = 0;
-	for(int i = 0; i < 2; ++i) {
-		players[i] = 0;
-		ready[i] = false;
-	}
-	duel_count = 0;
-	memset(match_result, 0, 3);
 }
 SingleDuel::~SingleDuel() {
 }
@@ -351,8 +344,6 @@ void SingleDuel::StartDuel(DuelPlayer* dp) {
 	hand_result[1] = 0;
 	players[0]->state = CTOS_HAND_RESULT;
 	players[1]->state = CTOS_HAND_RESULT;
-	players[0]->player_id = 0;
-	players[1]->player_id = 1;
 	duel_stage = DUEL_STAGE_FINGER;
 }
 void SingleDuel::HandResult(DuelPlayer* dp, unsigned char res) {
@@ -400,6 +391,8 @@ void SingleDuel::TPResult(DuelPlayer* dp, unsigned char tp) {
 		return;
 	duel_stage = DUEL_STAGE_DUELING;
 	bool swapped = false;
+	pplayer[0] = players[0];
+	pplayer[1] = players[1];
 	if((tp && dp->type == 1) || (!tp && dp->type == 0)) {
 		DuelPlayer* p = players[0];
 		players[0] = players[1];
@@ -540,6 +533,15 @@ void SingleDuel::DuelEndProc() {
 				NetServer::ReSendToPlayer(*oit);
 			duel_stage = DUEL_STAGE_END;
 		} else {
+			if(players[0] != pplayer[0]) {
+				players[0] = pplayer[0];
+				players[1] = pplayer[1];
+				players[0]->type = 0;
+				players[1]->type = 1;
+				Deck d = pdeck[0];
+				pdeck[0] = pdeck[1];
+				pdeck[1] = d;
+			}
 			ready[0] = false;
 			ready[1] = false;
 			players[0]->state = CTOS_UPDATE_DECK;
@@ -564,9 +566,13 @@ void SingleDuel::Surrender(DuelPlayer* dp) {
 	NetServer::ReSendToPlayer(players[1]);
 	for(auto oit = observers.begin(); oit != observers.end(); ++oit)
 		NetServer::ReSendToPlayer(*oit);
-	match_result[duel_count] = 1 - dp->player_id;
-	++duel_count;
-	tp_player = player;
+	if(players[player] == pplayer[player]) {
+		match_result[duel_count++] = 1 - player;
+		tp_player = player;
+	} else {
+		match_result[duel_count++] = player;
+		tp_player = 1 - player;
+	}
 	EndDuel();
 	DuelEndProc();
 	event_del(etimer);
@@ -625,14 +631,15 @@ int SingleDuel::Analyze(unsigned char* msgbuffer, unsigned int len) {
 			for(auto oit = observers.begin(); oit != observers.end(); ++oit)
 				NetServer::ReSendToPlayer(*oit);
 			if(player > 1) {
-				match_result[duel_count] = 2;
+				match_result[duel_count++] = 2;
 				tp_player = 1 - tp_player;
-			}
-			else {
-				match_result[duel_count] = players[player]->player_id;
+			} else if(players[player] == pplayer[player]) {
+				match_result[duel_count++] = player;
 				tp_player = 1 - player;
+			} else {
+				match_result[duel_count++] = 1 - player;
+				tp_player = player;
 			}
-			++duel_count;
 			EndDuel();
 			return 2;
 		}
