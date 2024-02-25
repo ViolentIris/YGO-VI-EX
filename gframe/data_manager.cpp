@@ -5,11 +5,17 @@
 namespace ygo {
 
 const wchar_t* DataManager::unknown_string = L"???";
-wchar_t DataManager::strBuffer[4096];
 byte DataManager::scriptBuffer[0x20000];
 IFileSystem* DataManager::FileSystem;
 DataManager dataManager;
 
+DataManager::DataManager() : _datas(16384), _strings(16384) {
+	datas_begin = _datas.begin();
+	datas_end = _datas.end();
+	strings_begin = _strings.begin();
+	strings_end = _strings.end();
+	extra_setcode = { {8512558u, {0x8f, 0x54, 0x59, 0x82, 0x13a}}, };
+}
 bool DataManager::LoadDB(const wchar_t* wfile) {
 	char file[256];
 	BufferIO::EncodeUTF8(wfile, file);
@@ -35,10 +41,11 @@ bool DataManager::LoadDB(const wchar_t* wfile) {
 	const char* sql = "select * from datas,texts where datas.id=texts.id";
 	if(sqlite3_prepare_v2(pDB, sql, -1, &pStmt, 0) != SQLITE_OK)
 		return Error(&db);
-	CardDataC cd;
-	CardString cs;
+	wchar_t strBuffer[4096];
 	int step = 0;
 	do {
+		CardDataC cd;
+		CardString cs;
 		step = sqlite3_step(pStmt);
 		if(step == SQLITE_BUSY || step == SQLITE_ERROR || step == SQLITE_MISUSE)
 			return Error(&db, pStmt);
@@ -46,7 +53,19 @@ bool DataManager::LoadDB(const wchar_t* wfile) {
 			cd.code = sqlite3_column_int(pStmt, 0);
 			cd.ot = sqlite3_column_int(pStmt, 1);
 			cd.alias = sqlite3_column_int(pStmt, 2);
-			cd.setcode = sqlite3_column_int64(pStmt, 3);
+			auto setcode = sqlite3_column_int64(pStmt, 3);
+			if (setcode) {
+				auto it = extra_setcode.find(cd.code);
+				if (it != extra_setcode.end()) {
+					int len = it->second.size();
+					if (len > SIZE_SETCODE)
+						len = SIZE_SETCODE;
+					if (len)
+						memcpy(cd.setcode, it->second.data(), len * sizeof(uint16_t));
+				}
+				else
+					cd.set_setcode(setcode);
+			}
 			cd.type = sqlite3_column_int(pStmt, 4);
 			cd.attack = sqlite3_column_int(pStmt, 5);
 			cd.defense = sqlite3_column_int(pStmt, 6);
@@ -62,7 +81,7 @@ bool DataManager::LoadDB(const wchar_t* wfile) {
 			cd.race = sqlite3_column_int(pStmt, 8);
 			cd.attribute = sqlite3_column_int(pStmt, 9);
 			cd.category = sqlite3_column_int(pStmt, 10);
-			_datas.insert(std::make_pair(cd.code, cd));
+			_datas[cd.code] = cd;
 			if(const char* text = (const char*)sqlite3_column_text(pStmt, 12)) {
 				BufferIO::DecodeUTF8(text, strBuffer);
 				cs.name = strBuffer;
@@ -77,12 +96,16 @@ bool DataManager::LoadDB(const wchar_t* wfile) {
 					cs.desc[i] = strBuffer;
 				}
 			}
-			_strings.emplace(cd.code, cs);
+			_strings[cd.code] = cs;
 		}
 	} while(step != SQLITE_DONE);
 	sqlite3_finalize(pStmt);
 	spmemvfs_close_db(&db);
 	spmemvfs_env_fini();
+	datas_begin = _datas.begin();
+	datas_end = _datas.end();
+	strings_begin = _strings.begin();
+	strings_end = _strings.end();
 	return true;
 }
 bool DataManager::LoadStrings(const char* file) {
@@ -118,6 +141,7 @@ void DataManager::ReadStringConfLine(const char* linebuf) {
 		return;
 	char strbuf[256];
 	int value;
+	wchar_t strBuffer[4096];
 	sscanf(linebuf, "!%s", strbuf);
 	if(!strcmp(strbuf, "system")) {
 		sscanf(&linebuf[7], "%d %240[^\n]", &value, strbuf);
@@ -138,6 +162,7 @@ void DataManager::ReadStringConfLine(const char* linebuf) {
 	}
 }
 bool DataManager::Error(spmemvfs_db_t* pDB, sqlite3_stmt* pStmt) {
+	wchar_t strBuffer[4096];
 	BufferIO::DecodeUTF8(sqlite3_errmsg(pDB->handle), strBuffer);
 	if(pStmt)
 		sqlite3_finalize(pStmt);
@@ -146,14 +171,14 @@ bool DataManager::Error(spmemvfs_db_t* pDB, sqlite3_stmt* pStmt) {
 	return false;
 }
 bool DataManager::GetData(unsigned int code, CardData* pData) {
-	auto cdit = _datas.find(code);
+	code_pointer cdit = _datas.find(code);
 	if(cdit == _datas.end())
 		return false;
 	auto data = cdit->second;
 	if (pData) {
 		pData->code = data.code;
 		pData->alias = data.alias;
-		pData->setcode = data.setcode;
+		memcpy(pData->setcode, data.setcode, SIZE_SETCODE);
 		pData->type = data.type;
 		pData->level = data.level;
 		pData->attribute = data.attribute;
@@ -166,8 +191,11 @@ bool DataManager::GetData(unsigned int code, CardData* pData) {
 	}
 	return true;
 }
-code_pointer DataManager::GetCodePointer(int code) {
+code_pointer DataManager::GetCodePointer(unsigned int code) const {
 	return _datas.find(code);
+}
+string_pointer DataManager::GetStringPointer(unsigned int code) const {
+	return _strings.find(code);
 }
 bool DataManager::GetString(int code, CardString* pStr) {
 	auto csit = _strings.find(code);
@@ -320,10 +348,12 @@ const wchar_t* DataManager::FormatType(int type) {
 		return unknown_string;
 	return tpBuffer;
 }
-const wchar_t* DataManager::FormatSetName(unsigned long long setcode) {
+const wchar_t* DataManager::FormatSetName(const uint16_t setcode[]) {
 	wchar_t* p = scBuffer;
-	for(int i = 0; i < 4; ++i) {
-		const wchar_t* setname = GetSetName((setcode >> i * 16) & 0xffff);
+	for(int i = 0; i < 10; ++i) {
+		if (!setcode[i])
+			break;
+		const wchar_t* setname = GetSetName(setcode[i]);
 		if(setname) {
 			BufferIO::CopyWStrRef(setname, p, 32);
 			*p = L'|';
@@ -357,9 +387,9 @@ const wchar_t* DataManager::FormatLinkMarker(int link_marker) {
 		BufferIO::CopyWStrRef(L"[\u2198]", p, 4);
 	return lmBuffer;
 }
-int DataManager::CardReader(int code, void* pData) {
-	if(!dataManager.GetData(code, (CardData*)pData))
-		memset(pData, 0, sizeof(CardData));
+uint32 DataManager::CardReader(uint32 code, card_data* pData) {
+	if (!dataManager.GetData(code, pData))
+		pData->clear();
 	return 0;
 }
 byte* DataManager::ScriptReaderEx(const char* script_name, int* slen) {
