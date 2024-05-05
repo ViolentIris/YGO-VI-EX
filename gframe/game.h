@@ -111,6 +111,7 @@ struct BotInfo {
 	bool support_master_rule_3;
 	bool support_new_master_rule;
 	bool support_master_rule_2020;
+	bool select_deckfile{ false };
 };
 
 struct FadingUnit {

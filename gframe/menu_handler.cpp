@@ -804,8 +804,16 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 #else
 				if(fork() == 0) {
 					usleep(100000);
+					wchar_t warg1[512];
+					if(mainGame->botInfo[sel].select_deckfile) {
+						wchar_t botdeck[256];
+						deckManager.GetDeckFile(botdeck, mainGame->cbBotDeckCategory, mainGame->cbBotDeck);
+						myswprintf(warg1, L"%ls DeckFile='%ls'", mainGame->botInfo[sel].command, botdeck);
+					}
+					else
+						myswprintf(warg1, L"%ls", mainGame->botInfo[sel].command);
 					char arg1[512];
-					BufferIO::EncodeUTF8(mainGame->botInfo[sel].command, arg1);
+					BufferIO::EncodeUTF8(warg1, arg1);
 					int flag = 0;
 					flag += (mainGame->chkBotHand->isChecked() ? 0x1 : 0);
 					char arg2[8];
