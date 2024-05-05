@@ -911,12 +911,6 @@ bool Game::Initialize() {
 		btnBotCancel = env->addButton(rect<s32>(459, 331, 569, 356), tabBot, BUTTON_CANCEL_SINGLEPLAY, dataManager.GetSysString(1210));
 		env->addStaticText(dataManager.GetSysString(1382), rect<s32>(360, 10, 550, 30), false, true, tabBot);
 		stBotInfo = env->addStaticText(L"", rect<s32>(360, 40, 560, 160), false, true, tabBot);
-		cbBotDeckCategory = env->addComboBox(rect<s32>(360, 95, 560, 120), tabBot, COMBOBOX_BOT_DECKCATEGORY);
-		cbBotDeckCategory->setMaxSelectionRows(6);
-		cbBotDeckCategory->setVisible(false);
-		cbBotDeck = env->addComboBox(rect<s32>(360, 130, 560, 155), tabBot);
-		cbBotDeck->setMaxSelectionRows(6);
-		cbBotDeck->setVisible(false);
 		cbBotRule = env->addComboBox(rect<s32>(360, 165, 560, 190), tabBot, COMBOBOX_BOT_RULE);
 		cbBotRule->addItem(dataManager.GetSysString(1262));
 		cbBotRule->addItem(dataManager.GetSysString(1263));
@@ -1373,7 +1367,6 @@ void Game::RefreshBot() {
 				newinfo.support_master_rule_3 = !!strstr(linebuf, "SUPPORT_MASTER_RULE_3");
 				newinfo.support_new_master_rule = !!strstr(linebuf, "SUPPORT_NEW_MASTER_RULE");
 				newinfo.support_master_rule_2020 = !!strstr(linebuf, "SUPPORT_MASTER_RULE_2020");
-				newinfo.select_deckfile = !!strstr(linebuf, "SELECT_DECKFILE");
 				int rule = cbBotRule->getSelected() + 3;
 				if((rule == 3 && newinfo.support_master_rule_3)
 					|| (rule == 4 && newinfo.support_new_master_rule)
@@ -1386,17 +1379,11 @@ void Game::RefreshBot() {
 	}
 	lstBotList->clear();
 	stBotInfo->setText(L"");
-	cbBotDeckCategory->setVisible(false);
-	cbBotDeck->setVisible(false);
 	for(unsigned int i = 0; i < botInfo.size(); ++i) {
 		lstBotList->addItem(botInfo[i].name);
 	}
-	if(botInfo.size() == 0) {
+	if(botInfo.size() == 0)
 		SetStaticText(stBotInfo, 200, guiFont, dataManager.GetSysString(1385));
-	}
-	else {
-		RefreshCategoryDeck(cbBotDeckCategory, cbBotDeck);
-	}
 }
 void Game::LoadConfig() {
 	FILE* fp = fopen("system.conf", "r");
