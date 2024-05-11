@@ -9,8 +9,8 @@ event_base* NetServer::net_evbase = 0;
 event* NetServer::broadcast_ev = 0;
 evconnlistener* NetServer::listener = 0;
 DuelMode* NetServer::duel_mode = 0;
-unsigned char NetServer::net_server_read[0x2000];
-unsigned char NetServer::net_server_write[0x2000];
+unsigned char NetServer::net_server_read[SIZE_NETWORK_BUFFER];
+unsigned char NetServer::net_server_write[SIZE_NETWORK_BUFFER];
 unsigned short NetServer::last_sent = 0;
 
 bool NetServer::StartServer(unsigned short port) {
@@ -40,9 +40,9 @@ bool NetServer::StartBroadcast() {
 	if(!net_evbase)
 		return false;
 	SOCKET udp = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
-	BOOL opt = TRUE;
-	setsockopt(udp, SOL_SOCKET, SO_BROADCAST, (const char*)&opt, sizeof(BOOL));
-	setsockopt(udp, SOL_SOCKET, SO_REUSEADDR, (const char*)&opt, sizeof(BOOL));
+	int opt = TRUE;
+	setsockopt(udp, SOL_SOCKET, SO_BROADCAST, (const char*)&opt, sizeof opt);
+	setsockopt(udp, SOL_SOCKET, SO_REUSEADDR, (const char*)&opt, sizeof opt);
 	sockaddr_in addr;
 	memset(&addr, 0, sizeof(addr));
 	addr.sin_family = AF_INET;
@@ -180,7 +180,7 @@ void NetServer::HandleCTOSPacket(DuelPlayer* dp, unsigned char* data, unsigned i
 	case CTOS_RESPONSE: {
 		if(!dp->game || !duel_mode->pduel)
 			return;
-		duel_mode->GetResponse(dp, pdata, len > 64 ? 64 : len - 1);
+		duel_mode->GetResponse(dp, pdata, len - 1);
 		break;
 	}
 	case CTOS_TIME_CONFIRM: {
@@ -234,8 +234,8 @@ void NetServer::HandleCTOSPacket(DuelPlayer* dp, unsigned char* data, unsigned i
 			duel_mode = new TagDuel();
 			duel_mode->etimer = event_new(net_evbase, 0, EV_TIMEOUT | EV_PERSIST, TagDuel::TagTimer, duel_mode);
 		}
-		if(pkt->info.rule > 3)
-			pkt->info.rule = 0;
+		if(pkt->info.rule > 5)
+			pkt->info.rule = 5;
 		if(pkt->info.mode > 2)
 			pkt->info.mode = 0;
 		unsigned int hash = 1;
