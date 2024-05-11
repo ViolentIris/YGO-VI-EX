@@ -840,6 +840,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_DECK_EDIT: {
+				mainGame->ClearChatMsg();
 				mainGame->RefreshDeck(mainGame->cbDBDecks);
 				if(open_file && deckManager.LoadDeck(open_file_name)) {
 #ifdef WIN32
