@@ -5,20 +5,22 @@
 
 namespace ygo {
 
+char DeckManager::deckBuffer[0x10000]{};
 DeckManager deckManager;
 
 void DeckManager::LoadLFListSingle(const char* path) {
 	LFList* cur = nullptr;
 	FILE* fp = fopen(path, "r");
-	char linebuf[256];
-	wchar_t strBuffer[256];
+	char linebuf[256]{};
+	wchar_t strBuffer[256]{};
 	if(fp) {
 		while(fgets(linebuf, 256, fp)) {
 			if(linebuf[0] == '#')
 				continue;
 			if(linebuf[0] == '!') {
 				int sa = BufferIO::DecodeUTF8(&linebuf[1], strBuffer);
-				while(strBuffer[sa - 1] == L'\r' || strBuffer[sa - 1] == L'\n' ) sa--;
+				while(strBuffer[sa - 1] == L'\r' || strBuffer[sa - 1] == L'\n' )
+					sa--;
 				strBuffer[sa] = 0;
 				LFList newlist;
 				_lfList.push_back(newlist);
@@ -27,20 +29,18 @@ void DeckManager::LoadLFListSingle(const char* path) {
 				cur->hash = 0x7dfcee6a;
 				continue;
 			}
-			int p = 0;
-			while(linebuf[p] != ' ' && linebuf[p] != '\t' && linebuf[p] != 0) p++;
-			if(linebuf[p] == 0)
+			if(linebuf[0] == 0)
 				continue;
-			linebuf[p++] = 0;
-			int sa = p;
-			int code = atoi(linebuf);
-			if(code == 0)
+			int code = 0;
+			int count = -1;
+			if (sscanf(linebuf, "%d %d", &code, &count) != 2)
 				continue;
-			while(linebuf[p] == ' ' || linebuf[p] == '\t') p++;
-			while(linebuf[p] != ' ' && linebuf[p] != '\t' && linebuf[p] != 0) p++;
-			linebuf[p] = 0;
-			int count = atoi(&linebuf[sa]);
-			if(!cur) continue;
+			if (code <= 0 || code > 99999999)
+				continue;
+			if (count < 0 || count > 2)
+				continue;
+			if (!cur)
+				continue;
 			cur->content[code] = count;
 			cur->hash = cur->hash ^ ((code << 18) | (code >> 14)) ^ ((code << (27 + count)) | (code >> (5 - count)));
 		}
@@ -73,22 +73,33 @@ bool DeckManager::RenameDeck(const wchar_t* oldname, const wchar_t* newname) {
 #endif
 }
 const wchar_t* DeckManager::GetLFListName(int lfhash) {
-	for(size_t i = 0; i < _lfList.size(); ++i) {
-		if(_lfList[i].hash == (unsigned int)lfhash) {
-			return _lfList[i].listName.c_str();
-		}
-	}
-	return (wchar_t*)dataManager.unknown_string;
+	auto lit = std::find_if(_lfList.begin(), _lfList.end(), [lfhash](const ygo::LFList& list) {
+		return list.hash == lfhash;
+	});
+	if(lit != _lfList.end())
+		return lit->listName.c_str();
+	return dataManager.unknown_string;
 }
-int DeckManager::CheckDeck(Deck& deck, int lfhash, bool allow_ocg, bool allow_tcg) {
+const std::unordered_map<int, int>* DeckManager::GetLFListContent(int lfhash) {
+	auto lit = std::find_if(_lfList.begin(), _lfList.end(), [lfhash](const ygo::LFList& list) {
+		return list.hash == lfhash;
+	});
+	if(lit != _lfList.end())
+		return &lit->content;
+	return nullptr;
+}
+static int checkAvail(int ot, int avail) {
+	if((ot & avail) == avail)
+		return 0;
+	if((ot & AVAIL_OCG) && !(avail == AVAIL_OCG))
+		return DECKERROR_OCGONLY;
+	if((ot & AVAIL_TCG) && !(avail == AVAIL_TCG))
+		return DECKERROR_TCGONLY;
+	return DECKERROR_NOTAVAIL;
+}
+int DeckManager::CheckDeck(Deck& deck, int lfhash, int rule) {
 	std::unordered_map<int, int> ccount;
-	std::unordered_map<int, int>* list = 0;
-	for(size_t i = 0; i < _lfList.size(); ++i) {
-		if(_lfList[i].hash == (unsigned int)lfhash) {
-			list = &_lfList[i].content;
-			break;
-		}
-	}
+	auto list = GetLFListContent(lfhash);
 	if(!list)
 		return 0;
 	int dc = 0;
@@ -98,13 +109,13 @@ int DeckManager::CheckDeck(Deck& deck, int lfhash, bool allow_ocg, bool allow_tc
 		return (DECKERROR_EXTRACOUNT << 28) + deck.extra.size();
 	if(deck.side.size() > 15)
 		return (DECKERROR_SIDECOUNT << 28) + deck.side.size();
-
+	const int rule_map[6] = { AVAIL_OCG, AVAIL_TCG, AVAIL_SC, AVAIL_CUSTOM, AVAIL_OCGTCG, 0 };
+	int avail = rule_map[rule];
 	for(size_t i = 0; i < deck.main.size(); ++i) {
 		code_pointer cit = deck.main[i];
-		if(!allow_ocg && (cit->second.ot == 0x1))
-			return (DECKERROR_OCGONLY << 28) + cit->first;
-		if(!allow_tcg && (cit->second.ot == 0x2))
-			return (DECKERROR_TCGONLY << 28) + cit->first;
+		int gameruleDeckError = checkAvail(cit->second.ot, avail);
+		if(gameruleDeckError)
+			return (gameruleDeckError << 28) + cit->first;
 		if(cit->second.type & (TYPE_FUSION | TYPE_SYNCHRO | TYPE_XYZ | TYPE_TOKEN | TYPE_LINK))
 			return (DECKERROR_EXTRACOUNT << 28);
 		int code = cit->second.alias ? cit->second.alias : cit->first;
@@ -118,10 +129,9 @@ int DeckManager::CheckDeck(Deck& deck, int lfhash, bool allow_ocg, bool allow_tc
 	}
 	for(size_t i = 0; i < deck.extra.size(); ++i) {
 		code_pointer cit = deck.extra[i];
-		if(!allow_ocg && (cit->second.ot == 0x1))
-			return (DECKERROR_OCGONLY << 28) + cit->first;
-		if(!allow_tcg && (cit->second.ot == 0x2))
-			return (DECKERROR_TCGONLY << 28) + cit->first;
+		int gameruleDeckError = checkAvail(cit->second.ot, avail);
+		if(gameruleDeckError)
+			return (gameruleDeckError << 28) + cit->first;
 		int code = cit->second.alias ? cit->second.alias : cit->first;
 		ccount[code]++;
 		dc = ccount[code];
@@ -133,10 +143,9 @@ int DeckManager::CheckDeck(Deck& deck, int lfhash, bool allow_ocg, bool allow_tc
 	}
 	for(size_t i = 0; i < deck.side.size(); ++i) {
 		code_pointer cit = deck.side[i];
-		if(!allow_ocg && (cit->second.ot == 0x1))
-			return (DECKERROR_OCGONLY << 28) + cit->first;
-		if(!allow_tcg && (cit->second.ot == 0x2))
-			return (DECKERROR_TCGONLY << 28) + cit->first;
+		int gameruleDeckError = checkAvail(cit->second.ot, avail);
+		if(gameruleDeckError)
+			return (gameruleDeckError << 28) + cit->first;
 		int code = cit->second.alias ? cit->second.alias : cit->first;
 		ccount[code]++;
 		dc = ccount[code];
@@ -148,7 +157,7 @@ int DeckManager::CheckDeck(Deck& deck, int lfhash, bool allow_ocg, bool allow_tc
 	}
 	return 0;
 }
-int DeckManager::LoadDeck(Deck& deck, int* dbuf, int mainc, int sidec) {
+int DeckManager::LoadDeck(Deck& deck, int* dbuf, int mainc, int sidec, bool is_packlist) {
 	deck.clear();
 	int code;
 	int errorcode = 0;
@@ -162,6 +171,8 @@ int DeckManager::LoadDeck(Deck& deck, int* dbuf, int mainc, int sidec) {
 		if(cd.type & TYPE_TOKEN)
 			continue;
 		else if(cd.type & (TYPE_FUSION | TYPE_SYNCHRO | TYPE_XYZ | TYPE_LINK) && deck.extra.size() < 15) {
+			if(deck.extra.size() >= 15)
+				continue;
 			deck.extra.push_back(dataManager.GetCodePointer(code));	//verified by GetData()
 		} else if(deck.main.size() < 60) {
 			deck.main.push_back(dataManager.GetCodePointer(code));
