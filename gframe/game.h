@@ -10,6 +10,7 @@
 #include <vector>
 #include <list>
 class CGUISkinSystem;
+#define DEFAULT_DUEL_RULE 5
 namespace ygo {
 
 struct Config {
@@ -988,6 +989,11 @@ extern Game* mainGame;
 #define MSG_CREATE_RELATION		122
 #define MSG_RELEASE_RELATION	123
 
+#define AVAIL_OCG					0x1
+#define AVAIL_TCG					0x2
+#define AVAIL_CUSTOM				0x4
+#define AVAIL_SC					0x8
+#define AVAIL_OCGTCG				(AVAIL_OCG|AVAIL_TCG)
 #define CARD_ARTWORK_VERSIONS_OFFSET	10
 #define MAX_LAYER_COUNT	6
 extern bool delay_swap;
