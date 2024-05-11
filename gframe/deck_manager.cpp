@@ -99,7 +99,13 @@ static int checkAvail(int ot, int avail) {
 }
 int DeckManager::CheckDeck(Deck& deck, int lfhash, int rule) {
 	std::unordered_map<int, int> ccount;
-	auto list = GetLFListContent(lfhash);
+	std::unordered_map<int, int>* list = 0;
+	for(size_t i = 0; i < _lfList.size(); ++i) {
+		if(_lfList[i].hash == (unsigned int)lfhash) {
+			list = &_lfList[i].content;
+			break;
+		}
+	}
 	if(!list)
 		return 0;
 	int dc = 0;
@@ -157,7 +163,7 @@ int DeckManager::CheckDeck(Deck& deck, int lfhash, int rule) {
 	}
 	return 0;
 }
-int DeckManager::LoadDeck(Deck& deck, int* dbuf, int mainc, int sidec, bool is_packlist) {
+int DeckManager::LoadDeck(Deck& deck, int* dbuf, int mainc, int sidec) {
 	deck.clear();
 	int code;
 	int errorcode = 0;

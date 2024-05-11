@@ -43,7 +43,7 @@ public:
 	const wchar_t* GetLFListName(int lfhash);
 	const std::unordered_map<int, int>* GetLFListContent(int lfhash);
 	int CheckDeck(Deck& deck, int lfhash, int rule);
-	int LoadDeck(Deck& deck, int* dbuf, int mainc, int sidec, bool is_packlist = false);
+	int LoadDeck(Deck& deck, int* dbuf, int mainc, int sidec);
 	bool LoadSide(Deck& deck, int* dbuf, int mainc, int sidec);
 	FILE* OpenDeckFile(const wchar_t * file, const char * mode);
 	bool LoadDeck(const wchar_t* file);
