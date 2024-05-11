@@ -54,7 +54,7 @@ int SingleMode::SinglePlayThread() {
 	mainGame->dInfo.turn = 0;
 	mainGame->dInfo.announce_cache.clear();
 	char filename[256];
-	size_t slen = 0;
+	int slen = 0;
 	if(open_file) {
 		open_file = false;
 		slen = BufferIO::EncodeUTF8(open_file_name, filename);
@@ -158,6 +158,7 @@ int SingleMode::SinglePlayThread() {
 	if(!is_closing) {
 		mainGame->gMutex.lock();
 		mainGame->dInfo.isStarted = false;
+		mainGame->dInfo.isInDuel = false;
 		mainGame->dInfo.isFinished = true;
 		mainGame->dInfo.isSingleMode = false;
 		mainGame->gMutex.unlock();
