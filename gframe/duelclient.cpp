@@ -992,6 +992,12 @@ void DuelClient::HandleSTOCPacketLan(unsigned char* data, unsigned int len) {
 		mainGame->gMutex.unlock();
 		break;
 	}
+	case STOC_TEAMMATE_SURRENDER: {
+		if(!mainGame->dField.tag_surrender)
+			mainGame->dField.tag_teammate_surrender = true;
+		mainGame->btnLeaveGame->setText(dataManager.GetSysString(1532));
+		break;
+	}
 	}
 }
 // Analyze STOC_GAME_MSG packet
