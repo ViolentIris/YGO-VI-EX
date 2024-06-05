@@ -995,7 +995,7 @@ void DuelClient::HandleSTOCPacketLan(unsigned char* data, unsigned int len) {
 	case STOC_TEAMMATE_SURRENDER: {
 		if(!mainGame->dField.tag_surrender)
 			mainGame->dField.tag_teammate_surrender = true;
-		mainGame->btnLeaveGame->setText(dataManager.GetSysString(1532));
+		mainGame->btnLeaveGame->setText(dataManager.GetSysString(1540));
 		break;
 	}
 	}
