@@ -284,7 +284,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_23333: {
-				wcscpy(mainGame->gameConf.lasthost, L"47.113.224.113");
+				wcscpy(mainGame->gameConf.lasthost, L"VI-1911.com");
 				wcscpy(mainGame->gameConf.lastport, L"1911");
 				wchar_t buf[256];
 				wchar_t buff[256];
@@ -308,7 +308,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_JP: {
-				wcscpy(mainGame->gameConf.lasthost, L"47.113.224.113");
+				wcscpy(mainGame->gameConf.lasthost, L"VI-1911.com");
 				wcscpy(mainGame->gameConf.lastport, L"1925");
 				wchar_t buf[256];
 				wchar_t buff[256];
