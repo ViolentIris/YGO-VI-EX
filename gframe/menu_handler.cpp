@@ -88,7 +88,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_SEM: {
-                system("start https://ygo233.com/pre");
+                system("start https://cdn02.moecube.com:444/ygopro-super-pre/archive/ygopro-super-pre.ypk");
 				return true;
 				break;
 			}
@@ -281,8 +281,8 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_23333: {
-				wcscpy(mainGame->gameConf.lasthost, L"s1.ygo233.com");
-				wcscpy(mainGame->gameConf.lastport, L"23333");
+				wcscpy(mainGame->gameConf.lasthost, L"47.113.224.113");
+				wcscpy(mainGame->gameConf.lastport, L"1911");
 				wchar_t buf[256];
 				wchar_t buff[256];
 				myswprintf(buf, L"%s", mainGame->gameConf.lasthost);
@@ -305,8 +305,8 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_JP: {
-				wcscpy(mainGame->gameConf.lasthost, L"koishi.momobako.com");
-				wcscpy(mainGame->gameConf.lastport, L"3400");
+				wcscpy(mainGame->gameConf.lasthost, L"47.113.224.113");
+				wcscpy(mainGame->gameConf.lastport, L"1925");
 				wchar_t buf[256];
 				wchar_t buff[256];
 				myswprintf(buf, L"%s", mainGame->gameConf.lasthost);
