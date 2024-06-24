@@ -260,9 +260,12 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 			case BUTTON_SERVER_CHOOSE: {
 				mainGame->btn233->setEnabled(true);
 				mainGame->btn23333->setEnabled(true);
+				mainGame->btnJP->setEnabled(true);
+				mainGame->btnSP->setEnabled(true);
 				mainGame->btn7210->setEnabled(true);
 				mainGame->btn222->setEnabled(true);
-				mainGame->btnSP->setEnabled(true);
+				mainGame->btn765->setEnabled(true);
+				mainGame->btnNK->setEnabled(true);
 				mainGame->btnSCExit->setEnabled(true);
 				mainGame->ShowElement(mainGame->wSC);
 				mainGame->PopupElement(mainGame->wSC);
