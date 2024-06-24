@@ -284,8 +284,8 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_23333: {
-				wcscpy(mainGame->gameConf.lasthost, L"VI-1911.com");
-				wcscpy(mainGame->gameConf.lastport, L"1911");
+				wcscpy(mainGame->gameConf.lasthost, L"mygo.superpre.pro");
+				wcscpy(mainGame->gameConf.lastport, L"888");
 				wchar_t buf[256];
 				wchar_t buff[256];
 				myswprintf(buf, L"%s", mainGame->gameConf.lasthost);
@@ -308,8 +308,8 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_JP: {
-				wcscpy(mainGame->gameConf.lasthost, L"VI-1911.com");
-				wcscpy(mainGame->gameConf.lastport, L"1925");
+				wcscpy(mainGame->gameConf.lasthost, L"koishi.momobako.com");
+				wcscpy(mainGame->gameConf.lastport, L"10000");
 				wchar_t buf[256];
 				wchar_t buff[256];
 				myswprintf(buf, L"%s", mainGame->gameConf.lasthost);
@@ -356,8 +356,8 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_SP: {
-				wcscpy(mainGame->gameConf.lasthost, L"mygo.superpre.pro");
-				wcscpy(mainGame->gameConf.lastport, L"888");
+				wcscpy(mainGame->gameConf.lasthost, L"server.ygoanime.com");
+				wcscpy(mainGame->gameConf.lastport, L"2020");
 				wchar_t buf[256];
 				wchar_t buff[256];
 				myswprintf(buf, L"%s", mainGame->gameConf.lasthost);
