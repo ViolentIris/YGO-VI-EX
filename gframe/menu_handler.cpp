@@ -88,7 +88,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_SEM: {
-                system("start https://cdn02.moecube.com:444/ygopro-super-pre/archive/ygopro-super-pre.ypk");
+                system("start https://code.mycard.moe/mycard/pre-release-database-cdb");
 				return true;
 				break;
 			}
