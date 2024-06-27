@@ -5,6 +5,9 @@
 #pragma warning(disable: 4244)
 #endif
 
+#include <cstdint>
+#include "../ocgcore/buffer.h"
+
 class BufferIO {
 public:
 	inline static int ReadInt32(unsigned char*& p) {
@@ -139,6 +142,18 @@ public:
 		}
 		*wp = 0;
 		return wp - wstr;
+	}
+	template<size_t N>
+	static int EncodeUTF8(const wchar_t* src, char(&dst)[N]) {
+		return EncodeUTF8String(src, dst, N);
+	}
+	template<size_t N>
+	static int DecodeUTF8(const char* src, wchar_t(&dst)[N]) {
+		return DecodeUTF8String(src, dst, N);
+	}
+	template<size_t N, typename T>
+	static void NullTerminate(T(&str)[N]) {
+		str[N - 1] = 0;
 	}
 	static int GetVal(const wchar_t* pstr) {
 		int ret = 0;
