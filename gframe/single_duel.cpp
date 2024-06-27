@@ -1407,7 +1407,7 @@ int SingleDuel::Analyze(unsigned char* msgbuffer, unsigned int len) {
 	return 0;
 }
 void SingleDuel::GetResponse(DuelPlayer* dp, void* pdata, unsigned int len) {
-	byte resb[SIZE_RETURN_VALUE];
+	byte resb[SIZE_RETURN_VALUE]{};
 	if (len > SIZE_RETURN_VALUE)
 		len = SIZE_RETURN_VALUE;
 	memcpy(resb, pdata, len);
