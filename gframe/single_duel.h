@@ -66,3 +66,4 @@ protected:
 }
 
 #endif //SINGLE_DUEL_H
+

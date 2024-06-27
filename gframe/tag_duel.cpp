@@ -37,6 +37,8 @@ void TagDuel::JoinGame(DuelPlayer* dp, unsigned char* pdata, bool is_creater) {
 			return;
 		}
 		CTOS_JoinGame packet;
+		std::memcpy(&packet, pdata, sizeof packet);
+		auto pkt = &packet;
 		/* disabled version check
 		if(pkt->version != PRO_VERSION) {
 			STOC_ErrorMsg scem;

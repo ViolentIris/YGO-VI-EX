@@ -923,8 +923,9 @@ void DuelClient::HandleSTOCPacketLan(unsigned char* data, int len) {
 				player = 10;
 			}
 		}
-		wchar_t msg[256];
-		BufferIO::CopyWStr(pkt->msg, msg, 256);
+		// UTF-16 to wchar_t
+		wchar_t msg[LEN_CHAT_MSG];
+		BufferIO::CopyWStr(chat_msg, msg, LEN_CHAT_MSG);
 		mainGame->gMutex.lock();
 		mainGame->AddChatMsg(msg, player, play_sound);
 		mainGame->gMutex.unlock();
