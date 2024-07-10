@@ -149,7 +149,8 @@ bool ClientField::OnEvent(const irr::SEvent& event) {
 					if(exit_on_return)
 						mainGame->device->closeDevice();
 				} else {
-					mainGame->PopupElement(mainGame->wSurrender);
+					if(!(mainGame->dInfo.isTag && mainGame->dField.tag_surrender))
+						mainGame->PopupElement(mainGame->wSurrender);
 				}
 				break;
 			}
@@ -157,10 +158,12 @@ bool ClientField::OnEvent(const irr::SEvent& event) {
 				soundManager.PlaySoundEffect(SOUND_BUTTON);
 				DuelClient::SendPacketToServer(CTOS_SURRENDER);
 				mainGame->HideElement(mainGame->wSurrender);
+				mainGame->dField.tag_surrender = true;
 				break;
 			}
 			case BUTTON_SURRENDER_NO: {
 				soundManager.PlaySoundEffect(SOUND_BUTTON);
+				mainGame->dField.tag_teammate_surrender = false;
 				mainGame->HideElement(mainGame->wSurrender);
 				break;
 			}
@@ -1081,7 +1084,11 @@ bool ClientField::OnEvent(const irr::SEvent& event) {
 				UpdateChainButtons();
 			}
 			if(mainGame->wCmdMenu->isVisible() && !mainGame->wCmdMenu->getRelativePosition().isPointInside(mousepos))
-				mainGame->wCmdMenu->setVisible(false);
+				HideMenu();
+			if(mainGame->btnBP->isVisible() && mainGame->btnBP->getAbsolutePosition().isPointInside(mousepos))
+				break;
+			if(mainGame->btnM2->isVisible() && mainGame->btnM2->getAbsolutePosition().isPointInside(mousepos))
+				break;
 			if(panel && panel->isVisible())
 				break;
 			GetHoverField(x, y);
