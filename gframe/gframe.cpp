@@ -2,12 +2,13 @@
 #include "game.h"
 #include "data_manager.h"
 #include <event2/thread.h>
+#include <locale.h>
 #include <memory>
 #ifdef __APPLE__
 #import <CoreFoundation/CoreFoundation.h>
 #endif
 
-int enable_log = 0;
+unsigned int enable_log = 0x3;
 bool exit_on_return = false;
 bool auto_watch_mode = false;
 bool open_file = false;

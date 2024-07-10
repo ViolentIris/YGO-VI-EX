@@ -1084,11 +1084,7 @@ bool ClientField::OnEvent(const irr::SEvent& event) {
 				UpdateChainButtons();
 			}
 			if(mainGame->wCmdMenu->isVisible() && !mainGame->wCmdMenu->getRelativePosition().isPointInside(mousepos))
-				HideMenu();
-			if(mainGame->btnBP->isVisible() && mainGame->btnBP->getAbsolutePosition().isPointInside(mousepos))
-				break;
-			if(mainGame->btnM2->isVisible() && mainGame->btnM2->getAbsolutePosition().isPointInside(mousepos))
-				break;
+				mainGame->wCmdMenu->setVisible(false);
 			if(panel && panel->isVisible())
 				break;
 			GetHoverField(x, y);
