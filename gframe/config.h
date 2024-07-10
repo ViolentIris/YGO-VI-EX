@@ -89,7 +89,7 @@ using namespace gui;
 
 typedef int BOOL;
 extern unsigned short PRO_VERSION;
-extern int enable_log;
+extern unsigned int enable_log;
 extern bool exit_on_return;
 extern bool auto_watch_mode;
 extern bool open_file;

@@ -1455,7 +1455,8 @@ void Game::LoadConfig() {
 			} else if(!strcmp(strbuf, "pro_version")) {
 				PRO_VERSION = atoi(valbuf);
 			} else if(!strcmp(strbuf, "errorlog")) {
-				enable_log = atoi(valbuf);
+				unsigned int val = strtol(valbuf, nullptr, 10);
+				enable_log = val & 0xff;
 			} else if(!strcmp(strbuf, "textfont")) {
 				BufferIO::DecodeUTF8(valbuf, wstr);
 				int textfontsize;
@@ -1638,7 +1639,7 @@ void Game::SaveConfig() {
 	fprintf(fp, "use_image_scale = %d\n", gameConf.use_image_scale ? 1 : 0);
 	fprintf(fp, "pro_version = %d\n", PRO_VERSION);
 	fprintf(fp, "antialias = %d\n", gameConf.antialias);
-	fprintf(fp, "errorlog = %d\n", enable_log);
+	fprintf(fp, "errorlog = %u\n", enable_log);
 	BufferIO::CopyWStr(ebNickName->getText(), gameConf.nickname, 20);
 	BufferIO::EncodeUTF8(gameConf.nickname, linebuf);
 	fprintf(fp, "nickname = %s\n", linebuf);
