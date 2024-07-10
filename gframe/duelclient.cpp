@@ -1054,7 +1054,7 @@ int DuelClient::ClientAnalyze(unsigned char* msg, unsigned int len) {
 	wchar_t textBuffer[256];
 	mainGame->dInfo.curMsg = BufferIO::ReadUInt8(pbuf);
 	if(mainGame->dInfo.curMsg != MSG_RETRY) {
-		memcpy(last_successful_msg, msg, len);
+		std::memcpy(last_successful_msg, msg, len);
 		last_successful_msg_length = len;
 	}
 	mainGame->wCmdMenu->setVisible(false);
