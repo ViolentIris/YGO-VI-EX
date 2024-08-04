@@ -118,8 +118,8 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				wchar_t amiya[2048];
 				myswprintf(amiya, L"%ls", L"./download/amiya.jpg");
 				CopyFile(amiya, L"./textures/bg/amiya.jpg", FALSE);
-				mainGame->stASMessage->setText(dataManager.GetSysString(1911));
-				mainGame->PopupElement(mainGame->wASMessage, 30);
+				mainGame->stACMessage->setText(dataManager.GetSysString(1911));
+				mainGame->PopupElement(mainGame->wACMessage, 300);
 				return true;
 				break;
 			}
