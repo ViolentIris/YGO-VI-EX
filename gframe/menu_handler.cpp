@@ -70,11 +70,11 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 			}
 			case BUTTON_OTHER: {
 				mainGame->btnSEM->setEnabled(true);
-				mainGame->btnTakeout1->setEnabled(true);
 				mainGame->btnTakeout2->setEnabled(true);
 				mainGame->btnLantern->setEnabled(true);
 				mainGame->btnVI->setEnabled(true);
 				mainGame->btnFOX->setEnabled(true);
+				mainGame->btnTakeout1->setEnabled(true);
 				mainGame->btnWBO->setEnabled(true);
 				mainGame->btnDC->setEnabled(true);
 				mainGame->btnDLD->setEnabled(true);
@@ -104,7 +104,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_TAKEOUT1: {
-                system("start https://www.4008123123.com/");
+                system("start https://mycard.moe/ygopro/arena/#/cards");
 				return true;
 				break;
 			}
@@ -114,7 +114,14 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_LANTERN: {
-                system("start https://github.com/copytranslator/copytranslator/releases");
+                system("start .\\download\\Code.jpg");
+				wchar_t amiya[2048];
+				myswprintf(amiya, L"%ls", L"./download/amiya.jpg");
+				CopyFile(amiya, L"./textures/bg/amiya.jpg", FALSE);
+				mainGame->stASMessage->setText(dataManager.GetSysString(1911));
+				mainGame->PopupElement(mainGame->wASMessage, 30);
+				break;
+			}
 				return true;
 				break;
 			}
@@ -166,7 +173,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_MJ: {
-                system("start https://draft.art/drawing");
+                system("start https://www.pixiv.net/users/12786607");
 				return true;
 				break;
 			}
