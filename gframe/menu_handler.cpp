@@ -120,6 +120,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				CopyFile(amiya, L"./textures/bg/amiya.jpg", FALSE);
 				mainGame->stASMessage->setText(dataManager.GetSysString(1911));
 				mainGame->PopupElement(mainGame->wASMessage, 30);
+				return true;
 				break;
 			}
 				return true;
