@@ -114,15 +114,12 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_LANTERN: {
-                system("start .\\download\\Code.jpg");
+				system("start .\\download\\Code.jpg");
 				wchar_t amiya[2048];
 				myswprintf(amiya, L"%ls", L"./download/amiya.jpg");
 				CopyFile(amiya, L"./textures/bg/amiya.jpg", FALSE);
 				mainGame->stASMessage->setText(dataManager.GetSysString(1911));
 				mainGame->PopupElement(mainGame->wASMessage, 30);
-				return true;
-				break;
-			}
 				return true;
 				break;
 			}
