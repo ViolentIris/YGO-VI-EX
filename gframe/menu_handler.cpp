@@ -90,7 +90,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 			case BUTTON_SEM: {
                 system("powershell iwr -Uri https://cdn02.moecube.com:444/ygopro-super-pre/archive/ygopro-super-pre.ypk -Outfile %USERPROFILE%\\Downloads\\ygopro-super-pre.ypk");
 				system("xcopy /E %USERPROFILE%\\Downloads\\ygopro-super-pre.ypk .\\expansions\\");
-				system("rd /s /q %USERPROFILE%\\Downloads\\ygopro-super-pre.ypk");
+				system("del %USERPROFILE%\\Downloads\\ygopro-super-pre.ypk");
 				mainGame->stACMessage->setText(dataManager.GetSysString(1541));
 				mainGame->PopupElement(mainGame->wACMessage, 30);
 				return true;
