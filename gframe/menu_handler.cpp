@@ -269,6 +269,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 			case BUTTON_SERVER_CHOOSE: {
 				mainGame->btn233->setEnabled(true);
 				mainGame->btn23333->setEnabled(true);
+				mainGame->btn888->setEnabled(true);
 				mainGame->btnJP->setEnabled(true);
 				mainGame->btnSP->setEnabled(true);
 				mainGame->btn7210->setEnabled(true);
@@ -283,6 +284,18 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 			case BUTTON_233: {
 				wcscpy(mainGame->gameConf.lasthost, L"s1.ygo233.com");
 				wcscpy(mainGame->gameConf.lastport, L"233");
+				wchar_t buf[256];
+				wchar_t buff[256];
+				myswprintf(buf, L"%s", mainGame->gameConf.lasthost);
+				mainGame->ebJoinHost->setText(buf);
+				myswprintf(buff, L"%s", mainGame->gameConf.lastport);
+				mainGame->ebJoinPort->setText(buff);
+				mainGame->HideElement(mainGame->wSC);
+				break;
+			}
+			case BUTTON_888: {
+				wcscpy(mainGame->gameConf.lasthost, L"mygo2.superpre.pro");
+				wcscpy(mainGame->gameConf.lastport, L"888");
 				wchar_t buf[256];
 				wchar_t buff[256];
 				myswprintf(buf, L"%s", mainGame->gameConf.lasthost);
