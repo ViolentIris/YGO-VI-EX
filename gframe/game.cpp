@@ -310,13 +310,13 @@ bool Game::Initialize() {
 	wSC->setDraggable(false);
 	btn233 = env->addButton(rect<s32>(10, 30, 270, 60), wSC, BUTTON_233, dataManager.GetSysString(1429));
 	btn23333 = env->addButton(rect<s32>(10, 65, 270, 95), wSC, BUTTON_23333, dataManager.GetSysString(1430));
+	btn888 = env->addButton(rect<s32>(10, 310, 270, 340), wSC, BUTTON_888, dataManager.GetSysString(1626));
 	btnJP = env->addButton(rect<s32>(10, 205, 270, 235), wSC, BUTTON_JP, dataManager.GetSysString(1434));
 	btnSP = env->addButton(rect<s32>(10, 275, 270, 305), wSC, BUTTON_SP, dataManager.GetSysString(1625));
 	btn7210 = env->addButton(rect<s32>(10, 100, 270, 130), wSC, BUTTON_7210, dataManager.GetSysString(1431));
 	btn222 = env->addButton(rect<s32>(10, 135, 270, 165), wSC, BUTTON_222, dataManager.GetSysString(1432));
 	btn765 = env->addButton(rect<s32>(10, 170, 270, 200), wSC, BUTTON_765, dataManager.GetSysString(1433));
-	btnNK = env->addButton(rect<s32>(10, 240, 270, 270), wSC, BUTTON_NK, dataManager.GetSysString(1435));
-	btn888 = env->addButton(rect<s32>(10, 310, 270, 340), wSC, BUTTON_888, dataManager.GetSysString(1626));
+	btnNK = env->addButton(rect<s32>(10, 240, 270, 270), wSC, BUTTON_NK, dataManager.GetSysString(1435));	
 	btnSCExit = env->addButton(rect<s32>(10, 345, 270, 375), wSC, BUTTON_SC_EXIT, dataManager.GetSysString(1436));
 	//room code
 	wRM = env->addWindow(rect<s32>(270, 65, 700, 425), false, dataManager.GetSysString(1517));
@@ -2141,8 +2141,8 @@ void Game::OnResize() {
 	recti btnCRpos = wLanWindow->getAbsolutePosition();
 	wSC->setRelativePosition(recti(
 		btnCRpos.LowerRightCorner.X - 860,
-		btnCRpos.LowerRightCorner.Y - 400,
-		btnCRpos.LowerRightCorner.X - 545,
+		btnCRpos.LowerRightCorner.Y - 435,
+		btnCRpos.LowerRightCorner.X - 580,
 		btnCRpos.LowerRightCorner.Y - 43));
 	wRM->setRelativePosition(recti(
 		btnCRpos.LowerRightCorner.X - 530,
