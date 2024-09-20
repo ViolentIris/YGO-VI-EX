@@ -108,7 +108,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_TAKEOUT1: {
-                system("start https://mycard.moe/ygopro/arena/#/cards");
+                system("start https://mycard.world/ygopro/arena/#/cards");
 				return true;
 				break;
 			}
@@ -128,12 +128,12 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_VI: {
-                system("start https://ygobbs.com/t/%E3%80%90%E8%B5%84%E6%BA%90%E5%88%86%E4%BA%AB%E3%80%91ygo-vi-ex%E7%9B%B8%E5%85%B3%E8%B5%84%E6%BA%90%E9%9B%86%E4%B8%AD%E4%B8%8B%E8%BD%BD%E8%B4%B4/233171");
+                system("start https://ygobbs2.com/t/%E3%80%90%E8%B5%84%E6%BA%90%E5%88%86%E4%BA%AB%E3%80%91ygo-vi-ex%E7%9B%B8%E5%85%B3%E8%B5%84%E6%BA%90%E9%9B%86%E4%B8%AD%E4%B8%8B%E8%BD%BD%E8%B4%B4/233171");
 				return true;
 				break;
 			}
 			case BUTTON_FOX: {
-                system("start https://ygobbs.com/t/%E5%BE%81%E9%9B%86%E4%B8%80%E4%BA%9Bygopro%E7%9A%84%E6%94%B9%E8%BF%9B%E5%BB%BA%E8%AE%AE/235347/5");
+                system("start https://ygobbs2.com/t/%E5%BE%81%E9%9B%86%E4%B8%80%E4%BA%9Bygopro%E7%9A%84%E6%94%B9%E8%BF%9B%E5%BB%BA%E8%AE%AE/235347/5");
 				return true;
 				break;
 			}
