@@ -4,6 +4,7 @@
 #include "single_mode.h"
 #include "../ocgcore/common.h"
 #include "../ocgcore/mtrandom.h"
+#include <thread>
 
 namespace ygo {
 
@@ -234,7 +235,7 @@ bool ReplayMode::StartDuel() {
 		}
 		cur_replay.ReadData(filename, slen);
 		filename[slen] = 0;
-		if(!preload_script(pduel, filename, 0)) {
+		if(!preload_script(pduel, filename)) {
 			return false;
 		}
 	}
