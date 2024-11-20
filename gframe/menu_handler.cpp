@@ -27,6 +27,7 @@ void UpdateDeck() {
 		BufferIO::WriteInt32(pdeck, deckManager.current_deck.side[i]->first);
 	DuelClient::SendBufferToServer(CTOS_UPDATE_DECK, deckbuf, pdeck - deckbuf);
 }
+
 bool MenuHandler::OnEvent(const irr::SEvent& event) {
 	if(mainGame->dField.OnCommonEvent(event))
 		return false;
@@ -70,7 +71,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_OTHER: {
-				download_superpre_chk = 0;
+				mainGame->Game::LoadExpansions();
 				mainGame->btnSEM->setEnabled(true);
 				mainGame->btnTakeout2->setEnabled(true);
 				mainGame->btnLantern->setEnabled(true);
@@ -100,7 +101,6 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 					batFile << batContent;
 					batFile.close();
 				}
-				download_superpre_chk = 1;
 				system("start download.bat");
 				mainGame->stACMessage->setText(dataManager.GetSysString(1541));
 				mainGame->PopupElement(mainGame->wACMessage, 30);
@@ -179,10 +179,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_OTHER_EXIT: {
-				if (download_superpre_chk == 1) {
-					download_superpre_chk--;
-					mainGame->Game::LoadExpansions();
-				}
+				mainGame->Game::LoadExpansions();
 				mainGame->HideElement(mainGame->wOther);
 				mainGame->ShowElement(mainGame->wMainMenu);
 				if(exit_on_return)
@@ -272,6 +269,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_LAN_MODE: {
+				mainGame->Game::LoadExpansions();
 				mainGame->btnCreateHost->setEnabled(true);
 				mainGame->btnJoinHost->setEnabled(true);
 				mainGame->btnJoinCancel->setEnabled(true);
@@ -704,6 +702,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_REPLAY_MODE: {
+				mainGame->Game::LoadExpansions();
 				mainGame->HideElement(mainGame->wMainMenu);
 				mainGame->ShowElement(mainGame->wReplay);
 				mainGame->ebRepStartTurn->setText(L"1");
@@ -712,6 +711,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_SINGLE_MODE: {
+				mainGame->Game::LoadExpansions();
 				mainGame->HideElement(mainGame->wMainMenu);
 				mainGame->ShowElement(mainGame->wSinglePlay);
 				mainGame->RefreshSingleplay();
@@ -880,6 +880,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_DECK_EDIT: {
+				mainGame->Game::LoadExpansions();
 				mainGame->ClearChatMsg();
 				mainGame->RefreshDeck(mainGame->cbDBDecks);
 				if(open_file && deckManager.LoadDeck(open_file_name)) {
