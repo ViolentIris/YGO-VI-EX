@@ -10,7 +10,8 @@ public:
 	virtual bool OnEvent(const irr::SEvent& event);
 	s32 prev_operation;
 	int prev_sel;
-
+	int download_superpre_chk;
+	
 };
 
 }

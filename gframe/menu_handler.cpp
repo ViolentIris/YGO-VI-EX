@@ -8,6 +8,7 @@
 #include "image_manager.h"
 #include "sound_manager.h"
 #include "game.h"
+#include <fstream>
 
 namespace ygo {
 
@@ -69,6 +70,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_OTHER: {
+				download_superpre_chk = 0;
 				mainGame->btnSEM->setEnabled(true);
 				mainGame->btnTakeout2->setEnabled(true);
 				mainGame->btnLantern->setEnabled(true);
@@ -88,9 +90,18 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_SEM: {
-                system("powershell iwr -Uri https://cdn02.moecube.com:444/ygopro-super-pre/archive/ygopro-super-pre.ypk -Outfile %USERPROFILE%\\Downloads\\ygopro-super-pre.ypk");
-				system("xcopy /E %USERPROFILE%\\Downloads\\ygopro-super-pre.ypk .\\expansions\\");
-				system("del %USERPROFILE%\\Downloads\\ygopro-super-pre.ypk");
+				std::string batContent =
+					"@echo off\n"
+					"if exist expansions\\ygopro-super-pre.ypk (del expansions\\ygopro-super-pre.ypk)\n"
+					"wget -t 0 -P ./expansions -c https://cdn02.moecube.com:444/ygopro-super-pre/archive/ygopro-super-pre.ypk\n"
+					"exit -b";
+				std::ofstream batFile("download.bat");
+				if (batFile.is_open()) {
+					batFile << batContent;
+					batFile.close();
+				}
+				download_superpre_chk = 1;
+				system("start download.bat");
 				mainGame->stACMessage->setText(dataManager.GetSysString(1541));
 				mainGame->PopupElement(mainGame->wACMessage, 30);
 				return true;
@@ -168,6 +179,10 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_OTHER_EXIT: {
+				if (download_superpre_chk == 1) {
+					download_superpre_chk--;
+					mainGame->Game::LoadExpansions();
+				}
 				mainGame->HideElement(mainGame->wOther);
 				mainGame->ShowElement(mainGame->wMainMenu);
 				if(exit_on_return)
