@@ -16,5 +16,15 @@
 premake5.exe
 /.vs
 *.dll
-build_for_winserver.bat
+*.bat
 /gframe/*.ico
+/expansions
+/pics
+/script
+/WindBot
+lflist.conf
+error.log
+bot.conf
+*.exe
+cards.cdb
+*.conf
