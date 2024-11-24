@@ -409,6 +409,9 @@ byte* DataManager::ScriptReaderEx(const char* script_name, int* slen) {
 	buffer = ScriptReaderExSingle("expansions/", script_name, slen);
 	if(buffer)
 		return buffer;
+	buffer = ScriptReaderExSingle("expansions/ygopro-super-pre/", script_name, slen);
+	if(buffer)
+		return buffer;
 	return ScriptReaderExSingle("", script_name, slen);
 }
 byte* DataManager::ScriptReaderExSingle(const char* path, const char* script_name, int* slen, int pre_len) {

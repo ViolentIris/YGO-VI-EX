@@ -93,14 +93,24 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 			case BUTTON_SEM: {
 				std::string batContent =
 					"@echo off\n"
-					"if exist expansions\\ygopro-super-pre.ypk (del expansions\\ygopro-super-pre.ypk)\n"
-					"wget -t 0 -P ./expansions -c https://cdn02.moecube.com:444/ygopro-super-pre/archive/ygopro-super-pre.ypk\n"
+					"@color 0e\n"
+					//"if exist expansions\\ygopro-super-pre.ypk (del expansions\\ygopro-super-pre.ypk)\n"
+					//"wget -t 0 -P ./expansions -c https://cdn02.moecube.com:444/ygopro-super-pre/archive/ygopro-super-pre.ypk\n"
+					"wget https://cdn02.moecube.com:444/ygopro-super-pre/archive/ygopro-super-pre.ypk\n"
+					"ren ygopro-super-pre.ypk ygopro-super-pre.zip\n"
+					"unzip ygopro-super-pre.zip -d ygopro-super-pre\n"
+					"rd /s /q expansions\\ygopro-super-pre\n"
+					"move ygopro-super-pre expansions\n"
+					"rd /s /q ygopro-super-pre\n"
+					"del ygopro-super-pre.zip\n"
+					//"start ygopro.exe\n"
 					"exit -b";
 				std::ofstream batFile("download.bat");
 				if (batFile.is_open()) {
 					batFile << batContent;
 					batFile.close();
 				}
+				//mainGame->device->closeDevice();
 				system("start download.bat");
 				mainGame->stACMessage->setText(dataManager.GetSysString(1541));
 				mainGame->PopupElement(mainGame->wACMessage, 30);
