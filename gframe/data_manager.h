@@ -14,7 +14,7 @@ namespace ygo {
 class DataManager {
 public:
 	DataManager();
-	bool LoadDB(const wchar_t* wfile);
+	bool LoadDB(const wchar_t* wfile, bool expansion = false);
 	bool LoadStrings(const char* file);
 	bool LoadStrings(IReadFile* reader);
 	void ReadStringConfLine(const char* linebuf);
@@ -64,9 +64,11 @@ public:
 	static byte* ScriptReader(const char* script_name, int* slen);
 	static IFileSystem* FileSystem;
 
-private:
+	std::vector<int> _expansionDatas;
 	std::unordered_map<unsigned int, CardDataC> _datas;
 	std::unordered_map<unsigned int, CardString> _strings;
+
+private:
 	std::unordered_map<unsigned int, std::vector<uint16_t>> extra_setcode;
 };
 

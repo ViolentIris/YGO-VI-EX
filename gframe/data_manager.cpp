@@ -16,7 +16,7 @@ DataManager::DataManager() : _datas(16384), _strings(16384) {
 	strings_end = _strings.end();
 	extra_setcode = { {8512558u, {0x8f, 0x54, 0x59, 0x82, 0x13a}}, };
 }
-bool DataManager::LoadDB(const wchar_t* wfile) {
+bool DataManager::LoadDB(const wchar_t* wfile, bool expansion) {
 	char file[256];
 	BufferIO::EncodeUTF8(wfile, file);
 #ifdef _WIN32
@@ -82,6 +82,7 @@ bool DataManager::LoadDB(const wchar_t* wfile) {
 			cd.attribute = sqlite3_column_int(pStmt, 9);
 			cd.category = sqlite3_column_int(pStmt, 10);
 			_datas[cd.code] = cd;
+			if (expansion) _expansionDatas.push_back(cd.code);
 			if(const char* text = (const char*)sqlite3_column_text(pStmt, 12)) {
 				BufferIO::DecodeUTF8(text, strBuffer);
 				cs.name = strBuffer;

@@ -14,3 +14,7 @@
 /irrklang/
 /ikpmp3/
 premake5.exe
+/.vs
+*.dll
+build_for_winserver.bat
+/gframe/*.ico

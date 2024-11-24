@@ -1202,12 +1202,21 @@ std::wstring Game::SetStaticText(irr::gui::IGUIStaticText* pControl, u32 cWidth,
 	ret.assign(strBuffer);
 	return ret;
 }
+void Game::ReLoadExpansions() {
+	for (size_t i = 0; i < dataManager._expansionDatas.size(); ++i) {
+		int code = dataManager._expansionDatas[i];
+		dataManager._strings.erase(code);
+		dataManager._datas.erase(code);
+	}
+	dataManager._expansionDatas.clear();
+	LoadExpansions();
+}
 void Game::LoadExpansions() {
 	FileSystem::TraversalDir(L"./expansions", [](const wchar_t* name, bool isdir) {
 		if(!isdir && wcsrchr(name, '.') && !mywcsncasecmp(wcsrchr(name, '.'), L".cdb", 4)) {
 			wchar_t fpath[1024];
 			myswprintf(fpath, L"./expansions/%ls", name);
-			dataManager.LoadDB(fpath);
+			dataManager.LoadDB(fpath, true);
 		}
 		if(!isdir && wcsrchr(name, '.') && (!mywcsncasecmp(wcsrchr(name, '.'), L".zip", 4) || !mywcsncasecmp(wcsrchr(name, '.'), L".ypk", 4))) {
 			wchar_t fpath[1024];
@@ -1232,7 +1241,7 @@ void Game::LoadExpansions() {
 			BufferIO::DecodeUTF8(uname, fname);
 #endif
 			if(wcsrchr(fname, '.') && !mywcsncasecmp(wcsrchr(fname, '.'), L".cdb", 4))
-				dataManager.LoadDB(fname);
+				dataManager.LoadDB(fname, true);
 			if(wcsrchr(fname, '.') && !mywcsncasecmp(wcsrchr(fname, '.'), L".conf", 5)) {
 #ifdef _WIN32
 				IReadFile* reader = DataManager::FileSystem->createAndOpenFile(fname);
