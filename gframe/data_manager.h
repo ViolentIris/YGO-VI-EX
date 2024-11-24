@@ -15,9 +15,9 @@ class DataManager {
 public:
 	DataManager();
 	bool LoadDB(const wchar_t* wfile, bool expansion = false);
-	bool LoadStrings(const char* file);
-	bool LoadStrings(IReadFile* reader);
-	void ReadStringConfLine(const char* linebuf);
+	bool LoadStrings(const char* file, bool epxansion = false);
+	bool LoadStrings(IReadFile* reader, bool epxansion = false);
+	void ReadStringConfLine(const char* linebuf, bool epxansion = false);
 	bool Error(spmemvfs_db_t* pDB, sqlite3_stmt* pStmt = 0);
 	bool GetData(unsigned int code, CardData* pData);
 	code_pointer GetCodePointer(unsigned int code) const;
@@ -39,6 +39,10 @@ public:
 	const wchar_t* FormatSetName(const uint16_t setcode[]);
 	const wchar_t* FormatLinkMarker(int link_marker);
 
+	std::vector<int> _expansionDatas;
+	std::vector<int> _expansionStrings;
+	std::unordered_map<unsigned int, CardDataC> _datas;
+	std::unordered_map<unsigned int, CardString> _strings;
 	std::unordered_map<unsigned int, std::wstring> _counterStrings;
 	std::unordered_map<unsigned int, std::wstring> _victoryStrings;
 	std::unordered_map<unsigned int, std::wstring> _setnameStrings;
@@ -63,10 +67,6 @@ public:
 	static byte* ScriptReaderExSingle(const char* path, const char* script_name, int* slen, int pre_len = 2);
 	static byte* ScriptReader(const char* script_name, int* slen);
 	static IFileSystem* FileSystem;
-
-	std::vector<int> _expansionDatas;
-	std::unordered_map<unsigned int, CardDataC> _datas;
-	std::unordered_map<unsigned int, CardString> _strings;
 
 private:
 	std::unordered_map<unsigned int, std::vector<uint16_t>> extra_setcode;

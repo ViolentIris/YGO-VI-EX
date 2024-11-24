@@ -128,7 +128,7 @@ bool Game::Initialize() {
 		ErrorLog("Failed to load strings!");
 		return false;
 	}
-	dataManager.LoadStrings("./expansions/strings.conf");
+	dataManager.LoadStrings("./expansions/strings.conf", true);
 	env = device->getGUIEnvironment();
 	numFont = irr::gui::CGUITTFont::createTTFont(env, gameConf.numfont, 16);
 	adFont = irr::gui::CGUITTFont::createTTFont(env, gameConf.numfont, 12);
@@ -1209,6 +1209,23 @@ void Game::ReLoadExpansions() {
 		dataManager._datas.erase(code);
 	}
 	dataManager._expansionDatas.clear();
+	for (size_t i = 0; i < dataManager._expansionStrings.size(); ++i) {
+		int value = dataManager._expansionStrings[i];
+		dataManager._counterStrings.erase(value);
+		dataManager._victoryStrings.erase(value);
+		dataManager._setnameStrings.erase(value);
+		dataManager._sysStrings.erase(value);
+	}
+	dataManager._expansionStrings.clear();
+	dataManager.LoadStrings("./expansions/strings.conf", true);
+	deckManager._lfList.clear();
+	deckManager.LoadLFList();
+	cbDBLFList->clear();
+	cbLFlist->clear();
+	for(unsigned int i = 0; i < deckManager._lfList.size(); ++i)
+		cbDBLFList->addItem(deckManager._lfList[i].listName.c_str());
+	for(unsigned int i = 0; i < deckManager._lfList.size(); ++i)
+		cbLFlist->addItem(deckManager._lfList[i].listName.c_str(), deckManager._lfList[i].hash);
 	LoadExpansions();
 }
 void Game::LoadExpansions() {
@@ -1266,7 +1283,7 @@ void Game::LoadExpansions() {
 #else
 				IReadFile* reader = DataManager::FileSystem->createAndOpenFile(uname);
 #endif
-				dataManager.LoadStrings(reader);
+				dataManager.LoadStrings(reader, true);
 			}
 		}
 	}

@@ -109,20 +109,20 @@ bool DataManager::LoadDB(const wchar_t* wfile, bool expansion) {
 	strings_end = _strings.end();
 	return true;
 }
-bool DataManager::LoadStrings(const char* file) {
+bool DataManager::LoadStrings(const char* file, bool expansion) {
 	FILE* fp = fopen(file, "r");
 	if(!fp)
 		return false;
 	char linebuf[256];
 	while(fgets(linebuf, 256, fp)) {
-		ReadStringConfLine(linebuf);
+		ReadStringConfLine(linebuf, expansion);
 	}
 	fclose(fp);
 	for(int i = 0; i < 301; ++i)
 		myswprintf(numStrings[i], L"%d", i);
 	return true;
 }
-bool DataManager::LoadStrings(IReadFile* reader) {
+bool DataManager::LoadStrings(IReadFile* reader, bool expansion) {
 	char ch[2] = " ";
 	char linebuf[256] = "";
 	while(reader->read(&ch[0], 1)) {
@@ -130,14 +130,14 @@ bool DataManager::LoadStrings(IReadFile* reader) {
 			break;
 		strcat(linebuf, ch);
 		if(ch[0] == '\n') {
-			ReadStringConfLine(linebuf);
+			ReadStringConfLine(linebuf, expansion);
 			linebuf[0] = '\0';
 		}
 	}
 	reader->drop();
 	return true;
 }
-void DataManager::ReadStringConfLine(const char* linebuf) {
+void DataManager::ReadStringConfLine(const char* linebuf, bool expansion) {
 	if(linebuf[0] != '!')
 		return;
 	char strbuf[256]{};
@@ -150,22 +150,26 @@ void DataManager::ReadStringConfLine(const char* linebuf) {
 			return;
 		BufferIO::DecodeUTF8(strbuf, strBuffer);
 		_sysStrings[value] = strBuffer;
+		if (expansion) _expansionStrings.push_back(value);
 	} else if(!strcmp(strbuf, "victory")) {
 		if (sscanf(&linebuf[8], "%x %240[^\n]", &value, strbuf) != 2)
 			return;
 		BufferIO::DecodeUTF8(strbuf, strBuffer);
 		_victoryStrings[value] = strBuffer;
+		if (expansion) _expansionStrings.push_back(value);
 	} else if(!strcmp(strbuf, "counter")) {
 		if (sscanf(&linebuf[8], "%x %240[^\n]", &value, strbuf) != 2)
 			return;
 		BufferIO::DecodeUTF8(strbuf, strBuffer);
 		_counterStrings[value] = strBuffer;
+		if (expansion) _expansionStrings.push_back(value);
 	} else if(!strcmp(strbuf, "setname")) {
 		//using tab for comment
 		if (sscanf(&linebuf[8], "%x %240[^\t\n]", &value, strbuf) != 2)
 			return;
 		BufferIO::DecodeUTF8(strbuf, strBuffer);
 		_setnameStrings[value] = strBuffer;
+		if (expansion) _expansionStrings.push_back(value);
 	}
 }
 bool DataManager::Error(spmemvfs_db_t* pDB, sqlite3_stmt* pStmt) {
