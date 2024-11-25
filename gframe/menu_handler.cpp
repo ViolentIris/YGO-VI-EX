@@ -98,7 +98,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 					"ren ygopro-super-pre.ypk ygopro-super-pre.zip\n"
 					"unzip ygopro-super-pre.zip -d ygopro-super-pre\n"
 					"rd /s /q expansions\\ygopro-super-pre\n"
-					"move ygopro-super-pre expansions\n"
+					"move ygopro-super-pre expansions\\\n"
 					"rd /s /q ygopro-super-pre\n"
 					"del ygopro-super-pre.zip\n"
 					"exit -b";
