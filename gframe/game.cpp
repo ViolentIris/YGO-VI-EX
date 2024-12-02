@@ -11,6 +11,9 @@
 #include "single_mode.h"
 #include <sstream>
 #include <regex>
+#include <ctime>
+#include <sys/stat.h>
+#include <windows.h>
 
 unsigned short PRO_VERSION = 0x1361;
 
@@ -117,6 +120,8 @@ bool Game::Initialize() {
 		return false;
 	}
 	dataManager.FileSystem = device->getFileSystem();
+	LastExpansionsTime = GetLastWriteTime(L"./expansions");
+	LastSurperpreTime = GetLastWriteTime(L"./expansions/ygopro-super-pre");
 	LoadExpansions();
 	if(dataManager.LoadDB(GetLocaleDirWide("cards.cdb"))) {} else
 	if(!dataManager.LoadDB(L"cards.cdb")) {
@@ -1202,31 +1207,41 @@ std::wstring Game::SetStaticText(irr::gui::IGUIStaticText* pControl, u32 cWidth,
 	ret.assign(strBuffer);
 	return ret;
 }
+int Game::GetLastWriteTime(wchar_t* dirPath) {
+	struct _stat64i32 st = { 0 };
+	if (_wstat(dirPath, &st) != -1)
+		return (int)(st.st_mtime);
+	return 0;
+}
 void Game::ReLoadExpansions() {
-	for (size_t i = 0; i < dataManager._expansionDatas.size(); ++i) {
-		int code = dataManager._expansionDatas[i];
-		dataManager._strings.erase(code);
-		dataManager._datas.erase(code);
+	if (LastExpansionsTime != GetLastWriteTime(L"./expansions") || LastSurperpreTime != GetLastWriteTime(L"./expansions/ygopro-super-pre")) {
+		for (size_t i = 0; i < dataManager._expansionDatas.size(); ++i) {
+			int code = dataManager._expansionDatas[i];
+			dataManager._strings.erase(code);
+			dataManager._datas.erase(code);
+		}
+		dataManager._expansionDatas.clear();
+		for (size_t i = 0; i < dataManager._expansionStrings.size(); ++i) {
+			int value = dataManager._expansionStrings[i];
+			dataManager._counterStrings.erase(value);
+			dataManager._victoryStrings.erase(value);
+			dataManager._setnameStrings.erase(value);
+			dataManager._sysStrings.erase(value);
+		}
+		dataManager._expansionStrings.clear();
+		dataManager.LoadStrings("./expansions/strings.conf", true);
+		deckManager._lfList.clear();
+		deckManager.LoadLFList();
+		cbDBLFList->clear();
+		cbLFlist->clear();
+		for (unsigned int i = 0; i < deckManager._lfList.size(); ++i)
+			cbDBLFList->addItem(deckManager._lfList[i].listName.c_str());
+		for (unsigned int i = 0; i < deckManager._lfList.size(); ++i)
+			cbLFlist->addItem(deckManager._lfList[i].listName.c_str(), deckManager._lfList[i].hash);
+		LoadExpansions();
+		LastExpansionsTime = GetLastWriteTime(L"./expansions");
+		LastSurperpreTime = GetLastWriteTime(L"./expansions/ygopro-super-pre");
 	}
-	dataManager._expansionDatas.clear();
-	for (size_t i = 0; i < dataManager._expansionStrings.size(); ++i) {
-		int value = dataManager._expansionStrings[i];
-		dataManager._counterStrings.erase(value);
-		dataManager._victoryStrings.erase(value);
-		dataManager._setnameStrings.erase(value);
-		dataManager._sysStrings.erase(value);
-	}
-	dataManager._expansionStrings.clear();
-	dataManager.LoadStrings("./expansions/strings.conf", true);
-	deckManager._lfList.clear();
-	deckManager.LoadLFList();
-	cbDBLFList->clear();
-	cbLFlist->clear();
-	for(unsigned int i = 0; i < deckManager._lfList.size(); ++i)
-		cbDBLFList->addItem(deckManager._lfList[i].listName.c_str());
-	for(unsigned int i = 0; i < deckManager._lfList.size(); ++i)
-		cbLFlist->addItem(deckManager._lfList[i].listName.c_str(), deckManager._lfList[i].hash);
-	LoadExpansions();
 }
 void Game::LoadExpansions() {
 	FileSystem::TraversalDir(L"./expansions", [](const wchar_t* name, bool isdir) {
