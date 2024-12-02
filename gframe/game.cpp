@@ -11,9 +11,6 @@
 #include "single_mode.h"
 #include <sstream>
 #include <regex>
-#include <ctime>
-#include <sys/stat.h>
-#include <windows.h>
 
 unsigned short PRO_VERSION = 0x1361;
 
