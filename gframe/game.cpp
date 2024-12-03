@@ -131,6 +131,9 @@ bool Game::Initialize() {
 		return false;
 	}
 	dataManager.LoadStrings("./expansions/strings.conf", true);
+	dataManager.LoadStrings("./expansions/ygopro-super-pre/strings.conf", true);
+	dataManager.LoadStrings("./expansions/ygopro-super-pre/test-strings.conf", true);
+	ChkLastTime(false);
 	env = device->getGUIEnvironment();
 	numFont = irr::gui::CGUITTFont::createTTFont(env, gameConf.numfont, 16);
 	adFont = irr::gui::CGUITTFont::createTTFont(env, gameConf.numfont, 12);
@@ -1210,8 +1213,48 @@ int Game::GetLastWriteTime(wchar_t* dirPath) {
 		return (int)(st.st_mtime);
 	return 0;
 }
+void Game::ChkLastTime(bool chk) {
+	int time = 0;
+	time = GetLastWriteTime(L"./expansions");
+	if (LastExpansionsTime < time) {
+		LastExpansionsTime = time;
+		ChkReload = true;
+		if (chk) return ;
+	}
+	time = GetLastWriteTime(L"./expansions/ygopro-super-pre");
+	if (LastSurperpreTime < time) {
+		LastSurperpreTime = time;
+		ChkReload = true;
+		if (chk) return;
+	}
+	FileSystem::TraversalDir(L"./expansions", [](const wchar_t* name, bool isdir) {
+		if (!isdir && wcsrchr(name, '.') && (!mywcsncasecmp(wcsrchr(name, '.'), L".cdb", 4) || !mywcsncasecmp(wcsrchr(name, '.'), L".zip", 4) || !mywcsncasecmp(wcsrchr(name, '.'), L".ypk", 4) || !mywcsncasecmp(wcsrchr(name, '.'), L".conf", 5))) {
+			wchar_t fpath[1024];
+			myswprintf(fpath, L"./expansions/%ls", name);
+			int time = mainGame->GetLastWriteTime(fpath);
+			if (mainGame->LastExpansionsTime < time) {
+				mainGame->LastExpansionsTime = time;
+				mainGame->ChkReload = true;
+			}
+		}
+	});
+	if (ChkReload && chk) return;
+	FileSystem::TraversalDir(L"./expansions/ygopro-super-pre", [](const wchar_t* name, bool isdir) {
+		if (!isdir && wcsrchr(name, '.') && (!mywcsncasecmp(wcsrchr(name, '.'), L".cdb", 4) || !mywcsncasecmp(wcsrchr(name, '.'), L".zip", 4) || !mywcsncasecmp(wcsrchr(name, '.'), L".ypk", 4) || !mywcsncasecmp(wcsrchr(name, '.'), L".conf", 5))) {
+			wchar_t fpath[1024];
+			myswprintf(fpath, L"./expansions//ygopro-super-pre/%ls", name);
+			int time = mainGame->GetLastWriteTime(fpath);
+			if (mainGame->LastExpansionsTime < time) {
+				mainGame->LastExpansionsTime = time;
+				mainGame->ChkReload = true;
+			}
+		}
+	});
+}
 void Game::ReLoadExpansions() {
-	if (LastExpansionsTime != GetLastWriteTime(L"./expansions") || LastSurperpreTime != GetLastWriteTime(L"./expansions/ygopro-super-pre")) {
+	ChkLastTime();
+	if (ChkReload) {
+		ChkReload = false;
 		for (size_t i = 0; i < dataManager._expansionDatas.size(); ++i) {
 			int code = dataManager._expansionDatas[i];
 			dataManager._strings.erase(code);
@@ -1227,6 +1270,8 @@ void Game::ReLoadExpansions() {
 		}
 		dataManager._expansionStrings.clear();
 		dataManager.LoadStrings("./expansions/strings.conf", true);
+		dataManager.LoadStrings("./expansions/ygopro-super-pre/strings.conf", true);
+		dataManager.LoadStrings("./expansions/ygopro-super-pre/test-strings.conf", true);
 		deckManager._lfList.clear();
 		deckManager.LoadLFList();
 		cbDBLFList->clear();
@@ -1236,8 +1281,6 @@ void Game::ReLoadExpansions() {
 		for (unsigned int i = 0; i < deckManager._lfList.size(); ++i)
 			cbLFlist->addItem(deckManager._lfList[i].listName.c_str(), deckManager._lfList[i].hash);
 		LoadExpansions();
-		LastExpansionsTime = GetLastWriteTime(L"./expansions");
-		LastSurperpreTime = GetLastWriteTime(L"./expansions/ygopro-super-pre");
 	}
 }
 void Game::LoadExpansions() {
