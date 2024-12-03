@@ -134,6 +134,7 @@ bool Game::Initialize() {
 	dataManager.LoadStrings("./expansions/ygopro-super-pre/strings.conf", true);
 	dataManager.LoadStrings("./expansions/ygopro-super-pre/test-strings.conf", true);
 	ChkLastTime();
+	ChkReload = false;
 	env = device->getGUIEnvironment();
 	numFont = irr::gui::CGUITTFont::createTTFont(env, gameConf.numfont, 16);
 	adFont = irr::gui::CGUITTFont::createTTFont(env, gameConf.numfont, 12);
