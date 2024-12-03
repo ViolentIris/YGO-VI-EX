@@ -1232,8 +1232,8 @@ void Game::ChkLastTime(bool chk) {
 			wchar_t fpath[1024];
 			myswprintf(fpath, L"./expansions/%ls", name);
 			int time = mainGame->GetLastWriteTime(fpath);
-			if (mainGame->LastExpansionsTime < time) {
-				mainGame->LastExpansionsTime = time;
+			if (mainGame->LastSurperpreTime < time) {
+				mainGame->LastSurperpreTime = time;
 				mainGame->ChkReload = true;
 			}
 		}
