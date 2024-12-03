@@ -131,6 +131,8 @@ class Game {
 private:
 	int LastExpansionsTime;
 	int LastSurperpreTime;
+	int LastExpansionsFileTime;
+	int LastSurperpreFileTime;
 	bool ChkReload;
 
 public:
@@ -184,7 +186,7 @@ public:
 	void initUtils();
 	void ClearTextures();
 	void CloseDuelWindow();
-	void ChkLastTime(bool chk = true);
+	void ChkLastTime();
 
 	int GetLastWriteTime(wchar_t* dirPath);
 	int LocalPlayer(int player) const;
