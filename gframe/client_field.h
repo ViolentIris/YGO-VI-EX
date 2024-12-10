@@ -161,8 +161,6 @@ public:
 }
 
 //special cards
-#define CARD_MARINE_DOLPHIN	78734254
-#define CARD_TWINKLE_MOSS	13857930
 #define CARD_QUESTION		38723936
 
 #endif //CLIENT_FIELD_H

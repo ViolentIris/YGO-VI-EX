@@ -1550,8 +1550,9 @@ static bool is_declarable(T const& cd, const std::vector<int>& opcode) {
 	}
 	if(stack.size() != 1 || stack.top() == 0)
 		return false;
-	return cd.code == CARD_MARINE_DOLPHIN || cd.code == CARD_TWINKLE_MOSS
-		|| (!cd.alias && (cd.type & (TYPE_MONSTER + TYPE_TOKEN)) != (TYPE_MONSTER + TYPE_TOKEN));
+	if (cd.type & TYPE_TOKEN)
+		return false;
+	return !cd.alias || second_code.find(cd.code) != second_code.end();
 }
 void ClientField::UpdateDeclarableList() {
 	const wchar_t* pname = mainGame->ebANCard->getText();
