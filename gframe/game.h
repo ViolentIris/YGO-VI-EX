@@ -128,6 +128,12 @@ struct FadingUnit {
 };
 
 class Game {
+private:
+	int LastExpansionsTime;
+	int LastSurperpreTime;
+	int LastExpansionsFileTime;
+	int LastSurperpreFileTime;
+	bool ChkReload;
 
 public:
 	bool Initialize();
@@ -137,6 +143,7 @@ public:
 	void InitStaticText(irr::gui::IGUIStaticText* pControl, u32 cWidth, u32 cHeight, irr::gui::CGUITTFont* font, const wchar_t* text);
 	std::wstring SetStaticText(irr::gui::IGUIStaticText* pControl, u32 cWidth, irr::gui::CGUITTFont* font, const wchar_t* text, u32 pos = 0);
 	void LoadExpansions();
+	void ReLoadExpansions();
 	void RefreshDeck(irr::gui::IGUIComboBox* cbDeck);
 	void RefreshReplay();
 	void RefreshSingleplay();
@@ -179,7 +186,9 @@ public:
 	void initUtils();
 	void ClearTextures();
 	void CloseDuelWindow();
+	void ChkLastTime();
 
+	int GetLastWriteTime(wchar_t* dirPath);
 	int LocalPlayer(int player) const;
 	int OppositePlayer(int player);
 	int ChatLocalPlayer(int player);

@@ -117,6 +117,8 @@ bool Game::Initialize() {
 		return false;
 	}
 	dataManager.FileSystem = device->getFileSystem();
+	LastExpansionsTime = GetLastWriteTime(L"./expansions");
+	LastSurperpreTime = GetLastWriteTime(L"./expansions/ygopro-super-pre");
 	LoadExpansions();
 	if(dataManager.LoadDB(GetLocaleDirWide("cards.cdb"))) {} else
 	if(!dataManager.LoadDB(L"cards.cdb")) {
@@ -128,7 +130,11 @@ bool Game::Initialize() {
 		ErrorLog("Failed to load strings!");
 		return false;
 	}
-	dataManager.LoadStrings("./expansions/strings.conf");
+	dataManager.LoadStrings("./expansions/strings.conf", true);
+	dataManager.LoadStrings("./expansions/ygopro-super-pre/strings.conf", true);
+	dataManager.LoadStrings("./expansions/ygopro-super-pre/test-strings.conf", true);
+	ChkLastTime();
+	ChkReload = false;
 	env = device->getGUIEnvironment();
 	numFont = irr::gui::CGUITTFont::createTTFont(env, gameConf.numfont, 16);
 	adFont = irr::gui::CGUITTFont::createTTFont(env, gameConf.numfont, 12);
@@ -1202,16 +1208,107 @@ std::wstring Game::SetStaticText(irr::gui::IGUIStaticText* pControl, u32 cWidth,
 	ret.assign(strBuffer);
 	return ret;
 }
+int Game::GetLastWriteTime(wchar_t* dirPath) {
+	struct _stat64i32 st = { 0 };
+	if (_wstat(dirPath, &st) != -1)
+		return (int)(st.st_mtime);
+	return 0;
+}
+void Game::ChkLastTime() {
+	int time = 0;
+	time = GetLastWriteTime(L"./expansions");
+	if (LastExpansionsTime < time) {
+		LastExpansionsTime = time;
+		ChkReload = true;
+	}
+	time = GetLastWriteTime(L"./expansions/ygopro-super-pre");
+	if (LastSurperpreTime < time) {
+		LastSurperpreTime = time;
+		ChkReload = true;
+	}
+	FileSystem::TraversalDir(L"./expansions", [](const wchar_t* name, bool isdir) {
+		if (!isdir && wcsrchr(name, '.') && (!mywcsncasecmp(wcsrchr(name, '.'), L".cdb", 4) || !mywcsncasecmp(wcsrchr(name, '.'), L".zip", 4) || !mywcsncasecmp(wcsrchr(name, '.'), L".ypk", 4) || !mywcsncasecmp(wcsrchr(name, '.'), L".conf", 5))) {
+			wchar_t fpath[1024];
+			myswprintf(fpath, L"./expansions/%ls", name);
+			int time = mainGame->GetLastWriteTime(fpath);
+			if (mainGame->LastExpansionsFileTime < time) {
+				mainGame->LastExpansionsFileTime = time;
+				mainGame->ChkReload = true;
+			}
+		}
+	});
+	FileSystem::TraversalDir(L"./expansions/ygopro-super-pre", [](const wchar_t* name, bool isdir) {
+		if (!isdir && wcsrchr(name, '.') && (!mywcsncasecmp(wcsrchr(name, '.'), L".cdb", 4) || !mywcsncasecmp(wcsrchr(name, '.'), L".zip", 4) || !mywcsncasecmp(wcsrchr(name, '.'), L".ypk", 4) || !mywcsncasecmp(wcsrchr(name, '.'), L".conf", 5))) {
+			wchar_t fpath[1024];
+			myswprintf(fpath, L"./expansions//ygopro-super-pre/%ls", name);
+			int time = mainGame->GetLastWriteTime(fpath);
+			if (mainGame->LastSurperpreFileTime < time) {
+				mainGame->LastSurperpreFileTime = time;
+				mainGame->ChkReload = true;
+			}
+		}
+	});
+}
+void Game::ReLoadExpansions() {
+	ChkLastTime();
+	if (ChkReload) {
+		ChkReload = false;
+		for (size_t i = 0; i < dataManager._expansionDatas.size(); ++i) {
+			int code = dataManager._expansionDatas[i];
+			dataManager._strings.erase(code);
+			dataManager._datas.erase(code);
+		}
+		dataManager._expansionDatas.clear();
+		for (size_t i = 0; i < dataManager._expansionStrings.size(); ++i) {
+			int value = dataManager._expansionStrings[i];
+			dataManager._counterStrings.erase(value);
+			dataManager._victoryStrings.erase(value);
+			dataManager._setnameStrings.erase(value);
+			dataManager._sysStrings.erase(value);
+		}
+		dataManager._expansionStrings.clear();
+		dataManager.LoadStrings("./expansions/strings.conf", true);
+		dataManager.LoadStrings("./expansions/ygopro-super-pre/strings.conf", true);
+		dataManager.LoadStrings("./expansions/ygopro-super-pre/test-strings.conf", true);
+		deckManager._lfList.clear();
+		deckManager.LoadLFList();
+		cbDBLFList->clear();
+		cbLFlist->clear();
+		for (unsigned int i = 0; i < deckManager._lfList.size(); ++i)
+			cbDBLFList->addItem(deckManager._lfList[i].listName.c_str());
+		for (unsigned int i = 0; i < deckManager._lfList.size(); ++i)
+			cbLFlist->addItem(deckManager._lfList[i].listName.c_str(), deckManager._lfList[i].hash);
+		LoadExpansions();
+	}
+}
 void Game::LoadExpansions() {
 	FileSystem::TraversalDir(L"./expansions", [](const wchar_t* name, bool isdir) {
 		if(!isdir && wcsrchr(name, '.') && !mywcsncasecmp(wcsrchr(name, '.'), L".cdb", 4)) {
 			wchar_t fpath[1024];
 			myswprintf(fpath, L"./expansions/%ls", name);
-			dataManager.LoadDB(fpath);
+			dataManager.LoadDB(fpath, true);
 		}
 		if(!isdir && wcsrchr(name, '.') && (!mywcsncasecmp(wcsrchr(name, '.'), L".zip", 4) || !mywcsncasecmp(wcsrchr(name, '.'), L".ypk", 4))) {
 			wchar_t fpath[1024];
 			myswprintf(fpath, L"./expansions/%ls", name);
+#ifdef _WIN32
+			dataManager.FileSystem->addFileArchive(fpath, true, false, EFAT_ZIP);
+#else
+			char upath[1024];
+			BufferIO::EncodeUTF8(fpath, upath);
+			dataManager.FileSystem->addFileArchive(upath, true, false, EFAT_ZIP);
+#endif
+		}
+	});
+	FileSystem::TraversalDir(L"./expansions/ygopro-super-pre", [](const wchar_t* name, bool isdir) {
+		if(!isdir && wcsrchr(name, '.') && !mywcsncasecmp(wcsrchr(name, '.'), L".cdb", 4)) {
+			wchar_t fpath[1024];
+			myswprintf(fpath, L"./expansions/ygopro-super-pre/%ls", name);
+			dataManager.LoadDB(fpath, true);
+		}
+		if(!isdir && wcsrchr(name, '.') && (!mywcsncasecmp(wcsrchr(name, '.'), L".zip", 4) || !mywcsncasecmp(wcsrchr(name, '.'), L".ypk", 4))) {
+			wchar_t fpath[1024];
+			myswprintf(fpath, L"./expansions/ygopro-super-pre/%ls", name);
 #ifdef _WIN32
 			dataManager.FileSystem->addFileArchive(fpath, true, false, EFAT_ZIP);
 #else
@@ -1232,14 +1329,14 @@ void Game::LoadExpansions() {
 			BufferIO::DecodeUTF8(uname, fname);
 #endif
 			if(wcsrchr(fname, '.') && !mywcsncasecmp(wcsrchr(fname, '.'), L".cdb", 4))
-				dataManager.LoadDB(fname);
+				dataManager.LoadDB(fname, true);
 			if(wcsrchr(fname, '.') && !mywcsncasecmp(wcsrchr(fname, '.'), L".conf", 5)) {
 #ifdef _WIN32
 				IReadFile* reader = DataManager::FileSystem->createAndOpenFile(fname);
 #else
 				IReadFile* reader = DataManager::FileSystem->createAndOpenFile(uname);
 #endif
-				dataManager.LoadStrings(reader);
+				dataManager.LoadStrings(reader, true);
 			}
 		}
 	}

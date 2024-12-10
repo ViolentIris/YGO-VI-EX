@@ -16,7 +16,7 @@ DataManager::DataManager() : _datas(16384), _strings(16384) {
 	strings_end = _strings.end();
 	extra_setcode = { {8512558u, {0x8f, 0x54, 0x59, 0x82, 0x13a}}, };
 }
-bool DataManager::LoadDB(const wchar_t* wfile) {
+bool DataManager::LoadDB(const wchar_t* wfile, bool expansion) {
 	char file[256];
 	BufferIO::EncodeUTF8(wfile, file);
 #ifdef _WIN32
@@ -82,6 +82,7 @@ bool DataManager::LoadDB(const wchar_t* wfile) {
 			cd.attribute = sqlite3_column_int(pStmt, 9);
 			cd.category = sqlite3_column_int(pStmt, 10);
 			_datas[cd.code] = cd;
+			if (expansion) _expansionDatas.push_back(cd.code);
 			if(const char* text = (const char*)sqlite3_column_text(pStmt, 12)) {
 				BufferIO::DecodeUTF8(text, strBuffer);
 				cs.name = strBuffer;
@@ -108,20 +109,20 @@ bool DataManager::LoadDB(const wchar_t* wfile) {
 	strings_end = _strings.end();
 	return true;
 }
-bool DataManager::LoadStrings(const char* file) {
+bool DataManager::LoadStrings(const char* file, bool expansion) {
 	FILE* fp = fopen(file, "r");
 	if(!fp)
 		return false;
 	char linebuf[256];
 	while(fgets(linebuf, 256, fp)) {
-		ReadStringConfLine(linebuf);
+		ReadStringConfLine(linebuf, expansion);
 	}
 	fclose(fp);
 	for(int i = 0; i < 301; ++i)
 		myswprintf(numStrings[i], L"%d", i);
 	return true;
 }
-bool DataManager::LoadStrings(IReadFile* reader) {
+bool DataManager::LoadStrings(IReadFile* reader, bool expansion) {
 	char ch[2] = " ";
 	char linebuf[256] = "";
 	while(reader->read(&ch[0], 1)) {
@@ -129,14 +130,14 @@ bool DataManager::LoadStrings(IReadFile* reader) {
 			break;
 		strcat(linebuf, ch);
 		if(ch[0] == '\n') {
-			ReadStringConfLine(linebuf);
+			ReadStringConfLine(linebuf, expansion);
 			linebuf[0] = '\0';
 		}
 	}
 	reader->drop();
 	return true;
 }
-void DataManager::ReadStringConfLine(const char* linebuf) {
+void DataManager::ReadStringConfLine(const char* linebuf, bool expansion) {
 	if(linebuf[0] != '!')
 		return;
 	char strbuf[256]{};
@@ -149,22 +150,26 @@ void DataManager::ReadStringConfLine(const char* linebuf) {
 			return;
 		BufferIO::DecodeUTF8(strbuf, strBuffer);
 		_sysStrings[value] = strBuffer;
+		if (expansion) _expansionStrings.push_back(value);
 	} else if(!strcmp(strbuf, "victory")) {
 		if (sscanf(&linebuf[8], "%x %240[^\n]", &value, strbuf) != 2)
 			return;
 		BufferIO::DecodeUTF8(strbuf, strBuffer);
 		_victoryStrings[value] = strBuffer;
+		if (expansion) _expansionStrings.push_back(value);
 	} else if(!strcmp(strbuf, "counter")) {
 		if (sscanf(&linebuf[8], "%x %240[^\n]", &value, strbuf) != 2)
 			return;
 		BufferIO::DecodeUTF8(strbuf, strBuffer);
 		_counterStrings[value] = strBuffer;
+		if (expansion) _expansionStrings.push_back(value);
 	} else if(!strcmp(strbuf, "setname")) {
 		//using tab for comment
 		if (sscanf(&linebuf[8], "%x %240[^\t\n]", &value, strbuf) != 2)
 			return;
 		BufferIO::DecodeUTF8(strbuf, strBuffer);
 		_setnameStrings[value] = strBuffer;
+		if (expansion) _expansionStrings.push_back(value);
 	}
 }
 bool DataManager::Error(spmemvfs_db_t* pDB, sqlite3_stmt* pStmt) {
@@ -406,6 +411,9 @@ byte* DataManager::ScriptReaderEx(const char* script_name, int* slen) {
 	if(buffer)
 		return buffer;
 	buffer = ScriptReaderExSingle("expansions/", script_name, slen);
+	if(buffer)
+		return buffer;
+	buffer = ScriptReaderExSingle("expansions/ygopro-super-pre/", script_name, slen);
 	if(buffer)
 		return buffer;
 	return ScriptReaderExSingle("", script_name, slen);

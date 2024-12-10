@@ -8,6 +8,7 @@
 #include "image_manager.h"
 #include "sound_manager.h"
 #include "game.h"
+#include <fstream>
 
 namespace ygo {
 
@@ -26,6 +27,7 @@ void UpdateDeck() {
 		BufferIO::WriteInt32(pdeck, deckManager.current_deck.side[i]->first);
 	DuelClient::SendBufferToServer(CTOS_UPDATE_DECK, deckbuf, pdeck - deckbuf);
 }
+
 bool MenuHandler::OnEvent(const irr::SEvent& event) {
 	if(mainGame->dField.OnCommonEvent(event))
 		return false;
@@ -69,6 +71,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_OTHER: {
+				mainGame->Game::ReLoadExpansions();
 				mainGame->btnSEM->setEnabled(true);
 				mainGame->btnTakeout2->setEnabled(true);
 				mainGame->btnLantern->setEnabled(true);
@@ -88,11 +91,23 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_SEM: {
-                system("powershell iwr -Uri https://cdn02.moecube.com:444/ygopro-super-pre/archive/ygopro-super-pre.ypk -Outfile %USERPROFILE%\\Downloads\\ygopro-super-pre.ypk");
-				system("xcopy /E %USERPROFILE%\\Downloads\\ygopro-super-pre.ypk .\\expansions\\");
-				system("del %USERPROFILE%\\Downloads\\ygopro-super-pre.ypk");
-				mainGame->stACMessage->setText(dataManager.GetSysString(1541));
-				mainGame->PopupElement(mainGame->wACMessage, 30);
+				std::string batContent =
+					"@echo off\n"
+					"@color 0e\n"
+					"wget https://cdn02.moecube.com:444/ygopro-super-pre/archive/ygopro-super-pre.ypk\n"
+					"ren ygopro-super-pre.ypk ygopro-super-pre.zip\n"
+					"unzip ygopro-super-pre.zip -d ygopro-super-pre\n"
+					"rd /s /q expansions\\ygopro-super-pre\n"
+					"move ygopro-super-pre expansions\\\n"
+					"rd /s /q ygopro-super-pre\n"
+					"del ygopro-super-pre.zip\n"
+					"exit -b";
+				std::ofstream batFile("download.bat");
+				if (batFile.is_open()) {
+					batFile << batContent;
+					batFile.close();
+				}
+				system("start download.bat");
 				return true;
 				break;
 			}
@@ -168,6 +183,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_OTHER_EXIT: {
+				mainGame->Game::ReLoadExpansions();
 				mainGame->HideElement(mainGame->wOther);
 				mainGame->ShowElement(mainGame->wMainMenu);
 				if(exit_on_return)
@@ -257,6 +273,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_LAN_MODE: {
+				mainGame->Game::ReLoadExpansions();
 				mainGame->btnCreateHost->setEnabled(true);
 				mainGame->btnJoinHost->setEnabled(true);
 				mainGame->btnJoinCancel->setEnabled(true);
@@ -604,6 +621,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_CREATE_HOST: {
+				mainGame->Game::ReLoadExpansions();
 				mainGame->btnHostConfirm->setEnabled(true);
 				mainGame->btnHostCancel->setEnabled(true);
 				mainGame->HideElement(mainGame->wLanWindow);
@@ -689,6 +707,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_REPLAY_MODE: {
+				mainGame->Game::ReLoadExpansions();
 				mainGame->HideElement(mainGame->wMainMenu);
 				mainGame->ShowElement(mainGame->wReplay);
 				mainGame->ebRepStartTurn->setText(L"1");
@@ -697,6 +716,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_SINGLE_MODE: {
+				mainGame->Game::ReLoadExpansions();
 				mainGame->HideElement(mainGame->wMainMenu);
 				mainGame->ShowElement(mainGame->wSinglePlay);
 				mainGame->RefreshSingleplay();
@@ -865,6 +885,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_DECK_EDIT: {
+				mainGame->Game::ReLoadExpansions();
 				mainGame->ClearChatMsg();
 				mainGame->RefreshDeck(mainGame->cbDBDecks);
 				if(open_file && deckManager.LoadDeck(open_file_name)) {

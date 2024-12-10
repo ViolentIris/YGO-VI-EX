@@ -13,4 +13,16 @@
 /sqlite3/
 /irrklang/
 /ikpmp3/
-premake5.exe
+/.vs/
+/expansions/
+/pics/
+/script/
+/deck/
+/WindBot/
+/gframe/*.ico
+/*.exe
+/*.conf
+/*.dll
+/*.bat
+error.log
+cards.cdb
