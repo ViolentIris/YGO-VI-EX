@@ -64,10 +64,11 @@ public:
 	static byte* ScriptReader(const char* script_name, int* slen);
 	static IFileSystem* FileSystem;
 
-private:
 	std::vector<int> _expansionDatas;
 	std::unordered_map<unsigned int, CardDataC> _datas;
 	std::unordered_map<unsigned int, CardString> _strings;
+	
+	private:
 	std::unordered_map<unsigned int, std::vector<uint16_t>> extra_setcode;
 };
 
