@@ -24,7 +24,7 @@ bool DataManager::LoadDB(const wchar_t* wfile) {
 #else
 	IReadFile* reader = FileSystem->createAndOpenFile(file);
 #endif
-	if(reader == NULL)
+	if(reader == nullptr)
 		return false;
 	spmemvfs_db_t db;
 	spmembuffer_t* mem = (spmembuffer_t*)calloc(sizeof(spmembuffer_t), 1);
@@ -264,7 +264,7 @@ const wchar_t* DataManager::GetCounterName(int code) {
 const wchar_t* DataManager::GetSetName(int code) {
 	auto csit = _setnameStrings.find(code);
 	if(csit == _setnameStrings.end())
-		return NULL;
+		return nullptr;
 	return csit->second.c_str();
 }
 unsigned int DataManager::GetSetCode(const wchar_t* setname) {
@@ -423,7 +423,7 @@ byte* DataManager::ScriptReader(const char* script_name, int* slen) {
 #else
 	IReadFile* reader = FileSystem->createAndOpenFile(script_name);
 #endif
-	if(reader == NULL)
+	if(reader == nullptr)
 		return 0;
 	size_t size = reader->getSize();
 	if(size > sizeof(scriptBuffer)) {

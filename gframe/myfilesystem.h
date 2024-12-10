@@ -42,7 +42,7 @@ public:
 	}
 
 	static bool MakeDir(const wchar_t* wdir) {
-		return CreateDirectoryW(wdir, NULL);
+		return CreateDirectoryW(wdir, nullptr);
 	}
 
 	static bool MakeDir(const char* dir) {

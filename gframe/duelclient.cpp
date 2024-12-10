@@ -55,7 +55,7 @@ bool DuelClient::StartClient(unsigned int ip, unsigned short port, bool create_g
 	sin.sin_port = htons(port);
 	client_bev = bufferevent_socket_new(client_base, -1, BEV_OPT_CLOSE_ON_FREE);
 	bufferevent_setwatermark(client_bev, EV_READ, 3, 0);
-	bufferevent_setcb(client_bev, ClientRead, NULL, ClientEvent, (void*)create_game);
+	bufferevent_setcb(client_bev, ClientRead, nullptr, ClientEvent, (void*)create_game);
 	temp_ip = ip;
 	temp_port = port;
 	
