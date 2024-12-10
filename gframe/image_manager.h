@@ -65,7 +65,6 @@ public:
 	irr::video::ITexture* tLScale[21];
 	irr::video::ITexture* tCardType[7];
 	irr::video::ITexture* tClock;
-	irr::video::ITexture* tDisplace;
 	/*irr::video::ITexture* tLPBarFrame;
 	irr::video::ITexture* tDoll_start[2];
 	irr::video::ITexture* tDoll_3000M[2];
