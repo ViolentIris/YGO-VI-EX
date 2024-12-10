@@ -69,6 +69,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_OTHER: {
+				mainGame->Game::ReLoadExpansions();
 				mainGame->btnSEM->setEnabled(true);
 				mainGame->btnTakeout2->setEnabled(true);
 				mainGame->btnLantern->setEnabled(true);
@@ -168,6 +169,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_OTHER_EXIT: {
+				mainGame->Game::ReLoadExpansions();
 				mainGame->HideElement(mainGame->wOther);
 				mainGame->ShowElement(mainGame->wMainMenu);
 				if(exit_on_return)
@@ -866,6 +868,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 			}
 			case BUTTON_DECK_EDIT: {
 				mainGame->ClearChatMsg();
+				mainGame->Game::ReLoadExpansions();
 				mainGame->RefreshDeck(mainGame->cbDBDecks);
 				if(open_file && deckManager.LoadDeck(open_file_name)) {
 #ifdef WIN32
