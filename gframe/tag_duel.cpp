@@ -1,6 +1,8 @@
+#include "config.h"
 #include "tag_duel.h"
 #include "netserver.h"
 #include "game.h"
+#include "data_manager.h"
 #include "../ocgcore/ocgapi.h"
 #include "../ocgcore/common.h"
 #include "../ocgcore/mtrandom.h"
@@ -51,7 +53,7 @@ void TagDuel::JoinGame(DuelPlayer* dp, unsigned char* pdata, bool is_creater) {
 		*/
 		wchar_t jpass[20];
 		BufferIO::NullTerminate(pkt->pass);
-		BufferIO::CopyWStr(pkt->pass, jpass, 20);
+		BufferIO::CopyCharArray(pkt->pass, jpass);
 		if(wcscmp(jpass, pass)) {
 			STOC_ErrorMsg scem;
 			scem.msg = ERRMSG_JOINERROR;
@@ -103,7 +105,7 @@ void TagDuel::JoinGame(DuelPlayer* dp, unsigned char* pdata, bool is_creater) {
 	for(int i = 0; i < 4; ++i)
 		if(players[i]) {
 			STOC_HS_PlayerEnter scpe;
-			BufferIO::CopyWStr(players[i]->name, scpe.name, 20);
+			BufferIO::CopyCharArray(players[i]->name, scpe.name);
 			scpe.pos = i;
 			NetServer::SendPacketToPlayer(dp, STOC_HS_PLAYER_ENTER, scpe);
 			if(ready[i]) {
@@ -159,7 +161,7 @@ void TagDuel::ToDuelist(DuelPlayer* dp) {
 	if(dp->type == NETPLAYER_TYPE_OBSERVER) {
 		observers.erase(dp);
 		STOC_HS_PlayerEnter scpe;
-		BufferIO::CopyWStr(dp->name, scpe.name, 20);
+		BufferIO::CopyCharArray(dp->name, scpe.name);
 		if(!players[0])
 			dp->type = 0;
 		else if(!players[1])
@@ -187,7 +189,7 @@ void TagDuel::ToDuelist(DuelPlayer* dp) {
 	} else {
 		if(ready[dp->type])
 			return;
-		uint8 dptype = (dp->type + 1) % 4;
+		unsigned char dptype = (dp->type + 1) % 4;
 		while(players[dptype])
 			dptype = (dptype + 1) % 4;
 		STOC_HS_PlayerChange scpc;
@@ -413,13 +415,13 @@ void TagDuel::TPResult(DuelPlayer* dp, unsigned char tp) {
 	}
 	time_limit[0] = host_info.time_limit;
 	time_limit[1] = host_info.time_limit;
-	set_script_reader((script_reader)DataManager::ScriptReaderEx);
-	set_card_reader((card_reader)DataManager::CardReader);
-	set_message_handler((message_handler)TagDuel::MessageHandler);
+	set_script_reader(DataManager::ScriptReaderEx);
+	set_card_reader(DataManager::CardReader);
+	set_message_handler(TagDuel::MessageHandler);
 	pduel = create_duel(duel_seed);
 	set_player_info(pduel, 0, host_info.start_lp, host_info.start_hand, host_info.draw_count);
 	set_player_info(pduel, 1, host_info.start_lp, host_info.start_hand, host_info.draw_count);
-	int opt = (int)host_info.duel_rule << 16;
+	unsigned int opt = (unsigned int)host_info.duel_rule << 16;
 	if(host_info.no_shuffle_deck)
 		opt |= DUEL_PSEUDO_SHUFFLE;
 	opt |= DUEL_TAG_MODE;
@@ -428,50 +430,28 @@ void TagDuel::TPResult(DuelPlayer* dp, unsigned char tp) {
 	last_replay.WriteInt32(host_info.draw_count, false);
 	last_replay.WriteInt32(opt, false);
 	last_replay.Flush();
-	//
-	last_replay.WriteInt32(pdeck[0].main.size(), false);
-	for(int32 i = (int32)pdeck[0].main.size() - 1; i >= 0; --i) {
-		new_card(pduel, pdeck[0].main[i]->first, 0, 0, LOCATION_DECK, 0, POS_FACEDOWN_DEFENSE);
-		last_replay.WriteInt32(pdeck[0].main[i]->first, false);
-	}
-	last_replay.WriteInt32(pdeck[0].extra.size(), false);
-	for(int32 i = (int32)pdeck[0].extra.size() - 1; i >= 0; --i) {
-		new_card(pduel, pdeck[0].extra[i]->first, 0, 0, LOCATION_EXTRA, 0, POS_FACEDOWN_DEFENSE);
-		last_replay.WriteInt32(pdeck[0].extra[i]->first, false);
-	}
-	//
-	last_replay.WriteInt32(pdeck[1].main.size(), false);
-	for(int32 i = (int32)pdeck[1].main.size() - 1; i >= 0; --i) {
-		new_tag_card(pduel, pdeck[1].main[i]->first, 0, LOCATION_DECK);
-		last_replay.WriteInt32(pdeck[1].main[i]->first, false);
-	}
-	last_replay.WriteInt32(pdeck[1].extra.size(), false);
-	for(int32 i = (int32)pdeck[1].extra.size() - 1; i >= 0; --i) {
-		new_tag_card(pduel, pdeck[1].extra[i]->first, 0, LOCATION_EXTRA);
-		last_replay.WriteInt32(pdeck[1].extra[i]->first, false);
-	}
-	//
-	last_replay.WriteInt32(pdeck[3].main.size(), false);
-	for(int32 i = (int32)pdeck[3].main.size() - 1; i >= 0; --i) {
-		new_card(pduel, pdeck[3].main[i]->first, 1, 1, LOCATION_DECK, 0, POS_FACEDOWN_DEFENSE);
-		last_replay.WriteInt32(pdeck[3].main[i]->first, false);
-	}
-	last_replay.WriteInt32(pdeck[3].extra.size(), false);
-	for(int32 i = (int32)pdeck[3].extra.size() - 1; i >= 0; --i) {
-		new_card(pduel, pdeck[3].extra[i]->first, 1, 1, LOCATION_EXTRA, 0, POS_FACEDOWN_DEFENSE);
-		last_replay.WriteInt32(pdeck[3].extra[i]->first, false);
-	}
-	//
-	last_replay.WriteInt32(pdeck[2].main.size(), false);
-	for(int32 i = (int32)pdeck[2].main.size() - 1; i >= 0; --i) {
-		new_tag_card(pduel, pdeck[2].main[i]->first, 1, LOCATION_DECK);
-		last_replay.WriteInt32(pdeck[2].main[i]->first, false);
-	}
-	last_replay.WriteInt32(pdeck[2].extra.size(), false);
-	for(int32 i = (int32)pdeck[2].extra.size() - 1; i >= 0; --i) {
-		new_tag_card(pduel, pdeck[2].extra[i]->first, 1, LOCATION_EXTRA);
-		last_replay.WriteInt32(pdeck[2].extra[i]->first, false);
-	}
+	auto load_single = [&](const std::vector<code_pointer>& deck_container, uint8_t p, uint8_t location) {
+		last_replay.WriteInt32(deck_container.size(), false);
+		for (auto cit = deck_container.rbegin(); cit != deck_container.rend(); ++cit) {
+			new_card(pduel, (*cit)->first, p, p, location, 0, POS_FACEDOWN_DEFENSE);
+			last_replay.WriteInt32((*cit)->first, false);
+		}
+	};
+	auto load_tag = [&](const std::vector<code_pointer>& deck_container, uint8_t p, uint8_t location) {
+		last_replay.WriteInt32(deck_container.size(), false);
+		for (auto cit = deck_container.rbegin(); cit != deck_container.rend(); ++cit) {
+			new_tag_card(pduel, (*cit)->first, p, location);
+			last_replay.WriteInt32((*cit)->first, false);
+		}
+	};
+	load_single(pdeck[0].main, 0, LOCATION_DECK);
+	load_single(pdeck[0].extra, 0, LOCATION_EXTRA);
+	load_tag(pdeck[1].main, 0, LOCATION_DECK);
+	load_tag(pdeck[1].extra, 0, LOCATION_EXTRA);
+	load_single(pdeck[3].main, 1, LOCATION_DECK);
+	load_single(pdeck[3].extra, 1, LOCATION_EXTRA);
+	load_tag(pdeck[2].main, 1, LOCATION_DECK);
+	load_tag(pdeck[2].extra, 1, LOCATION_EXTRA);
 	last_replay.Flush();
 	unsigned char startbuf[32];
 	auto pbuf = startbuf;
@@ -538,18 +518,18 @@ void TagDuel::DuelEndProc() {
 void TagDuel::Surrender(DuelPlayer* dp) {
 	if(dp->type > 3 || !pduel)
 		return;
-	uint32 player = dp->type;
+	uint32_t player = dp->type;
 	if(surrender[player])
 		return;
-	static const uint32 teammatemap[] = { 1, 0, 3, 2 };
-	uint32 teammate = teammatemap[player];
+	static const uint32_t teammatemap[] = { 1, 0, 3, 2 };
+	uint32_t teammate = teammatemap[player];
 	if(!surrender[teammate]) {
 		surrender[player] = true;
 		NetServer::SendPacketToPlayer(players[player], STOC_TEAMMATE_SURRENDER);
 		NetServer::SendPacketToPlayer(players[teammate], STOC_TEAMMATE_SURRENDER);
 		return;
 	}
-	static const uint32 winplayermap[] = { 1, 1, 0, 0 };
+	static const uint32_t winplayermap[] = { 1, 1, 0, 0 };
 	unsigned char wbuf[3];
 	wbuf[0] = MSG_WIN;
 	wbuf[1] = winplayermap[player];
@@ -904,7 +884,7 @@ int TagDuel::Analyze(unsigned char* msgbuffer, unsigned int len) {
 			break;
 		}
 		case MSG_SHUFFLE_SET_CARD: {
-			int loc = BufferIO::ReadInt8(pbuf);
+			unsigned int loc = BufferIO::ReadInt8(pbuf);
 			count = BufferIO::ReadInt8(pbuf);
 			pbuf += count * 8;
 			NetServer::SendBufferToPlayer(players[0], STOC_GAME_MSG, offset, pbuf - offset);
@@ -1535,11 +1515,11 @@ int TagDuel::Analyze(unsigned char* msgbuffer, unsigned int len) {
 	return 0;
 }
 void TagDuel::GetResponse(DuelPlayer* dp, unsigned char* pdata, unsigned int len) {
-	byte resb[SIZE_RETURN_VALUE]{};
+	unsigned char resb[SIZE_RETURN_VALUE]{};
 	if (len > SIZE_RETURN_VALUE)
 		len = SIZE_RETURN_VALUE;
 	std::memcpy(resb, pdata, len);
-	last_replay.WriteInt8(len);
+	last_replay.Write<uint8_t>(len);
 	last_replay.WriteData(resb, len);
 	set_responseb(pduel, resb);
 	players[dp->type]->state = 0xff;
@@ -1621,7 +1601,7 @@ void TagDuel::RefreshMzone(int player, int flag, int use_cache) {
 			continue;
 		auto position = GetPosition(qbuf, 8);
 		if (position & POS_FACEDOWN)
-			memset(qbuf, 0, clen - 4);
+			std::memset(qbuf, 0, clen - 4);
 		qbuf += clen - 4;
 	}
 	pid = 2 - pid;
@@ -1646,7 +1626,7 @@ void TagDuel::RefreshSzone(int player, int flag, int use_cache) {
 			continue;
 		auto position = GetPosition(qbuf, 8);
 		if (position & POS_FACEDOWN)
-			memset(qbuf, 0, clen - 4);
+			std::memset(qbuf, 0, clen - 4);
 		qbuf += clen - 4;
 	}
 	pid = 2 - pid;
@@ -1669,7 +1649,7 @@ void TagDuel::RefreshHand(int player, int flag, int use_cache) {
 			continue;
 		auto position = GetPosition(qbuf, 8);
 		if(!(position & POS_FACEUP))
-			memset(qbuf, 0, slen - 4);
+			std::memset(qbuf, 0, slen - 4);
 		qbuf += slen - 4;
 	}
 	for(int i = 0; i < 4; ++i)

@@ -3,6 +3,7 @@
 #include "game.h"
 #include "../ocgcore/common.h"
 #include "../ocgcore/mtrandom.h"
+#include "data_manager.h"
 #include <thread>
 
 namespace ygo {
@@ -25,7 +26,7 @@ void SingleMode::StopPlay(bool is_exiting) {
 void SingleMode::SetResponse(unsigned char* resp, unsigned int len) {
 	if(!pduel)
 		return;
-	last_replay.WriteInt8(len);
+	last_replay.Write<uint8_t>(len);
 	last_replay.WriteData(resp, len);
 	set_responseb(pduel, resp);
 }
@@ -38,9 +39,9 @@ int SingleMode::SinglePlayThread() {
 	std::random_device rd;
 	unsigned int seed = rd();
 	mt19937 rnd((uint_fast32_t)seed);
-	set_script_reader((script_reader)DataManager::ScriptReaderEx);
-	set_card_reader((card_reader)DataManager::CardReader);
-	set_message_handler((message_handler)MessageHandler);
+	set_script_reader(DataManager::ScriptReaderEx);
+	set_card_reader(DataManager::CardReader);
+	set_message_handler(SingleMode::MessageHandler);
 	pduel = create_duel(rnd.rand());
 	set_player_info(pduel, 0, start_lp, start_hand, draw_count);
 	set_player_info(pduel, 1, start_lp, start_hand, draw_count);
@@ -49,7 +50,7 @@ int SingleMode::SinglePlayThread() {
 	mainGame->dInfo.start_lp = start_lp;
 	myswprintf(mainGame->dInfo.strLP[0], L"%d", mainGame->dInfo.lp[0]);
 	myswprintf(mainGame->dInfo.strLP[1], L"%d", mainGame->dInfo.lp[1]);
-	BufferIO::CopyWStr(mainGame->ebNickName->getText(), mainGame->dInfo.hostname, 20);
+	BufferIO::CopyWideString(mainGame->ebNickName->getText(), mainGame->dInfo.hostname);
 	mainGame->dInfo.clientname[0] = 0;
 	mainGame->dInfo.player_type = 0;
 	mainGame->dInfo.turn = 0;
@@ -111,13 +112,13 @@ int SingleMode::SinglePlayThread() {
 	unsigned short buffer[20];
 	BufferIO::CopyWStr(mainGame->dInfo.hostname, buffer, 20);
 	last_replay.WriteData(buffer, 40, false);
-	BufferIO::CopyWStr(mainGame->dInfo.clientname, buffer, 20);
+	BufferIO::CopyCharArray(mainGame->dInfo.clientname, client_name);
 	last_replay.WriteData(buffer, 40, false);
 	last_replay.WriteInt32(start_lp, false);
 	last_replay.WriteInt32(start_hand, false);
 	last_replay.WriteInt32(draw_count, false);
 	last_replay.WriteInt32(opt, false);
-	last_replay.WriteInt16(slen, false);
+	last_replay.Write<uint16_t>(slen, false);
 	last_replay.WriteData(filename, slen, false);
 	last_replay.Flush();
 	start_duel(pduel, opt);
@@ -753,7 +754,7 @@ bool SingleMode::SinglePlayAnalyze(unsigned char* msg, unsigned int len) {
 			pbuf += len + 1;
 			std::memcpy(namebuf, begin, len + 1);
 			BufferIO::DecodeUTF8(namebuf, wname);
-			BufferIO::CopyWStr(wname, mainGame->dInfo.clientname, 20);
+			BufferIO::CopyCharArray(wname, mainGame->dInfo.clientname);
 			break;
 		}
 		case MSG_SHOW_HINT: {
