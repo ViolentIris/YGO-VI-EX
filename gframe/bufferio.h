@@ -10,42 +10,63 @@
 
 class BufferIO {
 public:
-	static int ReadInt32(unsigned char*& p) {
-		return buffer_read<int32_t>(p);
+	inline static int ReadInt32(unsigned char*& p) {
+		int ret = *(int*)p;
+		p += 4;
+		return ret;
 	}
-	static short ReadInt16(unsigned char*& p) {
-		return buffer_read<int16_t>(p);
+	inline static unsigned int ReadUInt32(unsigned char*& p) {
+		unsigned int ret = *(unsigned int*)p;
+		p += 4;
+		return ret;
 	}
-	static char ReadInt8(unsigned char*& p) {
-		return buffer_read<char>(p);
+	inline static short ReadInt16(unsigned char*& p) {
+		short ret = *(short*)p;
+		p += 2;
+		return ret;
 	}
-	static unsigned char ReadUInt8(unsigned char*& p) {
-		return buffer_read<unsigned char>(p);
+	inline static unsigned short ReadUInt16(unsigned char*& p) {
+		unsigned short ret = *(unsigned short*)p;
+		p += 2;
+		return ret;
 	}
-	static void WriteInt32(unsigned char*& p, int val) {
-		buffer_write<int32_t>(p, val);
+	inline static char ReadInt8(unsigned char*& p) {
+		char ret = *(char*)p;
+		p++;
+		return ret;
 	}
-	static void WriteInt16(unsigned char*& p, short val) {
-		buffer_write<int16_t>(p, val);
+	inline static unsigned char ReadUInt8(unsigned char*& p) {
+		unsigned char ret = *(unsigned char*)p;
+		p++;
+		return ret;
 	}
-	static void WriteInt8(unsigned char*& p, char val) {
-		buffer_write<char>(p, val);
+	inline static void WriteInt32(unsigned char*& p, int val) {
+		(*(int*)p) = val;
+		p += 4;
+	}
+	inline static void WriteInt16(unsigned char*& p, short val) {
+		(*(short*)p) = val;
+		p += 2;
+	}
+	inline static void WriteInt8(unsigned char*& p, char val) {
+		*p = val;
+		p++;
 	}
 	template<typename T1, typename T2>
-	static int CopyWStr(const T1* src, T2* pstr, int bufsize) {
+	inline static int CopyWStr(T1* src, T2* pstr, int bufsize) {
 		int l = 0;
 		while(src[l] && l < bufsize - 1) {
-			pstr[l] = (T2)src[l];
+			pstr[l] = src[l];
 			l++;
 		}
 		pstr[l] = 0;
 		return l;
 	}
 	template<typename T1, typename T2>
-	static int CopyWStrRef(const T1* src, T2*& pstr, int bufsize) {
+	inline static int CopyWStrRef(T1* src, T2*& pstr, int bufsize) {
 		int l = 0;
 		while(src[l] && l < bufsize - 1) {
-			pstr[l] = (T2)src[l];
+			pstr[l] = src[l];
 			l++;
 		}
 		pstr += l;
