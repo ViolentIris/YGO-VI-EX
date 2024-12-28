@@ -813,7 +813,7 @@ void SingleMode::SinglePlayRefreshSingle(int player, int location, int sequence,
 	mainGame->dField.UpdateCard(mainGame->LocalPlayer(player), location, sequence, queryBuffer);
 }
 void SingleMode::SinglePlayReload() {
-	std::vector<byte> queryBuffer;
+	std::vector<unsigned char> queryBuffer;
 	queryBuffer.resize(SIZE_QUERY_BUFFER);
 	unsigned int flag = 0xffdfff;
 	ReloadLocation(0, LOCATION_MZONE, flag, queryBuffer);
@@ -832,7 +832,7 @@ void SingleMode::SinglePlayReload() {
 	ReloadLocation(0, LOCATION_REMOVED, flag, queryBuffer);
 	ReloadLocation(1, LOCATION_REMOVED, flag, queryBuffer);
 }
-uint32 SingleMode::MessageHandler(intptr_t fduel, uint32 type) {
+uint32_t SingleMode::MessageHandler(intptr_t fduel, uint32_t type) {
 	if(!enable_log)
 		return 0;
 	char msgbuf[1024];
