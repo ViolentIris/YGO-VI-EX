@@ -44,8 +44,6 @@ public:
 		WriteData(&data, sizeof(T), flush);
 	}
 	void WriteInt32(int32_t data, bool flush = true);
-	void WriteInt16(short data, bool flush = true);
-	void WriteInt8(char data, bool flush = true);
 	void Flush();
 	void EndRecord();
 	void SaveReplay(const wchar_t* name);
@@ -66,8 +64,6 @@ public:
 		return ret;
 	}
 	int32_t ReadInt32();
-	short ReadInt16();
-	char ReadInt8();
 	void Rewind();
 
 	FILE* fp{ nullptr };

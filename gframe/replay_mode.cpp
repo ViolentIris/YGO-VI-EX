@@ -65,9 +65,9 @@ int ReplayMode::ReplayThread() {
 	mainGame->dInfo.isSingleMode = !!(rh.flag & REPLAY_SINGLE_MODE);
 	mainGame->dInfo.tag_player[0] = false;
 	mainGame->dInfo.tag_player[1] = false;
-	set_script_reader((script_reader)DataManager::ScriptReaderEx);
-	set_card_reader((card_reader)DataManager::CardReader);
-	set_message_handler((message_handler)MessageHandler);
+	set_script_reader(DataManager::ScriptReaderEx);
+	set_card_reader(DataManager::CardReader);
+	set_message_handler(ReplayMode::MessageHandler);
 	if(!StartDuel()) {
 		EndDuel();
 		return 0;
@@ -229,8 +229,8 @@ bool ReplayMode::StartDuel() {
 		}
 	} else {
 		char filename[256];
-		int slen = cur_replay.ReadInt16();
-		if (slen < 0 || slen > 255) {
+		auto slen = cur_replay.Read<uint16_t>();
+		if (slen > sizeof(filename) - 1) {
 			return false;
 		}
 		cur_replay.ReadData(filename, slen);
@@ -889,7 +889,7 @@ inline void ReplayMode::ReloadLocation(int player, int location, int flag, std::
 	mainGame->dField.UpdateFieldCard(mainGame->LocalPlayer(player), location, queryBuffer.data());
 }
 void ReplayMode::ReplayRefresh(int flag) {
-	std::vector<byte> queryBuffer;
+	std::vector<unsigned char> queryBuffer;
 	queryBuffer.resize(SIZE_QUERY_BUFFER);
 	ReloadLocation(0, LOCATION_MZONE, flag, queryBuffer);
 	ReloadLocation(1, LOCATION_MZONE, flag, queryBuffer);
