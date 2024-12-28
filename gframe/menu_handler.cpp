@@ -566,7 +566,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 					BufferIO::CopyWStr(mainGame->ebJoinPort->getText(), port, 6);
 					struct evutil_addrinfo hints;
 					struct evutil_addrinfo *answer = nullptr;
-					memset(&hints, 0, sizeof(hints));
+					std::memset(&hints, 0, sizeof hints);
 					hints.ai_family = AF_INET;
 					hints.ai_socktype = SOCK_STREAM;
 					hints.ai_protocol = IPPROTO_TCP;
@@ -582,6 +582,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 						sockaddr_in * sin = ((struct sockaddr_in *)answer->ai_addr);
 						evutil_inet_ntop(AF_INET, &(sin->sin_addr), ip, 20);
 						remote_addr = htonl(inet_addr(ip));
+						evutil_freeaddrinfo(answer);
 					}
 				}
 				unsigned int remote_port = _wtoi(mainGame->ebJoinPort->getText());
@@ -710,9 +711,12 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 					ReplayMode::cur_replay.OpenReplay(open_file_name);
 					open_file = false;
 				} else {
-					if(mainGame->lstReplayList->getSelected() == -1)
+					auto selected = mainGame->lstReplayList->getSelected();
+					if(selected == -1)
 						break;
-					if(!ReplayMode::cur_replay.OpenReplay(mainGame->lstReplayList->getListItem(mainGame->lstReplayList->getSelected())))
+					wchar_t replay_path[256]{};
+					myswprintf(replay_path, L"./replay/%ls", mainGame->lstReplayList->getListItem(selected));
+					if (!ReplayMode::cur_replay.OpenReplay(replay_path))
 						break;
 				}
 				mainGame->ClearCardInfo();
@@ -1003,14 +1007,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				const wchar_t* name = mainGame->lstSinglePlayList->getListItem(sel);
 				wchar_t fname[256];
 				myswprintf(fname, L"./single/%ls", name);
-				FILE *fp;
-#ifdef _WIN32
-				fp = _wfopen(fname, L"rb");
-#else
-				char filename[256];
-				BufferIO::EncodeUTF8(fname, filename);
-				fp = fopen(filename, "rb");
-#endif
+				FILE* fp = myfopen(fname, "rb");
 				if(!fp) {
 					mainGame->stSinglePlayInfo->setText(L"");
 					break;
@@ -1020,9 +1017,9 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				std::wstring message = L"";
 				bool in_message = false;
 				while(fgets(linebuf, 1024, fp)) {
-					if(!strncmp(linebuf, "--[[message", 11)) {
-						size_t len = strlen(linebuf);
-						char* msgend = strrchr(linebuf, ']');
+					if(!std::strncmp(linebuf, "--[[message", 11)) {
+						size_t len = std::strlen(linebuf);
+						char* msgend = std::strrchr(linebuf, ']');
 						if(len <= 13) {
 							in_message = true;
 							continue;
@@ -1033,7 +1030,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 							break;
 						}
 					}
-					if(!strncmp(linebuf, "]]", 2)) {
+					if(!std::strncmp(linebuf, "]]", 2)) {
 						in_message = false;
 						break;
 					}
