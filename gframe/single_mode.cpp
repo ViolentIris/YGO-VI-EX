@@ -109,11 +109,12 @@ int SingleMode::SinglePlayThread() {
 		is_continuing = SinglePlayAnalyze(engineBuffer.data(), len);
 	last_replay.BeginRecord();
 	last_replay.WriteHeader(rh);
-	unsigned short buffer[20];
-	BufferIO::CopyWStr(mainGame->dInfo.hostname, buffer, 20);
-	last_replay.WriteData(buffer, 40, false);
+	uint16_t host_name[20]{};
+	BufferIO::CopyCharArray(mainGame->dInfo.hostname, host_name);
+	last_replay.WriteData(host_name, sizeof host_name, false);
+	uint16_t client_name[20]{};
 	BufferIO::CopyCharArray(mainGame->dInfo.clientname, client_name);
-	last_replay.WriteData(buffer, 40, false);
+	last_replay.WriteData(client_name, sizeof client_name, false);
 	last_replay.WriteInt32(start_lp, false);
 	last_replay.WriteInt32(start_hand, false);
 	last_replay.WriteInt32(draw_count, false);

@@ -1,15 +1,12 @@
 #include "replay.h"
 #include "../ocgcore/ocgapi.h"
 #include "../ocgcore/common.h"
+#include "myfilesystem.h"
 #include "lzma/LzmaLib.h"
 
 namespace ygo {
 
-Replay::Replay()
-	: fp(nullptr), pheader(), pdata(nullptr), replay_size(0), comp_size(0), is_recording(false), is_replaying(false) {
-	#ifdef _WIN32
-		recording_fp = nullptr;
-	#endif
+Replay::Replay() {
 	replay_data = new unsigned char[MAX_REPLAY_SIZE];
 	comp_data = new unsigned char[MAX_COMP_SIZE];
 }
@@ -33,7 +30,6 @@ void Replay::BeginRecord() {
 	if(!fp)
 		return;
 #endif
-	pdata = replay_data;
 	replay_size = 0;
 	comp_size = 0;
 	is_replaying = false;
@@ -49,13 +45,13 @@ void Replay::WriteHeader(ReplayHeader& header) {
 	fflush(fp);
 #endif
 }
-void Replay::WriteData(const void* data, int length, bool flush) {
+void Replay::WriteData(const void* data, size_t length, bool flush) {
 	if(!is_recording)
 		return;
-	if (length < 0 || (pdata - replay_data) + length > MAX_REPLAY_SIZE)
+	if (replay_size + length > MAX_REPLAY_SIZE)
 		return;
-	memcpy(pdata, data, length);
-	pdata += length;
+	std::memcpy(replay_data + replay_size, data, length);
+	replay_size += length;
 #ifdef _WIN32
 	DWORD size;
 	WriteFile(recording_fp, data, length, &size, nullptr);
@@ -65,53 +61,8 @@ void Replay::WriteData(const void* data, int length, bool flush) {
 		fflush(fp);
 #endif
 }
-void Replay::WriteInt32(int data, bool flush) {
-	if(!is_recording)
-		return;
-	if ((pdata - replay_data) + 4 > MAX_REPLAY_SIZE)
-		return;
-	*((int*)(pdata)) = data;
-	pdata += 4;
-#ifdef _WIN32
-	DWORD size;
-	WriteFile(recording_fp, &data, sizeof(int), &size, nullptr);
-#else
-	fwrite(&data, sizeof(int), 1, fp);
-	if(flush)
-		fflush(fp);
-#endif
-}
-void Replay::WriteInt16(short data, bool flush) {
-	if(!is_recording)
-		return;
-	if ((pdata - replay_data) + 2 > MAX_REPLAY_SIZE)
-		return;
-	*((short*)(pdata)) = data;
-	pdata += 2;
-#ifdef _WIN32
-	DWORD size;
-	WriteFile(recording_fp, &data, sizeof(short), &size, nullptr);
-#else
-	fwrite(&data, sizeof(short), 1, fp);
-	if(flush)
-		fflush(fp);
-#endif
-}
-void Replay::WriteInt8(char data, bool flush) {
-	if(!is_recording)
-		return;
-	if ((pdata - replay_data) + 1 > MAX_REPLAY_SIZE)
-		return;
-	*pdata = data;
-	pdata++;
-#ifdef _WIN32
-	DWORD size;
-	WriteFile(recording_fp, &data, sizeof(char), &size, nullptr);
-#else
-	fwrite(&data, sizeof(char), 1, fp);
-	if(flush)
-		fflush(fp);
-#endif
+void Replay::WriteInt32(int32_t data, bool flush) {
+	Write<int32_t>(data, flush);
 }
 void Replay::Flush() {
 	if(!is_recording)
@@ -129,18 +80,14 @@ void Replay::EndRecord() {
 #else
 	fclose(fp);
 #endif
-	if(pdata - replay_data > 0 && pdata - replay_data <= MAX_REPLAY_SIZE)
-		replay_size = pdata - replay_data;
-	else
-		replay_size = 0;
 	pheader.datasize = replay_size;
 	pheader.flag |= REPLAY_COMPRESSED;
 	size_t propsize = 5;
 	comp_size = MAX_COMP_SIZE;
 	int ret = LzmaCompress(comp_data, &comp_size, replay_data, replay_size, pheader.props, &propsize, 5, 1 << 24, 3, 0, 2, 32, 1);
 	if (ret != SZ_OK) {
-		*((int*)(comp_data)) = ret;
-		comp_size = sizeof(ret);
+		std::memcpy(comp_data, &ret, sizeof ret);
+		comp_size = sizeof ret;
 	}
 	is_recording = false;
 }
@@ -149,54 +96,36 @@ void Replay::SaveReplay(const wchar_t* name) {
 		return;
 	wchar_t fname[256];
 	myswprintf(fname, L"./replay/%ls.yrp", name);
-#ifdef WIN32
-	fp = _wfopen(fname, L"wb");
-#else
-	char fname2[256];
-	BufferIO::EncodeUTF8(fname, fname2);
-	fp = fopen(fname2, "wb");
-#endif
-	if(!fp)
+	FILE* rfp = myfopen(fname, "wb");
+	if(!rfp)
 		return;
-	fwrite(&pheader, sizeof(pheader), 1, fp);
-	fwrite(comp_data, comp_size, 1, fp);
-	fclose(fp);
+	fwrite(&pheader, sizeof pheader, 1, rfp);
+	fwrite(comp_data, comp_size, 1, rfp);
+	fclose(rfp);
 }
 bool Replay::OpenReplay(const wchar_t* name) {
-#ifdef WIN32
-	fp = _wfopen(name, L"rb");
-#else
-	char name2[256];
-	BufferIO::EncodeUTF8(name, name2);
-	fp = fopen(name2, "rb");
-#endif
-	if(!fp) {
+	FILE* rfp = myfopen(name, "rb");
+	if(!rfp) {
 		wchar_t fname[256];
 		myswprintf(fname, L"./replay/%ls", name);
-#ifdef WIN32
-		fp = _wfopen(fname, L"rb");
-#else
-		char fname2[256];
-		BufferIO::EncodeUTF8(fname, fname2);
-		fp = fopen(fname2, "rb");
-#endif
+		rfp = myfopen(fname, "rb");
 	}
-	if(!fp)
+	if(!rfp)
 		return false;
 
-	pdata = replay_data;
+	data_position = 0;
 	is_recording = false;
 	is_replaying = false;
 	replay_size = 0;
 	comp_size = 0;
-	if(fread(&pheader, sizeof(pheader), 1, fp) < 1) {
-		fclose(fp);
+	if(fread(&pheader, sizeof pheader, 1, rfp) < 1) {
+		fclose(rfp);
 		return false;
 	}
 	if(pheader.flag & REPLAY_COMPRESSED) {
-		comp_size = fread(comp_data, 1, MAX_COMP_SIZE, fp);
-		fclose(fp);
-		if ((int)pheader.datasize < 0 && (int)pheader.datasize > MAX_REPLAY_SIZE)
+		comp_size = fread(comp_data, 1, MAX_COMP_SIZE, rfp);
+		fclose(rfp);
+		if (pheader.datasize > MAX_REPLAY_SIZE)
 			return false;
 		replay_size = pheader.datasize;
 		if (LzmaUncompress(replay_data, &replay_size, comp_data, &comp_size, pheader.props, 5) != SZ_OK)
@@ -206,8 +135,8 @@ bool Replay::OpenReplay(const wchar_t* name) {
 			return false;
 		}
 	} else {
-		replay_size = fread(replay_data, 1, MAX_REPLAY_SIZE, fp);
-		fclose(fp);
+		replay_size = fread(replay_data, 1, MAX_REPLAY_SIZE, rfp);
+		fclose(rfp);
 		comp_size = 0;
 	}
 	is_replaying = true;
@@ -216,24 +145,18 @@ bool Replay::OpenReplay(const wchar_t* name) {
 bool Replay::CheckReplay(const wchar_t* name) {
 	wchar_t fname[256];
 	myswprintf(fname, L"./replay/%ls", name);
-#ifdef WIN32
-	FILE* rfp = _wfopen(fname, L"rb");
-#else
-	char fname2[256];
-	BufferIO::EncodeUTF8(fname, fname2);
-	FILE* rfp = fopen(fname2, "rb");
-#endif
+	FILE* rfp = myfopen(fname, "rb");
 	if(!rfp)
 		return false;
 	ReplayHeader rheader;
-	size_t count = fread(&rheader, sizeof(ReplayHeader), 1, rfp);
+	size_t count = fread(&rheader, sizeof rheader, 1, rfp);
 	fclose(rfp);
 	return count == 1 && rheader.id == 0x31707279 && rheader.version >= 0x12d0u && (rheader.version < 0x1353u || (rheader.flag & REPLAY_UNIFORM));
 }
 bool Replay::DeleteReplay(const wchar_t* name) {
 	wchar_t fname[256];
 	myswprintf(fname, L"./replay/%ls", name);
-#ifdef WIN32
+#ifdef _WIN32
 	BOOL result = DeleteFileW(fname);
 	return !!result;
 #else
@@ -248,7 +171,7 @@ bool Replay::RenameReplay(const wchar_t* oldname, const wchar_t* newname) {
 	wchar_t newfname[256];
 	myswprintf(oldfname, L"./replay/%ls", oldname);
 	myswprintf(newfname, L"./replay/%ls", newname);
-#ifdef WIN32
+#ifdef _WIN32
 	BOOL result = MoveFileW(oldfname, newfname);
 	return !!result;
 #else
@@ -261,49 +184,45 @@ bool Replay::RenameReplay(const wchar_t* oldname, const wchar_t* newname) {
 #endif
 }
 bool Replay::ReadNextResponse(unsigned char resp[]) {
-	if(pdata - replay_data >= (int)replay_size)
+	unsigned char len{};
+	if (!ReadData(&len, sizeof len))
 		return false;
-	int len = *pdata++;
-	if(len > SIZE_RETURN_VALUE)
+	if (len > SIZE_RETURN_VALUE) {
+		is_replaying = false;
 		return false;
-	memcpy(resp, pdata, len);
-	pdata += len;
+	}
+	if (!ReadData(resp, len))
+		return false;
 	return true;
 }
-void Replay::ReadName(wchar_t* data) {
-	if(!is_replaying)
-		return;
-	unsigned short buffer[20];
-	ReadData(buffer, 40);
+bool Replay::ReadName(wchar_t* data) {
+	uint16_t buffer[20]{};
+	if (!ReadData(buffer, sizeof buffer)) {
+		return false;
+	}
 	BufferIO::CopyWStr(buffer, data, 20);
+	return true;
 }
-void Replay::ReadData(void* data, int length) {
-	if(!is_replaying)
-		return;
-	memcpy(data, pdata, length);
-	pdata += length;
+void Replay::ReadHeader(ReplayHeader& header) {
+	header = pheader;
 }
-int Replay::ReadInt32() {
+bool Replay::ReadData(void* data, size_t length) {
 	if(!is_replaying)
-		return -1;
-	int ret = *((int*)pdata);
-	pdata += 4;
-	return ret;
+		return false;
+	if (data_position + length > replay_size) {
+		is_replaying = false;
+		return false;
+	}
+	if (length)
+		std::memcpy(data, &replay_data[data_position], length);
+	data_position += length;
+	return true;
 }
-short Replay::ReadInt16() {
-	if(!is_replaying)
-		return -1;
-	short ret = *((short*)pdata);
-	pdata += 2;
-	return ret;
-}
-char Replay::ReadInt8() {
-	if(!is_replaying)
-		return -1;
-	return *pdata++;
+int32_t Replay::ReadInt32() {
+	return Read<int32_t>();
 }
 void Replay::Rewind() {
-	pdata = replay_data;
+	data_position = 0;
 }
 
 }

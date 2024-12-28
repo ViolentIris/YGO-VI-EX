@@ -73,6 +73,85 @@ public:
 		*pstr = 0;
 		return l;
 	}
+	template<typename T1, typename T2, size_t N>
+	static int CopyCharArray(const T1* src, T2(&dst)[N]) {
+		return CopyWStr(src, dst, N);
+	}
+	template<size_t N>
+	static void CopyString(const char* src, char(&dst)[N]) {
+		dst[0] = 0;
+		std::strncat(dst, src, N - 1);
+	}
+	template<size_t N>
+	static void CopyWideString(const wchar_t* src, wchar_t(&dst)[N]) {
+		dst[0] = 0;
+		std::wcsncat(dst, src, N - 1);
+	}
+	template<typename T>
+	static bool CheckUTF8Byte(const T* str, int len) {
+		for (int i = 1; i < len; ++i) {
+			if ((str[i] & 0xc0U) != 0x80U)
+				return false;
+		}
+		return true;
+	}
+	static unsigned int ConvertUTF8(const char*& p) {
+		unsigned int cur = 0;
+		if ((p[0] & 0x80U) == 0) {
+			cur = p[0] & 0xffU;
+			p++;
+		}
+		else if ((p[0] & 0xe0U) == 0xc0U) {
+			if (!CheckUTF8Byte(p, 2)) {
+				p++;
+				return UINT32_MAX;
+			}
+			cur = ((p[0] & 0x1fU) << 6) | (p[1] & 0x3fU);
+			p += 2;
+			if(cur < 0x80U)
+				return UINT32_MAX;
+		}
+		else if ((p[0] & 0xf0U) == 0xe0U) {
+			if (!CheckUTF8Byte(p, 3)) {
+				p++;
+				return UINT32_MAX;
+			}
+			cur = ((p[0] & 0xfU) << 12) | ((p[1] & 0x3fU) << 6) | (p[2] & 0x3fU);
+			p += 3;
+			if (cur < 0x800U)
+				return UINT32_MAX;
+		}
+		else if ((p[0] & 0xf8U) == 0xf0U) {
+			if (!CheckUTF8Byte(p, 4)) {
+				p++;
+				return UINT32_MAX;
+			}
+			cur = ((p[0] & 0x7U) << 18) | ((p[1] & 0x3fU) << 12) | ((p[2] & 0x3fU) << 6) | (p[3] & 0x3fU);
+			p += 4;
+			if (cur < 0x10000U)
+				return UINT32_MAX;
+		}
+		else {
+			p++;
+			return UINT32_MAX;
+		}
+		return cur;
+	}
+	static bool IsHighSurrogate(unsigned int c) {
+		return (c >= 0xd800U && c <= 0xdbffU);
+	}
+	static bool IsLowSurrogate(unsigned int c) {
+		return (c >= 0xdc00U && c <= 0xdfffU);
+	}
+	static bool IsUnicodeChar(unsigned int c) {
+		if(IsHighSurrogate(c))
+			return false;
+		if (IsLowSurrogate(c))
+			return false;
+		if (c > 0x10ffffU)
+			return false;
+		return true;
+	}
 	// UTF-16/UTF-32 to UTF-8
 	static int EncodeUTF8(const wchar_t * wsrc, char * str) {
 		char* pstr = str;
