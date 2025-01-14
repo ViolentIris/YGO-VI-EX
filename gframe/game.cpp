@@ -1868,6 +1868,7 @@ void Game::AddChatMsg(const wchar_t* msg, int player, bool play_sound) {
 		chatMsg[0].append(L": ");
 		break;
 	case 8: //system custom message, no prefix.
+		soundManager.PlaySoundEffect(SOUND_CHAT);
 		chatMsg[0].append(L"[System]: ");
 		break;
 	case 9: //error message
@@ -1878,6 +1879,9 @@ void Game::AddChatMsg(const wchar_t* msg, int player, bool play_sound) {
 			chatMsg[0].append(L"[---]: ");
 	}
 	chatMsg[0].append(msg);
+	wchar_t msg_front[256];
+	myswprintf(msg_front, L"[Chat]%ls", chatMsg[0].c_str());
+	AddLog(msg_front);
 }
 void Game::ClearChatMsg() {
 	for(int i = 7; i >= 0; --i) {
