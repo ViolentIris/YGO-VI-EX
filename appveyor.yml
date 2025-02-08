@@ -7,7 +7,6 @@ environment:
     secure: DOOS4g7CT8ctOgiMr62K56qQ1FO6s2ESpqNZlhf8F4nomemvvwxV/pRj9nbKmtjR
 
 install:
-  - git submodule update --init --recursive
 
   # environment and system dependency
   - bash -c "curl --retry 5 --connect-timeout 30 --location --remote-header-name --remote-name https://github.com/premake/premake-core/releases/download/v5.0.0-beta1/premake-5.0.0-beta1-windows.zip ; exit 0"
