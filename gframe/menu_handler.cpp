@@ -368,7 +368,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_NK: {
-				wcscpy(mainGame->gameConf.lasthost, L"duelstart.com");
+				wcscpy(mainGame->gameConf.lasthost, L"duels.link");
 				wcscpy(mainGame->gameConf.lastport, L"2333");
 				wchar_t buf[256];
 				wchar_t buff[256];
