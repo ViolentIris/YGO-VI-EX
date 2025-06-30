@@ -35,7 +35,7 @@ private:
 	static unsigned char last_successful_msg[0x2000];
 	static unsigned int last_successful_msg_length;
 	static wchar_t event_string[256];
-	static mt19937 rnd;
+	static std::mt19937 rnd;
 public:
 	static unsigned int temp_ip;
 	static unsigned short temp_port;
