@@ -31,7 +31,7 @@ int DuelClient::last_select_hint = 0;
 unsigned char DuelClient::last_successful_msg[0x2000];
 size_t DuelClient::last_successful_msg_length = 0;
 wchar_t DuelClient::event_string[256];
-mt19937 DuelClient::rnd;
+std::mt19937 DuelClient::rnd;
 
 bool DuelClient::is_refreshing = false;
 int DuelClient::match_kill = 0;

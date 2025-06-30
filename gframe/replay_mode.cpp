@@ -168,6 +168,7 @@ bool ReplayMode::StartDuel() {
 		cur_replay.ReadName(mainGame->dInfo.hostname);
 		cur_replay.ReadName(mainGame->dInfo.clientname);
 	}
+	std::mt19937 rnd(rh.seed);
 	pduel = create_duel(rnd());
 	int start_lp = cur_replay.ReadInt32();
 	int start_hand = cur_replay.ReadInt32();
