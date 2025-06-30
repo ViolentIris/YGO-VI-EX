@@ -124,7 +124,7 @@ void ClientField::Clear() {
 	tag_surrender = false;
 	tag_teammate_surrender = false;
 }
-void ClientField::Initial(int player, int deckc, int extrac) {
+void ClientField::Initial(int player, int deckc, int extrac, int sidec) {
 	ClientCard* pcard;
 	for(int i = 0; i < deckc; ++i) {
 		pcard = new ClientCard;
@@ -142,6 +142,16 @@ void ClientField::Initial(int player, int deckc, int extrac) {
 		pcard->owner = player;
 		pcard->controler = player;
 		pcard->location = 0x40;
+		pcard->sequence = i;
+		pcard->position = POS_FACEDOWN_DEFENSE;
+		GetCardLocation(pcard, &pcard->curPos, &pcard->curRot, true);
+	}
+	for(int i = 0; i < sidec; ++i) {
+		pcard = new ClientCard;
+		remove[player].push_back(pcard);
+		pcard->owner = player;
+		pcard->controler = player;
+		pcard->location = LOCATION_REMOVED;
 		pcard->sequence = i;
 		pcard->position = POS_FACEDOWN_DEFENSE;
 		GetCardLocation(pcard, &pcard->curPos, &pcard->curRot, true);
