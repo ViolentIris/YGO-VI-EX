@@ -2,6 +2,7 @@
 #include "../ocgcore/ocgapi.h"
 #include "../ocgcore/common.h"
 #include "myfilesystem.h"
+#include "network.h"
 #include "lzma/LzmaLib.h"
 
 namespace ygo {
