@@ -79,8 +79,8 @@ void Replay::EndRecord() {
 #else
 	fclose(fp);
 #endif
-	pheader.datasize = replay_size;
-	pheader.flag |= REPLAY_COMPRESSED;
+	pheader.base.datasize = replay_size;
+	pheader.base.flag |= REPLAY_COMPRESSED;
 	size_t propsize = 5;
 	comp_size = MAX_COMP_SIZE;
 	int ret = LzmaCompress(comp_data, &comp_size, replay_data, replay_size, pheader.base.props, &propsize, 5, 0x1U << 24, 3, 0, 2, 32, 1);
@@ -156,6 +156,17 @@ bool Replay::OpenReplay(const wchar_t* name) {
 	info_offset = data_position;
 	data_position = 0;
 	return true;
+}
+bool Replay::CheckReplay(const wchar_t* name) {
+	wchar_t fname[256];
+	myswprintf(fname, L"./replay/%ls", name);
+	FILE* rfp = myfopen(fname, "rb");
+	if(!rfp)
+		return false;
+	ReplayHeader rheader;
+	size_t count = fread(&rheader, sizeof rheader, 1, rfp);
+	fclose(rfp);
+	return count == 1 && rheader.id == 0x31707279 && rheader.version >= 0x12d0u && (rheader.version < 0x1353u || (rheader.flag & REPLAY_UNIFORM));
 }
 bool Replay::DeleteReplay(const wchar_t* name) {
 	wchar_t fname[256];

@@ -104,6 +104,12 @@ public:
 	unsigned char* comp_data;
 	size_t comp_size{};
 
+	std::vector<std::wstring> players;	// 80 or 160 bytes
+	DuelParameters params;				// 16 bytes
+
+	std::vector<DeckArray> decks;		// 4 bytes, main deck, 4 bytes, extra deck
+	std::string script_name;			// 2 bytes, script name (max: 256 bytes)
+
 private:
 	bool ReadInfo();
 
