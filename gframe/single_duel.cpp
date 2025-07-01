@@ -438,7 +438,7 @@ void SingleDuel::TPResult(DuelPlayer* dp, unsigned char tp) {
 	set_script_reader(DataManager::ScriptReaderEx);
 	set_card_reader(DataManager::CardReader);
 	set_message_handler(SingleDuel::MessageHandler);
-	pduel = create_duel(duel_seed);
+	pduel = create_duel(rh.seed_sequence);
 	set_player_info(pduel, 0, host_info.start_lp, host_info.start_hand, host_info.draw_count);
 	set_player_info(pduel, 1, host_info.start_lp, host_info.start_hand, host_info.draw_count);
 	unsigned int opt = (unsigned int)host_info.duel_rule << 16;

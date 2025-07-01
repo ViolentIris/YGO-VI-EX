@@ -36,6 +36,7 @@ private:
 	static unsigned int last_successful_msg_length;
 	static wchar_t event_string[256];
 	static std::mt19937 rnd;
+	static std::uniform_real_distribution<float> real_dist;
 public:
 	static unsigned int temp_ip;
 	static unsigned short temp_port;
