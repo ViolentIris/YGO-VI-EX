@@ -392,15 +392,14 @@ void TagDuel::TPResult(DuelPlayer* dp, unsigned char tp) {
 	cur_player[1] = players[3];
 	dp->state = CTOS_RESPONSE;
 	std::random_device rd;
-	unsigned int seed = rd();
-	std::mt19937 rnd((uint_fast32_t)seed);
-	auto duel_seed = rnd.rand();
-	ReplayHeader rh;
-	rh.id = 0x31707279;
-	rh.version = PRO_VERSION;
-	rh.flag = REPLAY_UNIFORM | REPLAY_TAG;
-	rh.seed = seed;
-	rh.start_time = (unsigned int)time(nullptr);
+	ExtendedReplayHeader rh;
+	rh.base.id = REPLAY_ID_YRP2;
+	rh.base.version = PRO_VERSION;
+	rh.base.flag = REPLAY_UNIFORM | REPLAY_TAG;
+	rh.base.start_time = (uint32_t)std::time(nullptr);
+	for (auto& x : rh.seed_sequence)
+		x = rd();
+	mtrandom rnd(rh.seed_sequence, SEED_COUNT);
 	last_replay.BeginRecord();
 	last_replay.WriteHeader(rh);
 	last_replay.WriteData(players[0]->name, 40, false);
@@ -418,7 +417,7 @@ void TagDuel::TPResult(DuelPlayer* dp, unsigned char tp) {
 	set_script_reader(DataManager::ScriptReaderEx);
 	set_card_reader(DataManager::CardReader);
 	set_message_handler(TagDuel::MessageHandler);
-	pduel = create_duel(duel_seed);
+	pduel = create_duel_v2(rh.seed_sequence);
 	set_player_info(pduel, 0, host_info.start_lp, host_info.start_hand, host_info.draw_count);
 	set_player_info(pduel, 1, host_info.start_lp, host_info.start_hand, host_info.draw_count);
 	unsigned int opt = (unsigned int)host_info.duel_rule << 16;
@@ -453,7 +452,7 @@ void TagDuel::TPResult(DuelPlayer* dp, unsigned char tp) {
 	load_tag(pdeck[2].main, 1, LOCATION_DECK);
 	load_tag(pdeck[2].extra, 1, LOCATION_EXTRA);
 	last_replay.Flush();
-	unsigned char startbuf[32];
+	unsigned char startbuf[32]{};
 	auto pbuf = startbuf;
 	BufferIO::WriteInt8(pbuf, MSG_START);
 	BufferIO::WriteInt8(pbuf, 0);
