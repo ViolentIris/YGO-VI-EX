@@ -31,8 +31,7 @@ int DuelClient::last_select_hint = 0;
 unsigned char DuelClient::last_successful_msg[0x2000];
 size_t DuelClient::last_successful_msg_length = 0;
 wchar_t DuelClient::event_string[256];
-std::mt19937 DuelClient::rnd;
-std::uniform_real_distribution<float> DuelClient::real_dist;
+mt19937 DuelClient::rnd;
 
 bool DuelClient::is_refreshing = false;
 int DuelClient::match_kill = 0;
@@ -71,7 +70,7 @@ bool DuelClient::StartClient(unsigned int ip, unsigned short port, bool create_g
 		return false;
 	}
 	connect_state = 0x1;
-	rnd.seed(std::random_device()());
+	rnd.reset((uint_fast32_t)std::random_device()());
 	if(!create_game) {
 		timeval timeout = {5, 0};
 		event* timeout_event = event_new(client_base, 0, EV_TIMEOUT, ConnectTimeout, 0);
@@ -528,11 +527,11 @@ void DuelClient::HandleSTOCPacketLan(unsigned char* data, int len) {
 		int deckc = BufferIO::ReadInt16(pdata);
 		int extrac = BufferIO::ReadInt16(pdata);
 		int sidec = BufferIO::ReadInt16(pdata);
-		mainGame->dField.Initial(0, deckc, extrac, sidec);
+		mainGame->dField.Initial(0, deckc, extrac);
 		deckc = BufferIO::ReadInt16(pdata);
 		extrac = BufferIO::ReadInt16(pdata);
 		sidec = BufferIO::ReadInt16(pdata);
-		mainGame->dField.Initial(1, deckc, extrac, sidec);
+		mainGame->dField.Initial(1, deckc, extrac);
 		mainGame->gMutex.unlock();
 		break;
 	}
@@ -833,7 +832,7 @@ void DuelClient::HandleSTOCPacketLan(unsigned char* data, int len) {
 		break;
 	}
 	case STOC_REPLAY: {
-		if (len < 1 + (int)sizeof(ExtendedReplayHeader))
+		if (len < 1 + (int)sizeof(ReplayHeader))
 			return;
 		mainGame->gMutex.lock();
 		mainGame->wPhase->setVisible(false);
@@ -849,10 +848,10 @@ void DuelClient::HandleSTOCPacketLan(unsigned char* data, int len) {
 		Replay new_replay;
 		std::memcpy(&new_replay.pheader, prep, sizeof(new_replay.pheader));
 		time_t starttime;
-		if (new_replay.pheader.base.flag & REPLAY_UNIFORM)
-			starttime = new_replay.pheader.base.start_time;
+		if (new_replay.pheader.flag & REPLAY_UNIFORM)
+			starttime = new_replay.pheader.start_time;
 		else
-			starttime = new_replay.pheader.base.seed;
+			starttime = new_replay.pheader.seed;
 		
 		tm* localedtime = localtime(&starttime);
 		wchar_t timetext[40];
@@ -1889,7 +1888,7 @@ int DuelClient::ClientAnalyze(unsigned char* msg, unsigned int len) {
 			SetResponseI(-1);
 			mainGame->dField.ClearChainSelect();
 			if(mainGame->chkWaitChain->isChecked() && !mainGame->ignore_chain) {
-				mainGame->WaitFrameSignal(std::uniform_int_distribution<>(20, 40)(rnd));
+				mainGame->WaitFrameSignal(rnd.get_random_integer(20, 40));
 			}
 			DuelClient::SendResponse();
 			return true;
@@ -1988,10 +1987,9 @@ int DuelClient::ClientAnalyze(unsigned char* msg, unsigned int len) {
 			}
 			if(!pzone) {
 				if(mainGame->chkRandomPos->isChecked()) {
-					std::uniform_int_distribution<> dist(0, 6);
 					do {
-						respbuf[2] = dist(rnd);
-					} while(!(filter & (0x1U << respbuf[2])));
+						respbuf[2] = rnd.get_random_integer(0, 6);
+					} while(!(filter & (1 << respbuf[2])));
 				} else {
 					if (filter & 0x40) respbuf[2] = 6;
 					else if (filter & 0x20) respbuf[2] = 5;
@@ -2406,7 +2404,7 @@ int DuelClient::ClientAnalyze(unsigned char* msg, unsigned int len) {
 			soundManager.PlaySoundEffect(SOUND_SHUFFLE);
 			for (int i = 0; i < 5; ++i) {
 				for (auto cit = mainGame->dField.deck[player].begin(); cit != mainGame->dField.deck[player].end(); ++cit) {
-					(*cit)->dPos = irr::core::vector3df(real_dist(rnd) * 0.4f - 0.2f, 0, 0);
+					(*cit)->dPos = irr::core::vector3df(rnd.rand() * 0.4f / rnd.rand_max - 0.2f, 0, 0);
 					(*cit)->dRot = irr::core::vector3df(0, 0, 0);
 					(*cit)->is_moving = true;
 					(*cit)->aniFrame = 3;
@@ -2478,7 +2476,7 @@ int DuelClient::ClientAnalyze(unsigned char* msg, unsigned int len) {
 			for (int i = 0; i < 5; ++i) {
 				for (auto cit = mainGame->dField.extra[player].begin(); cit != mainGame->dField.extra[player].end(); ++cit) {
 					if(!((*cit)->position & POS_FACEUP)) {
-						(*cit)->dPos = irr::core::vector3df(real_dist(rnd) * 0.4f - 0.2f, 0, 0);
+						(*cit)->dPos = irr::core::vector3df(rnd.rand() * 0.4f / rnd.rand_max - 0.2f, 0, 0);
 						(*cit)->dRot = irr::core::vector3df(0, 0, 0);
 						(*cit)->is_moving = true;
 						(*cit)->aniFrame = 3;

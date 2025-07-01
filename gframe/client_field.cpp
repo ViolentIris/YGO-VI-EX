@@ -15,7 +15,7 @@ ClientField::ClientField() {
 		mzone[p].resize(7, 0);
 		szone[p].resize(8, 0);
 	}
-	rnd.seed(std::random_device()());
+	rnd.reset((uint_fast32_t)std::random_device()());
 }
 ClientField::~ClientField() {
 	for (int i = 0; i < 2; ++i) {
@@ -124,7 +124,7 @@ void ClientField::Clear() {
 	tag_surrender = false;
 	tag_teammate_surrender = false;
 }
-void ClientField::Initial(int player, int deckc, int extrac, int sidec) {
+void ClientField::Initial(int player, int deckc, int extrac) {
 	ClientCard* pcard;
 	for(int i = 0; i < deckc; ++i) {
 		pcard = new ClientCard;
@@ -142,16 +142,6 @@ void ClientField::Initial(int player, int deckc, int extrac, int sidec) {
 		pcard->owner = player;
 		pcard->controler = player;
 		pcard->location = 0x40;
-		pcard->sequence = i;
-		pcard->position = POS_FACEDOWN_DEFENSE;
-		GetCardLocation(pcard, &pcard->curPos, &pcard->curRot, true);
-	}
-	for(int i = 0; i < sidec; ++i) {
-		pcard = new ClientCard;
-		remove[player].push_back(pcard);
-		pcard->owner = player;
-		pcard->controler = player;
-		pcard->location = LOCATION_REMOVED;
 		pcard->sequence = i;
 		pcard->position = POS_FACEDOWN_DEFENSE;
 		GetCardLocation(pcard, &pcard->curPos, &pcard->curRot, true);
@@ -451,7 +441,7 @@ void ClientField::ShowSelectCard(bool buttonok, bool chain) {
 			}
 		}
 		if(has_card_in_grave) {
-			std::shuffle(selectable_cards.begin(), selectable_cards.end(), rnd);
+			rnd.shuffle_vector(selectable_cards);
 		}
 	}
 	int startpos;

@@ -88,12 +88,12 @@ public:
 	bool cant_check_grave{ false };
 	bool tag_surrender{ false };
 	bool tag_teammate_surrender{ false };
-	std::mt19937 rnd;
+	mt19937 rnd;
 
 	ClientField();
 	~ClientField();
 	void Clear();
-	void Initial(int player, int deckc, int extrac, int sidec = 0);
+	void Initial(int player, int deckc, int extrac);
 	ClientCard* GetCard(int controler, int location, int sequence, int sub_seq = 0);
 	void AddCard(ClientCard* pcard, int controler, int location, int sequence);
 	ClientCard* RemoveCard(int controler, int location, int sequence);

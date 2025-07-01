@@ -5,7 +5,6 @@
 #include "network.h"
 #include "deck_manager.h"
 #include "replay.h"
-#include <set>
 
 namespace ygo {
 
