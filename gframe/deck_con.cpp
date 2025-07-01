@@ -59,7 +59,6 @@ void DeckBuilder::Initialize() {
 	filterList = &deckManager._lfList[0].content;
 	mainGame->cbDBLFList->setSelected(0);
 	ClearSearch();
-	rnd.reset((uint_fast32_t)time(nullptr));
 	mouse_pos.set(0, 0);
 	hovered_code = 0;
 	hovered_pos = 0;
@@ -131,7 +130,7 @@ bool DeckBuilder::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_SHUFFLE_DECK: {
-				rnd.shuffle_vector(deckManager.current_deck.main);
+				std::shuffle(deckManager.current_deck.main.begin(), deckManager.current_deck.main.end(), rnd);
 				break;
 			}
 			case BUTTON_SAVE_DECK: {

@@ -1,10 +1,12 @@
 #include "replay_mode.h"
 #include "duelclient.h"
 #include "game.h"
+#include "data_manager.h"
 #include "single_mode.h"
 #include "../ocgcore/common.h"
 #include "../ocgcore/mtrandom.h"
 #include <thread>
+#include <random>
 
 namespace ygo {
 
@@ -157,8 +159,6 @@ int ReplayMode::ReplayThread() {
 }
 bool ReplayMode::StartDuel() {
 	const ReplayHeader& rh = cur_replay.pheader;
-	unsigned int seed = rh.seed;
-	std::mt19937 rnd(seed);
 	if(mainGame->dInfo.isTag) {
 		cur_replay.ReadName(mainGame->dInfo.hostname);
 		cur_replay.ReadName(mainGame->dInfo.hostname_tag);
@@ -240,8 +240,6 @@ bool ReplayMode::StartDuel() {
 			return false;
 		}
 	}
-	if (!(rh.flag & REPLAY_UNIFORM))
-		opt |= DUEL_OLD_REPLAY;
 	start_duel(pduel, opt);
 	return true;
 }
