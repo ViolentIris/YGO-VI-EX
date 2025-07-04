@@ -74,7 +74,7 @@ bool DuelClient::StartClient(unsigned int ip, unsigned short port, bool create_g
 		return false;
 	}
 	connect_state = 0x1;
-	rnd.reset((uint_fast32_t)std::random_device()());
+	rnd.seed((uint_fast32_t)std::random_device()());
 	if(!create_game) {
 		timeval timeout = {5, 0};
 		event* timeout_event = event_new(client_base, 0, EV_TIMEOUT, ConnectTimeout, 0);
@@ -540,11 +540,11 @@ void DuelClient::HandleSTOCPacketLan(unsigned char* data, int len) {
 		int deckc = BufferIO::ReadInt16(pdata);
 		int extrac = BufferIO::ReadInt16(pdata);
 		int sidec = BufferIO::ReadInt16(pdata);
-		mainGame->dField.Initial(0, deckc, extrac);
+		mainGame->dField.Initial(0, deckc, extrac, sidec);
 		deckc = BufferIO::ReadInt16(pdata);
 		extrac = BufferIO::ReadInt16(pdata);
 		sidec = BufferIO::ReadInt16(pdata);
-		mainGame->dField.Initial(1, deckc, extrac);
+		mainGame->dField.Initial(1, deckc, extrac, sidec);
 		mainGame->gMutex.unlock();
 		break;
 	}

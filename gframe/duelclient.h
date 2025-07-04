@@ -1,6 +1,7 @@
 #ifndef DUELCLIENT_H
 #define DUELCLIENT_H
 
+#include <random>
 #include "config.h"
 #include <vector>
 #include <set>
@@ -14,7 +15,6 @@
 #include "data_manager.h"
 #include "deck_manager.h"
 #include "../ocgcore/mtrandom.h"
-#include <random>
 
 namespace ygo {
 

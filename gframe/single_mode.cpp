@@ -4,6 +4,7 @@
 #include "../ocgcore/common.h"
 #include "../ocgcore/mtrandom.h"
 #include "data_manager.h"
+#include <random>
 #include <thread>
 
 namespace ygo {
