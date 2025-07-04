@@ -54,6 +54,13 @@ struct HostRequest {
 check_trivially_copyable(HostRequest);
 static_assert(sizeof(HostRequest) == 2, "size mismatch: HostRequest");
 
+struct CTOS_DeckData {
+	int32_t mainc{};
+	int32_t sidec{};
+	uint32_t list[MAINC_MAX + SIDEC_MAX]{};
+};
+check_trivially_copyable(CTOS_DeckData);
+
 struct CTOS_HandResult {
 	unsigned char res;
 };
@@ -95,6 +102,14 @@ struct CTOS_Kick {
 };
 check_trivially_copyable(CTOS_Kick);
 static_assert(sizeof(CTOS_Kick) == 1, "size mismatch: CTOS_Kick");
+
+/*
+* CTOS_ExternalAddress
+* uint32_t real_ip; (IPv4 address, BE, alway 0 in normal client)
+* uint16_t hostname[256]; (UTF-16 string)
+*/
+
+constexpr int LEN_HOSTNAME = 256;
 
 // STOC
 struct STOC_ErrorMsg {
@@ -236,6 +251,7 @@ public:
 	intptr_t pduel{};
 	wchar_t name[20]{};
 	wchar_t pass[20]{};
+	std::vector<byte> registry_dump;
 };
 
 }
@@ -262,6 +278,7 @@ public:
 #define CTOS_SURRENDER		0x14	// no data
 #define CTOS_TIME_CONFIRM	0x15	// no data
 #define CTOS_CHAT			0x16	// uint16_t array
+#define CTOS_EXTERNAL_ADDRESS	0x17	// CTOS_ExternalAddress
 #define CTOS_HS_TODUELIST	0x20	// no data
 #define CTOS_HS_TOOBSERVER	0x21	// no data
 #define CTOS_HS_READY		0x22	// no data
@@ -295,6 +312,19 @@ public:
 #define STOC_FIELD_FINISH		0x30
 #define STOC_SRVPRO_ROOMLIST	0x31
 
+// STOC_GAME_MSG header
+#define MSG_WAITING				3
+#define MSG_START				4
+#define MSG_UPDATE_DATA			6	// flag=0: clear
+#define MSG_UPDATE_CARD			7	// flag=QUERY_CODE, code=0: clear
+#define MSG_REQUEST_DECK		8
+#define MSG_REFRESH_DECK		34
+#define MSG_CARD_SELECTED		80
+#define MSG_UNEQUIP				95
+#define MSG_BE_CHAIN_TARGET		121
+#define MSG_CREATE_RELATION		122
+#define MSG_RELEASE_RELATION	123
+
 #define PLAYERCHANGE_OBSERVE	0x8
 #define PLAYERCHANGE_READY		0x9
 #define PLAYERCHANGE_NOTREADY	0xa
@@ -305,15 +335,15 @@ public:
 #define ERRMSG_SIDEERROR	0x3
 #define ERRMSG_VERERROR		0x4
 
-#define DECKERROR_LFLIST		0x1
-#define DECKERROR_OCGONLY		0x2
-#define DECKERROR_TCGONLY		0x3
-#define DECKERROR_UNKNOWNCARD	0x4
-#define DECKERROR_CARDCOUNT		0x5
-#define DECKERROR_MAINCOUNT		0x6
-#define DECKERROR_EXTRACOUNT	0x7
-#define DECKERROR_SIDECOUNT		0x8
-#define DECKERROR_NOTAVAIL		0x9
+#define DECKERROR_LFLIST		0x1U
+#define DECKERROR_OCGONLY		0x2U
+#define DECKERROR_TCGONLY		0x3U
+#define DECKERROR_UNKNOWNCARD	0x4U
+#define DECKERROR_CARDCOUNT		0x5U
+#define DECKERROR_MAINCOUNT		0x6U
+#define DECKERROR_EXTRACOUNT	0x7U
+#define DECKERROR_SIDECOUNT		0x8U
+#define DECKERROR_NOTAVAIL		0x9U
 
 #define MODE_SINGLE		0x0
 #define MODE_MATCH		0x1
