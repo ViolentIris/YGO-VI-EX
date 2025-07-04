@@ -1,3 +1,4 @@
+#include <array>
 #include "config.h"
 #include "deck_con.h"
 #include "data_manager.h"
@@ -41,6 +42,14 @@ static int parse_filter(const wchar_t* pstr, unsigned int* type) {
 }
 
 
+DeckBuilder::DeckBuilder() {
+	std::random_device rd;
+	std::array<uint32_t, 8> seed{};
+	for (auto& x : seed)
+		x = rd();
+	std::seed_seq seq(seed.begin(), seed.end());
+	rnd.seed(seq);
+}
 void DeckBuilder::Initialize() {
 	mainGame->is_building = true;
 	mainGame->is_siding = false;
@@ -59,7 +68,6 @@ void DeckBuilder::Initialize() {
 	filterList = &deckManager._lfList[0].content;
 	mainGame->cbDBLFList->setSelected(0);
 	ClearSearch();
-	rnd.reset((uint_fast32_t)time(nullptr));
 	mouse_pos.set(0, 0);
 	hovered_code = 0;
 	hovered_pos = 0;
@@ -131,7 +139,7 @@ bool DeckBuilder::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_SHUFFLE_DECK: {
-				rnd.shuffle_vector(deckManager.current_deck.main);
+				std::shuffle(deckManager.current_deck.main.begin(), deckManager.current_deck.main.end(), rnd);
 				break;
 			}
 			case BUTTON_SAVE_DECK: {

@@ -2,6 +2,10 @@
 #define SOUNDMANAGER_H
 
 #include "game.h"
+#include <random>
+#ifdef YGOPRO_USE_MINIAUDIO
+#include <miniaudio.h>
+#endif
 #ifdef YGOPRO_USE_IRRKLANG
 #include <irrKlang.h>
 #endif
@@ -14,6 +18,7 @@ private:
 	int bgm_scene;
 	int previous_bgm_scene;
 	bool bgm_process;
+	std::mt19937 rnd;
 #ifdef YGOPRO_USE_IRRKLANG
 	irrklang::ISoundEngine* engineSound;
 	irrklang::ISoundEngine* engineMusic;

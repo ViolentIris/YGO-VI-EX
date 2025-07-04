@@ -10,6 +10,9 @@
 #include "deck_manager.h"
 #include "replay.h"
 #include "replay_mode.h"
+#ifdef _WIN32
+#include <Windns.h>
+#endif
 #include <thread>
 
 namespace ygo {
@@ -31,7 +34,8 @@ int DuelClient::last_select_hint = 0;
 unsigned char DuelClient::last_successful_msg[0x2000];
 size_t DuelClient::last_successful_msg_length = 0;
 wchar_t DuelClient::event_string[256];
-mt19937 DuelClient::rnd;
+std::mt19937 DuelClient::rnd;
+std::uniform_real_distribution<float> DuelClient::real_dist;
 
 bool DuelClient::is_refreshing = false;
 int DuelClient::match_kill = 0;
@@ -1897,7 +1901,7 @@ int DuelClient::ClientAnalyze(unsigned char* msg, unsigned int len) {
 			SetResponseI(-1);
 			mainGame->dField.ClearChainSelect();
 			if(mainGame->chkWaitChain->isChecked() && !mainGame->ignore_chain) {
-				mainGame->WaitFrameSignal(rnd.get_random_integer(20, 40));
+				mainGame->WaitFrameSignal(std::uniform_int_distribution<>(20, 40)(rnd));
 			}
 			DuelClient::SendResponse();
 			return true;
@@ -1996,9 +2000,10 @@ int DuelClient::ClientAnalyze(unsigned char* msg, unsigned int len) {
 			}
 			if(!pzone) {
 				if(mainGame->chkRandomPos->isChecked()) {
+					std::uniform_int_distribution<> dist(0, 6);
 					do {
-						respbuf[2] = rnd.get_random_integer(0, 6);
-					} while(!(filter & (1 << respbuf[2])));
+						respbuf[2] = dist(rnd);
+					} while(!(filter & (0x1U << respbuf[2])));
 				} else {
 					if (filter & 0x40) respbuf[2] = 6;
 					else if (filter & 0x20) respbuf[2] = 5;
@@ -2413,7 +2418,7 @@ int DuelClient::ClientAnalyze(unsigned char* msg, unsigned int len) {
 			soundManager.PlaySoundEffect(SOUND_SHUFFLE);
 			for (int i = 0; i < 5; ++i) {
 				for (auto cit = mainGame->dField.deck[player].begin(); cit != mainGame->dField.deck[player].end(); ++cit) {
-					(*cit)->dPos = irr::core::vector3df(rnd.rand() * 0.4f / rnd.rand_max - 0.2f, 0, 0);
+					(*cit)->dPos = irr::core::vector3df(real_dist(rnd) * 0.4f - 0.2f, 0, 0);
 					(*cit)->dRot = irr::core::vector3df(0, 0, 0);
 					(*cit)->is_moving = true;
 					(*cit)->aniFrame = 3;
@@ -2485,7 +2490,7 @@ int DuelClient::ClientAnalyze(unsigned char* msg, unsigned int len) {
 			for (int i = 0; i < 5; ++i) {
 				for (auto cit = mainGame->dField.extra[player].begin(); cit != mainGame->dField.extra[player].end(); ++cit) {
 					if(!((*cit)->position & POS_FACEUP)) {
-						(*cit)->dPos = irr::core::vector3df(rnd.rand() * 0.4f / rnd.rand_max - 0.2f, 0, 0);
+						(*cit)->dPos = irr::core::vector3df(real_dist(rnd) * 0.4f - 0.2f, 0, 0);
 						(*cit)->dRot = irr::core::vector3df(0, 0, 0);
 						(*cit)->is_moving = true;
 						(*cit)->aniFrame = 3;

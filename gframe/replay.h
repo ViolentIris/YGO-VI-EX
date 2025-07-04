@@ -3,6 +3,7 @@
 
 #include "config.h"
 #include <time.h>
+#include "deck_manager.h"
 
 namespace ygo {
 

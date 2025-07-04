@@ -1,5 +1,6 @@
 #include "config.h"
 #include "game.h"
+#include "myfilesystem.h"
 #include "image_manager.h"
 #include "data_manager.h"
 #include "deck_manager.h"
@@ -10,6 +11,7 @@
 #include "netserver.h"
 #include "single_mode.h"
 #include <sstream>
+#include <thread>
 #include <regex>
 
 unsigned short PRO_VERSION = 0x1361;
@@ -1533,7 +1535,7 @@ void Game::LoadConfig() {
 				gameConf.auto_save_replay = atoi(valbuf);
 		} else if(!strcmp(strbuf, "ask_mset")) {
 			gameConf.ask_mset = atoi(valbuf);
-#ifdef YGOPRO_USE_IRRKLANG
+#ifdef YGOPRO_USE_AUDIO
 			} else if(!strcmp(strbuf, "enable_sound")) {
 				gameConf.enable_sound = atoi(valbuf) > 0;
 			} else if(!strcmp(strbuf, "sound_volume")) {
@@ -1696,7 +1698,7 @@ void Game::SaveConfig() {
 	fprintf(fp, "window_width = %d\n", gameConf.window_width);
 	fprintf(fp, "window_height = %d\n", gameConf.window_height);
 	fprintf(fp, "resize_popup_menu = %d\n", gameConf.resize_popup_menu ? 1 : 0);
-#ifdef YGOPRO_USE_IRRKLANG
+#ifdef YGOPRO_USE_AUDIO
 	fprintf(fp, "enable_sound = %d\n", (chkEnableSound->isChecked() ? 1 : 0));
 	fprintf(fp, "enable_music = %d\n", (chkEnableMusic->isChecked() ? 1 : 0));
 	fprintf(fp, "#Volume of sound and music, between 0 and 100\n");

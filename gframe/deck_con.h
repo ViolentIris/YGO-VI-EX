@@ -4,6 +4,8 @@
 #include "config.h"
 #include <unordered_map>
 #include <vector>
+#include <random>
+#include <irrlicht.h>
 #include "client_card.h"
 #include "../ocgcore/mtrandom.h"
 
@@ -11,6 +13,7 @@ namespace ygo {
 
 class DeckBuilder: public irr::IEventReceiver {
 public:
+	DeckBuilder();
 	virtual bool OnEvent(const irr::SEvent& event);
 	void Initialize();
 	void Terminate();
@@ -65,7 +68,7 @@ public:
 	s32 prev_operation;
 	int prev_sel;
 	bool is_modified;
-	mt19937 rnd;
+	std::mt19937 rnd;
 
 	const std::unordered_map<int, int>* filterList;
 	std::vector<code_pointer> results;

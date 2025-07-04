@@ -1,4 +1,9 @@
 #include "sound_manager.h"
+#include "myfilesystem.h"
+#if defined(YGOPRO_USE_MINIAUDIO) && defined(YGOPRO_MINIAUDIO_SUPPORT_OPUS_VORBIS)
+#include <miniaudio_libopus.h>
+#include <miniaudio_libvorbis.h>
+#endif
 #ifdef IRRKLANG_STATIC
 #include "../ikpmp3/ikpMP3.h"
 #endif
@@ -8,11 +13,36 @@ namespace ygo {
 SoundManager soundManager;
 
 bool SoundManager::Init() {
-#ifdef YGOPRO_USE_IRRKLANG
+#ifdef YGOPRO_USE_AUDIO
 	bgm_scene = -1;
 	previous_bgm_scene = -1;
 	RefreshBGMList();
 	bgm_process = false;
+	rnd.seed(std::random_device()());
+#ifdef YGOPRO_USE_MINIAUDIO
+	engineConfig = ma_engine_config_init();
+#ifdef YGOPRO_MINIAUDIO_SUPPORT_OPUS_VORBIS
+	ma_decoding_backend_vtable* pCustomBackendVTables[] =
+	{
+		ma_decoding_backend_libvorbis,
+		ma_decoding_backend_libopus
+	};
+	resourceManagerConfig = ma_resource_manager_config_init();
+	resourceManagerConfig.ppCustomDecodingBackendVTables = pCustomBackendVTables;
+	resourceManagerConfig.customDecodingBackendCount = sizeof(pCustomBackendVTables) / sizeof(pCustomBackendVTables[0]);
+	resourceManagerConfig.pCustomDecodingBackendUserData = NULL;
+	if(ma_resource_manager_init(&resourceManagerConfig, &resourceManager) != MA_SUCCESS) {
+		return false;
+	}
+	engineConfig.pResourceManager = &resourceManager;
+#endif
+	if(ma_engine_init(&engineConfig, &engineSound) != MA_SUCCESS || ma_engine_init(&engineConfig, &engineMusic) != MA_SUCCESS) {
+		return false;
+	} else {
+		return true;
+	}
+#endif // YGOPRO_USE_MINIAUDIO
+#ifdef YGOPRO_USE_IRRKLANG
 	engineSound = irrklang::createIrrKlangDevice();
 	engineMusic = irrklang::createIrrKlangDevice();
 	if(!engineSound || !engineMusic) {
@@ -24,10 +54,11 @@ bool SoundManager::Init() {
 		return true;
 	}
 #endif // YGOPRO_USE_IRRKLANG
-	// TODO: Implement other sound engines
+#endif // YGOPRO_USE_AUDIO
 	return false;
 }
 void SoundManager::RefreshBGMList() {
+#ifdef YGOPRO_USE_AUDIO
 	RefershBGMDir(L"", BGM_DUEL);
 	RefershBGMDir(L"duel", BGM_DUEL);
 	RefershBGMDir(L"menu", BGM_MENU);
@@ -36,8 +67,10 @@ void SoundManager::RefreshBGMList() {
 	RefershBGMDir(L"disadvantage", BGM_DISADVANTAGE);
 	RefershBGMDir(L"win", BGM_WIN);
 	RefershBGMDir(L"lose", BGM_LOSE);
+#endif
 }
 void SoundManager::RefershBGMDir(std::wstring path, int scene) {
+#ifdef YGOPRO_USE_AUDIO
 	wchar_t soundT[256];
 	myswprintf(soundT, L"./sound/%ls/", mainGame->gameConf.soundtheme);
 	std::wstring search = soundT + path;
@@ -48,9 +81,10 @@ void SoundManager::RefershBGMDir(std::wstring path, int scene) {
 			BGMList[scene].push_back(filename);
 		}
 	});
+#endif // YGOPRO_USE_AUDIO
 }
 void SoundManager::PlaySoundEffect(int sound) {
-#ifdef YGOPRO_USE_IRRKLANG
+#ifdef YGOPRO_USE_AUDIO
 	if(!mainGame->chkEnableSound->isChecked())
 		return;
 	engineSound->setSoundVolume(mainGame->gameConf.sound_volume);
@@ -185,6 +219,7 @@ void SoundManager::PlaySoundEffect(int sound) {
 #endif
 }
 void SoundManager::PlayDialogSound(irr::gui::IGUIElement * element) {
+#ifdef YGOPRO_USE_AUDIO
 	if(element == mainGame->wMessage) {
 		PlaySoundEffect(SOUND_INFO);
 	} else if(element == mainGame->wQuery) {
@@ -206,9 +241,10 @@ void SoundManager::PlayDialogSound(irr::gui::IGUIElement * element) {
 	} else if(element == mainGame->wFTSelect) {
 		PlaySoundEffect(SOUND_QUESTION);
 	}
+#endif // YGOPRO_USE_AUDIO
 }
 void SoundManager::PlayMusic(char* song, bool loop) {
-#ifdef YGOPRO_USE_IRRKLANG
+#ifdef YGOPRO_USE_AUDIO
 	if(!mainGame->chkEnableMusic->isChecked())
 		return;
 	if(!engineMusic->isCurrentlyPlaying(song)) {
@@ -219,7 +255,7 @@ void SoundManager::PlayMusic(char* song, bool loop) {
 #endif
 }
 void SoundManager::PlayBGM(int scene) {
-#ifdef YGOPRO_USE_IRRKLANG
+#ifdef YGOPRO_USE_AUDIO
 	if(!mainGame->chkEnableMusic->isChecked() || bgm_process)
 		return;
 	if(!mainGame->chkMusicMode->isChecked())
@@ -240,7 +276,7 @@ void SoundManager::PlayBGM(int scene) {
 #endif
 }
 void SoundManager::PlayCustomBGM(char* BGMName) {
-#ifdef YGOPRO_USE_IRRKLANG
+#ifdef YGOPRO_USE_MINIAUDIO
 	if(!mainGame->chkEnableMusic->isChecked() || !mainGame->chkMusicMode->isChecked() || bgm_process)
 		return;
 	if(engineMusic->isCurrentlyPlaying(BGMName))
@@ -268,7 +304,7 @@ void SoundManager::StopBGM() {
 #endif
 }
 void SoundManager::StopSound() {
-#ifdef YGOPRO_USE_IRRKLANG
+#ifdef YGOPRO_USE_MINIAUDIO
 	engineSound->stopAllSounds();
 #endif
 }

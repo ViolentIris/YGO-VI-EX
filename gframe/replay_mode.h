@@ -1,5 +1,6 @@
 #ifndef REPLAY_MODE_H
 #define REPLAY_MODE_H
+#include <cstdint>
 #include <stdint.h>
 #include <vector>
 #include "config.h"
