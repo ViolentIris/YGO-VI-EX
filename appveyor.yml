@@ -4,52 +4,59 @@ image: Visual Studio 2019
 
 environment:
   access_token:
-    secure: DOOS4g7CT8ctOgiMr62K56qQ1FO6s2ESpqNZlhf8F4nomemvvwxV/pRj9nbKmtjR
+    secure: QRJ97uSkoKE5kasZbXJMkRXX9VZYA4jUIl1YgkqMT+KE2hvSGds459bxYHQvvwFP
 
 install:
   - git submodule update --init --recursive
 
   # environment and system dependency
-  - bash -c "curl --retry 5 --connect-timeout 30 --location --remote-header-name --remote-name https://github.com/premake/premake-core/releases/download/v5.0.0-beta1/premake-5.0.0-beta1-windows.zip ; exit 0"
-  - 7z x premake-5.0.0-beta1-windows.zip
+  - bash -c "curl --retry 5 --connect-timeout 30 --location --remote-header-name --remote-name https://github.com/premake/premake-core/releases/download/v5.0.0-beta7/premake-5.0.0-beta7-windows.zip ; exit 0"
+  - 7z x premake-5.0.0-beta7-windows.zip
   
   - bash -c "curl --retry 5 --connect-timeout 30 --location --remote-header-name --remote-name https://github.com/libevent/libevent/releases/download/release-2.0.22-stable/libevent-2.0.22-stable.tar.gz ; exit 0"
   - tar xf libevent-2.0.22-stable.tar.gz
   - move libevent-2.0.22-stable event
   - xcopy /E event\WIN32-Code event\include
   
-  - bash -c "curl --retry 5 --connect-timeout 30 --location --remote-header-name --remote-name http://downloads.sourceforge.net/freetype/freetype-2.11.0.tar.gz ; exit 0"
-  - tar xf freetype-2.11.0.tar.gz
-  - move freetype-2.11.0 freetype
+  - bash -c "curl --retry 5 --connect-timeout 30 --location --remote-header-name --remote-name https://downloads.sourceforge.net/freetype/freetype-2.13.3.tar.gz ; exit 0"
+  - tar xf freetype-2.13.3.tar.gz
+  - move freetype-2.13.3 freetype
   
-  - bash -c "curl --retry 5 --connect-timeout 30 --location --remote-header-name --remote-name http://downloads.sourceforge.net/irrlicht/irrlicht-1.8.5.zip ; exit 0"
-  - 7z x irrlicht-1.8.5.zip
-  - move irrlicht-1.8.5 irrlicht
+  - bash -c "curl --retry 5 --connect-timeout 30 --location --remote-header-name --remote-name https://www.lua.org/ftp/lua-5.4.8.tar.gz ; exit 0"
+  - tar xf lua-5.4.8.tar.gz
+  - move lua-5.4.8 lua
   
-  - bash -c "curl --retry 5 --connect-timeout 30 --location --remote-header-name --remote-name https://www.lua.org/ftp/lua-5.4.3.tar.gz ; exit 0"
-  - tar xf lua-5.4.3.tar.gz
-  - move lua-5.4.3 lua
+  - bash -c "curl --retry 5 --connect-timeout 30 --location --remote-header-name --remote-name https://www.sqlite.org/2025/sqlite-amalgamation-3500100.zip ; exit 0"
+  - 7z x sqlite-amalgamation-3500100.zip
+  - move sqlite-amalgamation-3500100 sqlite3
+
+  - git clone --depth=1 --branch test https://github.com/mercury233/irrlicht
   
-  - bash -c "curl --retry 5 --connect-timeout 30 --location --remote-header-name --remote-name https://www.sqlite.org/2021/sqlite-amalgamation-3370000.zip ; exit 0"
-  - 7z x sqlite-amalgamation-3370000.zip
-  - move sqlite-amalgamation-3370000 sqlite3
-  
-  - bash -c "curl --retry 5 --connect-timeout 30 --location --remote-header-name --remote-name http://www.ambiera.at/downloads/irrKlang-32bit-1.5.0.zip ; exit 0"
-  - 7z x irrKlang-32bit-1.5.0.zip
-  - move irrKlang-1.5.0 irrklang
-  - move irrklang\plugins\ikpMP3 ikpmp3
+  - git clone --depth=1 https://github.com/mercury233/miniaudio
+  - xcopy /Y miniaudio\extras\miniaudio_split\miniaudio.* .
+
+  - bash -c "curl --retry 5 --connect-timeout 30 --location --remote-header-name --remote-name https://github.com/xiph/ogg/releases/download/v1.3.5/libogg-1.3.5.tar.gz ; exit 0"
+  - tar xf libogg-1.3.5.tar.gz
+  - move libogg-1.3.5 miniaudio/external/ogg
+
+  - bash -c "curl --retry 5 --connect-timeout 30 --location --remote-header-name --remote-name https://github.com/xiph/opus/releases/download/v1.5.2/opus-1.5.2.tar.gz ; exit 0"
+  - tar xf opus-1.5.2.tar.gz
+  - move opus-1.5.2 miniaudio/external/opus
+
+  - bash -c "curl --retry 5 --connect-timeout 30 --location --remote-header-name --remote-name https://github.com/xiph/opusfile/releases/download/v0.12/opusfile-0.12.tar.gz ; exit 0"
+  - tar xf opusfile-0.12.tar.gz
+  - move opusfile-0.12 miniaudio/external/opusfile
+
+  - bash -c "curl --retry 5 --connect-timeout 30 --location --remote-header-name --remote-name https://github.com/xiph/vorbis/releases/download/v1.3.7/libvorbis-1.3.7.tar.gz ; exit 0"
+  - tar xf libvorbis-1.3.7.tar.gz
+  - move libvorbis-1.3.7 miniaudio/external/vorbis
 
   # let premake happy
-  - cp -rf premake/* .
-  
-  # patch irrlicht & ikpmp3
-  - cd irrlicht
-  - patch -p1 < irrlicht.patch
-  - cd ..
-  - patch -p0 < ikpmp3\ikpmp3.patch
+  - xcopy /E premake\* .
+  - xcopy /E resource\* .
 
   # premake
-  - premake5 vs2019
+  - premake5 vs2019 --audio-lib=miniaudio --winxp-support
   
 configuration: Release
 
@@ -58,7 +65,7 @@ build:
     parallel: true
 
 after_build:
-  - mv bin\release\ygopro.exe .
+  - mv bin\release\x86\YGOPro.exe YGO-VI-EX.exe
   #- mv irrklang\bin\win32-visualStudio\irrKlang.dll .
   #- mv irrklang\bin\win32-visualStudio\ikpMP3.dll .
   #- mkdir replay
@@ -72,16 +79,18 @@ after_build:
 test: off
 
 artifacts:
-  - path: ygopro.exe
-    name: ygopro
+  - path: YGO-VI-EX.exe
+    name: YGO-VI-EX
   #- path: ygopro-ver.233.7z
   # name: ygopro-ver.233
 
 cache:
-  - premake-5.0.0-beta1-windows.zip
+  - premake-5.0.0-beta7-windows.zip
   - libevent-2.0.22-stable.tar.gz
-  - freetype-2.11.0.tar.gz
-  - irrlicht-1.8.5.zip
-  - lua-5.4.3.tar.gz
-  - sqlite-amalgamation-3370000.zip
-  - irrKlang-32bit-1.5.0.zip
+  - freetype-2.13.3.tar.gz
+  - lua-5.4.8.tar.gz
+  - sqlite-amalgamation-3500100.zip
+  - libogg-1.3.5.tar.gz
+  - opus-1.5.2.tar.gz
+  - opusfile-0.12.tar.gz
+  - libvorbis-1.3.7.tar.gz
