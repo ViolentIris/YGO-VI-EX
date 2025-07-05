@@ -990,7 +990,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 					myswprintf(version_info, L"version 0x%X\n", rh.version);
 					repinfo.append(version_info);
 				}
-				std::wcsftime(infobuf, sizeof infobuf / sizeof infobuf[0], L"%Y/%m/%d %H:%M:%S\n", std::localtime(&curtime));
+				wcsftime(infobuf, sizeof infobuf / sizeof infobuf[0], L"%Y/%m/%d %H:%M:%S\n", localtime(&curtime));
 				repinfo.append(infobuf);
 				if (rh.flag & REPLAY_SINGLE_MODE) {
 					wchar_t path[256]{};

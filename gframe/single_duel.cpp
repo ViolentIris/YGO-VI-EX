@@ -301,7 +301,6 @@ void SingleDuel::UpdateDeck(DuelPlayer* dp, unsigned char* pdata, int len) {
 		return;
 	}
 	int deck_list[SIZE_NETWORK_BUFFER / sizeof(int32_t)];
-	std::memcpy(deck_list, deckbuf, deck_size);
 	if(duel_count == 0) {
 		deck_error[dp->type] = deckManager.LoadDeck(pdeck[dp->type], deck_list, mainc, sidec);
 	} else {
