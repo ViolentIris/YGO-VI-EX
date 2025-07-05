@@ -15,10 +15,22 @@ namespace ygo {
 class SoundManager {
 private:
 	std::vector<std::wstring> BGMList[9];
-	int bgm_scene;
-	int previous_bgm_scene;
-	bool bgm_process;
+	int bgm_scene{ -1 };
+	int previous_bgm_scene{ -1 };
+	bool bgm_process { false };
 	std::mt19937 rnd;
+#ifdef YGOPRO_USE_MINIAUDIO
+	ma_engine_config engineConfig;
+#ifdef YGOPRO_MINIAUDIO_SUPPORT_OPUS_VORBIS
+	ma_resource_manager_config resourceManagerConfig;
+	ma_resource_manager resourceManager;
+#endif
+	ma_engine engineSound;
+	ma_engine engineMusic;
+	ma_sound soundBGM;
+	wchar_t currentPlayingMusic[1024]{};
+	ma_sound* playingSoundEffect[10]{};
+#endif
 #ifdef YGOPRO_USE_IRRKLANG
 	irrklang::ISoundEngine* engineSound;
 	irrklang::ISoundEngine* engineMusic;
@@ -29,12 +41,14 @@ private:
 public:
 	bool Init();
 	void RefreshBGMList();
+	void PlaySound(wchar_t* sound);
 	void PlaySoundEffect(int sound);
 	void PlayDialogSound(irr::gui::IGUIElement * element);
-	void PlayMusic(char* song, bool loop);
+	bool IsPlayingMusic(wchar_t* music = 0);
+	void PlayMusic(wchar_t* music, bool loop);
 	void PlayBGM(int scene);
-	void PlayCustomBGM(char* BGMName);
-	void PlayCustomSound(char* SoundName);	
+	void PlayCustomBGM(wchar_t* BGMName);
+	void PlayCustomSound(wchar_t* SoundName);	
 	void StopBGM();
 	void StopSound();
 	void SetSoundVolume(double volume);

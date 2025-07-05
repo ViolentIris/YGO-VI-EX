@@ -1,0 +1,27 @@
+1 ICON "YGO-VI30.ico"
+
+1 VERSIONINFO
+FILEVERSION 1, 1, 9, 1
+PRODUCTVERSION 1, 1, 9, 1
+FILEOS 0x4
+FILETYPE 0x1
+
+BEGIN
+BLOCK "StringFileInfo"
+BEGIN
+BLOCK "080404b0"
+BEGIN
+VALUE "FileDescription", "YGO-VI-EX"
+VALUE "InternalName", "YGO-VI-EX"
+VALUE "LegalCopyright", "Copyright (C) Fluorohydride"
+VALUE "OriginalFilename", "YGO-VI-EX"
+VALUE "ProductName", "YGO-VI-EX"
+VALUE "FileVersion", "1.1.9.1"
+VALUE "ProductVersion", "1.1.9.1"
+END
+END
+BLOCK "VarFileInfo"
+BEGIN
+VALUE "Translation", 0x804, 1200
+END
+END
