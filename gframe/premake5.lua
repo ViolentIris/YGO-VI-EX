@@ -86,8 +86,6 @@ project "YGOPro"
                 filter {}
             end
         end
-    filter "not system:windows"
-        links { "resolv" }
     filter "not action:vs*"
         cppdialect "C++14"
 
