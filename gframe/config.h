@@ -106,7 +106,14 @@ inline FILE* myfopen(const char* filename, const char* mode) {
 #endif
 
 #include <irrlicht.h>
+using namespace irr;
+using namespace core;
+using namespace scene;
+using namespace video;
+using namespace io;
+using namespace gui;
 
+typedef int BOOL;
 extern unsigned short PRO_VERSION;
 extern unsigned int enable_log;
 extern bool exit_on_return;
