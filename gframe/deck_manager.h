@@ -31,6 +31,12 @@ struct Deck {
 	}
 };
 
+struct DeckArray {
+	std::vector<uint32_t> main;
+	std::vector<uint32_t> extra;
+	std::vector<uint32_t> side;
+};
+
 class DeckManager {
 public:
 	Deck current_deck;
