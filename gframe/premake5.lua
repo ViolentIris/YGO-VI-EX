@@ -6,7 +6,7 @@ project "YGOPro"
     rtti "Off"
     openmp "On"
 
-    files { "*.cpp", "*.h" }
+    files { "*.cpp", "*.h", "CGUISkinSystem/*.cpp", "CGUISkinSystem/*.h", "CXMLRegistry/*.cpp", "CXMLRegistry/*.h" }
     includedirs { "../ocgcore" }
     links { "ocgcore", "clzma", "cspmemvfs", LUA_LIB_NAME, "sqlite3", "irrlicht", "freetype", "event" }
 
@@ -74,7 +74,7 @@ project "YGOPro"
         entrypoint "mainCRTStartup"
         defines { "_IRR_WCHAR_FILESYSTEM" }
         files "ygopro.rc"
-        links { "ws2_32", "iphlpapi" }
+        links { "ws2_32", "Dnsapi", "iphlpapi" }
         if USE_AUDIO and AUDIO_LIB == "irrklang" then
             links { "irrKlang" }
             if IRRKLANG_PRO then
@@ -86,6 +86,8 @@ project "YGOPro"
                 filter {}
             end
         end
+    filter "not system:windows"
+        links { "resolv" }
     filter "not action:vs*"
         cppdialect "C++14"
 
@@ -105,7 +107,7 @@ project "YGOPro"
 
     filter "system:linux"
         links { "GL", "X11", "Xxf86vm", "dl", "pthread" }
-        linkoptions { "-fopenmp" }
+        linkoptions { "-fopenmp", "-static-libstdc++", "-static-libgcc" }
         if USE_AUDIO and AUDIO_LIB == "irrklang" then
             links { "IrrKlang" }
             linkoptions{ IRRKLANG_LINK_RPATH }
