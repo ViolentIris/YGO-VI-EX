@@ -2,7 +2,6 @@ project "sqlite3"
     kind "StaticLib"
 
     files { "sqlite3.c", "sqlite3.h" }
-if not SERVER_PRO3_SUPPORT then
     defines {
         "SQLITE_DQS=0",
         "SQLITE_DEFAULT_MEMSTATUS=0",
@@ -12,4 +11,3 @@ if not SERVER_PRO3_SUPPORT then
         "SQLITE_OMIT_PROGRESS_CALLBACK",
         "SQLITE_OMIT_SHARED_CACHE",
     }
-end
