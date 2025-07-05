@@ -127,130 +127,130 @@ void SoundManager::PlaySoundEffect(int sound) {
 #ifdef YGOPRO_USE_AUDIO
 	if(!mainGame->chkEnableSound->isChecked())
 		return;
-	engineSound->setSoundVolume(mainGame->gameConf.sound_volume);
+	char soundName[32];
 	switch(sound) {
 	case SOUND_SUMMON: {
-		engineSound->play2D("./sound/summon.wav");
+		strcpy(soundName, "summon");
 		break;
 	}
 	case SOUND_SPECIAL_SUMMON: {
-		engineSound->play2D("./sound/specialsummon.wav");
+		strcpy(soundName, "specialsummon");
 		break;
 	}
 	case SOUND_ACTIVATE: {
-		engineSound->play2D("./sound/activate.wav");
+		strcpy(soundName, "activate");
 		break;
 	}
 	case SOUND_SET: {
-		engineSound->play2D("./sound/set.wav");
+		strcpy(soundName, "set");
 		break;
 	}
 	case SOUND_FILP: {
-		engineSound->play2D("./sound/flip.wav");
+		strcpy(soundName, "flip");
 		break;
 	}
 	case SOUND_REVEAL: {
-		engineSound->play2D("./sound/reveal.wav");
+		strcpy(soundName, "reveal");
 		break;
 	}
 	case SOUND_EQUIP: {
-		engineSound->play2D("./sound/equip.wav");
+		strcpy(soundName, "equip");
 		break;
 	}
 	case SOUND_DESTROYED: {
-		engineSound->play2D("./sound/destroyed.wav");
+		strcpy(soundName, "destroyed");
 		break;
 	}
 	case SOUND_BANISHED: {
-		engineSound->play2D("./sound/banished.wav");
+		strcpy(soundName, "banished");
 		break;
 	}
 	case SOUND_TOKEN: {
-		engineSound->play2D("./sound/token.wav");
+		strcpy(soundName, "token");
 		break;
 	}
 	case SOUND_NEGATE: {
-		engineSound->play2D("./sound/negate.wav");
+		strcpy(soundName, "negate");
 		break;
 	}
 	case SOUND_ATTACK: {
-		engineSound->play2D("./sound/attack.wav");
+		strcpy(soundName, "attack");
 		break;
 	}
 	case SOUND_DIRECT_ATTACK: {
-		engineSound->play2D("./sound/directattack.wav");
+		strcpy(soundName, "directattack");
 		break;
 	}
 	case SOUND_DRAW: {
-		engineSound->play2D("./sound/draw.wav");
+		strcpy(soundName, "draw");
 		break;
 	}
 	case SOUND_SHUFFLE: {
-		engineSound->play2D("./sound/shuffle.wav");
+		strcpy(soundName, "shuffle");
 		break;
 	}
 	case SOUND_DAMAGE: {
-		engineSound->play2D("./sound/damage.wav");
+		strcpy(soundName, "damage");
 		break;
 	}
 	case SOUND_RECOVER: {
-		engineSound->play2D("./sound/gainlp.wav");
+		strcpy(soundName, "gainlp");
 		break;
 	}
 	case SOUND_COUNTER_ADD: {
-		engineSound->play2D("./sound/addcounter.wav");
+		strcpy(soundName, "addcounter");
 		break;
 	}
 	case SOUND_COUNTER_REMOVE: {
-		engineSound->play2D("./sound/removecounter.wav");
+		strcpy(soundName, "removecounter");
 		break;
 	}
 	case SOUND_COIN: {
-		engineSound->play2D("./sound/coinflip.wav");
+		strcpy(soundName, "coinflip");
 		break;
 	}
 	case SOUND_DICE: {
-		engineSound->play2D("./sound/diceroll.wav");
+		strcpy(soundName, "diceroll");
 		break;
 	}
 	case SOUND_NEXT_TURN: {
-		engineSound->play2D("./sound/nextturn.wav");
+		strcpy(soundName, "nextturn");
 		break;
 	}
 	case SOUND_PHASE: {
-		engineSound->play2D("./sound/phase.wav");
+		strcpy(soundName, "phase");
 		break;
 	}
 	case SOUND_MENU: {
-		engineSound->play2D("./sound/menu.wav");
+		strcpy(soundName, "menu");
 		break;
 	}
 	case SOUND_BUTTON: {
-		engineSound->play2D("./sound/button.wav");
+		strcpy(soundName, "button");
 		break;
 	}
 	case SOUND_INFO: {
-		engineSound->play2D("./sound/info.wav");
+		strcpy(soundName, "info");
 		break;
 	}
 	case SOUND_QUESTION: {
-		engineSound->play2D("./sound/question.wav");
+		strcpy(soundName, "question");
 		break;
 	}
 	case SOUND_CARD_PICK: {
-		engineSound->play2D("./sound/cardpick.wav");
+		strcpy(soundName, "cardpick");
 		break;
 	}
 	case SOUND_CARD_DROP: {
-		engineSound->play2D("./sound/carddrop.wav");
+		strcpy(soundName, "carddrop");
 		break;
 	}
 	case SOUND_PLAYER_ENTER: {
-		engineSound->play2D("./sound/playerenter.wav");
+		strcpy(soundName, "playerenter");
 		break;
 	}
 	case SOUND_CHAT: {
-		engineSound->play2D("./sound/chatmessage.wav");
+		strcpy(soundName, "chatmessage");
 		break;
 	}
 	default:
