@@ -1,13 +1,9 @@
 #ifndef REPLAY_MODE_H
 #define REPLAY_MODE_H
+
 #include <cstdint>
-#include <stdint.h>
 #include <vector>
-#include "config.h"
-#include "data_manager.h"
-#include "deck_manager.h"
 #include "replay.h"
-#include "../ocgcore/mtrandom.h"
 
 namespace ygo {
 
@@ -29,7 +25,6 @@ private:
 public:
 	static Replay cur_replay;
 	
-public:
 	static bool StartReplay(int skipturn);
 	static void StopReplay(bool is_exiting = false);
 	static void SwapField();

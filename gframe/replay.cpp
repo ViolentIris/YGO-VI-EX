@@ -1,6 +1,4 @@
 #include "replay.h"
-#include "../ocgcore/ocgapi.h"
-#include "../ocgcore/common.h"
 #include "myfilesystem.h"
 #include "network.h"
 #include "lzma/LzmaLib.h"
@@ -26,8 +24,8 @@ void Replay::BeginRecord() {
 		return;
 #else
 	if(is_recording)
-		fclose(fp);
-	fp = fopen("./replay/_LastReplay.yrp", "wb");
+		std::fclose(fp);
+	fp = myfopen("./replay/_LastReplay.yrp", "wb");
 	if(!fp)
 		return;
 #endif
@@ -40,8 +38,8 @@ void Replay::WriteHeader(ExtendedReplayHeader& header) {
 	DWORD size;
 	WriteFile(recording_fp, &header, sizeof(header), &size, nullptr);
 #else
-	fwrite(&header, sizeof(header), 1, fp);
-	fflush(fp);
+	std::fwrite(&header, sizeof(header), 1, fp);
+	std::fflush(fp);
 #endif
 }
 void Replay::WriteData(const void* data, size_t length, bool flush) {
@@ -55,9 +53,9 @@ void Replay::WriteData(const void* data, size_t length, bool flush) {
 	DWORD size;
 	WriteFile(recording_fp, data, length, &size, nullptr);
 #else
-	fwrite(data, length, 1, fp);
+	std::fwrite(data, length, 1, fp);
 	if(flush)
-		fflush(fp);
+		std::fflush(fp);
 #endif
 }
 void Replay::WriteInt32(int32_t data, bool flush) {
@@ -68,7 +66,7 @@ void Replay::Flush() {
 		return;
 #ifdef _WIN32
 #else
-	fflush(fp);
+	std::fflush(fp);
 #endif
 }
 void Replay::EndRecord() {
@@ -77,7 +75,7 @@ void Replay::EndRecord() {
 #ifdef _WIN32
 	CloseHandle(recording_fp);
 #else
-	fclose(fp);
+	std::fclose(fp);
 #endif
 	pheader.base.datasize = replay_size;
 	pheader.base.flag |= REPLAY_COMPRESSED;
@@ -95,19 +93,19 @@ void Replay::SaveReplay(const wchar_t* name) {
 		return;
 	wchar_t fname[256];
 	myswprintf(fname, L"./replay/%ls.yrp", name);
-	FILE* rfp = myfopen(fname, "wb");
+	FILE* rfp = mywfopen(fname, "wb");
 	if(!rfp)
 		return;
-	fwrite(&pheader, sizeof pheader, 1, rfp);
-	fwrite(comp_data, comp_size, 1, rfp);
-	fclose(rfp);
+	std::fwrite(&pheader, sizeof pheader, 1, rfp);
+	std::fwrite(comp_data, comp_size, 1, rfp);
+	std::fclose(rfp);
 }
 bool Replay::OpenReplay(const wchar_t* name) {
-	FILE* rfp = myfopen(name, "rb");
+	FILE* rfp = mywfopen(name, "rb");
 	if(!rfp) {
 		wchar_t fname[256];
 		myswprintf(fname, L"./replay/%ls", name);
-		rfp = myfopen(fname, "rb");
+		rfp = mywfopen(fname, "rb");
 	}
 	if(!rfp)
 		return false;
@@ -127,12 +125,12 @@ bool Replay::OpenReplay(const wchar_t* name) {
 		return false;
 	}
 	if (pheader.base.id == REPLAY_ID_YRP2 && std::fread(reinterpret_cast<unsigned char*>(&pheader) + sizeof pheader.base, sizeof pheader - sizeof pheader.base, 1, rfp) < 1) {
-		fclose(rfp);
+		std::fclose(rfp);
 		return false;
 	}
 	if(pheader.base.flag & REPLAY_COMPRESSED) {
-		comp_size = fread(comp_data, 1, MAX_COMP_SIZE, rfp);
-		fclose(rfp);
+		comp_size = std::fread(comp_data, 1, MAX_COMP_SIZE, rfp);
+		std::fclose(rfp);
 		if (pheader.base.datasize > MAX_REPLAY_SIZE)
 			return false;
 		replay_size = pheader.base.datasize;
@@ -143,8 +141,8 @@ bool Replay::OpenReplay(const wchar_t* name) {
 			return false;
 		}
 	} else {
-		replay_size = fread(replay_data, 1, MAX_REPLAY_SIZE, rfp);
-		fclose(rfp);
+		replay_size = std::fread(replay_data, 1, MAX_REPLAY_SIZE, rfp);
+		std::fclose(rfp);
 		comp_size = 0;
 	}
 	is_replaying = true;
@@ -157,29 +155,10 @@ bool Replay::OpenReplay(const wchar_t* name) {
 	data_position = 0;
 	return true;
 }
-bool Replay::CheckReplay(const wchar_t* name) {
-	wchar_t fname[256];
-	myswprintf(fname, L"./replay/%ls", name);
-	FILE* rfp = myfopen(fname, "rb");
-	if(!rfp)
-		return false;
-	ReplayHeader rheader;
-	size_t count = fread(&rheader, sizeof rheader, 1, rfp);
-	fclose(rfp);
-	return count == 1 && rheader.id == 0x31707279 && rheader.version >= 0x12d0u && (rheader.version < 0x1353u || (rheader.flag & REPLAY_UNIFORM));
-}
 bool Replay::DeleteReplay(const wchar_t* name) {
 	wchar_t fname[256];
 	myswprintf(fname, L"./replay/%ls", name);
-#ifdef _WIN32
-	BOOL result = DeleteFileW(fname);
-	return !!result;
-#else
-	char filefn[256];
-	BufferIO::EncodeUTF8(fname, filefn);
-	int result = unlink(filefn);
-	return result == 0;
-#endif
+	return FileSystem::RemoveFile(fname);
 }
 bool Replay::RenameReplay(const wchar_t* oldname, const wchar_t* newname) {
 	wchar_t oldfname[256];
@@ -202,10 +181,6 @@ bool Replay::ReadNextResponse(unsigned char resp[]) {
 	unsigned char len{};
 	if (!ReadData(&len, sizeof len))
 		return false;
-	if (len > SIZE_RETURN_VALUE) {
-		is_replaying = false;
-		return false;
-	}
 	if (!ReadData(resp, len))
 		return false;
 	return true;

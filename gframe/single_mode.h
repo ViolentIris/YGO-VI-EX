@@ -1,10 +1,9 @@
 #ifndef SINGLE_MODE_H
 #define SINGLE_MODE_H
 
-#include <stdint.h>
+#include <cstdint>
 #include <vector>
 #include "replay.h"
-#include <cstdint>
 
 namespace ygo {
 
