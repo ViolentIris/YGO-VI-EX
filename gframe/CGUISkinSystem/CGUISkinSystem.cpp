@@ -4,9 +4,7 @@ CGUISkinSystem::CGUISkinSystem(core::string<wchar_t> path,IrrlichtDevice *dev) {
 	device = dev;
 	skinsPath = path;
 	fs = dev->getFileSystem();	
-	this->loadSkinList();
-	
-	
+	this->loadSkinList();	
 }
 core::array<core::stringw> CGUISkinSystem::listSkins() {
 	return skinsList;
@@ -277,12 +275,8 @@ bool CGUISkinSystem::applySkin(const wchar_t *skinname) {
 	delete registry;
 	registry = NULL;
 	fs->changeWorkingDirectoryTo(oldpath);
-	
 	return true;
 }
 CGUISkinSystem::~CGUISkinSystem() {
 	skinsList.clear();
-	
-
-	
 }

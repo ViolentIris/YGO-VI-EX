@@ -40,7 +40,7 @@ public:
 	// dev = Irrlicht device
 	CGUISkinSystem(core::string<wchar_t> path,IrrlichtDevice *dev);
 	~CGUISkinSystem();
-	core::array<core::stringw> listSkins();
+	core::array<core::stringw>  listSkins();
 	bool loadSkinList();
 	bool applySkin(const wchar_t *skinname);
 	gui::CGUIProgressBar *addProgressBar(gui::IGUIElement *parent,core::rect<s32> rect,bool bindColorsToSkin=true);

@@ -2,6 +2,7 @@
 #define CLIENT_FIELD_H
 
 #include "config.h"
+#include "../ocgcore/mtrandom.h"
 #include <random>
 #include <vector>
 #include <set>
@@ -34,7 +35,6 @@ public:
 	std::vector<ClientCard*> extra[2];
 	std::vector<ClientCard*> limbo_temp;
 	std::set<ClientCard*> overlay_cards;
-
 	std::vector<ClientCard*> summonable_cards;
 	std::vector<ClientCard*> spsummonable_cards;
 	std::vector<ClientCard*> msetable_cards;
@@ -47,7 +47,7 @@ public:
 	std::vector<int> select_options;
 	std::vector<int> select_options_index;
 	std::vector<ChainInfo> chains;
-	int extra_p_count[2]{};
+	int extra_p_count[2]{ 0 };
 
 	size_t selected_option{ 0 };
 	ClientCard* attacker{ nullptr };
@@ -58,30 +58,27 @@ public:
 	int select_min{ 0 };
 	int select_max{ 0 };
 	int must_select_count{ 0 };
-	int select_curval_l{ 0 };
-	int select_curval_h{ 0 };
 	int select_sumval{ 0 };
 	int select_mode{ 0 };
-	int select_hint{0};
-	bool select_cancelable{false};
+	bool select_cancelable{ false };
 	bool select_panalmode{ false };
 	bool select_ready{ false };
 	int announce_count{ 0 };
 	int select_counter_count{ 0 };
 	int select_counter_type{ 0 };
-	int current_mset_param{ 0 };
-	std::vector<ClientCard*> selectable_cards;
+	int current_mset_param;
+	std::vector<ClientCard *> selectable_cards;
 	std::vector<ClientCard*> selected_cards;
 	std::set<ClientCard*> selectsum_cards;
 	std::vector<ClientCard*> selectsum_all;
-	std::vector<unsigned int> declare_opcodes;
+	std::vector<int> declare_opcodes;
 	std::vector<ClientCard*> display_cards;
 	std::vector<int> sort_list;
 	std::map<int, int> player_desc_hints[2];
-	bool grave_act[2]{ false };
-	bool remove_act[2]{ false };
-	bool deck_act[2]{ false };
-	bool extra_act[2]{ false };
+	bool grave_act{ false };
+	bool remove_act{ false };
+	bool deck_act{ false };
+	bool extra_act{ false };
 	bool pzone_act[2]{ false };
 	bool conti_act{ false };
 	bool chain_forced{ false };
@@ -98,7 +95,6 @@ public:
 	~ClientField();
 	void Clear();
 	void Initial(int player, int deckc, int extrac, int sidec = 0);
-	void ResetSequence(std::vector<ClientCard*>& list, bool reset_height);
 	ClientCard* GetCard(int controler, int location, int sequence, int sub_seq = 0);
 	void AddCard(ClientCard* pcard, int controler, int location, int sequence);
 	ClientCard* RemoveCard(int controler, int location, int sequence);
@@ -121,7 +117,6 @@ public:
 	bool ShowSelectSum(bool panelmode);
 	bool CheckSelectSum();
 	bool CheckSelectTribute();
-	void get_sum_params(unsigned int opParam, int& op1, int& op2);
 	bool check_min(const std::set<ClientCard*>& left, std::set<ClientCard*>::const_iterator index, int min, int max);
 	bool check_sel_sum_s(const std::set<ClientCard*>& left, int index, int acc);
 	void check_sel_sum_t(const std::set<ClientCard*>& left, int acc);
@@ -131,6 +126,7 @@ public:
 	bool check_sum_trib(std::set<ClientCard*>::const_iterator index, std::set<ClientCard*>::const_iterator end, int acc);
 
 	void UpdateDeclarableList();
+
 	void RefreshCardCountDisplay();
 
 	irr::gui::IGUIElement* panel{ nullptr };
@@ -149,8 +145,8 @@ public:
 	ClientCard* menu_card{ nullptr };
 	int list_command{ 0 };
 
-	bool OnEvent(const irr::SEvent& event) override;
-	bool OnCommonEvent(const irr::SEvent& event);
+	virtual bool OnEvent(const irr::SEvent& event);
+	virtual bool OnCommonEvent(const irr::SEvent& event);
 	void GetHoverField(int x, int y);
 	void ShowMenu(int flag, int x, int y);
 	void HideMenu();

@@ -13,9 +13,9 @@
 namespace ygo {
 
 void UpdateDeck() {
-	BufferIO::CopyWideString(mainGame->cbCategorySelect->getText(), mainGame->gameConf.lastcategory);
-	BufferIO::CopyWideString(mainGame->cbDeckSelect->getText(), mainGame->gameConf.lastdeck);
-	unsigned char deckbuf[1024]{};
+	BufferIO::CopyWStr(mainGame->cbDeckSelect->getItem(mainGame->cbDeckSelect->getSelected()),
+		mainGame->gameConf.lastdeck, 64);
+	unsigned char deckbuf[1024];
 	auto pdeck = deckbuf;
 	BufferIO::WriteInt32(pdeck, deckManager.current_deck.main.size() + deckManager.current_deck.extra.size());
 	BufferIO::WriteInt32(pdeck, deckManager.current_deck.side.size());
@@ -33,7 +33,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 	switch(event.EventType) {
 	case irr::EET_GUI_EVENT: {
 		irr::gui::IGUIElement* caller = event.GUIEvent.Caller;
-		irr::s32 id = caller->getID();
+		s32 id = caller->getID();
 		if(mainGame->wQuery->isVisible() && id != BUTTON_YES && id != BUTTON_NO) {
 			mainGame->wQuery->getParent()->bringToFront(mainGame->wQuery);
 			break;
@@ -42,7 +42,23 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 			mainGame->wReplaySave->getParent()->bringToFront(mainGame->wReplaySave);
 			break;
 		}
+		if(mainGame->wSC->isVisible() && id != BUTTON_233 && id != BUTTON_23333 && id != BUTTON_888 && id != BUTTON_7210 && id != BUTTON_765 && id != BUTTON_222 && id != BUTTON_JP && id != BUTTON_NK && id != BUTTON_SP && id != BUTTON_SC_EXIT)
+			break;
+		if(mainGame->wRM->isVisible() && id != BUTTON_RM_EXIT && id != BUTTON_RM1 && id != BUTTON_RM2 && id != BUTTON_RM3 && id != BUTTON_RM4 && id != BUTTON_RM5 && id != BUTTON_RM6 && id != BUTTON_RM7 && id != BUTTON_RM8 && id != BUTTON_RM9 && id != BUTTON_RM10 && id != BUTTON_RM11 && id != BUTTON_RM12 && id != BUTTON_RM13 && id != BUTTON_RM14 && id != BUTTON_RMCM && id != BUTTON_RMWN && id != BUTTON_RMAI && id != BUTTON_RMA)
+			break;
+		if(mainGame->wDV->isVisible() && id != BUTTON_DV_CLOSE)
+			break;
 		switch(event.GUIEvent.EventType) {
+		case irr::gui::EGET_ELEMENT_HOVERED: {
+			if(event.GUIEvent.Caller->getType() == EGUIET_EDIT_BOX)
+				mainGame->SetCursor(event.GUIEvent.Caller->isEnabled() ? ECI_IBEAM : ECI_NORMAL);
+			break;
+		}
+		case irr::gui::EGET_ELEMENT_LEFT: {
+			if(event.GUIEvent.Caller->getType() == EGUIET_EDIT_BOX)
+				mainGame->SetCursor(ECI_NORMAL);
+			break;
+		}
 		case irr::gui::EGET_BUTTON_CLICKED: {
 			if(id < 110)
 				soundManager.PlaySoundEffect(SOUND_MENU);
@@ -53,36 +69,527 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				mainGame->device->closeDevice();
 				break;
 			}
+			case BUTTON_OTHER: {
+				mainGame->Game::ReLoadExpansions();
+				mainGame->btnSEM->setEnabled(true);
+				mainGame->btnTakeout2->setEnabled(true);
+				mainGame->btnLantern->setEnabled(true);
+				mainGame->btnVI->setEnabled(true);
+				mainGame->btnFOX->setEnabled(true);
+				mainGame->btnTakeout1->setEnabled(true);
+				mainGame->btnWBO->setEnabled(true);
+				mainGame->btnDC->setEnabled(true);
+				mainGame->btnDLD->setEnabled(true);
+				mainGame->btnTG->setEnabled(true);
+				mainGame->btnYST->setEnabled(true);
+				mainGame->btnMJ->setEnabled(true);
+				mainGame->btnDV->setEnabled(true);
+				mainGame->btnOtherExit->setEnabled(true);
+				mainGame->HideElement(mainGame->wMainMenu);
+				mainGame->ShowElement(mainGame->wOther);
+				break;
+			}
+			case BUTTON_SEM: {
+                system("powershell iwr -Uri https://cdn02.moecube.com:444/ygopro-super-pre/archive/ygopro-super-pre.ypk -Outfile %USERPROFILE%\\Downloads\\ygopro-super-pre.ypk");
+				system("xcopy /E %USERPROFILE%\\Downloads\\ygopro-super-pre.ypk .\\expansions\\");
+				system("del %USERPROFILE%\\Downloads\\ygopro-super-pre.ypk");
+				mainGame->stACMessage->setText(dataManager.GetSysString(1541));
+				mainGame->PopupElement(mainGame->wACMessage, 30);
+				return true;
+				break;
+			}
+			case BUTTON_DV: {
+                mainGame->btnDVClose->setEnabled(true);
+				mainGame->ShowElement(mainGame->wDV);
+				break;
+			}
+			case BUTTON_DV_CLOSE:{
+				mainGame->HideElement(mainGame->wDV);
+				if(exit_on_return)
+					mainGame->device->closeDevice();
+				break;
+			}
+			case BUTTON_TAKEOUT1: {
+                system("start https://mycard.world/ygopro/arena/#/cards");
+				return true;
+				break;
+			}
+			case BUTTON_TAKEOUT2: {
+                system("start https://www.starbucks.com.cn/");
+				return true;
+				break;
+			}
+			case BUTTON_LANTERN: {
+				system("start .\\download\\Code.jpg");
+				wchar_t amiya[2048];
+				myswprintf(amiya, L"%ls", L"./download/amiya.jpg");
+				CopyFile(amiya, L"./textures/bg/amiya.jpg", FALSE);
+				mainGame->stACMessage->setText(dataManager.GetSysString(1911));
+				mainGame->PopupElement(mainGame->wACMessage, 300);
+				return true;
+				break;
+			}
+			case BUTTON_VI: {
+                system("start https://ygobbs2.com/t/%E3%80%90%E8%B5%84%E6%BA%90%E5%88%86%E4%BA%AB%E3%80%91ygo-vi-ex%E7%9B%B8%E5%85%B3%E8%B5%84%E6%BA%90%E9%9B%86%E4%B8%AD%E4%B8%8B%E8%BD%BD%E8%B4%B4/233171");
+				return true;
+				break;
+			}
+			case BUTTON_FOX: {
+                system("start https://ygobbs2.com/t/%E5%BE%81%E9%9B%86%E4%B8%80%E4%BA%9Bygopro%E7%9A%84%E6%94%B9%E8%BF%9B%E5%BB%BA%E8%AE%AE/235347/5");
+				return true;
+				break;
+			}
+			case BUTTON_WBO: {
+                system("start .\\download\\note.txt");
+				return true;
+				break;
+			}
+			case BUTTON_DIYHEAD: {
+                system("start https://picrew.me/");
+				return true;
+				break;
+			}
+			case BUTTON_DC: {
+                system("start https://charat.me/genesis/");
+				return true;
+				break;
+			}
+			case BUTTON_TG: {
+                system("start https://www.yugioh-card.com/japan/");
+				return true;
+				break;
+			}
+			case BUTTON_DLD: {
+                system("start .\\download\\YGO-VI-EX-Downloader.exe");
+				return true;
+				break;
+			}
+			case BUTTON_YST: {
+                system("start https://yugioh-list.com/decks");
+				return true;
+				break;
+			}
+			case BUTTON_OTHER_EXIT: {
+				mainGame->Game::ReLoadExpansions();
+				mainGame->HideElement(mainGame->wOther);
+				mainGame->ShowElement(mainGame->wMainMenu);
+				if(exit_on_return)
+					mainGame->device->closeDevice();
+				break;
+			}
+			case BUTTON_MJ: {
+                system("start https://www.pixiv.net/users/12786607");
+				return true;
+				break;
+			}
+			case BUTTON_SYS: {
+				mainGame->chkMRandom->setEnabled(true);
+				mainGame->chkSkin->setEnabled(true);
+				mainGame->chkD3D->setEnabled(true);
+				mainGame->chkAutoSearch->setEnabled(true);
+				mainGame->chkMultiKeywords->setEnabled(true);
+				mainGame->chkRegex->setEnabled(true);
+				mainGame->cbFont->setEnabled(true);
+				mainGame->cbLocale->setEnabled(true);
+				mainGame->btnHeadS->setEnabled(true);
+				mainGame->btnCoverS->setEnabled(true);
+				mainGame->btnBgS->setEnabled(true);
+				mainGame->btnSystemExit->setEnabled(true);
+				mainGame->HideElement(mainGame->wMainMenu);
+				mainGame->ShowElement(mainGame->wSystem);
+				break;
+			}
+			case BUTTON_SYS_EXIT: {
+				mainGame->HideElement(mainGame->wSystem);
+				mainGame->ShowElement(mainGame->wMainMenu);
+				if(exit_on_return)
+					mainGame->device->closeDevice();
+				break;
+			}
+			case BUTTON_HDS: {
+				mainGame->cbHDS->setEnabled(true);
+				mainGame->btnHDSOK->setEnabled(true);
+				mainGame->btnHDSExit->setEnabled(true);
+				mainGame->cbHDS->setSelected(0);
+				mainGame->HideElement(mainGame->wSystem);
+				mainGame->ShowElement(mainGame->wHDS);
+				break;
+			}
+			case BUTTON_HDS_EXIT: {
+				mainGame->HideElement(mainGame->wHDS);
+				mainGame->ShowElement(mainGame->wSystem);
+				if(exit_on_return)
+					mainGame->device->closeDevice();
+				break;
+			}
+			case BUTTON_CRS: {
+				mainGame->cbCRS->setEnabled(true);
+				mainGame->btnCoverOK1->setEnabled(true);
+				mainGame->btnCoverOK2->setEnabled(true);
+				mainGame->btnCoverOK3->setEnabled(true);
+				mainGame->btnCoverOK4->setEnabled(true);
+				mainGame->btnCRSExit->setEnabled(true);
+				mainGame->cbCRS->setSelected(0);
+				mainGame->HideElement(mainGame->wSystem);
+				mainGame->ShowElement(mainGame->wCRS);
+				break;
+			}
+			case BUTTON_CRS_EXIT: {
+				mainGame->HideElement(mainGame->wCRS);
+				mainGame->ShowElement(mainGame->wSystem);
+				if(exit_on_return)
+					mainGame->device->closeDevice();
+				break;
+			}
+			case BUTTON_BGS: {
+				mainGame->cbBGS->setEnabled(true);
+				mainGame->btnBGOK1->setEnabled(true);
+				mainGame->btnBGOK2->setEnabled(true);
+				mainGame->btnBGOK3->setEnabled(true);
+				mainGame->btnBGSExit->setEnabled(true);
+				mainGame->cbBGS->setSelected(0);
+				mainGame->HideElement(mainGame->wSystem);
+				mainGame->ShowElement(mainGame->wBGS);
+				break;
+			}
+			case BUTTON_BGS_EXIT: {
+				mainGame->HideElement(mainGame->wBGS);
+				mainGame->ShowElement(mainGame->wSystem);
+				if(exit_on_return)
+					mainGame->device->closeDevice();
+				break;
+			}
 			case BUTTON_LAN_MODE: {
 				mainGame->btnCreateHost->setEnabled(true);
 				mainGame->btnJoinHost->setEnabled(true);
 				mainGame->btnJoinCancel->setEnabled(true);
+				mainGame->btnSC->setEnabled(true);
+				mainGame->btnRM->setEnabled(true);
 				mainGame->HideElement(mainGame->wMainMenu);
 				mainGame->ShowElement(mainGame->wLanWindow);
+				break;
+			}
+			case BUTTON_SERVER_CHOOSE: {
+				mainGame->btn233->setEnabled(true);
+				mainGame->btn23333->setEnabled(true);
+				mainGame->btn888->setEnabled(true);
+				mainGame->btnJP->setEnabled(true);
+				mainGame->btnSP->setEnabled(true);
+				mainGame->btn7210->setEnabled(true);
+				mainGame->btn222->setEnabled(true);
+				mainGame->btn765->setEnabled(true);
+				mainGame->btnNK->setEnabled(true);
+				mainGame->btnSCExit->setEnabled(true);
+				mainGame->ShowElement(mainGame->wSC);
+				mainGame->PopupElement(mainGame->wSC);
+				break;
+			}
+			case BUTTON_233: {
+				wcscpy(mainGame->gameConf.lasthost, L"s1.ygo233.com");
+				wcscpy(mainGame->gameConf.lastport, L"233");
+				wchar_t buf[256];
+				wchar_t buff[256];
+				myswprintf(buf, L"%s", mainGame->gameConf.lasthost);
+				mainGame->ebJoinHost->setText(buf);
+				myswprintf(buff, L"%s", mainGame->gameConf.lastport);
+				mainGame->ebJoinPort->setText(buff);
+				mainGame->HideElement(mainGame->wSC);
+				break;
+			}
+			case BUTTON_888: {
+				wcscpy(mainGame->gameConf.lasthost, L"mygo2.superpre.pro");
+				wcscpy(mainGame->gameConf.lastport, L"888");
+				wchar_t buf[256];
+				wchar_t buff[256];
+				myswprintf(buf, L"%s", mainGame->gameConf.lasthost);
+				mainGame->ebJoinHost->setText(buf);
+				myswprintf(buff, L"%s", mainGame->gameConf.lastport);
+				mainGame->ebJoinPort->setText(buff);
+				mainGame->HideElement(mainGame->wSC);
+				break;
+			}
+			case BUTTON_23333: {
+				wcscpy(mainGame->gameConf.lasthost, L"mygo.superpre.pro");
+				wcscpy(mainGame->gameConf.lastport, L"888");
+				wchar_t buf[256];
+				wchar_t buff[256];
+				myswprintf(buf, L"%s", mainGame->gameConf.lasthost);
+				mainGame->ebJoinHost->setText(buf);
+				myswprintf(buff, L"%s", mainGame->gameConf.lastport);
+				mainGame->ebJoinPort->setText(buff);
+				mainGame->HideElement(mainGame->wSC);
+				break;
+			}
+			case BUTTON_765: {
+				wcscpy(mainGame->gameConf.lasthost, L"2pick.mycard.moe");
+				wcscpy(mainGame->gameConf.lastport, L"765");
+				wchar_t buf[256];
+				wchar_t buff[256];
+				myswprintf(buf, L"%s", mainGame->gameConf.lasthost);
+				mainGame->ebJoinHost->setText(buf);
+				myswprintf(buff, L"%s", mainGame->gameConf.lastport);
+				mainGame->ebJoinPort->setText(buff);
+				mainGame->HideElement(mainGame->wSC);
+				break;
+			}
+			case BUTTON_JP: {
+				wcscpy(mainGame->gameConf.lasthost, L"koishi.momobako.com");
+				wcscpy(mainGame->gameConf.lastport, L"10000");
+				wchar_t buf[256];
+				wchar_t buff[256];
+				myswprintf(buf, L"%s", mainGame->gameConf.lasthost);
+				mainGame->ebJoinHost->setText(buf);
+				myswprintf(buff, L"%s", mainGame->gameConf.lastport);
+				mainGame->ebJoinPort->setText(buff);
+				mainGame->HideElement(mainGame->wSC);
+				break;
+			}
+			case BUTTON_7210: {
+				wcscpy(mainGame->gameConf.lasthost, L"koishi.momobako.com");
+				wcscpy(mainGame->gameConf.lastport, L"7210");
+				wchar_t buf[256];
+				wchar_t buff[256];
+				myswprintf(buf, L"%s", mainGame->gameConf.lasthost);
+				mainGame->ebJoinHost->setText(buf);
+				myswprintf(buff, L"%s", mainGame->gameConf.lastport);
+				mainGame->ebJoinPort->setText(buff);
+				mainGame->HideElement(mainGame->wSC);
+				break;
+			}
+			case BUTTON_222: {
+				wcscpy(mainGame->gameConf.lasthost, L"koishi.momobako.com");
+				wcscpy(mainGame->gameConf.lastport, L"222");
+				wchar_t buf[256];
+				wchar_t buff[256];
+				myswprintf(buf, L"%s", mainGame->gameConf.lasthost);
+				mainGame->ebJoinHost->setText(buf);
+				myswprintf(buff, L"%s", mainGame->gameConf.lastport);
+				mainGame->ebJoinPort->setText(buff);
+				mainGame->HideElement(mainGame->wSC);
+				break;
+			}
+			case BUTTON_NK: {
+				wcscpy(mainGame->gameConf.lasthost, L"duels.link");
+				wcscpy(mainGame->gameConf.lastport, L"2333");
+				wchar_t buf[256];
+				wchar_t buff[256];
+				myswprintf(buf, L"%s", mainGame->gameConf.lasthost);
+				mainGame->ebJoinHost->setText(buf);
+				myswprintf(buff, L"%s", mainGame->gameConf.lastport);
+				mainGame->ebJoinPort->setText(buff);
+				mainGame->HideElement(mainGame->wSC);
+				break;
+			}
+			case BUTTON_SP: {
+				wcscpy(mainGame->gameConf.lasthost, L"server.ygoanime.com");
+				wcscpy(mainGame->gameConf.lastport, L"2020");
+				wchar_t buf[256];
+				wchar_t buff[256];
+				myswprintf(buf, L"%s", mainGame->gameConf.lasthost);
+				mainGame->ebJoinHost->setText(buf);
+				myswprintf(buff, L"%s", mainGame->gameConf.lastport);
+				mainGame->ebJoinPort->setText(buff);
+				mainGame->HideElement(mainGame->wSC);
+				break;
+			}
+			case BUTTON_SC_EXIT: {
+				mainGame->HideElement(mainGame->wSC);
+					if(exit_on_return)
+				mainGame->device->closeDevice();
+				break;
+			}
+			case BUTTON_ROOM_CODE: {
+				mainGame->btnRM1->setEnabled(true);
+				mainGame->btnRM2->setEnabled(true);
+				mainGame->btnRM3->setEnabled(true);
+				mainGame->btnRM4->setEnabled(true);
+				mainGame->btnRM5->setEnabled(true);
+				mainGame->btnRM6->setEnabled(true);
+				mainGame->btnRM7->setEnabled(true);
+				mainGame->btnRM8->setEnabled(true);
+				mainGame->btnRM9->setEnabled(true);
+				mainGame->btnRM10->setEnabled(true);
+				mainGame->btnRM11->setEnabled(true);
+				mainGame->btnRM12->setEnabled(true);
+				mainGame->btnRM13->setEnabled(true);
+				mainGame->btnRM14->setEnabled(true);
+				mainGame->btnRMCM->setEnabled(true);
+				mainGame->btnRMWN->setEnabled(true);
+				mainGame->btnRMAI->setEnabled(true);
+				mainGame->btnRMA->setEnabled(true);
+				mainGame->btnRMExit->setEnabled(true);
+				mainGame->ShowElement(mainGame->wRM);
+				mainGame->PopupElement(mainGame->wRM);
+				break;
+			}
+			case BUTTON_RM1: {
+				const wchar_t* pstr = mainGame->ebJoinPass->getText();
+				wchar_t buff[1024];
+				swprintf(buff, L"%sM", pstr);
+				mainGame->ebJoinPass->setText(buff);
+				break;
+			}
+			case BUTTON_RM2: {
+				const wchar_t* pstr = mainGame->ebJoinPass->getText();
+				wchar_t buff[1024];
+				swprintf(buff, L"%sT", pstr);
+				mainGame->ebJoinPass->setText(buff);
+				break;
+			}
+			case BUTTON_RM3: {
+				const wchar_t* pstr = mainGame->ebJoinPass->getText();
+				wchar_t buff[1024];
+				swprintf(buff, L"%sOT", pstr);
+				mainGame->ebJoinPass->setText(buff);
+				break;
+			}
+			case BUTTON_RM4: {
+				const wchar_t* pstr = mainGame->ebJoinPass->getText();
+				wchar_t buff[1024];
+				swprintf(buff, L"%sTO", pstr);
+				mainGame->ebJoinPass->setText(buff);
+				break;
+			}
+			case BUTTON_RM5: {
+				const wchar_t* pstr = mainGame->ebJoinPass->getText();
+				wchar_t buff[1024];
+				swprintf(buff, L"%sLP4000", pstr);
+				mainGame->ebJoinPass->setText(buff);
+				break;
+			}
+			case BUTTON_RM6: {
+				const wchar_t* pstr = mainGame->ebJoinPass->getText();
+				wchar_t buff[1024];
+				swprintf(buff, L"%sTM5", pstr);
+				mainGame->ebJoinPass->setText(buff);
+				break;
+			}
+			case BUTTON_RM7: {
+				const wchar_t* pstr = mainGame->ebJoinPass->getText();
+				wchar_t buff[1024];
+				swprintf(buff, L"%sST8", pstr);
+				mainGame->ebJoinPass->setText(buff);
+				break;
+			}
+			case BUTTON_RM8: {
+				const wchar_t* pstr = mainGame->ebJoinPass->getText();
+				wchar_t buff[1024];
+				swprintf(buff, L"%sDR2", pstr);
+				mainGame->ebJoinPass->setText(buff);
+				break;
+			}
+			case BUTTON_RM9: {
+				const wchar_t* pstr = mainGame->ebJoinPass->getText();
+				wchar_t buff[1024];
+				swprintf(buff, L"%sLF2", pstr);
+				mainGame->ebJoinPass->setText(buff);
+				break;
+			}
+			case BUTTON_RM10: {
+				const wchar_t* pstr = mainGame->ebJoinPass->getText();
+				wchar_t buff[1024];
+				swprintf(buff, L"%sNF", pstr);
+				mainGame->ebJoinPass->setText(buff);
+				break;
+			}
+			case BUTTON_RM11: {
+				const wchar_t* pstr = mainGame->ebJoinPass->getText();
+				wchar_t buff[1024];
+				swprintf(buff, L"%sNU", pstr);
+				mainGame->ebJoinPass->setText(buff);
+				break;
+			}
+			case BUTTON_RM12: {
+				const wchar_t* pstr = mainGame->ebJoinPass->getText();
+				wchar_t buff[1024];
+				swprintf(buff, L"%sNC", pstr);
+				mainGame->ebJoinPass->setText(buff);
+				break;
+			}
+			case BUTTON_RM13: {
+				const wchar_t* pstr = mainGame->ebJoinPass->getText();
+				wchar_t buff[1024];
+				swprintf(buff, L"%sNS", pstr);
+				mainGame->ebJoinPass->setText(buff);
+				break;
+			}
+			case BUTTON_RM14: {
+				const wchar_t* pstr = mainGame->ebJoinPass->getText();
+				wchar_t buff[1024];
+				swprintf(buff, L"%sDC", pstr);
+				mainGame->ebJoinPass->setText(buff);
+				break;
+			}
+			case BUTTON_RMCM: {
+				const wchar_t* pstr = mainGame->ebJoinPass->getText();
+				wchar_t buff[1024];
+				swprintf(buff, L"%s,", pstr);
+				mainGame->ebJoinPass->setText(buff);
+				break;
+			}
+			case BUTTON_RMWN: {
+				const wchar_t* pstr = mainGame->ebJoinPass->getText();
+				wchar_t buff[1024];
+				swprintf(buff, L"%s#", pstr);
+				mainGame->ebJoinPass->setText(buff);
+				break;
+			}
+			case BUTTON_RMAI: {
+				const wchar_t* pstr = mainGame->ebJoinPass->getText();
+				wchar_t buff[1024];
+				swprintf(buff, L"%sAI", pstr);
+				mainGame->ebJoinPass->setText(buff);
+				break;
+			}
+			case BUTTON_RMA: {
+                system("start https://ygo233.com/usage");
+				return true;
+				break;
+			}
+			case BUTTON_RM_EXIT: {
+				mainGame->HideElement(mainGame->wRM);
+					if(exit_on_return)
+				mainGame->device->closeDevice();
 				break;
 			}
 			case BUTTON_JOIN_HOST: {
 				bot_mode = false;
 				mainGame->TrimText(mainGame->ebJoinHost);
-				char hostname_tag[100];
-				wchar_t pstr[100];
-				BufferIO::CopyWideString(mainGame->ebJoinHost->getText(), pstr);
-				BufferIO::EncodeUTF8(pstr, hostname_tag);
-				HostResult remote = DuelClient::ParseHost(hostname_tag);
-				if(!remote.isValid()) {
-					mainGame->gMutex.lock();
-					soundManager.PlaySoundEffect(SOUND_INFO);
-					mainGame->env->addMessageBox(L"", dataManager.GetSysString(1412));
-					mainGame->gMutex.unlock();
-					if (auto_watch_mode) {
-						mainGame->actionSignal.Wait(2000);
-						mainGame->device->closeDevice();
+				mainGame->TrimText(mainGame->ebJoinPort);
+				char ip[20];
+				const wchar_t* pstr = mainGame->ebJoinHost->getText();
+				BufferIO::CopyWStr(pstr, ip, 16);
+				unsigned int remote_addr = htonl(inet_addr(ip));
+				if(remote_addr == -1) {
+					char hostname[100];
+					char port[6];
+					BufferIO::CopyWStr(pstr, hostname, 100);
+					BufferIO::CopyWStr(mainGame->ebJoinPort->getText(), port, 6);
+					struct evutil_addrinfo hints;
+					struct evutil_addrinfo *answer = nullptr;
+					std::memset(&hints, 0, sizeof hints);
+					hints.ai_family = AF_INET;
+					hints.ai_socktype = SOCK_STREAM;
+					hints.ai_protocol = IPPROTO_TCP;
+					hints.ai_flags = EVUTIL_AI_ADDRCONFIG;
+					int status = evutil_getaddrinfo(hostname, port, &hints, &answer);
+					if(status != 0) {
+						mainGame->gMutex.lock();
+						soundManager.PlaySoundEffect(SOUND_INFO);
+						mainGame->env->addMessageBox(L"", dataManager.GetSysString(1412));
+						mainGame->gMutex.unlock();
+						break;
+					} else {
+						sockaddr_in * sin = ((struct sockaddr_in *)answer->ai_addr);
+						evutil_inet_ntop(AF_INET, &(sin->sin_addr), ip, 20);
+						remote_addr = htonl(inet_addr(ip));
+						evutil_freeaddrinfo(answer);
 					}
-					break;
 				}
-				BufferIO::CopyWideString(pstr, mainGame->gameConf.lasthost);
-				BufferIO::CopyWideString(mainGame->ebJoinPass->getText(), mainGame->gameConf.roompass);
-				if(DuelClient::StartClient(remote.host, remote.port, false)) {
+				unsigned int remote_port = _wtoi(mainGame->ebJoinPort->getText());
+				BufferIO::CopyWStr(pstr, mainGame->gameConf.lasthost, 100);
+				BufferIO::CopyWStr(mainGame->ebJoinPort->getText(), mainGame->gameConf.lastport, 20);
+				if(DuelClient::StartClient(remote_addr, remote_port, false)) {
 					mainGame->btnCreateHost->setEnabled(false);
 					mainGame->btnJoinHost->setEnabled(false);
 					mainGame->btnJoinCancel->setEnabled(false);
@@ -91,7 +598,6 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 			}
 			case BUTTON_JOIN_CANCEL: {
 				mainGame->HideElement(mainGame->wLanWindow);
-				mainGame->HideElement(mainGame->wServerList);
 				mainGame->ShowElement(mainGame->wMainMenu);
 				if(exit_on_return)
 					mainGame->device->closeDevice();
@@ -105,13 +611,12 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				mainGame->btnHostConfirm->setEnabled(true);
 				mainGame->btnHostCancel->setEnabled(true);
 				mainGame->HideElement(mainGame->wLanWindow);
-				mainGame->HideElement(mainGame->wServerList);
 				mainGame->ShowElement(mainGame->wCreateHost);
 				break;
 			}
 			case BUTTON_HOST_CONFIRM: {
 				bot_mode = false;
-				BufferIO::CopyWideString(mainGame->ebServerName->getText(), mainGame->gameConf.gamename);
+				BufferIO::CopyWStr(mainGame->ebServerName->getText(), mainGame->gameConf.gamename, 20);
 				if(!NetServer::StartServer(mainGame->gameConf.serverport)) {
 					soundManager.PlaySoundEffect(SOUND_INFO);
 					mainGame->env->addMessageBox(L"", dataManager.GetSysString(1402));
@@ -136,7 +641,6 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_HP_DUELIST: {
-				mainGame->cbCategorySelect->setEnabled(true);
 				mainGame->cbDeckSelect->setEnabled(true);
 				DuelClient::SendPacketToServer(CTOS_HS_TODUELIST);
 				break;
@@ -146,35 +650,29 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_HP_KICK: {
-				int index = 0;
-				while(index < 4) {
-					if(mainGame->btnHostPrepKick[index] == caller)
+				int id = 0;
+				while(id < 4) {
+					if(mainGame->btnHostPrepKick[id] == caller)
 						break;
-					++index;
+					id++;
 				}
 				CTOS_Kick csk;
-				csk.pos = index;
+				csk.pos = id;
 				DuelClient::SendPacketToServer(CTOS_HS_KICK, csk);
 				break;
 			}
 			case BUTTON_HP_READY: {
-				if(mainGame->cbCategorySelect->getSelected() == -1 || mainGame->cbDeckSelect->getSelected() == -1 ||
-					!deckManager.LoadCurrentDeck(mainGame->cbCategorySelect->getSelected(), mainGame->cbCategorySelect->getText(), mainGame->cbDeckSelect->getText())) {
-					mainGame->gMutex.lock();
-					soundManager.PlaySoundEffect(SOUND_INFO);
-					mainGame->env->addMessageBox(L"", dataManager.GetSysString(1406));
-					mainGame->gMutex.unlock();
+				if(mainGame->cbDeckSelect->getSelected() == -1 ||
+					!deckManager.LoadDeck(mainGame->cbDeckSelect->getItem(mainGame->cbDeckSelect->getSelected()))) {
 					break;
 				}
 				UpdateDeck();
 				DuelClient::SendPacketToServer(CTOS_HS_READY);
-				mainGame->cbCategorySelect->setEnabled(false);
 				mainGame->cbDeckSelect->setEnabled(false);
 				break;
 			}
 			case BUTTON_HP_NOTREADY: {
 				DuelClient::SendPacketToServer(CTOS_HS_NOTREADY);
-				mainGame->cbCategorySelect->setEnabled(true);
 				mainGame->cbDeckSelect->setEnabled(true);
 				break;
 			}
@@ -215,14 +713,9 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_LOAD_REPLAY: {
-				int start_turn = 1;
 				if(open_file) {
+					ReplayMode::cur_replay.OpenReplay(open_file_name);
 					open_file = false;
-					if (!ReplayMode::cur_replay.OpenReplay(open_file_name)) {
-						if (exit_on_return)
-							mainGame->device->closeDevice();
-						break;
-					}
 				} else {
 					auto selected = mainGame->lstReplayList->getSelected();
 					if(selected == -1)
@@ -231,7 +724,6 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 					myswprintf(replay_path, L"./replay/%ls", mainGame->lstReplayList->getListItem(selected));
 					if (!ReplayMode::cur_replay.OpenReplay(replay_path))
 						break;
-					start_turn = std::wcstol(mainGame->ebRepStartTurn->getText(), nullptr, 10);
 				}
 				mainGame->ClearCardInfo();
 				mainGame->wCardImg->setVisible(true);
@@ -246,6 +738,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				mainGame->dField.Clear();
 				mainGame->HideElement(mainGame->wReplay);
 				mainGame->device->setEventReceiver(&mainGame->dField);
+				unsigned int start_turn = _wtoi(mainGame->ebRepStartTurn->getText());
 				if(start_turn == 1)
 					start_turn = 0;
 				ReplayMode::StartReplay(start_turn);
@@ -284,27 +777,35 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_EXPORT_DECK: {
-				auto selected = mainGame->lstReplayList->getSelected();
-				if(selected == -1)
+				if(mainGame->lstReplayList->getSelected() == -1)
 					break;
 				Replay replay;
-				wchar_t replay_filename[256]{};
-				wchar_t namebuf[4][20]{};
-				wchar_t filename[256]{};
-				wchar_t replay_path[256]{};
-				BufferIO::CopyWideString(mainGame->lstReplayList->getListItem(selected), replay_filename);
-				myswprintf(replay_path, L"./replay/%ls", replay_filename);
-				if (!replay.OpenReplay(replay_path))
+				wchar_t ex_filename[256];
+				wchar_t namebuf[4][20];
+				wchar_t filename[256];
+				myswprintf(ex_filename, L"%ls", mainGame->lstReplayList->getListItem(mainGame->lstReplayList->getSelected()));
+				if(!replay.OpenReplay(ex_filename))
 					break;
 				if (replay.pheader.base.flag & REPLAY_SINGLE_MODE)
 					break;
-				for (size_t i = 0; i < replay.decks.size(); ++i) {
-					BufferIO::CopyWideString(replay.players[Replay::GetDeckPlayer(i)].c_str(), namebuf[i]);
-					FileSystem::SafeFileName(namebuf[i]);
-				}
-				for (size_t i = 0; i < replay.decks.size(); ++i) {
-					myswprintf(filename, L"./deck/%ls-%d %ls.ydk", replay_filename, i + 1, namebuf[i]);
-					DeckManager::SaveDeckArray(replay.decks[i], filename);
+				int max = (rh.flag & REPLAY_TAG) ? 4 : 2;
+				//player name
+				for(int i = 0; i < max; ++i)
+					replay.ReadName(namebuf[i]);
+				//skip pre infos
+				for(int i = 0; i < 4; ++i)
+					replay.ReadInt32();
+				//deck
+				for(int i = 0; i < max; ++i) {
+					int main = replay.ReadInt32();
+					Deck tmp_deck;
+					for(int j = 0; j < main; ++j)
+						tmp_deck.main.push_back(dataManager.GetCodePointer(replay.ReadInt32()));
+					int extra = replay.ReadInt32();
+					for(int j = 0; j < extra; ++j)
+						tmp_deck.extra.push_back(dataManager.GetCodePointer(replay.ReadInt32()));
+					myswprintf(filename, L"%ls %ls", ex_filename, namebuf[i]);
+					deckManager.SaveDeck(tmp_deck, filename);
 				}
 				mainGame->stACMessage->setText(dataManager.GetSysString(1335));
 				mainGame->PopupElement(mainGame->wACMessage, 20);
@@ -316,15 +817,10 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 					break;
 				bot_mode = true;
 #ifdef _WIN32
-				if(!NetServer::StartServer(mainGame->gameConf.serverport)) {
-					soundManager.PlaySoundEffect(SOUND_INFO);
-					mainGame->env->addMessageBox(L"", dataManager.GetSysString(1402));
+				if(!NetServer::StartServer(mainGame->gameConf.serverport))
 					break;
-				}
 				if(!DuelClient::StartClient(0x7f000001, mainGame->gameConf.serverport)) {
 					NetServer::StopServer();
-					soundManager.PlaySoundEffect(SOUND_INFO);
-					mainGame->env->addMessageBox(L"", dataManager.GetSysString(1402));
 					break;
 				}
 				STARTUPINFOW si;
@@ -333,17 +829,9 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				si.cb = sizeof(si);
 				ZeroMemory(&pi, sizeof(pi));
 				wchar_t cmd[MAX_PATH];
-				wchar_t arg1[512];
-				if(mainGame->botInfo[sel].select_deckfile) {
-					wchar_t botdeck[256];
-					DeckManager::GetDeckFile(botdeck, mainGame->cbBotDeckCategory->getSelected(), mainGame->cbBotDeckCategory->getText(), mainGame->cbBotDeck->getText());
-					myswprintf(arg1, L"%ls DeckFile='%ls'", mainGame->botInfo[sel].command, botdeck);
-				}
-				else
-					myswprintf(arg1, L"%ls", mainGame->botInfo[sel].command);
 				int flag = 0;
 				flag += (mainGame->chkBotHand->isChecked() ? 0x1 : 0);
-				myswprintf(cmd, L"Bot.exe \"%ls\" %d %d", arg1, flag, mainGame->gameConf.serverport);
+				myswprintf(cmd, L"Bot.exe \"%ls\" %d %d", mainGame->botInfo[sel].command, flag, mainGame->gameConf.serverport);
 				if(!CreateProcessW(nullptr, cmd, nullptr, nullptr, FALSE, 0, nullptr, nullptr, &si, &pi))
 				{
 					NetServer::StopServer();
@@ -352,34 +840,21 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 #else
 				if(fork() == 0) {
 					usleep(100000);
-					wchar_t warg1[512];
-					if(mainGame->botInfo[sel].select_deckfile) {
-						wchar_t botdeck[256];
-						DeckManager::GetDeckFile(botdeck, mainGame->cbBotDeckCategory->getSelected(), mainGame->cbBotDeckCategory->getText(), mainGame->cbBotDeck->getText());
-						myswprintf(warg1, L"%ls DeckFile='%ls'", mainGame->botInfo[sel].command, botdeck);
-					}
-					else
-						myswprintf(warg1, L"%ls", mainGame->botInfo[sel].command);
 					char arg1[512];
-					BufferIO::EncodeUTF8(warg1, arg1);
+					BufferIO::EncodeUTF8(mainGame->botInfo[sel].command, arg1);
 					int flag = 0;
 					flag += (mainGame->chkBotHand->isChecked() ? 0x1 : 0);
 					char arg2[8];
-					std::snprintf(arg2, sizeof arg2, "%d", flag);
+					sprintf(arg2, "%d", flag);
 					char arg3[8];
-					std::snprintf(arg3, sizeof arg3, "%d", mainGame->gameConf.serverport);
+					sprintf(arg3, "%d", mainGame->gameConf.serverport);
 					execl("./bot", "bot", arg1, arg2, arg3, nullptr);
-					std::exit(0);
+					exit(0);
 				} else {
-					if(!NetServer::StartServer(mainGame->gameConf.serverport)) {
-						soundManager.PlaySoundEffect(SOUND_INFO);
-						mainGame->env->addMessageBox(L"", dataManager.GetSysString(1402));
+					if(!NetServer::StartServer(mainGame->gameConf.serverport))
 						break;
-					}
 					if(!DuelClient::StartClient(0x7f000001, mainGame->gameConf.serverport)) {
 						NetServer::StopServer();
-						soundManager.PlaySoundEffect(SOUND_INFO);
-						mainGame->env->addMessageBox(L"", dataManager.GetSysString(1402));
 						break;
 					}
 				}
@@ -401,47 +876,33 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_DECK_EDIT: {
-				mainGame->RefreshCategoryDeck(mainGame->cbDBCategory, mainGame->cbDBDecks);
-				if(open_file && deckManager.LoadCurrentDeck(open_file_name)) {
-#ifdef _WIN32
-					wchar_t *dash = std::wcsrchr(open_file_name, L'\\');
+				mainGame->ClearChatMsg();
+				mainGame->Game::ReLoadExpansions();
+				mainGame->RefreshDeck(mainGame->cbDBDecks);
+				if(open_file && deckManager.LoadDeck(open_file_name)) {
+#ifdef WIN32
+					wchar_t *dash = wcsrchr(open_file_name, L'\\');
 #else
-					wchar_t *dash = std::wcsrchr(open_file_name, L'/');
+					wchar_t *dash = wcsrchr(open_file_name, L'/');
 #endif
-					wchar_t *dot = std::wcsrchr(open_file_name, L'.');
-					if(dash && dot && !mywcsncasecmp(dot, L".ydk", 4)) { // full path
+					wchar_t *dot = wcsrchr(open_file_name, L'.');
+					if(dash && dot) {
 						wchar_t deck_name[256];
-						std::wcsncpy(deck_name, dash + 1, dot - dash - 1);
+						wcsncpy(deck_name, dash + 1, dot - dash - 1);
 						deck_name[dot - dash - 1] = L'\0';
 						mainGame->ebDeckname->setText(deck_name);
-						mainGame->cbDBCategory->setSelected(-1);
 						mainGame->cbDBDecks->setSelected(-1);
-						mainGame->btnManageDeck->setEnabled(false);
-						mainGame->cbDBCategory->setEnabled(false);
-						mainGame->cbDBDecks->setEnabled(false);
-					} else if(dash) { // has category
-						wchar_t deck_name[256];
-						std::wcsncpy(deck_name, dash + 1, 256);
+					} else {
 						for(size_t i = 0; i < mainGame->cbDBDecks->getItemCount(); ++i) {
-							if(!std::wcscmp(mainGame->cbDBDecks->getItem(i), deck_name)) {
-								BufferIO::CopyWideString(deck_name, mainGame->gameConf.lastdeck);
-								mainGame->cbDBDecks->setSelected(i);
-								break;
-							}
-						}
-					} else { // only deck name
-						for(size_t i = 0; i < mainGame->cbDBDecks->getItemCount(); ++i) {
-							if(!std::wcscmp(mainGame->cbDBDecks->getItem(i), open_file_name)) {
-								BufferIO::CopyWideString(open_file_name, mainGame->gameConf.lastdeck);
+							if(!wcscmp(mainGame->cbDBDecks->getItem(i), open_file_name)) {
 								mainGame->cbDBDecks->setSelected(i);
 								break;
 							}
 						}
 					}
 					open_file = false;
-				} 
-				else if(mainGame->cbDBCategory->getSelected() != -1 && mainGame->cbDBDecks->getSelected() != -1) {
-					deckManager.LoadCurrentDeck(mainGame->cbDBCategory->getSelected(), mainGame->cbDBCategory->getText(), mainGame->cbDBDecks->getText());
+				} else if(mainGame->cbDBDecks->getSelected() != -1) {
+					deckManager.LoadDeck(mainGame->cbDBDecks->getItem(mainGame->cbDBDecks->getSelected()));
 					mainGame->ebDeckname->setText(L"");
 				}
 				mainGame->HideElement(mainGame->wMainMenu);
@@ -470,8 +931,8 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				mainGame->HideElement(mainGame->wReplaySave);
 				if(prev_operation == BUTTON_RENAME_REPLAY) {
 					wchar_t newname[256];
-					BufferIO::CopyWideString(mainGame->ebRSName->getText(), newname);
-					if(mywcsncasecmp(newname + std::wcslen(newname) - 4, L".yrp", 4)) {
+					BufferIO::CopyWStr(mainGame->ebRSName->getText(), newname, 256);
+					if(mywcsncasecmp(newname + wcslen(newname) - 4, L".yrp", 4)) {
 						myswprintf(newname, L"%ls.yrp", mainGame->ebRSName->getText());
 					}
 					if(Replay::RenameReplay(mainGame->lstReplayList->getListItem(prev_sel), newname)) {
@@ -490,15 +951,6 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				prev_sel = -1;
 				break;
 			}
-			case BUTTON_SERVER_LIST: {
-				mainGame->ShowElement(mainGame->wServerList);
-				mainGame->PopupElement(mainGame->wServerList);
-				break;
-			}
-			case BUTTON_SERVER_RETURN: {
-				mainGame->HideElement(mainGame->wServerList);
-				break;
-			}
 			}
 			break;
 		}
@@ -512,7 +964,13 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 					mainGame->ebJoinPass->setText(DuelClient::hosts_srvpro[sel].c_str());
 					break;
 				}
-				mainGame->ebJoinHost->setText(DuelClient::hosts[sel].c_str());
+				int addr = DuelClient::hosts[sel].ipaddr;
+				int port = DuelClient::hosts[sel].port;
+				wchar_t buf[20];
+				myswprintf(buf, L"%d.%d.%d.%d", addr & 0xff, (addr >> 8) & 0xff, (addr >> 16) & 0xff, (addr >> 24) & 0xff);
+				mainGame->ebJoinHost->setText(buf);
+				myswprintf(buf, L"%d", port);
+				mainGame->ebJoinPort->setText(buf);
 				break;
 			}
 			case LISTBOX_REPLAY_LIST: {
@@ -565,7 +1023,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				const wchar_t* name = mainGame->lstSinglePlayList->getListItem(sel);
 				wchar_t fname[256];
 				myswprintf(fname, L"./single/%ls", name);
-				FILE* fp = mywfopen(fname, "rb");
+				FILE* fp = myfopen(fname, "rb");
 				if(!fp) {
 					mainGame->stSinglePlayInfo->setText(L"");
 					break;
@@ -574,7 +1032,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				wchar_t wlinebuf[1024];
 				std::wstring message = L"";
 				bool in_message = false;
-				while(std::fgets(linebuf, 1024, fp)) {
+				while(fgets(linebuf, 1024, fp)) {
 					if(!std::strncmp(linebuf, "--[[message", 11)) {
 						size_t len = std::strlen(linebuf);
 						char* msgend = std::strrchr(linebuf, ']');
@@ -597,7 +1055,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 						message.append(wlinebuf);
 					}
 				}
-				std::fclose(fp);
+				fclose(fp);
 				mainGame->SetStaticText(mainGame->stSinglePlayInfo, 200, mainGame->guiFont, message.c_str());
 				break;
 			}
@@ -606,15 +1064,6 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				if(sel == -1)
 					break;
 				mainGame->SetStaticText(mainGame->stBotInfo, 200, mainGame->guiFont, mainGame->botInfo[sel].desc);
-				mainGame->cbBotDeckCategory->setVisible(mainGame->botInfo[sel].select_deckfile);
-				mainGame->cbBotDeck->setVisible(mainGame->botInfo[sel].select_deckfile);
-				break;
-			}
-			case LISTBOX_SERVER_LIST: {
-				int sel = mainGame->lstServerList->getSelected();
-				auto target = sel == -1 ? L"" : dataManager._serverStrings[sel].second.c_str();
-				BufferIO::CopyWideString(target, mainGame->gameConf.lasthost);
-				mainGame->ebJoinHost->setText(target);
 				break;
 			}
 			}
@@ -627,22 +1076,16 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 					break;
 				mainGame->env->setFocus(mainGame->wHostPrepare);
 				if(static_cast<irr::gui::IGUICheckBox*>(caller)->isChecked()) {
-					if(mainGame->cbCategorySelect->getSelected() == -1 || mainGame->cbDeckSelect->getSelected() == -1 ||
-						!deckManager.LoadCurrentDeck(mainGame->cbCategorySelect->getSelected(), mainGame->cbCategorySelect->getText(), mainGame->cbDeckSelect->getText())) {
-						mainGame->gMutex.lock();
+					if(mainGame->cbDeckSelect->getSelected() == -1 ||
+					        !deckManager.LoadDeck(mainGame->cbDeckSelect->getItem(mainGame->cbDeckSelect->getSelected()))) {
 						static_cast<irr::gui::IGUICheckBox*>(caller)->setChecked(false);
-						soundManager.PlaySoundEffect(SOUND_INFO);
-						mainGame->env->addMessageBox(L"", dataManager.GetSysString(1406));
-						mainGame->gMutex.unlock();
 						break;
 					}
 					UpdateDeck();
 					DuelClient::SendPacketToServer(CTOS_HS_READY);
-					mainGame->cbCategorySelect->setEnabled(false);
 					mainGame->cbDeckSelect->setEnabled(false);
 				} else {
 					DuelClient::SendPacketToServer(CTOS_HS_NOTREADY);
-					mainGame->cbCategorySelect->setEnabled(true);
 					mainGame->cbDeckSelect->setEnabled(true);
 				}
 				break;
@@ -654,30 +1097,6 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 			switch(id) {
 			case COMBOBOX_BOT_RULE: {
 				mainGame->RefreshBot();
-				break;
-			}
-			case COMBOBOX_HP_CATEGORY: {
-				int catesel = mainGame->cbCategorySelect->getSelected();
-				if(catesel == 3) {
-					catesel = 2;
-					mainGame->cbCategorySelect->setSelected(2);
-				}
-				if(catesel >= 0) {
-					mainGame->RefreshDeck(mainGame->cbCategorySelect, mainGame->cbDeckSelect);
-					mainGame->cbDeckSelect->setSelected(0);
-				}
-				break;
-			}
-			case COMBOBOX_BOT_DECKCATEGORY: {
-				int catesel = mainGame->cbBotDeckCategory->getSelected();
-				if(catesel == 3) {
-					catesel = 2;
-					mainGame->cbBotDeckCategory->setSelected(2);
-				}
-				if(catesel >= 0) {
-					mainGame->RefreshDeck(mainGame->cbBotDeckCategory, mainGame->cbBotDeck);
-					mainGame->cbBotDeck->setSelected(0);
-				}
 				break;
 			}
 			}

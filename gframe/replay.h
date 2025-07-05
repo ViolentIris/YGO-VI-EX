@@ -2,6 +2,7 @@
 #define REPLAY_H
 
 #include "config.h"
+#include <time.h>
 #include "deck_manager.h"
 
 namespace ygo {
@@ -65,6 +66,8 @@ public:
 	void SaveReplay(const wchar_t* name);
 
 	// play
+	bool OpenReplay(const wchar_t* name);
+	static bool CheckReplay(const wchar_t* name);
 	static bool DeleteReplay(const wchar_t* name);
 	static bool RenameReplay(const wchar_t* oldname, const wchar_t* newname);
 	static size_t GetDeckPlayer(size_t deck_index) {
@@ -102,12 +105,6 @@ public:
 	ExtendedReplayHeader pheader;
 	unsigned char* comp_data;
 	size_t comp_size{};
-
-	std::vector<std::wstring> players;	// 80 or 160 bytes
-	DuelParameters params;				// 16 bytes
-
-	std::vector<DeckArray> decks;		// 4 bytes, main deck, 4 bytes, extra deck
-	std::string script_name;			// 2 bytes, script name (max: 256 bytes)
 
 private:
 	bool ReadInfo();

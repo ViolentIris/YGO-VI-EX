@@ -1,11 +1,10 @@
-#ifndef YGOPRO_CONFIG_H
-#define YGOPRO_CONFIG_H
+#ifndef __CONFIG_H
+#define __CONFIG_H
+
+#pragma once
 
 #define _IRR_STATIC_LIB_
 #define IRR_COMPILE_WITH_DX9_DEV_PACK
-
-#include <cerrno>
-
 #ifdef _WIN32
 
 #define NOMINMAX
@@ -13,7 +12,7 @@
 #include <windows.h>
 #include <ws2tcpip.h>
 
-#if defined(_MSC_VER) or defined(__MINGW32__)
+#ifdef _MSC_VER
 #define mywcsncasecmp _wcsnicmp
 #define mystrncasecmp _strnicmp
 #else
@@ -25,12 +24,14 @@
 
 #else //_WIN32
 
+#include <errno.h>
 #include <netinet/in.h>
 #include <sys/socket.h>
 #include <sys/ioctl.h>
 #include <arpa/inet.h>
 #include <netdb.h>
 #include <unistd.h>
+#include <locale.h>
 
 #define SD_BOTH 2
 #define SOCKET int
@@ -41,42 +42,45 @@
 #define SOCKADDR sockaddr
 #define SOCKET_ERRNO() (errno)
 
+#include <wchar.h>
 #define mywcsncasecmp wcsncasecmp
 #define mystrncasecmp strncasecmp
-#endif
-
-#ifndef _WIN32
-#include <wchar.h>
-inline int _wtoi(const wchar_t * str){
-	return (int)wcstol(str, 0, 10);
+inline int _wtoi(const wchar_t * s) {
+	wchar_t * endptr;
+	return (int)wcstol(s, &endptr, 10);
 }
 #endif
-
-// load env things
-#ifdef _WIN32
-#include <windows.h>
-#include <string>
-#else
-#include <unistd.h>
-#include <stdlib.h>
-
-extern char** environ;
-#endif
-
-#include <cstdio>
-#include <cstdlib>
-#include <iostream>
-#include <algorithm>
-#include <string>
-#include "bufferio.h"
-#include "../ocgcore/ocgapi.h"
 
 template<size_t N, typename... TR>
 inline int myswprintf(wchar_t(&buf)[N], const wchar_t* fmt, TR... args) {
-	return std::swprintf(buf, N, fmt, args...);
+	return swprintf(buf, N, fmt, args...);
 }
 
-inline FILE* mywfopen(const wchar_t* filename, const char* mode) {
+#include <irrlicht.h>
+#ifdef __APPLE__
+#include <OpenGL/gl.h>
+#include <OpenGL/glu.h>
+#else //__APPLE__
+#include <GL/gl.h>
+#include <GL/glu.h>
+#endif //__APPLE__
+#include "CGUITTFont.h"
+#include "CGUIImageButton.h"
+#include <iostream>
+#include <stdio.h>
+#include <stdlib.h>
+#include <memory.h>
+#include <time.h>
+#include <thread>
+#include <mutex>
+#include <algorithm>
+#include "bufferio.h"
+#include "myfilesystem.h"
+#include "mysignal.h"
+#include "../ocgcore/ocgapi.h"
+#include "../ocgcore/common.h"
+
+inline FILE* myfopen(const wchar_t* filename, const char* mode) {
 	FILE* fp{};
 #ifdef _WIN32
 	wchar_t wmode[20]{};
@@ -85,25 +89,10 @@ inline FILE* mywfopen(const wchar_t* filename, const char* mode) {
 #else
 	char fname[1024]{};
 	BufferIO::EncodeUTF8(filename, fname);
-	fp = std::fopen(fname, mode);
+	fp = fopen(fname, mode);
 #endif
 	return fp;
 }
-
-#if !defined(_WIN32)
-#define myfopen std::fopen
-#elif defined(WDK_NTDDI_VERSION) && (WDK_NTDDI_VERSION >= 0x0A000005) // Redstone 4, Version 1803, Build 17134.
-#define FOPEN_WINDOWS_SUPPORT_UTF8
-#define myfopen std::fopen
-#else
-inline FILE* myfopen(const char* filename, const char* mode) {
-	wchar_t wfilename[256]{};
-	BufferIO::DecodeUTF8(filename, wfilename);
-	wchar_t wmode[20]{};
-	BufferIO::CopyCharArray(mode, wmode);
-	return _wfopen(wfilename, wmode);
-}
-#endif
 
 #include <irrlicht.h>
 using namespace irr;
@@ -121,7 +110,5 @@ extern bool auto_watch_mode;
 extern bool open_file;
 extern wchar_t open_file_name[256];
 extern bool bot_mode;
-extern bool expansions_specified;
-extern std::vector<std::wstring> expansions_list;
 
 #endif

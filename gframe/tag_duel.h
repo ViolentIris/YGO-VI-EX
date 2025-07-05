@@ -1,10 +1,11 @@
 #ifndef TAG_DUEL_H
 #define TAG_DUEL_H
 
-#include <set>
+#include "config.h"
 #include "network.h"
 #include "deck_manager.h"
 #include "replay.h"
+#include <set>
 
 namespace ygo {
 
@@ -33,7 +34,7 @@ public:
 	void DuelEndProc();
 	void WaitforResponse(int playerid);
 	void RefreshMzone(int player, int flag = 0x881fff, int use_cache = 1);
-	void RefreshSzone(int player, int flag = 0xe81fff, int use_cache = 1);
+	void RefreshSzone(int player, int flag = 0x681fff, int use_cache = 1);
 	void RefreshHand(int player, int flag = 0x681fff, int use_cache = 1);
 	void RefreshGrave(int player, int flag = 0x81fff, int use_cache = 1);
 	void RefreshExtra(int player, int flag = 0xe81fff, int use_cache = 1);
@@ -65,3 +66,4 @@ protected:
 }
 
 #endif //TAG_DUEL_H
+

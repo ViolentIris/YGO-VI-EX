@@ -1,9 +1,13 @@
 #ifndef REPLAY_MODE_H
 #define REPLAY_MODE_H
-
 #include <cstdint>
+#include <stdint.h>
 #include <vector>
+#include "config.h"
+#include "data_manager.h"
+#include "deck_manager.h"
 #include "replay.h"
+#include "../ocgcore/mtrandom.h"
 
 namespace ygo {
 
