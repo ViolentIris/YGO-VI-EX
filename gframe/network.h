@@ -9,6 +9,8 @@
 #include <event2/buffer.h>
 #include <event2/thread.h>
 #include <type_traits>
+#include <cstdint>
+#include <cstring>
 
 #define check_trivially_copyable(T) static_assert(std::is_trivially_copyable<T>::value == true && std::is_standard_layout<T>::value == true, "not trivially copyable")
 
@@ -268,7 +270,7 @@ public:
 #define NETPLAYER_TYPE_OBSERVER		7
 
 #define CTOS_RESPONSE		0x1		// byte array
-#define CTOS_UPDATE_DECK	0x2		// mainc, sidec, int32_t[mainc + sidec]
+#define CTOS_UPDATE_DECK	0x2		// CTOS_DeckData
 #define CTOS_HAND_RESULT	0x3		// CTOS_HandResult
 #define CTOS_TP_RESULT		0x4		// CTOS_TPResult
 #define CTOS_PLAYER_INFO	0x10	// CTOS_PlayerInfo
@@ -302,7 +304,7 @@ public:
 #define STOC_LEAVE_GAME		0x14	// reserved
 #define STOC_DUEL_START		0x15	// no data
 #define STOC_DUEL_END		0x16	// no data
-#define STOC_REPLAY			0x17	// ReplayHeader + byte array
+#define STOC_REPLAY			0x17	// ExtendedReplayHeader + byte array
 #define STOC_TIME_LIMIT		0x18	// STOC_TimeLimit
 #define STOC_CHAT			0x19	// uint16_t + uint16_t array
 #define STOC_HS_PLAYER_ENTER	0x20	// STOC_HS_PlayerEnter

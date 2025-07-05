@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <vector>
 #include "replay.h"
+#include <cstdint>
 
 namespace ygo {
 

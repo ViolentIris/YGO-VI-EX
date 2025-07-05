@@ -1,5 +1,6 @@
 #include "config.h"
 #include "menu_handler.h"
+#include "myfilesystem.h"
 #include "netserver.h"
 #include "duelclient.h"
 #include "deck_manager.h"
@@ -780,8 +781,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				myswprintf(ex_filename, L"%ls", mainGame->lstReplayList->getListItem(mainGame->lstReplayList->getSelected()));
 				if(!replay.OpenReplay(ex_filename))
 					break;
-				const ReplayHeader& rh = replay.pheader;
-				if(rh.flag & REPLAY_SINGLE_MODE)
+				if (replay.pheader.base.flag & REPLAY_SINGLE_MODE)
 					break;
 				int max = (rh.flag & REPLAY_TAG) ? 4 : 2;
 				//player name
@@ -970,31 +970,42 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 			}
 			case LISTBOX_REPLAY_LIST: {
 				int sel = mainGame->lstReplayList->getSelected();
-				if(sel == -1)
+				if(sel < 0)
 					break;
-				if(!ReplayMode::cur_replay.OpenReplay(mainGame->lstReplayList->getListItem(sel)))
+				auto filename = mainGame->lstReplayList->getListItem(sel);
+				if (!filename)
 					break;
-				wchar_t infobuf[256];
+				wchar_t replay_path[256]{};
+				myswprintf(replay_path, L"./replay/%ls", filename);
+				if (!temp_replay.OpenReplay(replay_path)) {
+					mainGame->stReplayInfo->setText(L"Error");
+					break;
+				}
+				wchar_t infobuf[256]{};
 				std::wstring repinfo;
 				time_t curtime;
-				if(ReplayMode::cur_replay.pheader.flag & REPLAY_UNIFORM)
-					curtime = ReplayMode::cur_replay.pheader.start_time;
-				else
-					curtime = ReplayMode::cur_replay.pheader.seed;
-				tm* st = localtime(&curtime);
-				wcsftime(infobuf, 256, L"%Y/%m/%d %H:%M:%S\n", st);
-				repinfo.append(infobuf);
-				wchar_t namebuf[4][20];
-				ReplayMode::cur_replay.ReadName(namebuf[0]);
-				ReplayMode::cur_replay.ReadName(namebuf[1]);
-				if(ReplayMode::cur_replay.pheader.flag & REPLAY_TAG) {
-					ReplayMode::cur_replay.ReadName(namebuf[2]);
-					ReplayMode::cur_replay.ReadName(namebuf[3]);
+				const auto& rh = temp_replay.pheader.base;
+				if(temp_replay.pheader.base.flag & REPLAY_UNIFORM)
+					curtime = rh.start_time;
+				else{
+					curtime = rh.seed;
+					wchar_t version_info[256]{};
+					myswprintf(version_info, L"version 0x%X\n", rh.version);
+					repinfo.append(version_info);
 				}
-				if(ReplayMode::cur_replay.pheader.flag & REPLAY_TAG)
-					myswprintf(infobuf, L"%ls\n%ls\n===VS===\n%ls\n%ls\n", namebuf[0], namebuf[1], namebuf[2], namebuf[3]);
+				std::wcsftime(infobuf, sizeof infobuf / sizeof infobuf[0], L"%Y/%m/%d %H:%M:%S\n", std::localtime(&curtime));
+				repinfo.append(infobuf);
+				if (rh.flag & REPLAY_SINGLE_MODE) {
+					wchar_t path[256]{};
+					BufferIO::DecodeUTF8(temp_replay.script_name.c_str(), path);
+					repinfo.append(path);
+					repinfo.append(L"\n");
+				}
+				const auto& player_names = temp_replay.players;
+				if(rh.flag & REPLAY_TAG)
+					myswprintf(infobuf, L"%ls\n%ls\n===VS===\n%ls\n%ls\n", player_names[0].c_str(), player_names[1].c_str(), player_names[2].c_str(), player_names[3].c_str());
 				else
-					myswprintf(infobuf, L"%ls\n===VS===\n%ls\n", namebuf[0], namebuf[1]);
+					myswprintf(infobuf, L"%ls\n===VS===\n%ls\n", player_names[0].c_str(), player_names[1].c_str());
 				repinfo.append(infobuf);
 				mainGame->ebRepStartTurn->setText(L"1");
 				mainGame->SetStaticText(mainGame->stReplayInfo, 180, mainGame->guiFont, repinfo.c_str());
