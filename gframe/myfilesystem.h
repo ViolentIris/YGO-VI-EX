@@ -19,6 +19,11 @@
 
 class FileSystem {
 public:
+	static void SafeFileName(wchar_t* wfile) {
+		while((wfile = std::wcspbrk(wfile, L"<>:\"/\\|?*")) != nullptr)
+			*wfile++ = '_';
+	}
+
 	static bool IsFileExists(const wchar_t* wfile) {
 		DWORD attr = GetFileAttributesW(wfile);
 		return attr != INVALID_FILE_ATTRIBUTES && !(attr & FILE_ATTRIBUTE_DIRECTORY);

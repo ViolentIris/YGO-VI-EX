@@ -61,6 +61,7 @@ public:
 	const wchar_t* GetSideFormatString();
 	const wchar_t* GetExtraFormatString();
 	int GetTypeCount(std::vector<code_pointer> list, unsigned int ctype);
+		static bool SaveDeckArray(const DeckArray& deck, const wchar_t* name);
 };
 
 extern DeckManager deckManager;

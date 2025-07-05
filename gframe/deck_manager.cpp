@@ -321,4 +321,22 @@ int DeckManager::GetTypeCount(std::vector<code_pointer> list, unsigned int ctype
 	}
 	return res;
 }
+bool DeckManager::SaveDeckArray(const DeckArray& deck, const wchar_t* name) {
+	if (!FileSystem::IsDirExists(L"./deck") && !FileSystem::MakeDir(L"./deck"))
+		return false;
+	FILE* fp = OpenDeckFile(name, "w");
+	if (!fp)
+		return false;
+	std::fprintf(fp, "#created by ...\n#main\n");
+	for (const auto& code : deck.main)
+		std::fprintf(fp, "%u\n", code);
+	std::fprintf(fp, "#extra\n");
+	for (const auto& code : deck.extra)
+		std::fprintf(fp, "%u\n", code);
+	std::fprintf(fp, "!side\n");
+	for (const auto& code : deck.side)
+		std::fprintf(fp, "%u\n", code);
+	std::fclose(fp);
+	return true;
+}
 }
