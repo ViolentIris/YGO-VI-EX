@@ -777,35 +777,27 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_EXPORT_DECK: {
-				if(mainGame->lstReplayList->getSelected() == -1)
+				auto selected = mainGame->lstReplayList->getSelected();
+				if(selected == -1)
 					break;
 				Replay replay;
-				wchar_t ex_filename[256];
-				wchar_t namebuf[4][20];
-				wchar_t filename[256];
-				myswprintf(ex_filename, L"%ls", mainGame->lstReplayList->getListItem(mainGame->lstReplayList->getSelected()));
-				if(!replay.OpenReplay(ex_filename))
+				wchar_t replay_filename[256]{};
+				wchar_t namebuf[4][20]{};
+				wchar_t filename[256]{};
+				wchar_t replay_path[256]{};
+				BufferIO::CopyWideString(mainGame->lstReplayList->getListItem(selected), replay_filename);
+				myswprintf(replay_path, L"./replay/%ls", replay_filename);
+				if (!replay.OpenReplay(replay_path))
 					break;
 				if (replay.pheader.base.flag & REPLAY_SINGLE_MODE)
 					break;
-				int max = (rh.flag & REPLAY_TAG) ? 4 : 2;
-				//player name
-				for(int i = 0; i < max; ++i)
-					replay.ReadName(namebuf[i]);
-				//skip pre infos
-				for(int i = 0; i < 4; ++i)
-					replay.ReadInt32();
-				//deck
-				for(int i = 0; i < max; ++i) {
-					int main = replay.ReadInt32();
-					Deck tmp_deck;
-					for(int j = 0; j < main; ++j)
-						tmp_deck.main.push_back(dataManager.GetCodePointer(replay.ReadInt32()));
-					int extra = replay.ReadInt32();
-					for(int j = 0; j < extra; ++j)
-						tmp_deck.extra.push_back(dataManager.GetCodePointer(replay.ReadInt32()));
-					myswprintf(filename, L"%ls %ls", ex_filename, namebuf[i]);
-					deckManager.SaveDeck(tmp_deck, filename);
+				for (size_t i = 0; i < replay.decks.size(); ++i) {
+					BufferIO::CopyWideString(replay.players[Replay::GetDeckPlayer(i)].c_str(), namebuf[i]);
+					FileSystem::SafeFileName(namebuf[i]);
+				}
+				for (size_t i = 0; i < replay.decks.size(); ++i) {
+					myswprintf(filename, L"./deck/%ls-%d %ls.ydk", replay_filename, i + 1, namebuf[i]);
+					DeckManager::SaveDeckArray(replay.decks[i], filename);
 				}
 				mainGame->stACMessage->setText(dataManager.GetSysString(1335));
 				mainGame->PopupElement(mainGame->wACMessage, 20);
