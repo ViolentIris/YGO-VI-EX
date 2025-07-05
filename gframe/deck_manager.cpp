@@ -224,7 +224,7 @@ bool DeckManager::LoadSide(Deck& deck, int* dbuf, int mainc, int sidec) {
 }
 FILE* DeckManager::OpenDeckFile(const wchar_t* file, const char* mode) {
 #ifdef WIN32
-	FILE* fp = _wfopen(file, (wchar_t*)mode);
+	FILE* fp = mywfopen(file, mode);
 #else
 	char file2[256];
 	BufferIO::EncodeUTF8(file, file2);

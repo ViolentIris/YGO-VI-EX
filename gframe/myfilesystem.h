@@ -85,6 +85,11 @@ public:
 
 class FileSystem {
 public:
+	static void SafeFileName(wchar_t* wfile) {
+		while((wfile = std::wcspbrk(wfile, L"/")) != nullptr)
+			*wfile++ = '_';
+	}
+
 	static bool IsFileExists(const char* file) {
 		struct stat fileStat;
 		return (stat(file, &fileStat) == 0) && !S_ISDIR(fileStat.st_mode);

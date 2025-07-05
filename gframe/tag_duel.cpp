@@ -284,7 +284,7 @@ void TagDuel::UpdateDeck(DuelPlayer* dp, unsigned char* pdata, int len) {
 		return;
 	}
 	int deck_list[SIZE_NETWORK_BUFFER / sizeof(int32_t)];
-	deck_error[dp->type] = deckManager.LoadDeck(pdeck[dp->type], deck_list, mainc, sidec);
+	deck_error[dp->type] = deckManager.LoadDeck(pdeck[dp->type], deckbuf.list, deckbuf.mainc, deckbuf.sidec);
 }
 void TagDuel::StartDuel(DuelPlayer* dp) {
 	if(dp != host_player)
