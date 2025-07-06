@@ -293,7 +293,7 @@ void SoundManager::PlayDialogSound(irr::gui::IGUIElement * element) {
 	}
 #endif // YGOPRO_USE_AUDIO
 }
-bool SoundManager::IsPlayingMusic(const char* music) {
+bool SoundManager::IsPlayingMusic(wchar_t* music) {
 #ifdef YGOPRO_USE_MINIAUDIO
 	if(music) {
 		return !mywcsncasecmp(currentPlayingMusic, music, 1024) && ma_sound_is_playing(&soundBGM);
@@ -312,7 +312,7 @@ bool SoundManager::IsPlayingMusic(const char* music) {
 #endif
 	return false;
 }
-void SoundManager::PlayMusic(const char* music, bool loop) {
+void SoundManager::PlayMusic(wchar_t* music, bool loop) {
 #ifdef YGOPRO_USE_AUDIO
 	if(!mainGame->chkEnableMusic->isChecked())
 		return;
