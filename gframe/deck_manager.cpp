@@ -249,7 +249,7 @@ bool DeckManager::LoadDeck(const wchar_t* file) {
 	}
 	if(!fp)
 		return false;
-	int cardlist[128];
+	uint32_t cardlist[128];
 	bool is_side = false;
 	char linebuf[256];
 	while(fgets(linebuf, 256, fp) && ct < 128) {
