@@ -1099,7 +1099,7 @@ void DuelClient::HandleSTOCPacketLan(unsigned char* data, int len) {
 	}
 }
 // Analyze STOC_GAME_MSG packet
-int DuelClient::ClientAnalyze(unsigned char* msg, unsigned int len) {
+bool DuelClient::ClientAnalyze(unsigned char* msg, int len) {
 	unsigned char* pbuf = msg;
 	wchar_t textBuffer[256];
 	mainGame->dInfo.curMsg = BufferIO::ReadUInt8(pbuf);
@@ -4383,7 +4383,14 @@ void DuelClient::BroadcastReply(evutil_socket_t fd, short events, void * arg) {
 			mainGame->gMutex.lock();
 			remotes.insert(remote);
 			pHP->ipaddr = ipaddr;
-			hosts.push_back(*pHP);
+			wchar_t host_fulladdr[100];
+			myswprintf(host_fulladdr, L"%d.%d.%d.%d:%d",
+				ipaddr & 0xff,
+				(ipaddr >> 8) & 0xff,
+				(ipaddr >> 16) & 0xff,
+				(ipaddr >> 24) & 0xff,
+				pHP->port);
+			hosts.push_back(std::wstring(host_fulladdr));			
 			std::wstring hoststr;
 			hoststr.append(L"[");
 			hoststr.append(deckManager.GetLFListName(pHP->host.lflist));

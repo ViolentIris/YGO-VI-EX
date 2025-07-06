@@ -38,18 +38,21 @@ private:
 	static wchar_t event_string[256];
 	static std::mt19937 rnd;
 	static std::uniform_real_distribution<float> real_dist;
+	static bool is_refreshing;
+	static int match_kill;
+	static event* resp_event;
+	static std::set<std::pair<unsigned int, unsigned short>> remotes;
 public:
 	static unsigned int temp_ip;
 	static unsigned short temp_port;
 	static unsigned short temp_ver;
 	static bool try_needed;
 	static unsigned char selftype;
-	
 	static bool StartClient(unsigned int ip, unsigned short port, bool create_game = true);
 	static void ConnectTimeout(evutil_socket_t fd, short events, void* arg);
 	static void StopClient(bool is_exiting = false);
 	static void ClientRead(bufferevent* bev, void* ctx);
-	static void ClientEvent(bufferevent *bev, short events, void *ctx);
+	static void ClientEvent(bufferevent* bev, short events, void* ctx);
 	static int ClientThread();
 	static void HandleSTOCPacketLan(unsigned char* data, int len);
 	static bool ClientAnalyze(unsigned char* msg, int len);
@@ -92,12 +95,6 @@ public:
 		bufferevent_write(client_bev, duel_client_write, len + 3);
 	}
 	
-protected:
-	static bool is_refreshing;
-	static int match_kill;
-	static event* resp_event;
-	static std::set<std::pair<unsigned int, unsigned short>> remotes;
-public:
 	static std::vector<HostPacket> hosts;
 	static std::vector<std::wstring> hosts_srvpro;
 	static bool is_srvpro;
