@@ -19,6 +19,30 @@ bool SoundManager::Init() {
 	RefreshBGMList();
 	bgm_process = false;
 	rnd.seed(std::random_device()());
+#ifdef YGOPRO_USE_MINIAUDIO
+	engineConfig = ma_engine_config_init();
+#ifdef YGOPRO_MINIAUDIO_SUPPORT_OPUS_VORBIS
+	ma_decoding_backend_vtable* pCustomBackendVTables[] =
+	{
+		ma_decoding_backend_libvorbis,
+		ma_decoding_backend_libopus
+	};
+	resourceManagerConfig = ma_resource_manager_config_init();
+	resourceManagerConfig.ppCustomDecodingBackendVTables = pCustomBackendVTables;
+	resourceManagerConfig.customDecodingBackendCount = sizeof(pCustomBackendVTables) / sizeof(pCustomBackendVTables[0]);
+	resourceManagerConfig.pCustomDecodingBackendUserData = NULL;
+	if(ma_resource_manager_init(&resourceManagerConfig, &resourceManager) != MA_SUCCESS) {
+		return false;
+	}
+	engineConfig.pResourceManager = &resourceManager;
+#endif
+	if(ma_engine_init(&engineConfig, &engineSound) != MA_SUCCESS || ma_engine_init(&engineConfig, &engineMusic) != MA_SUCCESS) {
+		return false;
+	} else {
+		return true;
+	}
+#endif // YGOPRO_USE_MINIAUDIO
+#ifdef YGOPRO_USE_IRRKLANG
 	engineSound = irrklang::createIrrKlangDevice();
 	engineMusic = irrklang::createIrrKlangDevice();
 	if(!engineSound || !engineMusic) {
