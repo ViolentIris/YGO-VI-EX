@@ -10,7 +10,6 @@
 #include "duelclient.h"
 #include "netserver.h"
 #include "single_mode.h"
-#include "../ocgcore/card_data.h"
 #include <sstream>
 #include <thread>
 #include <regex>
