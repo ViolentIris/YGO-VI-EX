@@ -304,7 +304,7 @@ void SoundManager::PlayBGM(int scene) {
 	if(!mainGame->chkMusicMode->isChecked())
 		scene = BGM_ALL;
 	if((scene != bgm_scene) && (bgm_scene != BGM_CUSTOM) || (scene != previous_bgm_scene) && (bgm_scene == BGM_CUSTOM) || !IsPlayingMusic()) {
-		wchar_t* BGMName[1024];
+	char BGMName[1024];
 		int count = BGMList[scene].size();
 		if(count <= 0)
 			return;
@@ -318,7 +318,7 @@ void SoundManager::PlayBGM(int scene) {
 	}
 #endif
 }
-void SoundManager::PlayCustomBGM(wchar_t* BGMName) {
+void SoundManager::PlayCustomBGM(char* BGMName) {
 #ifdef YGOPRO_USE_MINIAUDIO
 	if(!mainGame->chkEnableMusic->isChecked() || !mainGame->chkMusicMode->isChecked() || bgm_process)
 		return;
