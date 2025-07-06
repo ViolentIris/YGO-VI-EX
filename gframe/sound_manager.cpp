@@ -340,7 +340,7 @@ void SoundManager::PlayBGM(int scene) {
 	if(!mainGame->chkMusicMode->isChecked())
 		scene = BGM_ALL;
 	if((scene != bgm_scene) && (bgm_scene != BGM_CUSTOM) || (scene != previous_bgm_scene) && (bgm_scene == BGM_CUSTOM) || !IsPlayingMusic()) {
-		char BGMName[1024];
+		wchar_t* BGMName[1024];
 		int count = BGMList[scene].size();
 		if(count <= 0)
 			return;
