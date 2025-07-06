@@ -122,7 +122,7 @@ void SoundManager::PlaySound(wchar_t* sound) {
 		BufferIO::EncodeUTF8(sound, csound);
 	engineSound->play2D(csound);
 #endif
-#endif
+}
 }
 void SoundManager::PlaySoundEffect(int sound) {
 #ifdef YGOPRO_USE_AUDIO
