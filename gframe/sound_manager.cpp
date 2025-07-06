@@ -303,13 +303,12 @@ void SoundManager::PlayBGM(int scene) {
 		return;
 	if(!mainGame->chkMusicMode->isChecked())
 		scene = BGM_ALL;
-	char BGMName[1024];
-	if (((scene != bgm_scene) && (bgm_scene != BGM_CUSTOM)) || ((scene != previous_bgm_scene) && (bgm_scene == BGM_CUSTOM)) || (soundBGM && soundBGM->isFinished())) {
+	if(scene != bgm_scene || !IsPlayingMusic()) {
 		int count = BGMList[scene].size();
 		if(count <= 0)
 			return;
 		bgm_scene = scene;
-		int bgm = rand() % count;
+		int bgm = (count > 1) ? std::uniform_int_distribution<>(0, count - 1)(rnd) : 0;
 		auto name = BGMList[scene][bgm].c_str();
 		wchar_t fname[1024];
 		myswprintf(fname, L"./sound/%ls/%ls", mainGame->gameConf.soundtheme, name);
