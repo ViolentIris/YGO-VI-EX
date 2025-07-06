@@ -44,11 +44,11 @@ public:
 	void PlaySound(wchar_t* sound);
 	void PlaySoundEffect(int sound);
 	void PlayDialogSound(irr::gui::IGUIElement * element);
-	bool IsPlayingMusic(char* music = 0);
-	void PlayMusic(char* music, bool loop);
+	bool IsPlayingMusic(const char* music = 0);
+	void PlayMusic(const char* music, bool loop);
 	void PlayBGM(int scene);
 	void PlayCustomBGM(char* BGMName);
-	void PlayCustomSound(char* SoundName);	
+	void PlayCustomSound(wchar_t* SoundName);	
 	void StopBGM();
 	void StopSound();
 	void SetSoundVolume(double volume);
