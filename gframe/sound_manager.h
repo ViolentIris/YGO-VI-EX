@@ -19,6 +19,17 @@ private:
 	int previous_bgm_scene;
 	bool bgm_process;
 	std::mt19937 rnd;
+#ifdef YGOPRO_USE_MINIAUDIO
+	ma_engine_config engineConfig;
+#ifdef YGOPRO_MINIAUDIO_SUPPORT_OPUS_VORBIS
+	ma_resource_manager_config resourceManagerConfig;
+	ma_resource_manager resourceManager;
+#endif
+	ma_engine engineSound;
+	ma_engine engineMusic;
+	ma_sound soundBGM;
+	wchar_t currentPlayingMusic[1024]{};
+#endif
 #ifdef YGOPRO_USE_IRRKLANG
 	irrklang::ISoundEngine* engineSound;
 	irrklang::ISoundEngine* engineMusic;
@@ -31,7 +42,8 @@ public:
 	void RefreshBGMList();
 	void PlaySoundEffect(int sound);
 	void PlayDialogSound(irr::gui::IGUIElement * element);
-	void PlayMusic(char* song, bool loop);
+	bool IsPlayingMusic(wchar_t* music = 0);
+	void PlayMusic(wchar_t* music, bool loop);
 	void PlayBGM(int scene);
 	void PlayCustomBGM(char* BGMName);
 	void PlayCustomSound(char* SoundName);	

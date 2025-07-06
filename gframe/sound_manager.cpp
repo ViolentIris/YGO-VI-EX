@@ -51,7 +51,12 @@ void SoundManager::RefershBGMDir(std::wstring path, int scene) {
 	myswprintf(soundT, L"./sound/%ls/", mainGame->gameConf.soundtheme);
 	std::wstring search = soundT + path;
 	FileSystem::TraversalDir(search.c_str(), [this, &path, scene](const wchar_t* name, bool isdir) {
-		if(!isdir && wcsrchr(name, '.') && (!mywcsncasecmp(wcsrchr(name, '.'), L".mp3", 4) || !mywcsncasecmp(wcsrchr(name, '.'), L".ogg", 4))) {
+		if(!isdir && (
+			IsExtension(name, L".mp3")
+#if defined(YGOPRO_MINIAUDIO_SUPPORT_OPUS_VORBIS) || defined(YGOPRO_USE_IRRKLANG)
+			|| IsExtension(name, L".ogg")
+#endif
+			)) {
 			std::wstring filename = path + L"/" + name;
 			BGMList[BGM_ALL].push_back(filename);
 			BGMList[scene].push_back(filename);
@@ -63,136 +68,145 @@ void SoundManager::PlaySoundEffect(int sound) {
 #ifdef YGOPRO_USE_AUDIO
 	if(!mainGame->chkEnableSound->isChecked())
 		return;
-	engineSound->setSoundVolume(mainGame->gameConf.sound_volume);
+	char soundName[32];
 	switch(sound) {
 	case SOUND_SUMMON: {
-		engineSound->play2D("./sound/summon.wav");
+		strcpy(soundName, "summon");
 		break;
 	}
 	case SOUND_SPECIAL_SUMMON: {
-		engineSound->play2D("./sound/specialsummon.wav");
+		strcpy(soundName, "specialsummon");
 		break;
 	}
 	case SOUND_ACTIVATE: {
-		engineSound->play2D("./sound/activate.wav");
+		strcpy(soundName, "activate");
 		break;
 	}
 	case SOUND_SET: {
-		engineSound->play2D("./sound/set.wav");
+		strcpy(soundName, "set");
 		break;
 	}
 	case SOUND_FILP: {
-		engineSound->play2D("./sound/flip.wav");
+		strcpy(soundName, "flip");
 		break;
 	}
 	case SOUND_REVEAL: {
-		engineSound->play2D("./sound/reveal.wav");
+		strcpy(soundName, "reveal");
 		break;
 	}
 	case SOUND_EQUIP: {
-		engineSound->play2D("./sound/equip.wav");
+		strcpy(soundName, "equip");
 		break;
 	}
 	case SOUND_DESTROYED: {
-		engineSound->play2D("./sound/destroyed.wav");
+		strcpy(soundName, "destroyed");
 		break;
 	}
 	case SOUND_BANISHED: {
-		engineSound->play2D("./sound/banished.wav");
+		strcpy(soundName, "banished");
 		break;
 	}
 	case SOUND_TOKEN: {
-		engineSound->play2D("./sound/token.wav");
+		strcpy(soundName, "token");
 		break;
 	}
 	case SOUND_NEGATE: {
-		engineSound->play2D("./sound/negate.wav");
+		strcpy(soundName, "negate");
 		break;
 	}
 	case SOUND_ATTACK: {
-		engineSound->play2D("./sound/attack.wav");
+		strcpy(soundName, "attack");
 		break;
 	}
 	case SOUND_DIRECT_ATTACK: {
-		engineSound->play2D("./sound/directattack.wav");
+		strcpy(soundName, "directattack");
 		break;
 	}
 	case SOUND_DRAW: {
-		engineSound->play2D("./sound/draw.wav");
+		strcpy(soundName, "draw");
 		break;
 	}
 	case SOUND_SHUFFLE: {
-		engineSound->play2D("./sound/shuffle.wav");
+		strcpy(soundName, "shuffle");
 		break;
 	}
 	case SOUND_DAMAGE: {
-		engineSound->play2D("./sound/damage.wav");
+		strcpy(soundName, "damage");
 		break;
 	}
 	case SOUND_RECOVER: {
-		engineSound->play2D("./sound/gainlp.wav");
+		strcpy(soundName, "gainlp");
 		break;
 	}
 	case SOUND_COUNTER_ADD: {
-		engineSound->play2D("./sound/addcounter.wav");
+		strcpy(soundName, "addcounter");
 		break;
 	}
 	case SOUND_COUNTER_REMOVE: {
-		engineSound->play2D("./sound/removecounter.wav");
+		strcpy(soundName, "removecounter");
 		break;
 	}
 	case SOUND_COIN: {
-		engineSound->play2D("./sound/coinflip.wav");
+		strcpy(soundName, "coinflip");
 		break;
 	}
 	case SOUND_DICE: {
-		engineSound->play2D("./sound/diceroll.wav");
+		strcpy(soundName, "diceroll");
 		break;
 	}
 	case SOUND_NEXT_TURN: {
-		engineSound->play2D("./sound/nextturn.wav");
+		strcpy(soundName, "nextturn");
 		break;
 	}
 	case SOUND_PHASE: {
-		engineSound->play2D("./sound/phase.wav");
+		strcpy(soundName, "phase");
 		break;
 	}
 	case SOUND_MENU: {
-		engineSound->play2D("./sound/menu.wav");
+		strcpy(soundName, "menu");
 		break;
 	}
 	case SOUND_BUTTON: {
-		engineSound->play2D("./sound/button.wav");
+		strcpy(soundName, "button");
 		break;
 	}
 	case SOUND_INFO: {
-		engineSound->play2D("./sound/info.wav");
+		strcpy(soundName, "info");
 		break;
 	}
 	case SOUND_QUESTION: {
-		engineSound->play2D("./sound/question.wav");
+		strcpy(soundName, "question");
 		break;
 	}
 	case SOUND_CARD_PICK: {
-		engineSound->play2D("./sound/cardpick.wav");
+		strcpy(soundName, "cardpick");
 		break;
 	}
 	case SOUND_CARD_DROP: {
-		engineSound->play2D("./sound/carddrop.wav");
+		strcpy(soundName, "carddrop");
 		break;
 	}
 	case SOUND_PLAYER_ENTER: {
-		engineSound->play2D("./sound/playerenter.wav");
+		strcpy(soundName, "playerenter");
 		break;
 	}
 	case SOUND_CHAT: {
-		engineSound->play2D("./sound/chatmessage.wav");
+		strcpy(soundName, "chatmessage");
 		break;
 	}
 	default:
 		break;
 	}
+	char soundPath[40];
+	std::snprintf(soundPath, 40, "./sound/%s.wav", soundName);
+	SetSoundVolume(mainGame->gameConf.sound_volume);
+#ifdef YGOPRO_USE_MINIAUDIO
+	ma_engine_play_sound(&engineSound, soundPath, nullptr);
 #endif
+#ifdef YGOPRO_USE_IRRKLANG
+	engineSound->play2D(soundPath);
+#endif
+#endif // YGOPRO_USE_AUDIO
 }
 void SoundManager::PlayDialogSound(irr::gui::IGUIElement * element) {
 #ifdef YGOPRO_USE_AUDIO
@@ -219,14 +233,43 @@ void SoundManager::PlayDialogSound(irr::gui::IGUIElement * element) {
 	}
 #endif // YGOPRO_USE_AUDIO
 }
-void SoundManager::PlayMusic(char* song, bool loop) {
+bool SoundManager::IsPlayingMusic(wchar_t* music) {
+#ifdef YGOPRO_USE_MINIAUDIO
+	if(music) {
+		return !mywcsncasecmp(currentPlayingMusic, music, 1024) && ma_sound_is_playing(&soundBGM);
+	} else {
+		return ma_sound_is_playing(&soundBGM);
+	}
+#endif
+#ifdef YGOPRO_USE_IRRKLANG
+	if(music) {
+		char cmusic[1024];
+		BufferIO::EncodeUTF8(music, cmusic);
+		return engineMusic->isCurrentlyPlaying(cmusic);
+	} else {
+		return soundBGM && !soundBGM->isFinished();
+	}
+#endif
+	return false;
+}
+void SoundManager::PlayMusic(wchar_t* music, bool loop) {
 #ifdef YGOPRO_USE_AUDIO
 	if(!mainGame->chkEnableMusic->isChecked())
 		return;
-	if(!engineMusic->isCurrentlyPlaying(song)) {
-		engineMusic->stopAllSounds();
-		engineMusic->setSoundVolume(mainGame->gameConf.music_volume);
-		soundBGM = engineMusic->play2D(song, loop, false, true);
+	if(!IsPlayingMusic(music)) {
+		StopBGM();
+	SetMusicVolume(mainGame->gameConf.music_volume);
+#ifdef YGOPRO_USE_MINIAUDIO
+		BufferIO::CopyWStr(music, currentPlayingMusic, 1024);
+		ma_sound_init_from_file_w(&engineMusic, music, MA_SOUND_FLAG_ASYNC | MA_SOUND_FLAG_STREAM, nullptr, nullptr, &soundBGM);
+		ma_sound_set_looping(&soundBGM, loop);
+		ma_sound_start(&soundBGM);
+#endif
+#ifdef YGOPRO_USE_IRRKLANG
+		char cmusic[1024];
+		BufferIO::EncodeUTF8(music, cmusic);
+		soundBGM = engineMusic->play2D(cmusic, loop, false, true);
+#endif
 	}
 #endif
 }
@@ -290,6 +333,9 @@ void SoundManager::SetSoundVolume(double volume) {
 #endif
 }
 void SoundManager::SetMusicVolume(double volume) {
+#ifdef YGOPRO_USE_MINIAUDIO
+	ma_engine_set_volume(&engineMusic, volume);
+#endif
 #ifdef YGOPRO_USE_IRRKLANG
 	engineMusic->setSoundVolume(volume);
 #endif
