@@ -319,10 +319,8 @@ void SoundManager::PlayBGM(int scene) {
 #endif
 }
 void SoundManager::PlayCustomBGM(char* BGMName) {
-#ifdef YGOPRO_USE_MINIAUDIO
+#ifdef YGOPRO_USE_AUDIO
 	if(!mainGame->chkEnableMusic->isChecked() || !mainGame->chkMusicMode->isChecked() || bgm_process)
-		return;
-	if(engineMusic->isCurrentlyPlaying(BGMName))
 		return;
 	bgm_process = true;
 	int pscene = bgm_scene;
