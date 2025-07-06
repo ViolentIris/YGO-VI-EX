@@ -2295,8 +2295,10 @@ int DuelClient::ClientAnalyze(unsigned char* msg, unsigned int len) {
 	}
 	case MSG_CONFIRM_CARDS: {
 		/*int player = */mainGame->LocalPlayer(BufferIO::ReadInt8(pbuf));
+		int skip_panel = BufferIO::ReadInt8(pbuf);
 		int count = BufferIO::ReadInt8(pbuf);
-		int code, c, l, s;
+		int c, s;
+		unsigned int code, l;
 		std::vector<ClientCard*> field_confirm;
 		std::vector<ClientCard*> panel_confirm;
 		ClientCard* pcard;
@@ -2323,8 +2325,8 @@ int DuelClient::ClientAnalyze(unsigned char* msg, unsigned int len) {
 			myswprintf(textBuffer, L"*[%ls]", dataManager.GetName(code));
 			mainGame->AddLog(textBuffer, code);
 			mainGame->gMutex.unlock();
-			if (l & 0x41) {
-				if(count == 1) {
+			if (l & 0x41 || l == 0) {
+				if(count == 1 && l != 0) {
 					float shift = -0.15f;
 					if (c == 0 && l == 0x40) shift = 0.15f;
 					pcard->dPos = irr::core::vector3df(shift, 0, 0);
@@ -2333,7 +2335,16 @@ int DuelClient::ClientAnalyze(unsigned char* msg, unsigned int len) {
 					else pcard->dRot = irr::core::vector3df(0, 3.14159f / 5.0f, 0);
 					pcard->is_moving = true;
 					pcard->aniFrame = 5;
+					if (auto_watch_mode && pcard->code > 0) {
+						mainGame->showcardcode = pcard->code;
+						mainGame->showcarddif = 0;
+						mainGame->showcardp = 0;
+						mainGame->showcard = 4;
+					}
 					mainGame->WaitFrameSignal(45);
+					if (auto_watch_mode) {
+						mainGame->showcard = 0;
+					}
 					mainGame->dField.MoveCard(pcard, 5);
 					mainGame->WaitFrameSignal(5);
 				} else {
@@ -2347,7 +2358,7 @@ int DuelClient::ClientAnalyze(unsigned char* msg, unsigned int len) {
 		}
 		if (field_confirm.size() > 0) {
 			mainGame->WaitFrameSignal(5);
-			for(size_t i = 0; i < field_confirm.size(); ++i) {
+			for(int i = 0; i < (int)field_confirm.size(); ++i) {
 				pcard = field_confirm[i];
 				c = pcard->controler;
 				l = pcard->location;
@@ -2373,18 +2384,27 @@ int DuelClient::ClientAnalyze(unsigned char* msg, unsigned int len) {
 					pcard->aniFrame = 5;
 				}
 			}
+			if (auto_watch_mode && pcard->code > 0) {
+				mainGame->showcardcode = pcard->code;
+				mainGame->showcarddif = 0;
+				mainGame->showcardp = 0;
+				mainGame->showcard = 4;
+			}
 			if (mainGame->dInfo.isReplay)
 				mainGame->WaitFrameSignal(30);
 			else
 				mainGame->WaitFrameSignal(90);
-			for(size_t i = 0; i < field_confirm.size(); ++i) {
+			if (auto_watch_mode) {
+				mainGame->showcard = 0;
+			}
+			for(int i = 0; i < (int)field_confirm.size(); ++i) {
 				pcard = field_confirm[i];
 				mainGame->dField.MoveCard(pcard, 5);
 				pcard->is_highlighting = false;
 			}
 			mainGame->WaitFrameSignal(5);
 		}
-		if (panel_confirm.size() && !auto_watch_mode) {
+		if (!skip_panel && panel_confirm.size() && mainGame->dInfo.player_type != 7 && !auto_watch_mode) {
 			std::sort(panel_confirm.begin(), panel_confirm.end(), ClientCard::client_card_sort);
 			mainGame->gMutex.lock();
 			mainGame->dField.selectable_cards = panel_confirm;
