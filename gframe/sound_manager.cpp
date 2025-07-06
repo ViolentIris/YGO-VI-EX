@@ -340,23 +340,21 @@ void SoundManager::PlayBGM(int scene) {
 	if(!mainGame->chkMusicMode->isChecked())
 		scene = BGM_ALL;
 	if((scene != bgm_scene) && (bgm_scene != BGM_CUSTOM) || (scene != previous_bgm_scene) && (bgm_scene == BGM_CUSTOM) || !IsPlayingMusic()) {
-	char BGMName[1024];
 		int count = BGMList[scene].size();
 		if(count <= 0)
 			return;
 		bgm_scene = scene;
 		int bgm = (count > 1) ? std::uniform_int_distribution<>(0, count - 1)(rnd) : 0;
 		auto name = BGMList[scene][bgm].c_str();
-		wchar_t fname[1024];
-		myswprintf(fname, L"./sound/%ls/%ls", mainGame->gameConf.soundtheme, name);
-		BufferIO::EncodeUTF8(fname, BGMName);
+		wchar_t BGMName[1024];
+		myswprintf(BGMName, L"./sound/%ls/%ls", mainGame->gameConf.soundtheme, name);
 		PlayMusic(BGMName, false);
 	}
 #endif
 }
-void SoundManager::PlayCustomBGM(char* BGMName) {
+void SoundManager::PlayCustomBGM(wchar_t* BGMName) {
 #ifdef YGOPRO_USE_AUDIO
-	if(!mainGame->chkEnableMusic->isChecked() || !mainGame->chkMusicMode->isChecked() || bgm_process)
+	if(!mainGame->chkEnableMusic->isChecked() || !mainGame->chkMusicMode->isChecked() || bgm_process || IsPlayingMusic(BGMName))
 		return;
 	bgm_process = true;
 	int pscene = bgm_scene;
