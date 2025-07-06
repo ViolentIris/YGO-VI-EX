@@ -4218,6 +4218,7 @@ bool DuelClient::ClientAnalyze(unsigned char* msg, int len) {
 	}
 	return true;
 }
+}
 void DuelClient::SwapField() {
 	is_swapping = true;
 }
