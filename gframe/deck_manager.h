@@ -8,6 +8,11 @@
 #include <sstream>
 
 namespace ygo {
+	constexpr int DECK_MAX_SIZE = 60;
+	constexpr int DECK_MIN_SIZE = 40;
+	constexpr int EXTRA_MAX_SIZE = 15;
+	constexpr int SIDE_MAX_SIZE = 15;
+	constexpr int PACK_MAX_SIZE = 1000;
 
 struct LFList {
 	unsigned int hash{};
@@ -49,8 +54,8 @@ public:
 	const wchar_t* GetLFListName(int lfhash);
 	const std::unordered_map<int, int>* GetLFListContent(int lfhash);
 	int CheckDeck(Deck& deck, int lfhash, int rule);
-	int LoadDeck(Deck& deck, int* dbuf, int mainc, int sidec);
-	bool LoadSide(Deck& deck, int* dbuf, int mainc, int sidec);
+	uint32_t LoadDeck(Deck& deck, uint32_t dbuf[], int mainc, int sidec, bool is_packlist = false);
+	bool LoadSide(Deck& deck, uint32_t dbuf[], int mainc, int sidec);
 	FILE* OpenDeckFile(const wchar_t * file, const char * mode);
 	bool LoadDeck(const wchar_t* file);
 	bool SaveDeck(Deck& deck, const wchar_t* name);
