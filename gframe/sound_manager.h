@@ -45,7 +45,7 @@ public:
 	void PlaySoundEffect(int sound);
 	void PlayDialogSound(irr::gui::IGUIElement * element);
 	bool IsPlayingMusic(wchar_t* music = 0);
-	void PlayMusic(wchar_t* music, bool loop);
+	void PlayMusic(char* music, bool loop);
 	void PlayBGM(int scene);
 	void PlayCustomBGM(char* BGMName);
 	void PlayCustomSound(char* SoundName);	
