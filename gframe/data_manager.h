@@ -10,6 +10,7 @@
 namespace ygo {
 	constexpr int MAX_STRING_ID = 0x7ff;
 	constexpr unsigned int MIN_CARD_ID = (unsigned int)(MAX_STRING_ID + 1) >> 4;
+	constexpr unsigned int MAX_CARD_ID = 0x0fffffffU;
 
 class DataManager {
 public:
