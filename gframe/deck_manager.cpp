@@ -324,7 +324,7 @@ int DeckManager::GetTypeCount(std::vector<code_pointer> list, unsigned int ctype
 bool DeckManager::SaveDeckArray(const DeckArray& deck, const wchar_t* name) {
 	if (!FileSystem::IsDirExists(L"./deck") && !FileSystem::MakeDir(L"./deck"))
 		return false;
-	FILE* fp = fopen(name, "w");
+	FILE* fp = OpenDeckFile(name, "w");
 	if (!fp)
 		return false;
 	std::fprintf(fp, "#created by ...\n#main\n");
