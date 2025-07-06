@@ -29,6 +29,7 @@ private:
 	ma_engine engineMusic;
 	ma_sound soundBGM;
 	wchar_t currentPlayingMusic[1024]{};
+	ma_sound* playingSoundEffect[10]{};
 #endif
 #ifdef YGOPRO_USE_IRRKLANG
 	irrklang::ISoundEngine* engineSound;
@@ -40,6 +41,7 @@ private:
 public:
 	bool Init();
 	void RefreshBGMList();
+	void PlaySound(wchar_t* sound);
 	void PlaySoundEffect(int sound);
 	void PlayDialogSound(irr::gui::IGUIElement * element);
 	bool IsPlayingMusic(wchar_t* music = 0);
