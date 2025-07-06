@@ -1,6 +1,7 @@
 #include "data_manager.h"
 #include "game.h"
 #include <stdio.h>
+#include "../ocgcore/card_data.h"
 
 namespace ygo {
 
