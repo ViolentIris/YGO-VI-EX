@@ -352,6 +352,9 @@ void SoundManager::StopSound() {
 #endif
 }
 void SoundManager::SetSoundVolume(double volume) {
+#ifdef YGOPRO_USE_MINIAUDIO
+	ma_engine_set_volume(&engineSound, volume);
+#endif
 #ifdef YGOPRO_USE_IRRKLANG
 	engineSound->setSoundVolume(volume);
 #endif
