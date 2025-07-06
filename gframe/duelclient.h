@@ -61,6 +61,9 @@ public:
 		auto p = duel_client_write;
 		BufferIO::WriteInt16(p, 1);
 		BufferIO::WriteInt8(p, proto);
+#ifdef YGOPRO_MESSAGE_DEBUG
+		printf("CTOS: %d\n", proto);
+#endif
 		bufferevent_write(client_bev, duel_client_write, 3);
 	}
 	template<typename ST>
@@ -71,6 +74,9 @@ public:
 		BufferIO::WriteInt16(p, (short)(1 + sizeof(ST)));
 		BufferIO::WriteInt8(p, proto);
 		std::memcpy(p, &st, sizeof(ST));
+#ifdef YGOPRO_MESSAGE_DEBUG
+		printf("CTOS: %d Length: %ld\n", proto, sizeof(ST));
+#endif
 		bufferevent_write(client_bev, duel_client_write, sizeof(ST) + 3);
 	}
 	static void SendBufferToServer(unsigned char proto, void* buffer, size_t len) {
@@ -83,6 +89,9 @@ public:
 		BufferIO::WriteInt16(p, (short)(1 + blen));
 		BufferIO::WriteInt8(p, proto);
 		std::memcpy(p, buffer, blen);
+#ifdef YGOPRO_MESSAGE_DEBUG
+		printf("CTOS: %d Length: %ld\n", proto, len);
+#endif
 		bufferevent_write(client_bev, duel_client_write, blen + 3);
 	}
 	
