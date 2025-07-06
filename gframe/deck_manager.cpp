@@ -139,6 +139,8 @@ int DeckManager::CheckDeck(Deck& deck, int lfhash, int rule) {
 		int gameruleDeckError = checkAvail(cit->second.ot, avail);
 		if(gameruleDeckError)
 			return (gameruleDeckError << 28) + cit->first;
+		if (!(cit->second.type & TYPES_EXTRA_DECK) || cit->second.type & TYPE_TOKEN)
+			return (DECKERROR_EXTRACOUNT << 28);
 		int code = cit->second.alias ? cit->second.alias : cit->first;
 		ccount[code]++;
 		dc = ccount[code];
@@ -153,6 +155,8 @@ int DeckManager::CheckDeck(Deck& deck, int lfhash, int rule) {
 		int gameruleDeckError = checkAvail(cit->second.ot, avail);
 		if(gameruleDeckError)
 			return (gameruleDeckError << 28) + cit->first;
+		if (cit->second.type & TYPE_TOKEN)
+			return (DECKERROR_SIDECOUNT << 28);
 		int code = cit->second.alias ? cit->second.alias : cit->first;
 		ccount[code]++;
 		dc = ccount[code];
@@ -164,43 +168,51 @@ int DeckManager::CheckDeck(Deck& deck, int lfhash, int rule) {
 	}
 	return 0;
 }
-int DeckManager::LoadDeck(Deck& deck, int* dbuf, int mainc, int sidec) {
+uint32_t DeckManager::LoadDeck(Deck& deck, uint32_t dbuf[], int mainc, int sidec, bool is_packlist) {
 	deck.clear();
-	int code;
-	int errorcode = 0;
+	uint32_t errorcode = 0;
 	CardData cd;
 	for(int i = 0; i < mainc; ++i) {
-		code = dbuf[i];
+		auto code = dbuf[i];
 		if(!dataManager.GetData(code, &cd)) {
 			errorcode = code;
 			continue;
 		}
-		if(cd.type & TYPE_TOKEN)
+		if (cd.type & TYPE_TOKEN) {
+			errorcode = code;
 			continue;
-		else if(cd.type & (TYPE_FUSION | TYPE_SYNCHRO | TYPE_XYZ | TYPE_LINK) && deck.extra.size() < 15) {
-			if(deck.extra.size() >= 15)
-				continue;
-			deck.extra.push_back(dataManager.GetCodePointer(code));	//verified by GetData()
-		} else if(deck.main.size() < 60) {
+		}
+		if(is_packlist) {
 			deck.main.push_back(dataManager.GetCodePointer(code));
+			continue;
+		}
+		if (cd.type & TYPES_EXTRA_DECK) {
+			if (deck.extra.size() < EXTRA_MAX_SIZE)
+				deck.extra.push_back(dataManager.GetCodePointer(code));
+		}
+		else {
+			if (deck.main.size() < DECK_MAX_SIZE)
+				deck.main.push_back(dataManager.GetCodePointer(code));
 		}
 	}
 	for(int i = 0; i < sidec; ++i) {
-		code = dbuf[mainc + i];
+		auto code = dbuf[mainc + i];
 		if(!dataManager.GetData(code, &cd)) {
 			errorcode = code;
 			continue;
 		}
-		if(cd.type & TYPE_TOKEN)
+		if (cd.type & TYPE_TOKEN) {
+			errorcode = code;
 			continue;
-		if(deck.side.size() < 15)
-			deck.side.push_back(dataManager.GetCodePointer(code));	//verified by GetData()
+		}
+		if(deck.side.size() < SIDE_MAX_SIZE)
+			deck.side.push_back(dataManager.GetCodePointer(code));
 	}
 	return errorcode;
 }
-bool DeckManager::LoadSide(Deck& deck, int* dbuf, int mainc, int sidec) {
-	std::unordered_map<int, int> pcount;
-	std::unordered_map<int, int> ncount;
+bool DeckManager::LoadSide(Deck& deck, uint32_t dbuf[], int mainc, int sidec) {
+	std::unordered_map<uint32_t, int> pcount;
+	std::unordered_map<uint32_t, int> ncount;
 	for(size_t i = 0; i < deck.main.size(); ++i)
 		pcount[deck.main[i]->first]++;
 	for(size_t i = 0; i < deck.extra.size(); ++i)
@@ -209,7 +221,7 @@ bool DeckManager::LoadSide(Deck& deck, int* dbuf, int mainc, int sidec) {
 		pcount[deck.side[i]->first]++;
 	Deck ndeck;
 	LoadDeck(ndeck, dbuf, mainc, sidec);
-	if(ndeck.main.size() != deck.main.size() || ndeck.extra.size() != deck.extra.size())
+	if (ndeck.main.size() != deck.main.size() || ndeck.extra.size() != deck.extra.size() || ndeck.side.size() != deck.side.size())
 		return false;
 	for(size_t i = 0; i < ndeck.main.size(); ++i)
 		ncount[ndeck.main[i]->first]++;
@@ -217,20 +229,14 @@ bool DeckManager::LoadSide(Deck& deck, int* dbuf, int mainc, int sidec) {
 		ncount[ndeck.extra[i]->first]++;
 	for(size_t i = 0; i < ndeck.side.size(); ++i)
 		ncount[ndeck.side[i]->first]++;
-	for(auto cdit = ncount.begin(); cdit != ncount.end(); ++cdit)
-		if(cdit->second != pcount[cdit->first])
+	for (auto& cdit : ncount)
+		if (cdit.second != pcount[cdit.first])
 			return false;
 	deck = ndeck;
 	return true;
 }
 FILE* DeckManager::OpenDeckFile(const wchar_t* file, const char* mode) {
-#ifdef WIN32
-	FILE* fp = _wfopen(file, (wchar_t*)mode);
-#else
-	char file2[256];
-	BufferIO::EncodeUTF8(file, file2);
-	FILE* fp = fopen(file2, mode);
-#endif
+	FILE* fp = mywfopen(file, mode);
 	return fp;
 }
 bool DeckManager::LoadDeck(const wchar_t* file) {
