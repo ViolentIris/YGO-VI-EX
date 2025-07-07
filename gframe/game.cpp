@@ -2416,12 +2416,12 @@ void Game::FlashWindow() {
 #endif
 }
 void Game::takeScreenshot() {
-	if(!FileSystem::IsDirExists(L"./screenshots") && !FileSystem::MakeDir(L"./screenshots"))
+	if(!FileSystem::IsDirExists(L"%USERPROFILE%/Desktop/YGO-VI-EX-Screenshot") && !FileSystem::MakeDir(L"%USERPROFILE%/Desktop/YGO-VI-EX-Screenshot"))
 		return;
 	irr::video::IImage* const image = driver->createScreenShot();
 	if(image) {
 		irr::c8 filename[64];
-		snprintf(filename, 64, "screenshots/ygopro_%u.png", device->getTimer()->getRealTime());
+		snprintf(filename, 64, "YGO-VI-EX-Screenshot/YGO-VI-EX_%u.png", device->getTimer()->getRealTime());
 		if (!driver->writeImageToFile(image, filename))
 			device->getLogger()->log(L"Failed to take screenshot.", irr::ELL_WARNING);
 		image->drop();
