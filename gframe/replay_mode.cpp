@@ -398,7 +398,7 @@ bool ReplayMode::ReplayAnalyze(unsigned char* msg, unsigned int len) {
 		case MSG_SELECT_CHAIN: {
 			player = BufferIO::ReadInt8(pbuf);
 			count = BufferIO::ReadInt8(pbuf);
-			pbuf += 10 + count * 13;
+			pbuf += 9 + count * 14;
 			return ReadReplayResponse();
 		}
 		case MSG_SELECT_PLACE:
@@ -451,6 +451,7 @@ bool ReplayMode::ReplayAnalyze(unsigned char* msg, unsigned int len) {
 		}
 		case MSG_CONFIRM_CARDS: {
 			player = BufferIO::ReadInt8(pbuf);
+			pbuf += 1;
 			count = BufferIO::ReadInt8(pbuf);
 			pbuf += count * 7;
 			DuelClient::ClientAnalyze(offset, pbuf - offset);
