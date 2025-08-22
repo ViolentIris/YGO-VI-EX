@@ -64,7 +64,7 @@ bool DataManager::LoadDB(const wchar_t* wfile, bool expansion) {
 						memcpy(cd.setcode, it->second.data(), len * sizeof(uint16_t));
 				}
 				else
-					cd.set_setcode(setcode);
+					write_setcode(cd.setcode, setcode);
 			}
 			cd.type = sqlite3_column_int(pStmt, 4);
 			cd.attack = sqlite3_column_int(pStmt, 5);
