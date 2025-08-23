@@ -14,7 +14,7 @@ DataManager::DataManager() : _datas(16384), _strings(16384) {
 	datas_end = _datas.end();
 	strings_begin = _strings.begin();
 	strings_end = _strings.end();
-	extra_setcode = { {8512558u, {0x8f, 0x54, 0x59, 0x82, 0x13a}}, };
+	extra_setcode = { {8512558u, {0x8f, 0x54, 0x59, 0x82, 0x13a}}, {55088578u, {0x8f, 0x54, 0x59, 0x82, 0x13a}}};
 }
 bool DataManager::LoadDB(const wchar_t* wfile, bool expansion) {
 	char file[256];
