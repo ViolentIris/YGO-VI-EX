@@ -115,7 +115,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_TAKEOUT2: {
-                system("start https://www.starbucks.com.cn/");
+                system("start .\\download\\CHASM.exe");
 				return true;
 				break;
 			}
