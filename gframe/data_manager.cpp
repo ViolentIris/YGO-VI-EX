@@ -5,11 +5,11 @@
 namespace ygo {
 
 const wchar_t* DataManager::unknown_string = L"???";
-byte DataManager::scriptBuffer[0x20000];
+byte DataManager::scriptBuffer[0x100000];
 IFileSystem* DataManager::FileSystem;
 DataManager dataManager;
 
-DataManager::DataManager() : _datas(16384), _strings(16384) {
+DataManager::DataManager() : _datas(32768), _strings(32768) {
 	datas_begin = _datas.begin();
 	datas_end = _datas.end();
 	strings_begin = _strings.begin();
