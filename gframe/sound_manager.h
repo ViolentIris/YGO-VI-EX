@@ -3,6 +3,8 @@
 
 #include "game.h"
 #include <random>
+#include <list>
+#include <mutex>
 #ifdef YGOPRO_USE_MINIAUDIO
 #include <miniaudio.h>
 #endif
@@ -29,7 +31,8 @@ private:
 	ma_engine engineMusic;
 	ma_sound soundBGM;
 	wchar_t currentPlayingMusic[1024]{};
-	ma_sound* playingSoundEffect[10]{};
+	std::list<ma_sound> soundEffects;
+	std::mutex soundEffectsMutex;
 #endif
 #ifdef YGOPRO_USE_IRRKLANG
 	irrklang::ISoundEngine* engineSound;
@@ -37,6 +40,8 @@ private:
 	irrklang::ISound* soundBGM;
 #endif
 	void RefershBGMDir(std::wstring path, int scene);
+	void ReapFinishedSoundEffects();
+	void ClearSoundEffects();
 
 public:
 	bool Init();

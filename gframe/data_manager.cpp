@@ -504,4 +504,75 @@ bool DataManager::deck_sort_name(code_pointer p1, code_pointer p2) {
 		return res < 0;
 	return p1->first < p2->first;
 }
+
+// =========================================================
+// =========================================================
+
+bool DataManager::LoadServerList(const char* file) {
+	FILE* fp = std::fopen(file, "rb");
+	if(!fp)
+		return false;
+	_serverStrings.clear();
+	char linebuf[4096]{};
+	while(std::fgets(linebuf, sizeof linebuf, fp)) {
+		ReadServerConfLine(linebuf);
+	}
+	std::fclose(fp);
+	return true;
+}
+
+bool DataManager::LoadServerList(const wchar_t* file) {
+	FILE* fp = _wfopen(file, L"rb");
+	if(!fp)
+		return false;
+	_serverStrings.clear();
+	char linebuf[4096]{};
+	while(std::fgets(linebuf, sizeof linebuf, fp)) {
+		ReadServerConfLine(linebuf);
+	}
+	std::fclose(fp);
+	return true;
+}
+
+void DataManager::ReadServerConfLine(const char* linebuf) {
+	char buffer[1024];
+	std::strncpy(buffer, linebuf, sizeof(buffer) - 1);
+	buffer[sizeof(buffer) - 1] = '\0';
+	buffer[strcspn(buffer, "\n")] = '\0';
+	if (buffer[0] == '\0' || buffer[0] == '#' || buffer[0] == ';')
+		return;
+	char* sep1 = std::strchr(buffer, '|');
+	if (sep1 != nullptr) {
+		*sep1 = '\0';
+		char* addrPart = sep1 + 1;
+		wchar_t wname[256], wip[512];
+		BufferIO::DecodeUTF8(buffer, wname);
+		char* sep2 = std::strchr(addrPart, '|');
+		if (sep2)
+			*sep2 = ':';
+		BufferIO::DecodeUTF8(addrPart, wip);
+		_serverStrings.emplace_back(wname, wip);
+	}
+}
+
+bool DataManager::LoadServerList(IReadFile* reader) {
+	if(!reader)
+		return false;
+	_serverStrings.clear();
+	char ch{};
+	std::string linebuf;
+	while (reader->read(&ch, 1)) {
+		if (ch == '\0')
+			break;
+		linebuf.push_back(ch);
+		if (ch == '\n' || linebuf.size() >= 4096 - 1) {
+			ReadServerConfLine(linebuf.data());
+			linebuf.clear();
+		}
+	}
+	if (!linebuf.empty())
+		ReadServerConfLine(linebuf.data());
+	reader->drop();
+	return true;
+}
 }

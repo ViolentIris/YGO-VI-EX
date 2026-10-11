@@ -94,28 +94,22 @@ void SoundManager::PlaySound(wchar_t* sound) {
 		return;
 	SetSoundVolume(mainGame->gameConf.sound_volume);
 #ifdef YGOPRO_USE_MINIAUDIO
-	ma_sound *usingSoundEffectPointer = nullptr;
-	for(int i = 0; i < 10; i++) {
-		if(playingSoundEffect[i] && !ma_sound_is_playing(playingSoundEffect[i])) {
-			ma_sound_uninit(playingSoundEffect[i]);
-			if(usingSoundEffectPointer) {
-				free(playingSoundEffect[i]);
-				playingSoundEffect[i] = nullptr;
-			} else {
-				usingSoundEffectPointer = playingSoundEffect[i];
-			}
+	{
+		std::lock_guard<std::mutex> lock(soundEffectsMutex);
+		ReapFinishedSoundEffects();
+		if(soundEffects.size() >= 10) {
+			ma_sound_uninit(&soundEffects.front());
+			soundEffects.pop_front();
 		}
-		if(!playingSoundEffect[i] && !usingSoundEffectPointer) {
-			usingSoundEffectPointer = playingSoundEffect[i] = (ma_sound*)malloc(sizeof(ma_sound));
+		soundEffects.emplace_back();
+		ma_sound* pEffect = &soundEffects.back();
+		if(ma_sound_init_from_file_w(&engineSound, sound,
+		     MA_SOUND_FLAG_ASYNC | MA_SOUND_FLAG_STREAM, nullptr, nullptr, pEffect) != MA_SUCCESS) {
+			soundEffects.pop_back();
+			return;
 		}
+		ma_sound_start(pEffect);
 	}
-	if (!usingSoundEffectPointer) {
-		// force to stop the first sound
-		usingSoundEffectPointer = playingSoundEffect[0];
-		ma_sound_uninit(usingSoundEffectPointer);
-	}
-	ma_sound_init_from_file_w(&engineSound, sound, MA_SOUND_FLAG_ASYNC | MA_SOUND_FLAG_STREAM, nullptr, nullptr, usingSoundEffectPointer);
-	ma_sound_start(usingSoundEffectPointer);
 #endif
 #ifdef YGOPRO_USE_IRRKLANG
 		char csound[1024];
@@ -381,12 +375,9 @@ void SoundManager::StopBGM() {
 }
 void SoundManager::StopSound() {
 #ifdef YGOPRO_USE_MINIAUDIO
-	for(int i = 0; i < 10; i++) {
-		if(playingSoundEffect[i]) {
-			ma_sound_uninit(playingSoundEffect[i]);
-			free(playingSoundEffect[i]);
-			playingSoundEffect[i] = nullptr;
-		}
+	{
+		std::lock_guard<std::mutex> lock(soundEffectsMutex);
+		ClearSoundEffects();
 	}
 #endif
 #ifdef YGOPRO_USE_IRRKLANG
@@ -407,6 +398,30 @@ void SoundManager::SetMusicVolume(double volume) {
 #endif
 #ifdef YGOPRO_USE_IRRKLANG
 	engineMusic->setSoundVolume(volume);
+#endif
+}
+
+// =========================================================
+// =========================================================
+
+void SoundManager::ReapFinishedSoundEffects() {
+#ifdef YGOPRO_USE_MINIAUDIO
+	for(auto effect = soundEffects.begin(); effect != soundEffects.end();) {
+		if(ma_sound_at_end(&*effect)) {
+			ma_sound_uninit(&*effect);
+			effect = soundEffects.erase(effect);
+		} else {
+			++effect;
+		}
+	}
+#endif
+}
+
+void SoundManager::ClearSoundEffects() {
+#ifdef YGOPRO_USE_MINIAUDIO
+	for(auto& effect : soundEffects)
+		ma_sound_uninit(&effect);
+	soundEffects.clear();
 #endif
 }
 }

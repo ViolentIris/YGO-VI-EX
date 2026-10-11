@@ -640,7 +640,9 @@ void DuelClient::HandleSTOCPacketLan(unsigned char* data, int len) {
 			mainGame->deckBuilder.filterList = &deckManager._lfList[0].content;
 		mainGame->stHostPrepOB->setText(L"");
 		mainGame->SetStaticText(mainGame->stHostPrepRule, 180, mainGame->guiFont, str.c_str());
-		mainGame->RefreshDeck(mainGame->cbDeckSelect);
+		// Refresh both category and deck combo boxes for host prepare window
+		mainGame->RefreshCategoryDeck(mainGame->cbCategorySelect, mainGame->cbDeckSelect);
+		mainGame->cbCategorySelect->setEnabled(true);
 		mainGame->cbDeckSelect->setEnabled(true);
 		if(mainGame->wCreateHost->isVisible())
 			mainGame->HideElement(mainGame->wCreateHost);
@@ -4405,5 +4407,99 @@ void DuelClient::BroadcastReply(evutil_socket_t fd, short events, void * arg) {
 			mainGame->gMutex.unlock();
 		}
 	}
+}
+
+// =========================================================
+// =========================================================
+
+unsigned int DuelClient::LookupHost(char* host) {
+	if(host == nullptr || host[0] == '\0')
+		return 0;
+	in_addr addr{};
+	if(inet_pton(AF_INET, host, &addr) == 1)
+		return ntohl(addr.s_addr);
+	struct evutil_addrinfo hints{};
+	hints.ai_family = AF_INET;
+	hints.ai_socktype = SOCK_STREAM;
+	hints.ai_protocol = IPPROTO_TCP;
+	hints.ai_flags = EVUTIL_AI_ADDRCONFIG;
+	struct evutil_addrinfo* answer = nullptr;
+	if(evutil_getaddrinfo(host, nullptr, &hints, &answer) != 0 || answer == nullptr)
+		return 0;
+	unsigned int result = 0;
+	if(answer->ai_addr && answer->ai_addrlen >= (int)sizeof(sockaddr_in) && answer->ai_family == AF_INET) {
+		sockaddr_in* sin = (sockaddr_in*)answer->ai_addr;
+		result = ntohl(sin->sin_addr.s_addr);
+	}
+	evutil_freeaddrinfo(answer);
+	return result;
+}
+
+bool DuelClient::LookupSRV(char* hostname, HostResult* result) {
+#ifdef _WIN32
+	if(hostname == nullptr || result == nullptr)
+		return false;
+	wchar_t whost[256]{};
+	BufferIO::DecodeUTF8(hostname, whost);
+	PDNS_RECORDW ret = nullptr;
+	DNS_STATUS status = DnsQuery_W(whost, DNS_TYPE_SRV, DNS_QUERY_STANDARD, nullptr,
+	                               (PDNS_RECORD*)&ret, nullptr);
+	if(status != 0 || ret == nullptr)
+		return false;
+	bool ok = false;
+	for(PDNS_RECORDW rec = ret; rec != nullptr; rec = rec->pNext) {
+		if(rec->wType == DNS_TYPE_SRV && rec->Data.SRV.pNameTarget != nullptr) {
+			char target[256]{};
+			BufferIO::EncodeUTF8(rec->Data.SRV.pNameTarget, target);
+			result->host = LookupHost(target);
+			result->port = rec->Data.SRV.wPort;
+			ok = result->isValid();
+			break;
+		}
+	}
+	DnsRecordListFree(ret, DnsFreeRecordListDeep);
+	return ok;
+#else
+	(void)hostname; (void)result;
+	return false;
+#endif
+}
+
+bool DuelClient::CheckHostnameSplitter(char* hostname, HostResult* result) {
+	if(hostname == nullptr || result == nullptr)
+		return false;
+	char* trySplitter = strrchr(hostname, ':');
+	if(trySplitter == nullptr)
+		return false;
+	size_t hostLength = (size_t)(trySplitter - hostname);
+	if(hostLength == 0 || hostLength >= 100)
+		return false;
+	char host[100]{};
+	strncpy(host, hostname, hostLength);
+	host[hostLength] = '\0';
+	result->host = LookupHost(host);
+	result->port = (unsigned short)atoi(trySplitter + 1);
+	return result->isValid();
+}
+
+HostResult DuelClient::ParseHost(char* hostname) {
+	HostResult result;
+	if(hostname == nullptr)
+		return result;
+	in_addr address{};
+	if(inet_pton(AF_INET, hostname, &address) == 1) {
+		result.host = ntohl(address.s_addr);
+		result.port = 7911;
+		return result;
+	}
+	if(CheckHostnameSplitter(hostname, &result))
+		return result;
+	char srvHostname[160]{};
+	snprintf(srvHostname, sizeof(srvHostname), "_ygopro._tcp.%s", hostname);
+	if(LookupSRV(srvHostname, &result))
+		return result;
+	result.host = LookupHost(hostname);
+	result.port = 7911;
+	return result;
 }
 }

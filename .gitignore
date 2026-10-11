@@ -14,3 +14,30 @@
 /irrklang/
 /ikpmp3/
 premake5.exe
+# 构建临时目录（本机）
+/_dl/
+/_extract/
+/_build_*.txt
+/*.bak_*
+
+# --- 传代码前清理（本机）：备份 / 构建日志 / 旧依赖 ---
+*.bak
+*.bak_*
+*.orig
+*.rej
+/_*.txt
+/msbuild.log
+/*_bak/
+
+# --- 依赖源码（下载而来，不入库） ---
+/jpeg/
+/png/
+/zlib/
+/lzma/
+/miniaudio/
+/webview2/
+# --- 本地构建产物 / 图标副本 ---
+/gframe/*.ico
+/gframe/*.rc
+*.obj
+*.pdb

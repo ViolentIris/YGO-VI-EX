@@ -18,6 +18,14 @@
 
 namespace ygo {
 
+class HostResult {
+public:
+	unsigned int host;
+	unsigned short port;
+	bool isValid() const { return host > 0 && port > 0; }
+	HostResult() : host(0), port(0) {}
+};
+
 class DuelClient {
 private:
 	static unsigned int connect_state;
@@ -50,6 +58,10 @@ public:
 	static unsigned char selftype;
 	
 	static bool StartClient(unsigned int ip, unsigned short port, bool create_game = true);
+	static unsigned int LookupHost(char* host);
+	static bool LookupSRV(char* hostname, HostResult* result);
+	static bool CheckHostnameSplitter(char* hostname, HostResult* result);
+	static HostResult ParseHost(char* hostname);
 	static void ConnectTimeout(evutil_socket_t fd, short events, void* arg);
 	static void StopClient(bool is_exiting = false);
 	static void ClientRead(bufferevent* bev, void* ctx);

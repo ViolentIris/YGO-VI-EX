@@ -16,6 +16,7 @@
 
 #define NOMINMAX
 #include <Windows.h>
+#include <shellapi.h>
 
 class FileSystem {
 public:
@@ -78,6 +79,51 @@ public:
 			BufferIO::EncodeUTF8(wname, name);
 			cb(name, isdir);
 		});
+	}
+
+
+	static bool Rename(const wchar_t* woldname, const wchar_t* wnewname) {
+		return MoveFileW(woldname, wnewname);
+	}
+
+	static bool Rename(const char* oldname, const char* newname) {
+		wchar_t woldname[1024];
+		wchar_t wnewname[1024];
+		BufferIO::DecodeUTF8(oldname, woldname);
+		BufferIO::DecodeUTF8(newname, wnewname);
+		return Rename(woldname, wnewname);
+	}
+
+	static bool DeleteDir(const wchar_t* wdir) {
+		if(!wdir)
+			return false;
+		size_t len = std::wcslen(wdir);
+		if(len >= 1024)
+			return false;
+		wchar_t pdir[1024 + 1]{};
+		BufferIO::CopyWStr(wdir, pdir, 1025);
+		pdir[len + 1] = L'\0';
+		SHFILEOPSTRUCTW lpFileOp{};
+		lpFileOp.wFunc = FO_DELETE;
+		lpFileOp.pFrom = pdir;
+		lpFileOp.fFlags = FOF_NOCONFIRMATION | FOF_NOERRORUI | FOF_SILENT;
+		return SHFileOperationW(&lpFileOp) == 0;
+	}
+
+	static bool DeleteDir(const char* dir) {
+		wchar_t wdir[1024];
+		BufferIO::DecodeUTF8(dir, wdir);
+		return DeleteDir(wdir);
+	}
+
+	static bool RemoveFile(const wchar_t* wfile) {
+		return DeleteFileW(wfile);
+	}
+
+	static bool RemoveFile(const char* file) {
+		wchar_t wfile[1024];
+		BufferIO::DecodeUTF8(file, wfile);
+		return RemoveFile(wfile);
 	}
 };
 

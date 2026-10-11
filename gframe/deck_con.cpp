@@ -6,7 +6,14 @@
 #include "image_manager.h"
 #include "sound_manager.h"
 #include "game.h"
+#include "builtin_browser.h"
 #include "duelclient.h"
+#include "ygoda_deck_code.h"
+
+#ifdef WIN32
+#include <windows.h>
+#include <winuser.h>
+#endif
 
 namespace ygo {
 
@@ -75,6 +82,8 @@ void DeckBuilder::Initialize() {
 	is_lastcard = 0;
 	is_draging = false;
 	is_starting_dragging = false;
+	mainGame->RefreshDeck(mainGame->cbDBDecks);
+	prev_category = mainGame->current_category;
 	prev_deck = mainGame->cbDBDecks->getSelected();
 	prev_operation = 0;
 	prev_sel = -1;
@@ -104,9 +113,241 @@ void DeckBuilder::Terminate() {
 	if(exit_on_return)
 		mainGame->device->closeDevice();
 }
+void DeckBuilder::ApplyCategory(int catesel) {
+	mainGame->current_category = catesel;
+	if(catesel >= 4)
+		current_category_name = mainGame->lstCategories->getListItem(catesel);
+	else
+		current_category_name.clear();
+	mainGame->RefreshDeck(mainGame->cbDBDecks);
+	mainGame->RefreshDeckList();
+	mainGame->cbDBDecks->setSelected(0);
+	mainGame->lstDecks->setSelected(0);
+	prev_category = catesel;
+	prev_deck = 0;
+	is_modified = false;
+	ApplyDeck(0);
+	
+}
+
+void DeckBuilder::ApplyDeck(int idx) {
+	if(idx < 0)
+		return;
+	const wchar_t* dname = mainGame->lstDecks->getListItem(idx);
+	if(!dname)
+		return;
+	int cate = mainGame->current_category;
+	mainGame->cbDBDecks->setSelected(idx);
+	const wchar_t* cname = L"";
+	// custom categories live in ./deck/<name>; NONE (unclassified) uses the ./deck root
+	if(cate >= 4) {
+		cname = current_category_name.c_str();
+	}
+	deckManager.LoadDeck(cate, cname, dname);
+	prev_deck = idx;
+	is_modified = false;
+	
+}
+
+bool DeckBuilder::NewDeck(const wchar_t* name) {
+	Deck d{};
+	int cate = mainGame->current_category;
+	const wchar_t* cname = L"";
+	// custom categories live in ./deck/<name>; NONE (unclassified) uses the ./deck root
+	if(cate >= 4 && !current_category_name.empty()) {
+		cname = current_category_name.c_str();
+	}
+	return deckManager.SaveDeck(d, cate, cname, name);
+}
+
+
+void DeckBuilder::ImportDeckCodeFromClipboard() {
+				// Show the deck code input window
+				mainGame->wDeckCodeQuery->setText(L"导入卡组码");
+				mainGame->SetStaticText(mainGame->stDeckCodeMessage, 270, mainGame->guiFont, L"请输入卡组码：");
+				mainGame->ebDeckCode->setText(L"");
+				mainGame->ShowElement(mainGame->wDeckCodeQuery);
+				mainGame->env->setFocus(mainGame->ebDeckCode);
+				return;
+}
+
+bool DeckBuilder::ImportDeckCodeFromInput(const std::wstring& deck_code_input) {
+				if(deck_code_input.empty()) {
+					// Input is empty
+					mainGame->stACMessage->setText(L"输入不能为空");
+					mainGame->PopupElement(mainGame->wACMessage, 20);
+					return false;
+				}
+
+				// Convert to UTF-8 for parsing
+				std::string utf8_content;
+				int len = WideCharToMultiByte(CP_UTF8, 0, deck_code_input.c_str(), -1, NULL, 0, NULL, NULL);
+				if(len > 1) {
+					utf8_content.resize(len - 1);
+					WideCharToMultiByte(CP_UTF8, 0, deck_code_input.c_str(), -1, &utf8_content[0], len, NULL, NULL);
+				}
+
+				// Try to decode the deck code
+				std::vector<int> main, ex, side;
+				if(DeckCode_Decode(utf8_content, main, ex, side)) {
+					// Successfully decoded, now extract deck name from URI if possible
+					std::wstring deck_name = L"";
+					
+					std::wstring uri_content = deck_code_input;
+					if(uri_content.find(L"http://") != std::wstring::npos || uri_content.find(L"https://") != std::wstring::npos) {
+						// Extract name parameter from URL
+						size_t name_pos = uri_content.find(L"name=");
+						if(name_pos != std::wstring::npos) {
+							name_pos += 5; // length of "name="
+							size_t next_param = uri_content.find(L"&", name_pos);
+							if(next_param != std::wstring::npos) {
+								deck_name = uri_content.substr(name_pos, next_param - name_pos);
+							} else {
+								deck_name = uri_content.substr(name_pos);
+							}
+							
+							std::string name_utf8;
+							auto HexVal = [](wchar_t c) -> int {
+								if(c >= L'0' && c <= L'9') return (int)(c - L'0');
+								if(c >= L'a' && c <= L'f') return (int)(c - L'a') + 10;
+								if(c >= L'A' && c <= L'F') return (int)(c - L'A') + 10;
+								return -1;
+							};
+							for(size_t i = 0; i < deck_name.length(); ++i) {
+								wchar_t ch = deck_name[i];
+								if(ch == L'%' && i + 2 < deck_name.length()) {
+									int hi = HexVal(deck_name[i + 1]);
+									int lo = HexVal(deck_name[i + 2]);
+									if(hi >= 0 && lo >= 0) {
+										name_utf8.push_back((char)((hi << 4) | lo));
+										i += 2;
+										continue;
+									}
+									name_utf8.push_back('%');
+								} else if(ch == L'+') {
+									name_utf8.push_back(' ');
+								} else if(ch < 0x80) {
+									name_utf8.push_back((char)ch);
+								} else {
+									char tmp[8]{};
+									int n = WideCharToMultiByte(CP_UTF8, 0, &deck_name[i], 1, tmp, sizeof(tmp) - 1, NULL, NULL);
+									if(n > 0) name_utf8.append(tmp, n);
+								}
+							}
+							std::wstring decoded_name;
+							if(!name_utf8.empty()) {
+								int wn = MultiByteToWideChar(CP_UTF8, 0, name_utf8.data(), (int)name_utf8.size(), NULL, 0);
+								if(wn > 0) {
+									decoded_name.resize(wn);
+									MultiByteToWideChar(CP_UTF8, 0, name_utf8.data(), (int)name_utf8.size(), &decoded_name[0], wn);
+								}
+							}
+							if(!decoded_name.empty())
+								deck_name = decoded_name;
+
+						}
+					}
+					
+					// If no name extracted, generate one
+					if(deck_name.empty() || deck_name == L"") {
+						time_t now = time(0);
+						tm* ltm = localtime(&now);
+						wchar_t gen_name[64];
+						myswprintf(gen_name, L"导入_%04d%02d%02d_%02d%02d%02d", 
+							1900 + ltm->tm_year, 1 + ltm->tm_mon, ltm->tm_mday,
+							ltm->tm_hour, ltm->tm_min, ltm->tm_sec);
+						deck_name = gen_name;
+					}
+					
+					// Sanitize deck name (remove invalid file name characters)
+					for(size_t i = 0; i < deck_name.length(); i++) {
+						if(deck_name[i] == L'<' || deck_name[i] == L'>' || deck_name[i] == L':' ||
+						   deck_name[i] == L'"' || deck_name[i] == L'/' || deck_name[i] == L'\\' ||
+						   deck_name[i] == L'|' || deck_name[i] == L'?' || deck_name[i] == L'*') {
+							deck_name[i] = L'_';
+						}
+					}
+					
+					int cate = mainGame->current_category;
+					const wchar_t* cname = L"";
+					if(cate >= 4) {
+						cname = current_category_name.c_str();
+					} else if(cate != ygo::DECK_CATEGORY_NONE) {
+						cate = ygo::DECK_CATEGORY_NONE;   // PACK/BOT/SEP -> ./deck root
+					}
+					wchar_t catepath[256]{};
+					DeckManager::GetCategoryPath(catepath, cate, cname);
+					if(!FileSystem::IsDirExists(catepath) && !FileSystem::MakeDir(catepath)) {
+						mainGame->stACMessage->setText(L"导入失败：无法创建分类目录");
+						mainGame->PopupElement(mainGame->wACMessage, 20);
+						return false;
+					}
+					DeckArray arr;
+					arr.main.assign(main.begin(), main.end());
+					arr.extra.assign(ex.begin(), ex.end());
+					arr.side.assign(side.begin(), side.end());
+					wchar_t filepath[256]{};
+					myswprintf(filepath, L"%ls/%ls.ydk", catepath, deck_name.c_str());
+					if(DeckManager::SaveDeckArray(arr, filepath)) {
+						wchar_t msg[256];
+						myswprintf(msg, L"导入成功：%ls", deck_name.c_str());
+						mainGame->stACMessage->setText(msg);
+						mainGame->PopupElement(mainGame->wACMessage, 20);
+						mainGame->RefreshDeckManage();
+						return true;
+					} else {
+						mainGame->stACMessage->setText(L"导入失败：写入卡组文件失败");
+						mainGame->PopupElement(mainGame->wACMessage, 20);
+					}
+				} else {
+					// Failed to decode
+					mainGame->stACMessage->setText(L"未识别到卡组码");
+					mainGame->PopupElement(mainGame->wACMessage, 20);
+				}
+				return false;
+			
+}
+
 bool DeckBuilder::OnEvent(const irr::SEvent& event) {
-	if(mainGame->dField.OnCommonEvent(event))
-		return false;
+	if(event.EventType == irr::EET_GUI_EVENT
+	   && event.GUIEvent.EventType == irr::gui::EGET_BUTTON_CLICKED
+	   && event.GUIEvent.Caller
+	   && event.GUIEvent.Caller->getID() == BUTTON_IMPORT_DECK_CODE) {
+		soundManager.PlaySoundEffect(SOUND_BUTTON);
+		ImportDeckCodeFromClipboard();
+		return true;
+	}
+	if(event.EventType == irr::EET_GUI_EVENT
+	   && event.GUIEvent.EventType == irr::gui::EGET_BUTTON_CLICKED
+	   && event.GUIEvent.Caller) {
+		s32 bid = event.GUIEvent.Caller->getID();
+		if(bid == BUTTON_BR_BACK || bid == BUTTON_BR_FWD || bid == BUTTON_BR_RELOAD
+		   || bid == BUTTON_BR_HOME || bid == BUTTON_BR_CLOSE) {
+			soundManager.PlaySoundEffect(SOUND_BUTTON);
+			switch(bid) {
+			case BUTTON_BR_BACK:   BuiltinBrowser::Instance().GoBack(); break;
+			case BUTTON_BR_FWD:    BuiltinBrowser::Instance().GoForward(); break;
+			case BUTTON_BR_RELOAD: BuiltinBrowser::Instance().Reload(); break;
+			case BUTTON_BR_HOME:   mainGame->OpenWebPage(L"https://mycard.world/ygopro/arena/#/cards"); break;
+			case BUTTON_BR_CLOSE:  mainGame->CloseBrowser(); break;
+			}
+			return true;
+		}
+	}
+	if(event.EventType == irr::EET_GUI_EVENT) {
+		// Allow GUI button click events to pass through, only apply OnCommonEvent to other GUI events
+		if(event.GUIEvent.EventType == irr::gui::EGET_BUTTON_CLICKED) {
+			// Do nothing, let it continue to the switch statement
+		} else {
+			// Apply OnCommonEvent for other GUI events
+			if(mainGame->dField.OnCommonEvent(event))
+				return false;
+		}
+	} else {
+		// Apply OnCommonEvent for non-GUI events
+		if(mainGame->dField.OnCommonEvent(event))
+			return false;
+	}
 	switch(event.EventType) {
 	case irr::EET_GUI_EVENT: {
 		s32 id = event.GUIEvent.Caller->getID();
@@ -124,12 +365,283 @@ bool DeckBuilder::OnEvent(const irr::SEvent& event) {
 		case irr::gui::EGET_BUTTON_CLICKED: {
 			soundManager.PlaySoundEffect(SOUND_BUTTON);
 			switch(id) {
+			case BUTTON_MANAGE_DECK: {
+				if(is_modified && !mainGame->chkIgnoreDeckChanges->isChecked()) {
+					mainGame->gMutex.lock();
+					mainGame->SetStaticText(mainGame->stQMessage, 310, mainGame->guiFont, dataManager.GetSysString(1356));
+					mainGame->PopupElement(mainGame->wQuery);
+					mainGame->gMutex.unlock();
+					prev_operation = id;
+					break;
+				}
+				mainGame->ShowDeckManage();
+				break;
+			}
+			case BUTTON_IMPORT_DECK_CODE: {
+				ImportDeckCodeFromClipboard();
+				break;
+			}
+			case BUTTON_DECK_CODE_OK: {
+				// Get the text from the input box
+				const wchar_t* input_text = mainGame->ebDeckCode->getText();
+				if(input_text && wcslen(input_text) > 0) {
+					// Call the new import function with the input text
+					if(ImportDeckCodeFromInput(std::wstring(input_text))) {
+						// Success, hide the window
+						mainGame->HideElement(mainGame->wDeckCodeQuery);
+					}
+				} else {
+					// Empty input
+					mainGame->stACMessage->setText(L"输入不能为空");
+					mainGame->PopupElement(mainGame->wACMessage, 20);
+				}
+				break;
+			}
+			case BUTTON_DECK_CODE_CANCEL: {
+				mainGame->HideElement(mainGame->wDeckCodeQuery);
+				break;
+			}
+			case BUTTON_COPY_DECK_CODE: {
+#ifdef WIN32
+				// Get the deck code from the edit box
+				const wchar_t* deck_code_w = mainGame->ebDeckCode->getText();
+				if(deck_code_w && wcslen(deck_code_w) > 0) {
+					// Open clipboard
+					if(OpenClipboard(NULL)) {
+						EmptyClipboard();
+						
+						// Calculate required buffer size
+						size_t len = wcslen(deck_code_w);
+						HGLOBAL hClipboardData = GlobalAlloc(GMEM_DDESHARE, (len + 1) * sizeof(wchar_t));
+						if(hClipboardData) {
+							wchar_t* pchData = (wchar_t*)GlobalLock(hClipboardData);
+							wcscpy(pchData, deck_code_w);
+							GlobalUnlock(hClipboardData);
+							SetClipboardData(CF_UNICODETEXT, hClipboardData);
+						}
+						CloseClipboard();
+						
+						// Show success message
+						mainGame->stACMessage->setText(L"卡组码已复制");
+						mainGame->PopupElement(mainGame->wACMessage, 20);
+					}
+				}
+#endif
+				break;
+			}
+			case BUTTON_NEW_DECK_DM: {
+				dm_mode = 3;
+				mainGame->wDMQuery->setText(dataManager.GetSysString(1722));
+				mainGame->SetStaticText(mainGame->stDMMessage, 270, mainGame->guiFont, L"");
+				mainGame->ebDMName->setText(L"");
+				mainGame->ShowElement(mainGame->wDMQuery);
+				mainGame->env->setFocus(mainGame->ebDMName);
+				break;
+			}
+			case BUTTON_DM_CLOSE: {
+				mainGame->HideElement(mainGame->wDeckManage);
+				break;
+			}
+			case BUTTON_NEW_CATEGORY: {
+				mainGame->deckBuilder.dm_mode = 1;
+				mainGame->SetStaticText(mainGame->stDMMessage, 270, mainGame->guiFont, L"");
+				mainGame->ebDMName->setText(L"");
+				mainGame->wDMQuery->setText(dataManager.GetSysString(1723));
+				mainGame->ShowElement(mainGame->wDMQuery);
+				mainGame->env->setFocus(mainGame->ebDMName);
+				break;
+			}
+			case BUTTON_RENAME_CATEGORY: {
+				int sel = mainGame->lstCategories->getSelected();
+				if(sel < 4) break;
+				mainGame->deckBuilder.dm_mode = 2;
+				mainGame->deckBuilder.dm_oldname = mainGame->lstCategories->getListItem(sel);
+				mainGame->SetStaticText(mainGame->stDMMessage, 270, mainGame->guiFont, L"");
+				mainGame->ebDMName->setText(mainGame->deckBuilder.dm_oldname.c_str());
+				mainGame->wDMQuery->setText(dataManager.GetSysString(1724));
+				mainGame->ShowElement(mainGame->wDMQuery);
+				mainGame->env->setFocus(mainGame->ebDMName);
+				break;
+			}
+			case BUTTON_DELETE_CATEGORY: {
+				int sel = mainGame->lstCategories->getSelected();
+				if(sel < 4) break;
+				const wchar_t* cname = mainGame->lstCategories->getListItem(sel);
+				if(deckManager.DeleteCategory(cname)) {
+					mainGame->RefreshDeckManage();
+				} else {
+					mainGame->SetStaticText(mainGame->stDMMessage, 270, mainGame->guiFont, dataManager.GetSysString(1718));
+					mainGame->ShowElement(mainGame->wDMQuery);
+					mainGame->ebDMName->setText(L"");
+					mainGame->ebDMName->setVisible(false);
+					mainGame->btnDMOK->setVisible(false);
+				}
+				break;
+			}
+			case BUTTON_DM_OK: {
+				wchar_t name[256]{};
+				BufferIO::CopyWStr(mainGame->ebDMName->getText(), name, 255);
+				int cur_mode = mainGame->deckBuilder.dm_mode;
+				if(name[0]) {
+					if(cur_mode == 1)
+						deckManager.CreateCategory(name);
+					else if(cur_mode == 2)
+						deckManager.RenameCategory(mainGame->deckBuilder.dm_oldname.c_str(), name);
+					else if(cur_mode == 3)
+						mainGame->deckBuilder.NewDeck(name);
+					else if(cur_mode == 4) {
+						// Rename deck from manage window
+						int dsel = mainGame->lstDecks->getSelected();
+						if(dsel >= 0) {
+							int catesel = mainGame->lstCategories->getSelected();
+							const wchar_t* cname = (catesel >= 4)
+								? mainGame->lstCategories->getListItem(catesel) : L"";
+							deckManager.RenameDeck(catesel, cname,
+								mainGame->lstDecks->getListItem(dsel), name);
+						}
+					} else if(cur_mode == 5 || cur_mode == 6) {
+						// Move (5) or Copy (6) deck to target category by name
+						int dsel = mainGame->lstDecks->getSelected();
+						if(dsel >= 0) {
+							int src_catesel = mainGame->lstCategories->getSelected();
+							const wchar_t* src_cname = (src_catesel >= 4)
+								? mainGame->lstCategories->getListItem(src_catesel) : L"";
+							// Find target category index by matching name
+							int dst_catesel = -1;
+							for(int i = 0; i < (int)mainGame->lstCategories->getItemCount(); i++) {
+								if(!mywcsncasecmp(mainGame->lstCategories->getListItem(i), name, 256)) {
+									dst_catesel = i;
+									break;
+								}
+							}
+							if(dst_catesel >= 0 && dst_catesel != src_catesel) {
+								const wchar_t* dst_cname = (dst_catesel >= 4)
+									? mainGame->lstCategories->getListItem(dst_catesel) : L"";
+								const wchar_t* dkname = mainGame->lstDecks->getListItem(dsel);
+								// Save current deck so we can restore it after the temp load
+								Deck saved_deck = deckManager.current_deck;
+								// LoadDeck(filepath) loads into current_deck — use full path
+								wchar_t src_path[256], src_file[256];
+								DeckManager::GetCategoryPath(src_path, src_catesel, src_cname);
+								myswprintf(src_file, L"%ls/%ls.ydk", src_path, dkname);
+								if(deckManager.LoadDeck(src_file)) {
+									// Save loaded deck to destination category
+									deckManager.SaveDeck(deckManager.current_deck, dst_catesel, dst_cname, dkname);
+									if(cur_mode == 5) {
+										// Move: delete source after successful copy
+										deckManager.DeleteDeck(src_catesel, src_cname, dkname);
+									}
+								}
+								// Restore current deck
+								deckManager.current_deck = saved_deck;
+							} else if(dst_catesel < 0) {
+								// Target category name not found
+								mainGame->SetStaticText(mainGame->stDMMessage, 270, mainGame->guiFont,
+									dataManager.GetSysString(1716));
+							}
+						}
+					}
+				}
+				if(cur_mode == 1) {
+					int n = mainGame->lstCategories->getItemCount();
+					if(n > 0)
+						mainGame->lstCategories->setSelected(n - 1);
+				}
+				mainGame->deckBuilder.dm_mode = 0;
+				mainGame->ebDMName->setVisible(true);
+				mainGame->btnDMOK->setVisible(true);
+				mainGame->HideElement(mainGame->wDMQuery);
+				mainGame->RefreshDeckManage();
+				break;
+			}
+			case BUTTON_DM_CANCEL: {
+				mainGame->deckBuilder.dm_mode = 0;
+				mainGame->ebDMName->setVisible(true);
+				mainGame->btnDMOK->setVisible(true);
+				mainGame->HideElement(mainGame->wDMQuery);
+				break;
+			}
 			case BUTTON_CLEAR_DECK: {
 				mainGame->gMutex.lock();
 				mainGame->SetStaticText(mainGame->stQMessage, 310, mainGame->guiFont, dataManager.GetSysString(1339));
 				mainGame->PopupElement(mainGame->wQuery);
 				mainGame->gMutex.unlock();
 				prev_operation = id;
+				break;
+			}
+			case BUTTON_GENERATE_DECK_CODE: {
+				// Get current deck's card codes
+				std::vector<int> main, ex, side;
+				
+				// Extract main deck card codes
+				for(auto& card : deckManager.current_deck.main) {
+					main.push_back(card->first);
+				}
+				
+				// Extract extra deck card codes
+				for(auto& card : deckManager.current_deck.extra) {
+					ex.push_back(card->first);
+				}
+				
+				// Extract side deck card codes
+				for(auto& card : deckManager.current_deck.side) {
+					side.push_back(card->first);
+				}
+				
+				// Check if deck is empty
+				if(main.empty() && ex.empty() && side.empty()) {
+					mainGame->stACMessage->setText(L"卡组中没有卡片");
+					mainGame->PopupElement(mainGame->wACMessage, 20);
+					break;
+				}
+				
+				// Get deck name (use current deck name if available)
+				const wchar_t* current_deck_name = L"";
+				int current_deck_idx = mainGame->cbDBDecks->getSelected();
+				if(current_deck_idx >= 0) {
+					current_deck_name = mainGame->cbDBDecks->getItem(current_deck_idx);
+				}
+				
+				// Generate the deck code (pure code only)
+				std::string pure_code = DeckCode_Encode(main, ex, side, std::wstring(current_deck_name));
+				
+				// Build full URI with deck name, type, version and code
+				std::string deck_name_utf8;
+				if(current_deck_name) {
+					int len = WideCharToMultiByte(CP_UTF8, 0, current_deck_name, -1, NULL, 0, NULL, NULL);
+					if(len > 1) {
+						deck_name_utf8.resize(len - 1);
+						WideCharToMultiByte(CP_UTF8, 0, current_deck_name, -1, &deck_name_utf8[0], len, NULL, NULL);
+					}
+				}
+				
+				// URL encode the deck name (basic implementation)
+				std::string encoded_name;
+				for(char c : deck_name_utf8) {
+					if(isalnum(c) || c == '-' || c == '_' || c == '.' || c == '~') {
+						encoded_name += c;
+					} else {
+						char buf[4];
+						sprintf(buf, "%%%.2X", (unsigned char)c);
+						encoded_name += buf;
+					}
+				}
+				
+				// Build the full URI
+				std::string full_uri = "http://deck.ourygo.top?";
+				if(!encoded_name.empty()) {
+					full_uri += "name=" + encoded_name + "&";
+				}
+				full_uri += "ygotype=deck&v=1&d=" + pure_code;
+				
+				// Show the deck code in a dialog with copy button
+				mainGame->wDeckCodeQuery->setText(L"生成的卡组码");
+				mainGame->SetStaticText(mainGame->stDeckCodeMessage, 270, mainGame->guiFont, L"卡组码：");
+				wchar_t wcode[1024]{};
+				BufferIO::DecodeUTF8(full_uri.c_str(), wcode);
+				mainGame->ebDeckCode->setText(wcode);
+				mainGame->ShowElement(mainGame->wDeckCodeQuery);
+				mainGame->env->setFocus(mainGame->ebDeckCode);
 				break;
 			}
 			case BUTTON_SORT_DECK: {
@@ -144,10 +656,18 @@ bool DeckBuilder::OnEvent(const irr::SEvent& event) {
 			}
 			case BUTTON_SAVE_DECK: {
 				int sel = mainGame->cbDBDecks->getSelected();
-				if(sel >= 0 && deckManager.SaveDeck(deckManager.current_deck, mainGame->cbDBDecks->getItem(sel))) {
-					mainGame->stACMessage->setText(dataManager.GetSysString(1335));
-					mainGame->PopupElement(mainGame->wACMessage, 20);
-					is_modified = false;
+				if(sel >= 0) {
+					int cate = mainGame->current_category;
+					const wchar_t* cname = L"";
+					// custom categories live in ./deck/<name>; NONE (unclassified) uses the ./deck root
+					if(cate >= 4 && !mainGame->deckBuilder.current_category_name.empty()) {
+						cname = mainGame->deckBuilder.current_category_name.c_str();
+					}
+					if(deckManager.SaveDeck(deckManager.current_deck, cate, cname, mainGame->cbDBDecks->getItem(sel))) {
+						mainGame->stACMessage->setText(dataManager.GetSysString(1335));
+						mainGame->PopupElement(mainGame->wACMessage, 20);
+						is_modified = false;
+					}
 				}
 				break;
 			}
@@ -168,7 +688,14 @@ bool DeckBuilder::OnEvent(const irr::SEvent& event) {
 					mainGame->cbDBDecks->addItem(dname);
 					mainGame->cbDBDecks->setSelected(mainGame->cbDBDecks->getItemCount() - 1);
 				}
-				if(deckManager.SaveDeck(deckManager.current_deck, dname)) {
+				// Use category-aware SaveDeck function
+				int cate = mainGame->current_category;
+				const wchar_t* cname = L"";
+				// custom categories live in ./deck/<name>; NONE (unclassified) uses the ./deck root
+				if(cate >= 4 && !mainGame->deckBuilder.current_category_name.empty()) {
+					cname = mainGame->deckBuilder.current_category_name.c_str();
+				}
+				if(deckManager.SaveDeck(deckManager.current_deck, cate, cname, dname)) {
 					mainGame->stACMessage->setText(dataManager.GetSysString(1335));
 					mainGame->PopupElement(mainGame->wACMessage, 20);
 					is_modified = false;
@@ -196,7 +723,13 @@ bool DeckBuilder::OnEvent(const irr::SEvent& event) {
 					if(mywcsncasecmp(newname + wcslen(newname) - 4, L"", 4)) {
 						myswprintf(newname, L"%ls", mainGame->ebREName->getText());
 					}
-					if(DeckManager::RenameDeck(mainGame->cbDBDecks->getItem(prev_sel), newname)) {
+					int cate = mainGame->current_category;
+					const wchar_t* cname = L"";
+					// custom categories live in ./deck/<name>; NONE (unclassified) uses the ./deck root
+					if(cate >= 4 && !mainGame->deckBuilder.current_category_name.empty()) {
+						cname = mainGame->deckBuilder.current_category_name.c_str();
+					}
+					if(deckManager.RenameDeck(cate, cname, mainGame->cbDBDecks->getItem(prev_sel), newname)) {
 						mainGame->cbDBDecks->removeItem(prev_sel);
 						mainGame->cbDBDecks->addItem(newname);
 						mainGame->cbDBDecks->setSelected(mainGame->cbDBDecks->getItemCount() - 1);
@@ -290,7 +823,14 @@ bool DeckBuilder::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_SIDE_RELOAD: {
-				deckManager.LoadDeck(mainGame->cbDeckSelect->getItem(mainGame->cbDeckSelect->getSelected()));
+				// Use category-aware LoadDeck function
+				int category_index = mainGame->current_category;
+				const wchar_t* category_name = L"";
+				if(category_index >= 4) {
+					// For custom categories, get the name
+					category_name = mainGame->deckBuilder.current_category_name.c_str();
+				}
+				deckManager.LoadDeck(category_index, category_name, mainGame->cbDeckSelect->getItem(mainGame->cbDeckSelect->getSelected()));
 				break;
 			}
 			case BUTTON_MSG_OK: {
@@ -308,14 +848,22 @@ bool DeckBuilder::OnEvent(const irr::SEvent& event) {
 					deckManager.current_deck.side.clear();
 				} else if(prev_operation == BUTTON_DELETE_DECK) {
 					int sel = prev_sel;
-					if(deckManager.DeleteDeck(deckManager.current_deck, mainGame->cbDBDecks->getItem(sel))) {
+					int cate = mainGame->current_category;
+					const wchar_t* cname = L"";
+					// custom categories live in ./deck/<name>; NONE (unclassified) uses the ./deck root
+					if(cate >= 4 && !mainGame->deckBuilder.current_category_name.empty()) {
+						cname = mainGame->deckBuilder.current_category_name.c_str();
+					}
+					if(deckManager.DeleteDeck(cate, cname, mainGame->cbDBDecks->getItem(sel))) {
 						mainGame->cbDBDecks->removeItem(sel);
 						int count = mainGame->cbDBDecks->getItemCount();
 						if(sel >= count)
 							sel = count - 1;
 						mainGame->cbDBDecks->setSelected(sel);
-						if(sel != -1)
-							deckManager.LoadDeck(mainGame->cbDBDecks->getItem(sel));
+						if(sel != -1) {
+							// Reload the deck in the same category
+							deckManager.LoadDeck(cate, cname, mainGame->cbDBDecks->getItem(sel));
+						}
 						mainGame->stACMessage->setText(dataManager.GetSysString(1338));
 						mainGame->PopupElement(mainGame->wACMessage, 20);
 						prev_deck = sel;
@@ -329,6 +877,14 @@ bool DeckBuilder::OnEvent(const irr::SEvent& event) {
 					deckManager.LoadDeck(mainGame->cbDBDecks->getItem(sel));
 					prev_deck = sel;
 					is_modified = false;
+				} else if(prev_operation == BUTTON_MANAGE_DECK) {
+					mainGame->ShowDeckManage();
+				} else if(prev_operation == LISTBOX_CATEGORIES) {
+					int catesel = mainGame->lstCategories->getSelected();
+					if(catesel == 3) catesel = 2;
+					ApplyCategory(catesel);
+				} else if(prev_operation == LISTBOX_DECKS) {
+					ApplyDeck(mainGame->lstDecks->getSelected());
 				}
 				prev_operation = 0;
 				break;
@@ -338,6 +894,10 @@ bool DeckBuilder::OnEvent(const irr::SEvent& event) {
 				if (prev_operation == COMBOBOX_DBDECKS) {
 					mainGame->cbDBDecks->setSelected(prev_deck);
 				}
+				if(prev_operation == LISTBOX_CATEGORIES)
+					mainGame->lstCategories->setSelected(prev_category);
+				else if(prev_operation == LISTBOX_DECKS)
+					mainGame->lstDecks->setSelected(prev_deck);
 				prev_operation = 0;
 				break;
 			}
@@ -366,6 +926,93 @@ bool DeckBuilder::OnEvent(const irr::SEvent& event) {
 				mainGame->HideElement(mainGame->wLinkMarks);
 				mainGame->btnMarksFilter->setPressed(filter_marks > 0);
 				InstantSearch();
+				break;
+			}
+			// [Card Search] Open card name search popup
+			case BUTTON_CARD_SEARCH: {
+				mainGame->gMutex.lock();
+				mainGame->ebSearchName->setText(L"");
+				mainGame->PopupElement(mainGame->wSearchWindow);
+				mainGame->env->setFocus(mainGame->ebSearchName);
+				mainGame->gMutex.unlock();
+				break;
+			}
+			// [Card Search] Confirm: online card query in builtin browser (ygocdb)
+			case BUTTON_SEARCH_AGREE: {
+				const wchar_t* sname = mainGame->ebSearchName->getText();
+				if(sname && *sname) {
+					BufferIO::CopyWStr(sname, mainGame->gameConf.searchname, 256);
+					wchar_t url[1024]{};
+					myswprintf(url, L"https://ygocdb.com/?search=%ls", sname);
+					mainGame->OpenWebPage(url);
+				}
+				mainGame->HideElement(mainGame->wSearchWindow);
+				break;
+			}
+			// [Card Search] Cancel: close popup without applying
+			case BUTTON_SEARCH_CANCEL: {
+				mainGame->HideElement(mainGame->wSearchWindow);
+				break;
+			}
+			// [DM] Rename deck from manage window
+			case BUTTON_RENAME_DECK_DM: {
+				int sel = mainGame->lstDecks->getSelected();
+				if(sel < 0) break;
+				mainGame->gMutex.lock();
+				mainGame->wDMQuery->setText(dataManager.GetSysString(1724));
+				mainGame->SetStaticText(mainGame->stDMMessage, 270, mainGame->guiFont, L"");
+				mainGame->ebDMName->setText(mainGame->lstDecks->getListItem(sel));
+				mainGame->ShowElement(mainGame->wDMQuery);
+				mainGame->env->setFocus(mainGame->ebDMName);
+				mainGame->gMutex.unlock();
+				dm_mode = 4; // 4 = rename deck from manage window
+				break;
+			}
+			// [DM] Delete deck from manage window
+			case BUTTON_DELETE_DECK_DM: {
+				int sel = mainGame->lstDecks->getSelected();
+				if(sel < 0) break;
+				int catesel = mainGame->lstCategories->getSelected();
+				const wchar_t* dname = mainGame->lstDecks->getListItem(sel);
+				const wchar_t* cname = (catesel >= 4)
+					? mainGame->lstCategories->getListItem(catesel) : L"";
+				if(deckManager.DeleteDeck(catesel, cname, dname)) {
+					mainGame->RefreshDeckManage();
+				} else {
+					mainGame->SetStaticText(mainGame->stDMMessage, 270, mainGame->guiFont,
+						dataManager.GetSysString(1718));
+					mainGame->ShowElement(mainGame->wDMQuery);
+					mainGame->ebDMName->setVisible(false);
+					mainGame->btnDMOK->setVisible(false);
+				}
+				break;
+			}
+			// [DM] Move deck: ask for target category name via wDMQuery
+			case BUTTON_MOVE_DECK: {
+				int sel = mainGame->lstDecks->getSelected();
+				if(sel < 0) break;
+				mainGame->gMutex.lock();
+				mainGame->wDMQuery->setText(dataManager.GetSysString(1472));
+				mainGame->SetStaticText(mainGame->stDMMessage, 270, mainGame->guiFont, L"");
+				mainGame->ebDMName->setText(L"");
+				mainGame->ShowElement(mainGame->wDMQuery);
+				mainGame->env->setFocus(mainGame->ebDMName);
+				mainGame->gMutex.unlock();
+				dm_mode = 5; // 5 = move deck
+				break;
+			}
+			// [DM] Copy deck: ask for target category name via wDMQuery
+			case BUTTON_COPY_DECK: {
+				int sel = mainGame->lstDecks->getSelected();
+				if(sel < 0) break;
+				mainGame->gMutex.lock();
+				mainGame->wDMQuery->setText(dataManager.GetSysString(1473));
+				mainGame->SetStaticText(mainGame->stDMMessage, 270, mainGame->guiFont, L"");
+				mainGame->ebDMName->setText(L"");
+				mainGame->ShowElement(mainGame->wDMQuery);
+				mainGame->env->setFocus(mainGame->ebDMName);
+				mainGame->gMutex.unlock();
+				dm_mode = 6; // 6 = copy deck
 				break;
 			}
 			}
@@ -399,10 +1046,83 @@ bool DeckBuilder::OnEvent(const irr::SEvent& event) {
 			}
 			break;
 		}
+		case irr::gui::EGET_LISTBOX_CHANGED: {
+			switch(id) {
+			case LISTBOX_CATEGORIES: {
+				if(suppress_list_events)
+					break;
+				if(mainGame->wDMQuery->isVisible()) {
+					mainGame->lstCategories->setSelected(prev_category);
+					break;
+				}
+				int catesel = mainGame->lstCategories->getSelected();
+				if(catesel < 0)
+					break;
+				if(catesel == 3) {
+					catesel = 2;
+					mainGame->lstCategories->setSelected(catesel);
+					if(prev_category == catesel)
+						break;
+				}
+				if(is_modified && !mainGame->chkIgnoreDeckChanges->isChecked()) {
+					mainGame->gMutex.lock();
+					mainGame->SetStaticText(mainGame->stQMessage, 310, mainGame->guiFont, dataManager.GetSysString(1356));
+					mainGame->PopupElement(mainGame->wQuery);
+					mainGame->gMutex.unlock();
+					prev_operation = id;
+					break;
+				}
+				ApplyCategory(catesel);
+				break;
+			}
+			case LISTBOX_DECKS: {
+				if(mainGame->wDMQuery->isVisible()) {
+					mainGame->lstDecks->setSelected(prev_deck);
+					break;
+				}
+				int decksel = mainGame->lstDecks->getSelected();
+				if(decksel < 0)
+					break;
+				if(is_modified && !mainGame->chkIgnoreDeckChanges->isChecked()) {
+					mainGame->gMutex.lock();
+					mainGame->SetStaticText(mainGame->stQMessage, 310, mainGame->guiFont, dataManager.GetSysString(1356));
+					mainGame->PopupElement(mainGame->wQuery);
+					mainGame->gMutex.unlock();
+					prev_operation = id;
+					break;
+				}
+				ApplyDeck(decksel);
+				break;
+			}
+			}
+			break;
+		}
 		case irr::gui::EGET_COMBO_BOX_CHANGED: {
 			switch(id) {
 			case COMBOBOX_DBLFLIST: {
 				filterList = &deckManager._lfList[mainGame->cbDBLFList->getSelected()].content;
+				break;
+			}
+			case COMBOBOX_DBCATEGORY: {
+				if(is_modified && !mainGame->chkIgnoreDeckChanges->isChecked()) {
+					mainGame->gMutex.lock();
+					mainGame->SetStaticText(mainGame->stQMessage, 310, mainGame->guiFont, dataManager.GetSysString(1356));
+					mainGame->PopupElement(mainGame->wQuery);
+					mainGame->gMutex.unlock();
+					prev_operation = id;
+					break;
+				}
+				int catesel = mainGame->current_category;
+				prev_category = catesel;
+				mainGame->RefreshDeck(mainGame->cbDBDecks);
+				mainGame->cbDBDecks->setSelected(0);
+				int csel = mainGame->cbDBDecks->getSelected();
+				if(csel >= 0)
+					deckManager.LoadDeck(catesel,
+					                     (catesel >= 4) ? mainGame->deckBuilder.current_category_name.c_str() : L"",
+					                     mainGame->cbDBDecks->getItem(csel));
+				prev_deck = csel;
+				is_modified = false;
 				break;
 			}
 			case COMBOBOX_DBDECKS: {
@@ -415,8 +1135,15 @@ bool DeckBuilder::OnEvent(const irr::SEvent& event) {
 					break;
 				}
 				int sel = mainGame->cbDBDecks->getSelected();
-				if(sel >= 0)
-					deckManager.LoadDeck(mainGame->cbDBDecks->getItem(sel));
+				if(sel >= 0) {
+					int cate = mainGame->current_category;
+					const wchar_t* cname = L"";
+					// custom categories live in ./deck/<name>; NONE (unclassified) uses the ./deck root
+					if(cate >= 4) {
+						cname = mainGame->deckBuilder.current_category_name.c_str();
+					}
+					deckManager.LoadDeck(cate, cname, mainGame->cbDBDecks->getItem(sel));
+				}
 				prev_deck = sel;
 				is_modified = false;
 				break;
@@ -569,6 +1296,15 @@ bool DeckBuilder::OnEvent(const irr::SEvent& event) {
 			break;
 		}
 		case irr::EMIE_LMOUSE_LEFT_UP: {
+			{
+				std::wstring search_text;
+				if(!mainGame->is_siding && mainGame->GetCardTextSearchTextAt(mouse_pos, search_text)) {
+					mainGame->ebCardName->setText(search_text.c_str());
+					mainGame->env->setFocus(mainGame->ebCardName);
+					StartFilter();
+					break;
+				}
+			}
 			is_starting_dragging = false;
 			if(!is_draging)
 				break;
@@ -826,6 +1562,11 @@ void DeckBuilder::StartFilter() {
 	}
 	FilterCards();
 }
+int DeckBuilder::GetSearchResultMaxVisible() const {
+	float xS = mainGame->xScale, yS = mainGame->yScale;
+	float mul = (xS > yS) ? yS : xS;
+	return std::max(7, (int)(((626.0f - 165.0f) * yS) / (66.0f * mul)));
+}
 void DeckBuilder::FilterCards() {
 	results.clear();
 	struct element_t {
@@ -1007,13 +1748,16 @@ void DeckBuilder::FilterCards() {
 			continue;
 	}
 	myswprintf(result_string, L"%d", results.size());
-	if(results.size() > 7) {
-		mainGame->scrFilter->setVisible(true);
-		mainGame->scrFilter->setMax(results.size() - 7);
-		mainGame->scrFilter->setPos(0);
-	} else {
-		mainGame->scrFilter->setVisible(false);
-		mainGame->scrFilter->setPos(0);
+	{
+		int max_vis = GetSearchResultMaxVisible();
+		if(results.size() > (size_t)max_vis) {
+			mainGame->scrFilter->setVisible(true);
+			mainGame->scrFilter->setMax((int)results.size() - max_vis);
+			mainGame->scrFilter->setPos(0);
+		} else {
+			mainGame->scrFilter->setVisible(false);
+			mainGame->scrFilter->setPos(0);
+		}
 	}
 	SortList();
 }

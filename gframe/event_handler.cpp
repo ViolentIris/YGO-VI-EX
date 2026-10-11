@@ -1,4 +1,5 @@
 #include "event_handler.h"
+#include "builtin_browser.h"
 #include "client_field.h"
 #include "math.h"
 #include "network.h"
@@ -1880,14 +1881,12 @@ bool ClientField::OnCommonEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_SEARCH_AGREE: {
-				char buf[256];
 				const wchar_t* pstr = mainGame->ebSearchName->getText();
+				if(!pstr || !pstr[0]) break;
 				BufferIO::CopyWStr(pstr, mainGame->gameConf.searchname, 256);
-				int nLength = WideCharToMultiByte(CP_ACP, 0, pstr, -1, NULL, 0, NULL,NULL);
-				WideCharToMultiByte(CP_ACP, 0, pstr, -1, buf, nLength, NULL, NULL);
-				char buffer[300];
-				sprintf(buffer, "start \"\" \"https://ygocdb.com/?search=%s\"", buf);
-				system(buffer);
+				wchar_t url[1024]{};
+				myswprintf(url, L"https://ygocdb.com/?search=%ls", pstr);
+				mainGame->OpenWebPage(url);
 				mainGame->HideElement(mainGame->wSearchWindow);
 				break;
 			}
@@ -2113,6 +2112,20 @@ bool ClientField::OnCommonEvent(const irr::SEvent& event) {
 				mainGame->SaveConfig();
 				break;
 			}
+			case COMBOBOX_FONTSIZE: {
+				int newsize = _wtoi(mainGame->cbFontSize->getItem(mainGame->cbFontSize->getSelected()));
+				if(newsize < 6) newsize = 6;
+				if(newsize > 48) newsize = 48;
+				mainGame->gameConf.textfontsize = (unsigned char)newsize;
+				mainGame->SaveConfig();
+				{
+					irr::gui::CGUITTFont* oldfont = mainGame->textFont;
+					mainGame->textFont = irr::gui::CGUITTFont::createTTFont(mainGame->env, mainGame->gameConf.textfont, newsize);
+					if(oldfont)
+						oldfont->drop();
+				}
+				break;
+			}
 			case COMBOBOX_HDS: {
 				mainGame->imgHead->setImage(imageManager.GetHeadImage());	
 				mainGame->imgHead->setScaleImage(true);
@@ -2174,6 +2187,10 @@ bool ClientField::OnCommonEvent(const irr::SEvent& event) {
 			break;
 		}
 		case irr::KEY_ESCAPE: {
+			if(BuiltinBrowser::Instance().IsOpen()) {
+				mainGame->CloseBrowser();
+				return true;
+			}
 			if(!mainGame->HasFocus(EGUIET_EDIT_BOX))
 				mainGame->device->minimizeWindow();
 			return true;

@@ -328,6 +328,7 @@ workspace "YGOPro"
         end
         vectorextensions "SSE2"
         buildoptions { "/utf-8" }
+        buildoptions { "/Zc:strictStrings-" }   -- [适配] 允许 wchar_t* = L""(老代码写法)
         defines { "_CRT_SECURE_NO_WARNINGS" }
 
     filter "not action:vs*"

@@ -1,4 +1,5 @@
 #include "game.h"
+#include "builtin_browser.h"
 #include "client_card.h"
 #include "materials.h"
 #include "image_manager.h"
@@ -883,6 +884,16 @@ void Game::DrawStatus(ClientCard* pcard, int x1, int y1, int x2, int y2) {
 	}
 }
 void Game::DrawGUI() {
+	if(wBrowser) {
+		static int lastVis = -1;
+		int v = wBrowser->isVisible() ? 1 : 0;
+		if(v != lastVis) {
+			lastVis = v;
+			BuiltinBrowserLog(L"wBrowser 可见性变化 -> %d ; pos=(%d,%d) size=(%d,%d)", v,
+				wBrowser->getAbsolutePosition().UpperLeftCorner.X, wBrowser->getAbsolutePosition().UpperLeftCorner.Y,
+				wBrowser->getAbsolutePosition().getWidth(), wBrowser->getAbsolutePosition().getHeight());
+		}
+	}
 	while (imageLoading.size()) {
 		auto mit = imageLoading.cbegin();
 		mit->first->setImage(imageManager.GetTexture(mit->second));
@@ -966,7 +977,30 @@ void Game::DrawGUI() {
 			fadingList.erase(fthis);
 	}
 	env->drawAll();
+	DrawCardTextSearchLinks();
 }
+// =========================================================
+// =========================================================
+void Game::DrawCardTextSearchLinks() {
+	std::vector<CardTextSearchSegment> segments;
+	CollectCardTextSearchSegments(segments);
+	if(segments.empty())
+		return;
+	const irr::video::SColor link_color(255, 0, 112, 255);
+	const irr::core::recti clip = stText->getAbsolutePosition();
+	for(const auto& segment : segments) {
+		core::stringw wtext(segment.text.c_str());
+		guiFont->draw(wtext, segment.rect, link_color, false, false, &clip);
+		irr::core::recti line(
+			std::max(segment.rect.UpperLeftCorner.X, clip.UpperLeftCorner.X),
+			segment.rect.LowerRightCorner.Y - 2,
+			std::min(segment.rect.LowerRightCorner.X, clip.LowerRightCorner.X),
+			segment.rect.LowerRightCorner.Y);
+		if(line.UpperLeftCorner.X < line.LowerRightCorner.X)
+			driver->draw2DRectangle(link_color, line, &clip);
+	}
+}
+
 void Game::DrawSpec() {
 	s32 midx = 574 + (CARD_IMG_WIDTH * 0.5);
 	s32 midy = 150 + (CARD_IMG_HEIGHT * 0.5);

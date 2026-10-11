@@ -14,6 +14,12 @@ namespace ygo {
 	constexpr int SIDE_MAX_SIZE = 15;
 	constexpr int PACK_MAX_SIZE = 1000;
 
+	constexpr int DECK_CATEGORY_PACK = 0;
+	constexpr int DECK_CATEGORY_BOT = 1;
+	constexpr int DECK_CATEGORY_NONE = 2;
+	constexpr int DECK_CATEGORY_SEPARATOR = 3;
+	constexpr int DECK_CATEGORY_CUSTOM = 4;
+
 struct LFList {
 	unsigned int hash{};
 	std::wstring listName;
@@ -61,12 +67,26 @@ public:
 	bool SaveDeck(Deck& deck, const wchar_t* name);
 	bool DeleteDeck(Deck& deck, const wchar_t* name);
 	static bool RenameDeck(const wchar_t* oldname, const wchar_t* newname);
+	static bool RenameDeck(int category_index, const wchar_t* category_name, const wchar_t* oldname, const wchar_t* newname);
+	
+	// Category-aware functions
+	bool LoadDeck(int category_index, const wchar_t* category_name, const wchar_t* deckname);
+	bool SaveDeck(Deck& deck, int category_index, const wchar_t* category_name, const wchar_t* name);
+	bool DeleteDeck(int category_index, const wchar_t* category_name, const wchar_t* name);
 	wchar_t DeckFormatBuffer[128];
 	const wchar_t* GetMainFormatString();
 	const wchar_t* GetSideFormatString();
 	const wchar_t* GetExtraFormatString();
 	int GetTypeCount(std::vector<code_pointer> list, unsigned int ctype);
 	static bool SaveDeckArray(const DeckArray& deck, const wchar_t* name);
+
+	static void GetCategoryPath(wchar_t* ret, int index, const wchar_t* text);
+	static void GetDeckFile(wchar_t* ret, int category_index, const wchar_t* category_name, const wchar_t* deckname);
+	static bool CreateCategory(const wchar_t* name);
+	static bool RenameCategory(const wchar_t* oldname, const wchar_t* newname);
+	static bool DeleteCategory(const wchar_t* name);
+	
+	bool ImportDeckCode(const wchar_t* category_name, const wchar_t* deckname);
 };
 
 extern DeckManager deckManager;

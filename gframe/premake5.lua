@@ -3,6 +3,7 @@ include "spmemvfs/."
 
 project "YGOPro"
     kind "WindowedApp"
+    targetname "YGO-VI-EX"   -- [定制] 输出文件名改为 YGO-VI-EX.exe（项目名保持 YGOPro，不影响链接/startproject）
     rtti "Off"
     openmp "On"
 

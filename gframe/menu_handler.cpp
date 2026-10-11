@@ -1,4 +1,5 @@
 #include "config.h"
+#include "builtin_browser.h"
 #include "menu_handler.h"
 #include "myfilesystem.h"
 #include "netserver.h"
@@ -44,6 +45,18 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 		}
 		if(mainGame->wSC->isVisible() && id != BUTTON_233 && id != BUTTON_23333 && id != BUTTON_888 && id != BUTTON_7210 && id != BUTTON_765 && id != BUTTON_222 && id != BUTTON_JP && id != BUTTON_NK && id != BUTTON_SP && id != BUTTON_SC_EXIT)
 			break;
+		if(mainGame->wServerList->isVisible() && id != BUTTON_SERVER_LIST && id != BUTTON_SERVER_RETURN && id != LISTBOX_SERVER_LIST)
+			break;
+		if(mainGame->wDeckManage->isVisible()
+		   && id != BUTTON_MANAGE_DECK && id != LISTBOX_CATEGORIES && id != LISTBOX_DECKS
+		   && id != BUTTON_NEW_CATEGORY && id != BUTTON_RENAME_CATEGORY && id != BUTTON_DELETE_CATEGORY
+		   && id != BUTTON_NEW_DECK_DM && id != BUTTON_RENAME_DECK_DM && id != BUTTON_DELETE_DECK_DM
+		   && id != BUTTON_MOVE_DECK && id != BUTTON_COPY_DECK && id != BUTTON_DM_CLOSE
+		   && id != BUTTON_DM_OK && id != BUTTON_DM_CANCEL
+		   && id != BUTTON_IMPORT_DECK_CODE)
+			break;
+		if(mainGame->wDMQuery->isVisible() && id != BUTTON_DM_OK && id != BUTTON_DM_CANCEL)
+			break;
 		if(mainGame->wRM->isVisible() && id != BUTTON_RM_EXIT && id != BUTTON_RM1 && id != BUTTON_RM2 && id != BUTTON_RM3 && id != BUTTON_RM4 && id != BUTTON_RM5 && id != BUTTON_RM6 && id != BUTTON_RM7 && id != BUTTON_RM8 && id != BUTTON_RM9 && id != BUTTON_RM10 && id != BUTTON_RM11 && id != BUTTON_RM12 && id != BUTTON_RM13 && id != BUTTON_RM14 && id != BUTTON_RMCM && id != BUTTON_RMWN && id != BUTTON_RMAI && id != BUTTON_RMA)
 			break;
 		if(mainGame->wDV->isVisible() && id != BUTTON_DV_CLOSE)
@@ -65,7 +78,31 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 			else
 				soundManager.PlaySoundEffect(SOUND_BUTTON);
 			switch(id) {
-			case BUTTON_MODE_EXIT: {
+			case BUTTON_IMPORT_DECK_CODE: {
+				mainGame->deckBuilder.ImportDeckCodeFromClipboard();
+				break;
+			}
+case BUTTON_BR_BACK: {
+			BuiltinBrowser::Instance().GoBack();
+			break;
+		}
+case BUTTON_BR_FWD: {
+			BuiltinBrowser::Instance().GoForward();
+			break;
+		}
+case BUTTON_BR_RELOAD: {
+			BuiltinBrowser::Instance().Reload();
+			break;
+		}
+case BUTTON_BR_HOME: {
+			mainGame->OpenWebPage(L"https://mycard.world/ygopro/arena/#/cards");
+			break;
+		}
+case BUTTON_BR_CLOSE: {
+			mainGame->CloseBrowser();
+			break;
+		}
+case BUTTON_MODE_EXIT: {
 				mainGame->device->closeDevice();
 				break;
 			}
@@ -110,7 +147,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_TAKEOUT1: {
-                system("start https://mycard.world/ygopro/arena/#/cards");
+                mainGame->OpenWebPage(L"https://mycard.world/ygopro/arena/#/cards");
 				return true;
 				break;
 			}
@@ -130,12 +167,12 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_VI: {
-                system("start https://ygobbs2.com/t/%E3%80%90%E8%B5%84%E6%BA%90%E5%88%86%E4%BA%AB%E3%80%91ygo-vi-ex%E7%9B%B8%E5%85%B3%E8%B5%84%E6%BA%90%E9%9B%86%E4%B8%AD%E4%B8%8B%E8%BD%BD%E8%B4%B4/233171");
+                mainGame->OpenWebPage(L"https://ygobbs2.com/t/%E3%80%90%E8%B5%84%E6%BA%90%E5%88%86%E4%BA%AB%E3%80%91ygo-vi-ex%E7%9B%B8%E5%85%B3%E8%B5%84%E6%BA%90%E9%9B%86%E4%B8%AD%E4%B8%8B%E8%BD%BD%E8%B4%B4/233171");
 				return true;
 				break;
 			}
 			case BUTTON_FOX: {
-                system("start https://ygobbs2.com/t/%E5%BE%81%E9%9B%86%E4%B8%80%E4%BA%9Bygopro%E7%9A%84%E6%94%B9%E8%BF%9B%E5%BB%BA%E8%AE%AE/235347/5");
+                mainGame->OpenWebPage(L"https://ygobbs2.com/t/%E5%BE%81%E9%9B%86%E4%B8%80%E4%BA%9Bygopro%E7%9A%84%E6%94%B9%E8%BF%9B%E5%BB%BA%E8%AE%AE/235347/5");
 				return true;
 				break;
 			}
@@ -145,17 +182,17 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_DIYHEAD: {
-                system("start https://picrew.me/");
+                mainGame->OpenWebPage(L"https://picrew.me/");
 				return true;
 				break;
 			}
 			case BUTTON_DC: {
-                system("start https://charat.me/genesis/");
+                mainGame->OpenWebPage(L"https://charat.me/genesis/");
 				return true;
 				break;
 			}
 			case BUTTON_TG: {
-                system("start https://www.yugioh-card.com/japan/");
+                mainGame->OpenWebPage(L"https://www.yugioh-card.com/japan/");
 				return true;
 				break;
 			}
@@ -165,7 +202,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_YST: {
-                system("start https://yugioh-list.com/decks");
+                mainGame->OpenWebPage(L"https://yugioh-list.com/decks");
 				return true;
 				break;
 			}
@@ -178,7 +215,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_MJ: {
-                system("start https://www.pixiv.net/users/12786607");
+                mainGame->OpenWebPage(L"https://www.pixiv.net/users/12786607");
 				return true;
 				break;
 			}
@@ -270,18 +307,98 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_SERVER_CHOOSE: {
-				mainGame->btn233->setEnabled(true);
-				mainGame->btn23333->setEnabled(true);
-				mainGame->btn888->setEnabled(true);
-				mainGame->btnJP->setEnabled(true);
-				mainGame->btnSP->setEnabled(true);
-				mainGame->btn7210->setEnabled(true);
-				mainGame->btn222->setEnabled(true);
-				mainGame->btn765->setEnabled(true);
-				mainGame->btnNK->setEnabled(true);
-				mainGame->btnSCExit->setEnabled(true);
-				mainGame->ShowElement(mainGame->wSC);
-				mainGame->PopupElement(mainGame->wSC);
+				mainGame->RefreshServerList();
+				{
+					irr::core::dimension2du ss = mainGame->driver->getScreenSize();
+					const irr::s32 cw = 340, ch = 360;
+					irr::s32 cx = ((irr::s32)ss.Width - cw) / 2;
+					irr::s32 cy = mainGame->wRM->getAbsolutePosition().LowerRightCorner.Y - ch;
+					if(cy < 0) cy = 0;
+					mainGame->wServerList->setRelativePosition(irr::core::recti(cx, cy, cx + cw, cy + ch));
+				}
+				mainGame->ShowElement(mainGame->wServerList);
+				mainGame->PopupElement(mainGame->wServerList);
+				break;
+			}
+			case BUTTON_DM_CLOSE: {
+				mainGame->HideElement(mainGame->wDeckManage);
+				break;
+			}
+			case BUTTON_NEW_CATEGORY: {
+				mainGame->deckBuilder.dm_mode = 1;
+				mainGame->SetStaticText(mainGame->stDMMessage, 270, mainGame->guiFont, dataManager.GetSysString(1716));
+				mainGame->ebDMName->setText(L"");
+				mainGame->ShowElement(mainGame->wDMQuery);
+				mainGame->env->setFocus(mainGame->ebDMName);
+				break;
+			}
+			case BUTTON_RENAME_CATEGORY: {
+				int sel = mainGame->lstCategories->getSelected();
+				if(sel < 4) break;
+				mainGame->deckBuilder.dm_mode = 2;
+				mainGame->deckBuilder.dm_oldname = mainGame->lstCategories->getListItem(sel);
+				mainGame->SetStaticText(mainGame->stDMMessage, 270, mainGame->guiFont, dataManager.GetSysString(1716));
+				mainGame->ebDMName->setText(mainGame->deckBuilder.dm_oldname.c_str());
+				mainGame->ShowElement(mainGame->wDMQuery);
+				mainGame->env->setFocus(mainGame->ebDMName);
+				break;
+			}
+			case BUTTON_DELETE_CATEGORY: {
+				int sel = mainGame->lstCategories->getSelected();
+				if(sel < 4) break;
+				const wchar_t* cname = mainGame->lstCategories->getListItem(sel);
+				if(deckManager.DeleteCategory(cname)) {
+					mainGame->ShowDeckManage();
+				} else {
+					mainGame->SetStaticText(mainGame->stDMMessage, 270, mainGame->guiFont, dataManager.GetSysString(1718));
+					mainGame->ShowElement(mainGame->wDMQuery);
+					mainGame->ebDMName->setText(L"");
+					mainGame->ebDMName->setVisible(false);
+					mainGame->btnDMOK->setVisible(false);
+				}
+				break;
+			}
+			case BUTTON_DM_OK: {
+				wchar_t name[256]{};
+				BufferIO::CopyWStr(mainGame->ebDMName->getText(), name, 255);
+				if(name[0]) {
+					if(mainGame->deckBuilder.dm_mode == 1)
+						deckManager.CreateCategory(name);
+					else if(mainGame->deckBuilder.dm_mode == 2)
+						deckManager.RenameCategory(mainGame->deckBuilder.dm_oldname.c_str(), name);
+					else if(mainGame->deckBuilder.dm_mode == 3)
+						mainGame->deckBuilder.NewDeck(name);
+				}
+				mainGame->deckBuilder.dm_mode = 0;
+				mainGame->ebDMName->setVisible(true);
+				mainGame->btnDMOK->setVisible(true);
+				mainGame->HideElement(mainGame->wDMQuery);
+				mainGame->ShowDeckManage();
+				break;
+			}
+			case BUTTON_DM_CANCEL: {
+				mainGame->deckBuilder.dm_mode = 0;
+				mainGame->ebDMName->setVisible(true);
+				mainGame->btnDMOK->setVisible(true);
+				mainGame->HideElement(mainGame->wDMQuery);
+				break;
+			}
+			case BUTTON_SERVER_LIST: {
+				mainGame->RefreshServerList();
+				{
+					irr::core::dimension2du ss = mainGame->driver->getScreenSize();
+					const irr::s32 cw = 340, ch = 360;
+					irr::s32 cx = ((irr::s32)ss.Width - cw) / 2;
+					irr::s32 cy = mainGame->wRM->getAbsolutePosition().LowerRightCorner.Y - ch;
+					if(cy < 0) cy = 0;
+					mainGame->wServerList->setRelativePosition(irr::core::recti(cx, cy, cx + cw, cy + ch));
+				}
+				mainGame->ShowElement(mainGame->wServerList);
+				mainGame->PopupElement(mainGame->wServerList);
+				break;
+			}
+			case BUTTON_SERVER_RETURN: {
+				mainGame->HideElement(mainGame->wServerList);
 				break;
 			}
 			case BUTTON_233: {
@@ -542,7 +659,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_RMA: {
-                system("start https://ygo233.com/usage");
+                mainGame->OpenWebPage(L"https://ygo233.com/usage");
 				return true;
 				break;
 			}
@@ -558,35 +675,32 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				mainGame->TrimText(mainGame->ebJoinPort);
 				char ip[20];
 				const wchar_t* pstr = mainGame->ebJoinHost->getText();
-				BufferIO::CopyWStr(pstr, ip, 16);
-				unsigned int remote_addr = htonl(inet_addr(ip));
-				if(remote_addr == -1) {
-					char hostname[100];
-					char port[6];
-					BufferIO::CopyWStr(pstr, hostname, 100);
-					BufferIO::CopyWStr(mainGame->ebJoinPort->getText(), port, 6);
-					struct evutil_addrinfo hints;
-					struct evutil_addrinfo *answer = nullptr;
-					std::memset(&hints, 0, sizeof hints);
-					hints.ai_family = AF_INET;
-					hints.ai_socktype = SOCK_STREAM;
-					hints.ai_protocol = IPPROTO_TCP;
-					hints.ai_flags = EVUTIL_AI_ADDRCONFIG;
-					int status = evutil_getaddrinfo(hostname, port, &hints, &answer);
-					if(status != 0) {
-						mainGame->gMutex.lock();
-						soundManager.PlaySoundEffect(SOUND_INFO);
-						mainGame->env->addMessageBox(L"", dataManager.GetSysString(1412));
-						mainGame->gMutex.unlock();
-						break;
-					} else {
-						sockaddr_in * sin = ((struct sockaddr_in *)answer->ai_addr);
-						evutil_inet_ntop(AF_INET, &(sin->sin_addr), ip, 20);
-						remote_addr = htonl(inet_addr(ip));
-						evutil_freeaddrinfo(answer);
+				char hostname_tag[256]{};
+				BufferIO::CopyWStr(pstr, hostname_tag, 255);
+				unsigned int remote_addr = 0;
+				unsigned int remote_port = 0;
+				if(strchr(hostname_tag, ':') != nullptr) {
+					HostResult hr = DuelClient::ParseHost(hostname_tag);
+					remote_addr = hr.host;
+					remote_port = hr.port;
+				} else {
+					remote_addr = DuelClient::LookupHost(hostname_tag);
+					remote_port = _wtoi(mainGame->ebJoinPort->getText());
+					if(remote_addr == 0) {
+						HostResult hr = DuelClient::ParseHost(hostname_tag);
+						if(hr.isValid()) {
+							remote_addr = hr.host;
+							remote_port = hr.port;
+						}
 					}
 				}
-				unsigned int remote_port = _wtoi(mainGame->ebJoinPort->getText());
+				if(remote_addr == 0) {
+					mainGame->gMutex.lock();
+					soundManager.PlaySoundEffect(SOUND_INFO);
+					mainGame->env->addMessageBox(L"", dataManager.GetSysString(1412));
+					mainGame->gMutex.unlock();
+					break;
+				}
 				BufferIO::CopyWStr(pstr, mainGame->gameConf.lasthost, 100);
 				BufferIO::CopyWStr(mainGame->ebJoinPort->getText(), mainGame->gameConf.lastport, 20);
 				if(DuelClient::StartClient(remote_addr, remote_port, false)) {
@@ -598,6 +712,7 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 			}
 			case BUTTON_JOIN_CANCEL: {
 				mainGame->HideElement(mainGame->wLanWindow);
+				mainGame->HideElement(mainGame->wServerList);
 				mainGame->ShowElement(mainGame->wMainMenu);
 				if(exit_on_return)
 					mainGame->device->closeDevice();
@@ -662,13 +777,28 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 				break;
 			}
 			case BUTTON_HP_READY: {
-				if(mainGame->cbDeckSelect->getSelected() == -1 ||
-					!deckManager.LoadDeck(mainGame->cbDeckSelect->getItem(mainGame->cbDeckSelect->getSelected()))) {
+				if(mainGame->cbDeckSelect->getSelected() == -1) {
+					mainGame->env->addMessageBox(L"", dataManager.GetSysString(1406));
+					mainGame->btnHostPrepReady->setPressed(false);
 					break;
 				}
+				// Load deck with category awareness
+				int category_index = mainGame->cbCategorySelect->getSelected();
+				const wchar_t* category_name = mainGame->cbCategorySelect->getText();
+				const wchar_t* deck_name = mainGame->cbDeckSelect->getText();
+				
+				if(!deckManager.LoadDeck(category_index, category_name, deck_name)) {
+					mainGame->env->addMessageBox(L"", dataManager.GetSysString(1406));
+					mainGame->btnHostPrepReady->setPressed(false);
+					break;
+				}
+				
+				// Disable selection controls when ready
+				mainGame->cbCategorySelect->setEnabled(false);
+				mainGame->cbDeckSelect->setEnabled(false);
+				
 				UpdateDeck();
 				DuelClient::SendPacketToServer(CTOS_HS_READY);
-				mainGame->cbDeckSelect->setEnabled(false);
 				break;
 			}
 			case BUTTON_HP_NOTREADY: {
@@ -953,6 +1083,50 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 		}
 		case irr::gui::EGET_LISTBOX_CHANGED: {
 			switch(id) {
+			case LISTBOX_DECKS: {
+				int dsel = mainGame->lstDecks->getSelected();
+				int csel = mainGame->lstCategories->getSelected();
+				if(dsel >= 0 && csel >= 0) {
+					const wchar_t* dname = mainGame->lstDecks->getListItem(dsel);
+					const wchar_t* cname = (csel >= 4) ? mainGame->lstCategories->getListItem(csel) : nullptr;
+					deckManager.LoadDeck(csel, cname, dname);
+					mainGame->deckBuilder.is_modified = false;
+				}
+				break;
+			}
+			case LISTBOX_CATEGORIES: {
+				int sel = mainGame->lstCategories->getSelected();
+				if(sel >= 0) {
+					mainGame->current_category = sel;
+					if(sel >= 4) {
+						mainGame->deckBuilder.current_category_name = mainGame->lstCategories->getListItem(sel);
+					} else {
+						mainGame->deckBuilder.current_category_name.clear();
+					}
+					mainGame->RefreshDeck(mainGame->cbDBDecks);
+				}
+				mainGame->RefreshDeckList();
+				break;
+			}
+			case LISTBOX_SERVER_LIST: {
+				int sel = mainGame->lstServerList->getSelected();
+				if(sel >= 0 && sel < (int)dataManager._serverStrings.size()) {
+					const std::wstring& addr = dataManager._serverStrings[sel].second;
+					size_t colon = addr.rfind(L':');
+					if(colon != std::wstring::npos && colon + 1 < addr.size()) {
+						std::wstring host = addr.substr(0, colon);
+						std::wstring port = addr.substr(colon + 1);
+						BufferIO::CopyWStr(host.c_str(), mainGame->gameConf.lasthost, 256);
+						BufferIO::CopyWStr(port.c_str(), mainGame->gameConf.lastport, 64);
+						mainGame->ebJoinHost->setText(host.c_str());
+						mainGame->ebJoinPort->setText(port.c_str());
+					} else {
+						BufferIO::CopyWStr(addr.c_str(), mainGame->gameConf.lasthost, 256);
+						mainGame->ebJoinHost->setText(addr.c_str());
+					}
+				}
+				break;
+			}
 			case LISTBOX_LAN_HOST: {
 				int sel = mainGame->lstHostList->getSelected();
 				if(sel == -1)
@@ -1073,8 +1247,16 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 					break;
 				mainGame->env->setFocus(mainGame->wHostPrepare);
 				if(static_cast<irr::gui::IGUICheckBox*>(caller)->isChecked()) {
-					if(mainGame->cbDeckSelect->getSelected() == -1 ||
-					        !deckManager.LoadDeck(mainGame->cbDeckSelect->getItem(mainGame->cbDeckSelect->getSelected()))) {
+					if(mainGame->cbDeckSelect->getSelected() == -1) {
+						static_cast<irr::gui::IGUICheckBox*>(caller)->setChecked(false);
+						break;
+					}
+					// Use category-aware LoadDeck function
+					int category_index = mainGame->cbCategorySelect->getSelected();
+					const wchar_t* category_name = mainGame->cbCategorySelect->getText();
+					const wchar_t* deck_name = mainGame->cbDeckSelect->getItem(mainGame->cbDeckSelect->getSelected());
+					
+					if(!deckManager.LoadDeck(category_index, category_name, deck_name)) {
 						static_cast<irr::gui::IGUICheckBox*>(caller)->setChecked(false);
 						break;
 					}
@@ -1092,6 +1274,14 @@ bool MenuHandler::OnEvent(const irr::SEvent& event) {
 		}
 		case irr::gui::EGET_COMBO_BOX_CHANGED: {
 			switch(id) {
+			case COMBOBOX_HP_CATEGORY: {
+				// Refresh deck list when category changes
+				mainGame->RefreshCategoryDeck(mainGame->cbCategorySelect, mainGame->cbDeckSelect);
+				if(mainGame->cbDeckSelect->getItemCount() > 0) {
+					mainGame->cbDeckSelect->setSelected(0);
+				}
+				break;
+			}
 			case COMBOBOX_BOT_RULE: {
 				mainGame->RefreshBot();
 				break;

@@ -148,6 +148,16 @@ struct FadingUnit {
 class Game {
 
 public:
+	struct CardTextSearchLink {
+		size_t start{};
+		size_t end{};
+		std::wstring text;
+	};
+	struct CardTextSearchSegment {
+		irr::core::recti rect;
+		size_t link_index{};
+		std::wstring text;
+	};
 	bool Initialize();
 	void MainLoop();
 	void RefreshTimeDisplay();
@@ -157,12 +167,28 @@ public:
 	void LoadExpansions();
 	void ReLoadExpansions();
 	void RefreshDeck(irr::gui::IGUIComboBox* cbDeck);
+	void RefreshDeck(const wchar_t* deckpath, const std::function<void(const wchar_t*)>& additem);
+	void RefreshCategoryDeck(irr::gui::IGUIComboBox* cbCategory, irr::gui::IGUIComboBox* cbDeck);
+	void RefreshCategoryCombo(irr::gui::IGUIComboBox* cbCategory);
+	void OpenWebPage(const wchar_t* url);
+	void CloseBrowser();
+	bool HasWebView2Runtime();
+	void RefreshDeckManage();
 	void RefreshReplay();
 	void RefreshSingleplay();
 	void RefreshBot();
 	void RefreshLocales();
 	void RefreshSoundTheme();
 	void RefreshFont();
+	void RefreshServerList();
+	void ShowDeckManage();
+	void RefreshDeckList();
+	std::vector<irr::gui::IGUIButton*> btnServerDyn;
+	void RefreshCardTextSearchLinks();
+	bool ShouldShowCardTextSearchLinks() const;
+	void CollectCardTextSearchSegments(std::vector<CardTextSearchSegment>& segments) const;
+	bool GetCardTextSearchTextAt(const irr::core::vector2di& point, std::wstring& text) const;
+	void DrawCardTextSearchLinks();
 	void RefreshHDS();
 	void RefreshCRS();
 	void RefreshBGS();
@@ -267,6 +293,9 @@ public:
 	int actionParam;
 	int showingcode;
 	const wchar_t* showingtext;
+	std::wstring formatted_card_text;
+	std::vector<size_t> formatted_card_text_index;
+	std::vector<CardTextSearchLink> card_text_search_links;
 	int showcard;
 	int showcardcode;
 	int showcarddif;
@@ -379,6 +408,14 @@ public:
 	irr::gui::IGUIButton* btnSYS;
 	//other
 	irr::gui::IGUIWindow* wOther;
+	bool browser_prev_other_visible;
+	bool browser_prev_mainmenu_visible;
+	irr::gui::IGUIWindow* wBrowser;
+	irr::gui::IGUIButton* btnBrBack;
+	irr::gui::IGUIButton* btnBrFwd;
+	irr::gui::IGUIButton* btnBrReload;
+	irr::gui::IGUIButton* btnBrHome;
+	irr::gui::IGUIButton* btnBrClose;
 	irr::gui::IGUIButton* btnSEM;
 	irr::gui::IGUIButton* btnTakeout1;
 	irr::gui::IGUIButton* btnTakeout2;
@@ -405,6 +442,7 @@ public:
 	irr::gui::IGUIComboBox* cbLocale;
 	irr::gui::IGUIComboBox* cbsoundtheme;
 	irr::gui::IGUIComboBox* cbFont;
+	irr::gui::IGUIComboBox* cbFontSize;
 	irr::gui::IGUIButton* btnHeadS;
 	irr::gui::IGUIButton* btnCoverS;
 	irr::gui::IGUIButton* btnBgS;
@@ -457,6 +495,37 @@ public:
 	irr::gui::IGUIButton* btnSP;
 	irr::gui::IGUIButton* btn888;
 	irr::gui::IGUIButton* btnSCExit;
+	irr::gui::IGUIWindow* wServerList;
+	irr::gui::IGUIListBox* lstServerList;
+	irr::gui::IGUIButton* btnServerList;
+	irr::gui::IGUIButton* btnServerReturn;
+	irr::gui::IGUIButton* btnManageDeck;
+	irr::gui::IGUIWindow* wDeckManage;
+	irr::gui::IGUIListBox* lstCategories;
+	int current_category;
+	irr::gui::IGUIListBox* lstDecks;
+	irr::gui::IGUIButton* btnNewCategory;
+	irr::gui::IGUIButton* btnRenameCategory;
+	irr::gui::IGUIButton* btnDeleteCategory;
+	irr::gui::IGUIButton* btnNewDeckDM;
+	irr::gui::IGUIButton* btnRenameDeckDM;
+	irr::gui::IGUIButton* btnDeleteDeckDM;
+	irr::gui::IGUIButton* btnMoveDeck;
+	irr::gui::IGUIButton* btnCopyDeck;
+	irr::gui::IGUIButton* btnImportDeckCode;
+	irr::gui::IGUIWindow* wDMQuery;
+	irr::gui::IGUIStaticText* stDMMessage;
+	irr::gui::IGUIEditBox* ebDMName;
+	irr::gui::IGUIButton* btnDMOK;
+	irr::gui::IGUIButton* btnDMCancel;
+	irr::gui::IGUIButton* btnDMClose;
+	irr::gui::IGUIWindow* wDeckCodeQuery;
+	irr::gui::IGUIStaticText* stDeckCodeMessage;
+	irr::gui::IGUIEditBox* ebDeckCode;
+	irr::gui::IGUIButton* btnDeckCodeOK;
+	irr::gui::IGUIButton* btnDeckCodeCancel;
+	irr::gui::IGUIButton* btnCopyDeckCode;
+	irr::gui::IGUIComboBox* cbCategorySelect;
 	//room code
 	irr::gui::IGUIWindow* wRM;
 	irr::gui::IGUIButton* btnRM1;
@@ -629,6 +698,8 @@ public:
 	irr::gui::IGUIStaticText* wDeckEdit;
 	irr::gui::IGUIComboBox* cbDBLFList;
 	irr::gui::IGUIComboBox* cbDBDecks;
+	irr::gui::IGUIStaticText* stDBCategory;
+	irr::gui::IGUIComboBox* cbDBCategory;
 	irr::gui::IGUIButton* btnClearDeck;
 	irr::gui::IGUIButton* btnSortDeck;
 	irr::gui::IGUIButton* btnShuffleDeck;
@@ -639,6 +710,7 @@ public:
 	irr::gui::IGUIButton* btnSideShuffle;
 	irr::gui::IGUIButton* btnSideSort;
 	irr::gui::IGUIButton* btnSideReload;
+	irr::gui::IGUIButton* btnGenerateDeckCode;
 	irr::gui::IGUIEditBox* ebDeckname;
 	irr::gui::IGUIStaticText* stBanlist;
 	irr::gui::IGUIStaticText* stDeck;
@@ -844,6 +916,38 @@ extern Game* mainGame;
 #define BUTTON_SORT_DECK			308
 #define BUTTON_SIDE_OK				309
 #define BUTTON_SHUFFLE_DECK			310
+#define BUTTON_IMPORT_DECK_CODE_EDITOR	312
+#define COMBOBOX_DBCATEGORY		523
+
+#define BUTTON_SERVER_LIST			500
+#define LISTBOX_SERVER_LIST		525
+#define BUTTON_SERVER_RETURN		524
+
+#define BUTTON_MANAGE_DECK			530
+#define LISTBOX_CATEGORIES			531
+#define LISTBOX_DECKS				532
+#define BUTTON_NEW_CATEGORY			533
+#define BUTTON_RENAME_CATEGORY			534
+#define BUTTON_DELETE_CATEGORY			535
+#define BUTTON_NEW_DECK_DM			536
+#define BUTTON_RENAME_DECK_DM			537
+#define BUTTON_DELETE_DECK_DM			538
+#define BUTTON_MOVE_DECK			539
+#define BUTTON_COPY_DECK			540
+#define BUTTON_DM_OK				541
+#define BUTTON_DM_CANCEL			542
+#define BUTTON_DM_CLOSE				543
+#define BUTTON_BR_BACK				544
+#define BUTTON_BR_FWD				545
+#define BUTTON_BR_RELOAD			546
+#define BUTTON_BR_HOME				547
+#define BUTTON_BR_CLOSE				548
+#define BUTTON_IMPORT_DECK_CODE			549
+#define BUTTON_DECK_CODE_OK			550
+#define BUTTON_DECK_CODE_CANCEL			551
+#define BUTTON_GENERATE_DECK_CODE		552
+#define BUTTON_COPY_DECK_CODE			553
+#define COMBOBOX_HP_CATEGORY			554
 #define COMBOBOX_MAINTYPE			311
 #define COMBOBOX_SECONDTYPE			312
 #define BUTTON_EFFECT_FILTER		313
@@ -889,6 +993,7 @@ extern Game* mainGame;
 #define COMBOBOX_LOCALE				373
 #define COMBOBOX_SOUNDTHEME			374
 #define CHECKBOX_ASK_MSET			375
+#define COMBOBOX_FONTSIZE			376
 
 #define BUTTON_MARKS_FILTER			380
 #define BUTTON_MARKERS_OK			381
@@ -931,6 +1036,8 @@ extern Game* mainGame;
 #define BUTTON_SC_EXIT					402
 #define BUTTON_SP						521
 #define BUTTON_888						522
+
+#define BUTTON_SERVER_DYN_BASE			700
 
 #define BUTTON_ROOM_CODE				501
 #define BUTTON_RM1						502

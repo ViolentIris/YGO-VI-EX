@@ -6,6 +6,8 @@
 #include "spmemvfs/spmemvfs.h"
 #include "client_card.h"
 #include <unordered_map>
+#include <vector>
+#include <utility>
 
 namespace ygo {
 	constexpr int MAX_STRING_ID = 0x7ff;
@@ -19,6 +21,10 @@ public:
 	bool LoadStrings(const char* file);
 	bool LoadStrings(IReadFile* reader);
 	void ReadStringConfLine(const char* linebuf);
+	bool LoadServerList(const char* file);
+	bool LoadServerList(const wchar_t* file);
+	bool LoadServerList(IReadFile* reader);
+	void ReadServerConfLine(const char* linebuf);
 	bool Error(spmemvfs_db_t* pDB, sqlite3_stmt* pStmt = 0);
 	bool GetData(unsigned int code, CardData* pData);
 	code_pointer GetCodePointer(unsigned int code) const;
@@ -43,6 +49,7 @@ public:
 	std::unordered_map<unsigned int, std::wstring> _counterStrings;
 	std::unordered_map<unsigned int, std::wstring> _victoryStrings;
 	std::unordered_map<unsigned int, std::wstring> _setnameStrings;
+	std::vector<std::pair<std::wstring, std::wstring>> _serverStrings;
 	std::unordered_map<unsigned int, std::wstring> _sysStrings;
 	code_pointer datas_begin;
 	code_pointer datas_end;

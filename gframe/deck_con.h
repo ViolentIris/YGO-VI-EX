@@ -15,15 +15,21 @@ class DeckBuilder: public irr::IEventReceiver {
 public:
 	DeckBuilder();
 	virtual bool OnEvent(const irr::SEvent& event);
+	void ApplyCategory(int catesel);
+	void ImportDeckCodeFromClipboard();
+	bool ImportDeckCodeFromInput(const std::wstring& deck_code_input);
+	void ApplyDeck(int idx);
 	void Initialize();
 	void Terminate();
 	void GetHoveredCard();
 	void FilterCards();
+	int GetSearchResultMaxVisible() const;
 	void StartFilter();
 	void ClearFilter();
 	void InstantSearch();
 	void ClearSearch();
 	void SortList();
+	bool NewDeck(const wchar_t* name);
 
 	bool CardNameContains(const wchar_t *haystack, const wchar_t *needle);
 
@@ -65,6 +71,11 @@ public:
 	size_t pre_sidec;
 	code_pointer draging_pointer;
 	int prev_deck;
+	int prev_category;
+	int dm_mode = 0;
+	std::wstring current_category_name;
+	std::wstring dm_oldname;
+	bool suppress_list_events = false;
 	s32 prev_operation;
 	int prev_sel;
 	bool is_modified;
