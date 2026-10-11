@@ -91,12 +91,14 @@ platform: x64
 before_build:
   # 生成 VS2019 工程（注意：不传 --winxp-support，本工程没这个选项）
   - premake5.exe vs2019
+  # 生成的工程里没有 webview2 的包含/库路径（本机那份是手工加进 vcxproj 的），
+  # 这里向生成的 vcxproj 补上，等价于本机的手工改动；只作用于 CI 工作区，不改仓库
+  - powershell -NoProfile -ExecutionPolicy Bypass -Command "$p='build\YGOPro.vcxproj'; $t=[IO.File]::ReadAllText($p); $t=$t.Replace('</AdditionalIncludeDirectories>',';..\webview2\include</AdditionalIncludeDirectories>').Replace('</AdditionalDependencies>',';..\webview2\x64\WebView2LoaderStatic.lib</AdditionalDependencies>'); [IO.File]::WriteAllText($p,$t)"
 
 build_script:
   # msbuild 由 AppVeyor 的 VS2019 镜像提供（在 PATH 上），不要写死本机安装路径
-  # premake 生成的工程不含 webview2 的包含/库路径（本机 vcxproj 是手工加过的），
-  # 用 INCLUDE/LIB 环境变量补上；必须与 msbuild 同一行以共享同一 shell
-  - set "INCLUDE=%INCLUDE%;%CD%\webview2\include" && set "LIB=%LIB%;%CD%\webview2\x64" && msbuild build\YGOPro.sln /m /p:Configuration=Release /p:Platform=x64 /v:m /nodeReuse:false
+  # msbuild 由 AppVeyor 的 VS2019 镜像提供（在 PATH 上）
+  - msbuild build\YGOPro.sln /m /p:Configuration=Release /p:Platform=x64 /v:m /nodeReuse:false
 
 after_build:
   - if exist bin\release\x64\YGO-VI-EX.exe copy /Y bin\release\x64\YGO-VI-EX.exe YGO-VI-EX.exe
