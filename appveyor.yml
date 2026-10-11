@@ -48,7 +48,10 @@ install:
   - if not exist irrlicht\source\Irrlicht\libwebp git clone --depth=1 https://github.com/webmproject/libwebp irrlicht\source\Irrlicht\libwebp
 
   # ---------- miniaudio + 四个 xiph 解码库 ----------
-  - git clone --depth=1 https://github.com/mercury233/miniaudio
+  # 注意：旧 yml 里的 mercury233/miniaudio 已失效（克隆会要求账号 → exit 128）；改用官方源
+  - curl --retry 5 --connect-timeout 30 -L -o miniaudio-master.zip https://github.com/mackron/miniaudio/archive/refs/heads/master.zip
+  - 7z x -y miniaudio-master.zip
+  - move miniaudio-master miniaudio
 
   - curl --retry 5 --connect-timeout 30 -L -o libogg-1.3.5.tar.gz https://github.com/xiph/ogg/releases/download/v1.3.5/libogg-1.3.5.tar.gz
   - tar xf libogg-1.3.5.tar.gz
@@ -97,6 +100,7 @@ cache:
   - freetype.tar.gz
   - lua-5.4.8.tar.gz
   - sqlite-amalgamation-3530300.zip
+  - miniaudio-master.zip
   - libogg-1.3.5.tar.gz
   - opus-1.5.2.tar.gz
   - opusfile-0.12.tar.gz
