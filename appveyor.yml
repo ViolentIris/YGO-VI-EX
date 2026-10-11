@@ -19,8 +19,9 @@ install:
   - git submodule update --init --recursive
 
   # ---------- premake5 ----------
-  - curl --retry 5 --connect-timeout 30 -L -o premake-5.0.0-beta7-windows.zip https://github.com/premake/premake-core/releases/download/v5.0.0-beta7/premake-5.0.0-beta7-windows.zip
-  - 7z x -y premake-5.0.0-beta7-windows.zip
+  # 优先用【仓库里自带的】premake5.exe；仓库里没有才去下载
+  - if not exist premake5.exe curl --retry 5 --connect-timeout 30 -L -o premake-5.0.0-beta7-windows.zip https://github.com/premake/premake-core/releases/download/v5.0.0-beta7/premake-5.0.0-beta7-windows.zip
+  - if not exist premake5.exe 7z x -y premake-5.0.0-beta7-windows.zip
 
   # ---------- libevent ----------
   - curl --retry 5 --connect-timeout 30 -L -o libevent-2.1.13-stable.tar.gz https://github.com/libevent/libevent/releases/download/release-2.1.13-stable/libevent-2.1.13-stable.tar.gz
@@ -46,6 +47,13 @@ install:
   # ---------- irrlicht（含内嵌 jpeglib/libpng/zlib/libwebp）----------
   - git clone --depth=1 --branch test https://github.com/mercury233/irrlicht
   - if not exist irrlicht\source\Irrlicht\libwebp git clone --depth=1 https://github.com/webmproject/libwebp irrlicht\source\Irrlicht\libwebp
+  # irrlicht 分支自带的 libpng 被精简（缺 intel/），而仓库的 premake 会编译：
+  #   libpng/intel/filter_sse2_intrinsics.c / libpng/intel/intel_init.c
+  # 这两个文件【已随仓库提供】在 vendor/libpng-intel/（见其中 README）；下载仅作兜底。
+  - if exist vendor\libpng-intel xcopy /E /I /Y vendor\libpng-intel irrlicht\source\Irrlicht\libpng\intel
+  - if not exist vendor\libpng-intel curl --retry 5 --connect-timeout 30 -L -o libpng-1.6.55.tar.gz https://downloads.sourceforge.net/project/libpng/libpng16/1.6.55/libpng-1.6.55.tar.gz
+  - if not exist vendor\libpng-intel tar xf libpng-1.6.55.tar.gz
+  - if not exist vendor\libpng-intel xcopy /E /I /Y libpng-1.6.55\intel irrlicht\source\Irrlicht\libpng\intel
 
   # ---------- miniaudio + 四个 xiph 解码库 ----------
   # 注意：旧 yml 里的 mercury233/miniaudio 已失效（克隆会要求账号 → exit 128）；改用官方源
@@ -101,6 +109,7 @@ cache:
   - lua-5.4.8.tar.gz
   - sqlite-amalgamation-3530300.zip
   - miniaudio-master.zip
+  - libpng-1.6.55.tar.gz
   - libogg-1.3.5.tar.gz
   - opus-1.5.2.tar.gz
   - opusfile-0.12.tar.gz

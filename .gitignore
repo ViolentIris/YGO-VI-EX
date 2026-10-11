@@ -13,7 +13,7 @@
 /sqlite3/
 /irrklang/
 /ikpmp3/
-premake5.exe
+# premake5.exe : 已允许入库（CI 直接用它，免去外部下载）
 # 构建临时目录（本机）
 /_dl/
 /_extract/
